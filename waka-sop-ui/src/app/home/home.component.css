@@ -1,0 +1,108 @@
+
+.icon-display {
+    transform: scale(2.5);
+ }
+ 
+ .overview-cards-heading{
+    font-size:24px;
+    font-weight: bold;
+ }
+ 
+ .overview-cards-subheading{
+    font-size:15px;
+    font-weight: 400;
+ }
+ 
+ .modcards {
+    min-width: 280px !important;
+    width: 280px !important; 
+    height: 125px !important; 
+    background: linear-gradient(to right, #e4e4e4, #e9e9e9, #eeeeee, #f3f3f3, #f8f8f8, #f8f8f8, #f8f8f8, #f8f8f8, #f3f3f3, #eeeeee, #e9e9e9, #e4e4e4);
+    margin: 10px !important;
+    cursor: pointer !important;
+  }
+ 
+ .mat-custom-cards {
+    box-shadow: 0px 2px 4px -1px rgb(0 0 0 / 20%), 0px 4px 5px 0px rgb(0 0 0 / 14%), 0px 1px 10px 0px rgb(0 0 0 / 12%);
+ }
+ 
+ .mat-custom-cards:hover {
+    box-shadow: 0px 9px 11px -5px rgb(0 0 0 / 20%), 0px 18px 28px 2px rgb(0 0 0 / 14%), 0px 7px 34px 6px rgb(0 0 0 / 12%);
+ }
+ 
+ .dot-pulse {
+    margin-left: 20px;
+    position: relative;
+    left: -9999px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: slateblue;
+    color: slateblue;
+    box-shadow: 9999px 0 0 -5px slateblue;
+    animation: dotPulse 1.5s infinite linear;
+    animation-delay: .25s;
+  }
+  
+  .dot-pulse::before, .dot-pulse::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: slateblue;
+    color: slateblue;
+  }
+  
+  .dot-pulse::before {
+    box-shadow: 9984px 0 0 -5px slateblue;
+    animation: dotPulseBefore 1.5s infinite linear;
+    animation-delay: 0s;
+  }
+  
+  .dot-pulse::after {
+    box-shadow: 10014px 0 0 -5px slateblue;
+    animation: dotPulseAfter 1.5s infinite linear;
+    animation-delay: .5s;
+  }
+ 
+  @keyframes dotPulseBefore {
+    0% {
+      box-shadow: 9984px 0 0 -5px slateblue;
+    }
+    30% {
+      box-shadow: 9984px 0 0 2px slateblue;
+    }
+    60%,
+    100% {
+      box-shadow: 9984px 0 0 -5px slateblue;
+    }
+  }
+  
+  @keyframes dotPulse {
+    0% {
+      box-shadow: 9999px 0 0 -5px slateblue;
+    }
+    30% {
+      box-shadow: 9999px 0 0 2px slateblue;
+    }
+    60%,
+    100% {
+      box-shadow: 9999px 0 0 -5px slateblue;
+    }
+  }
+  
+  @keyframes dotPulseAfter {
+    0% {
+      box-shadow: 10014px 0 0 -5px slateblue;
+    }
+    30% {
+      box-shadow: 10014px 0 0 2px slateblue;
+    }
+    60%,
+    100% {
+      box-shadow: 10014px 0 0 -5px slateblue;
+    }
+  }

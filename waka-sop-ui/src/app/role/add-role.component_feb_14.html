@@ -1,0 +1,122 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 0px 16px;">
+    <div style="width:40%; float:left;">
+        <form [formGroup]="form" fxFlex="100" fxLayout="column" fxLayoutAlign="center center" style="margin-top: 80px;">
+            <!--company name-->
+            <div style="margin-bottom:20px; width: 399px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                <label class="txtclr font_14">Company Name *</label>
+                <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('Company').invalid && form.get('Company').dirty , 'validtext' : form.get('Company').valid}">
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                  <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/>
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                  <mat-select placeholder=" Select Company" formControlName="Company" name="Company" class="capitalize font_12" (selectionChange)="onChangeCompanyName()"  required>
+                    <mat-option class="capitalize" *ngFor="let ele of compColl" [value]="ele.company_id">{{ele.company_name}} - {{ele.lookup_name}}</mat-option>
+                  </mat-select>                      
+                </div>
+                </div>
+                <div fxLayout="column">
+                    <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="form.get('Company').invalid&&form.get('Company').dirty" class="txterror" >{{getErrorMessage(form.get('Company'),'Company')}}</mat-error>
+                  </div>
+                </div>
+            </div>
+            <!--Role name-->
+            <div style="margin-bottom:20px; width: 399px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                <label [ngClass]="{'clrwarn':form.get('RoleName').invalid && form.get('RoleName').dirty , 'txtclr' : form.get('RoleName').valid}" class="txtclr font_14">Role Name *</label>
+                <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('RoleName').invalid && form.get('RoleName').dirty , 'validtext' : form.get('RoleName').valid}">
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                  <!-- <div *ngIf="form.get('RoleName').value!=undefined && form.get('RoleName').value!=''" class="label" [ngClass]="{'labelerr':form.get('RoleName').invalid && form.get('RoleName').dirty}">Company Name</div> -->
+                  <input style="outline:none; background-color:var(--sectionbg)" class="text fntwt600" onkeypress="return /[a-zA-Z ]/i.test(event.key)" placeholder="Role Name" formControlName="RoleName" name="RoleName" id="RoleName" (keyup)="validateRoleName()" onkeyup="this.value=this.value.replace(/[^\+\w]+\s/,'')" required>
+                </div>
+                </div>
+                <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; padding-top:5px; margin-top:2px;" *ngIf="form.get('RoleName').invalid && form.get('RoleName').dirty" class="txterror" >{{getErrorMessage(form.get('RoleName'),'RoleName')}}</mat-error>
+                </div>
+                </div>
+            </div>
+            <!--Module name-->
+            <div style="margin-bottom:20px; width: 399px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                <label class="txtclr font_14">Module Name *</label>
+                <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('Module').invalid && form.get('Module').dirty , 'validtext' : form.get('Module').valid}">
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                  <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/>
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                  <mat-select placeholder=" Select Module" formControlName="Module" name="Module" class="capitalize font_12" (selectionChange)="getRolePermission($event.value)" required>
+                    <mat-option class="capitalize" *ngFor="let ele of moduleColl" [value]="ele">{{ele.module_name}}</mat-option>
+                  </mat-select>                      
+                </div>
+                </div>
+                <div fxLayout="column">
+                    <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="form.get('Module').invalid&&form.get('Module').dirty" class="txterror" >{{getErrorMessage(form.get('Module'),'Module')}}</mat-error>
+                  </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div style="width:60%; float:right;">
+        <div fxLayout="column" fxLayoutAlign="space-around center" style="margin-top:50px;">
+            <div *ngIf="roleModuleColl.length !=0">   
+                <mat-expansion-panel style="width:600px; margin-bottom:80px;" hideToggle (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <span *ngIf="roleModuleColl.length !=0">{{roleModuleColl[0].module_name}}</span>
+                                </mat-panel-title>
+                                    <mat-icon>expand_more</mat-icon>
+                        </mat-expansion-panel-header>
+                        <table style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%; margin-top:20px; margin-bottom:20px" mat-table #table [dataSource]="permissionColl">
+                            <ng-container matColumnDef="sub_module">
+                              <th mat-header-cell *matHeaderCellDef class="font_14"> Sub Modules </th>
+                              <td mat-cell *matCellDef="let element"> {{element.sub_module}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="create_role">
+                              <th mat-header-cell *matHeaderCellDef class="font_14"> Create </th>
+                              <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                                  <mat-icon *ngIf="element.create_role && element.view_role" id="create_role{{i}}" style="color:green" class="pointer" (click)="element.create_role=false">check_circle</mat-icon>
+                                  <mat-icon *ngIf="!element.create_role &&  element.view_role" id="create_role{{i}}" style="color:red" class="pointer" (click)="element.create_role=true">cancel</mat-icon>
+                                  <mat-icon *ngIf="!element.create_role && !element.view_role" id="create_role{{i}}" style="color:grey">cancel</mat-icon>
+                                  <mat-icon *ngIf="element.create_role && !element.view_role" id="update_role{{i}}" style="color:grey">cancel</mat-icon>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="view_role">
+                              <th mat-header-cell *matHeaderCellDef class="font_14"> View </th>
+                              <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                                <mat-icon *ngIf="element.view_role" id="view_role{{i}}" style="color:green" class="pointer" (click)="element.view_role=false; checkTicked(ele)">check_circle</mat-icon>
+                                <mat-icon *ngIf="!element.view_role" id="view_role{{i}}" style="color:red" class="pointer" (click)="element.view_role=true; checkTicked(i)">cancel</mat-icon>
+                              </td>
+                            </ng-container>
+                            <ng-container matColumnDef="update_role">
+                              <th mat-header-cell *matHeaderCellDef class="font_14"> Update </th>
+                              <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                                <mat-icon *ngIf="element.update_role && element.view_role" id="update_role{{i}}" style="color:green" class="pointer" (click)="element.update_role=false">check_circle</mat-icon>
+                                <mat-icon *ngIf="!element.update_role && element.view_role" id="update_role{{i}}" style="color:red" class="pointer" (click)="element.update_role=true">cancel</mat-icon>
+                                <mat-icon *ngIf="!element.update_role && !element.view_role" id="update_role{{i}}" style="color:grey">cancel</mat-icon>
+                                <mat-icon *ngIf="element.update_role && !element.view_role" id="update_role{{i}}" style="color:grey">cancel</mat-icon>                               
+                              </td>
+                            </ng-container>
+                            <ng-container matColumnDef="delete_role">
+                                <th mat-header-cell *matHeaderCellDef class="font_14"> Delete </th>
+                                <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                                    <mat-icon *ngIf="element.delete_role && element.view_role" id="delete_role{{i}}" style="color:green" class="pointer" (click)="element.delete_role=false">check_circle</mat-icon>
+                                    <mat-icon *ngIf="!element.delete_role && element.view_role" id="delete_role{{i}}" style="color:red" class="pointer" (click)="element.delete_role=true">cancel</mat-icon>
+                                    <mat-icon *ngIf="!element.delete_role && !element.view_role" id="delete_role{{i}}" style="color:grey">cancel</mat-icon>
+                                    <mat-icon *ngIf="element.delete_role && !element.view_role" id="update_role{{i}}" style="color:grey">cancel</mat-icon>      
+                                  </td>                                
+                                </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                          </table>
+                </mat-expansion-panel>
+            </div>
+        </div>
+    </div>
+</div>
+<footer layout="row">
+    <mat-toolbar style="position:fixed; bottom:4px; width:100%; background-color: var(--activebg); height: 72px;" fxLayoutAlign="end center">
+      <div fxLayoutAlign="end" style="margin-right:60px;">
+        <button class="btnpri btnprifull" *ngIf="!isEditMode"  [disabled]="form.invalid || !isSelected" id="btnNext" style="width: 100px !important; height: 40px !important; padding:0px;" (click)="savePermission()"><span class="clrwhite">{{buttonTitle}}</span></button>
+        <button class="btnpri btnprifull" *ngIf="isEditMode" id="btnNext" style="width: 100px !important; height: 40px !important; padding:0px;" (click)="savePermission()"><span class="clrwhite">{{buttonTitle}}</span></button>
+      </div>
+    </mat-toolbar>
+</footer>

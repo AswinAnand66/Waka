@@ -1,0 +1,74 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal"
+	style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div>
+<mat-tab-group style="margin-top:60px;" mat-align-tabs="start" [selectedIndex]="selTabIndex" (selectedIndexChange)="changeTab($event)" class="mattabgrp">
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-radio-button class="font_12" [checked]="selTabIndex==0" value="1">
+                <span *ngIf="selTabIndex==0" class="clrblue">Stakeholders</span>
+                <span *ngIf="selTabIndex!=0" class="txtclr">Stakeholders</span>
+            </mat-radio-button>
+        </ng-template>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-radio-button class="clrblue font_12" [checked]="selTabIndex==1" value="1">
+                <span *ngIf="selTabIndex==1" class="clrblue">Services Instruction</span>
+                <span *ngIf="selTabIndex!=1" class="txtclr">Services Instruction</span>
+            </mat-radio-button>
+        </ng-template>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-radio-button class="clrblue font_12" [checked]="selTabIndex==2" value="1">
+                <span *ngIf="selTabIndex==2" class="clrblue">PO & Booking</span>
+                <span *ngIf="selTabIndex!=2" class="txtclr">PO & Booking</span>
+            </mat-radio-button>
+        </ng-template>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-radio-button class="clrblue font_12" [checked]="selTabIndex==3" value="1">
+                <span *ngIf="selTabIndex==3" class="clrblue">Documents</span>
+                <span *ngIf="selTabIndex!=3" class="txtclr">Documents</span>
+            </mat-radio-button>
+        </ng-template>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-radio-button class="clrblue font_12" [checked]="selTabIndex==4" value="1">
+                <span *ngIf="selTabIndex==4" class="clrblue">Cargo Handling</span>
+                <span *ngIf="selTabIndex!=4" class="txtclr">Cargo Handling</span>
+            </mat-radio-button>
+        </ng-template>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-radio-button class="clrblue font_12" [checked]="selTabIndex==5" value="1">
+                <span *ngIf="selTabIndex==5" class="clrblue">Carrier</span>
+                <span *ngIf="selTabIndex!=5" class="txtclr">Carrier</span>
+            </mat-radio-button>
+        </ng-template>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-radio-button class="clrblue font_12" [checked]="selTabIndex==6" value="1">
+                <span *ngIf="selTabIndex==6" class="clrblue">Service Charges</span>
+                <span *ngIf="selTabIndex!=6" class="txtclr">Service Charges</span>
+            </mat-radio-button>
+        </ng-template>
+    </mat-tab>
+    <mat-tab>
+        <ng-template mat-tab-label>
+            <mat-radio-button class="clrblue font_12" [checked]="selTabIndex==7" value="1">
+                <span *ngIf="selTabIndex==7" class="clrblue">Landing Cost</span>
+                <span *ngIf="selTabIndex!=7" class="txtclr">Landing Cost</span>
+            </mat-radio-button>
+        </ng-template>
+    </mat-tab>
+</mat-tab-group>
+<div class="bgclr padleft10 htmainsection">
+    <router-outlet></router-outlet>
+</div>

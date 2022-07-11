@@ -1,0 +1,25 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10" style="color: var(--textcolor); font-size: 20px; font-weight: bold;">Mapped Keys</mat-label>
+    <mat-icon id="close" class="pointer" style="color: var(--textcolor);" matTooltip="Close dialog" (click)="onClose(false)">close</mat-icon>
+</div>
+<div mat-dialog-content>
+    <div fxLayout="row" fxLayoutAlign="center start">
+        <div *ngIf="mappedCollData.length != 0" fxLayout="row" fxLayoutAlign="center none">
+            <div id="map" class="mapping-list" style="overflow-y: auto; height: 100%;">
+                <div fxLayout="row" fxLayoutAlign="center center" class="keys-box">
+                    <span style="font-weight: 600; font-size: 16px">Source Keys</span><mat-icon style="color: var(--green);">double_arrow</mat-icon><span style="font-weight: 600; font-size: 16px;">Target Keys</span>
+                </div>
+                <div *ngFor="let map of mappedCollData" fxLayout="row" fxLayoutAlign="space-between center" class="keys-box">
+                    <div fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row wrap">
+                        <ng-container *ngFor="let sourceKeys of map.sourceKeyDisplay; let i = index">
+                          <span>{{ sourceKeys }}</span>
+                          <mat-icon *ngIf="i != map.sourceKeyDisplay.length-1" style="color: var(--textcolor);">east</mat-icon>
+                        </ng-container>  
+                        <mat-icon style="color: var(--green);">double_arrow</mat-icon>
+                        <span>{{ map.targetKeys | titlecase }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+code,width_ft,width_mm,height_ft,height_mm
+0,8 ft,"2438 mm",8 ft,"2438 mm"
+2,8 ft 6 in,"2591 mm",8 ft,"2438 mm"
+4,9 ft,"2743 mm",8 ft,"2438 mm"
+5,9 ft 6 in,"2896 mm",8 ft,"2438 mm"
+6,> 9 ft 6 in,"2896 mm",8 ft,"2438 mm"
+8,4 ft 3 in,"1295 mm",8 ft,"2438 mm"
+9,<= 4 ft,"1219 mm",NA,NA
+C,8 ft 6 in,"2591 mm",>8 ft <= 8 ft 2 in,>2438 mm <=2500 mm
+D,9 ft,"2743 mm",>8 ft <= 8 ft 2 in,>2438 mm <=2500 mm
+E,9 ft 6 in,"2896 mm",>8 ft <= 8 ft 2 in,>2438 mm <=2500 mm
+F,> 9 ft 6 in,"2896 mm",>8 ft <= 8 ft 2 in,>2438 mm <=2500 mm

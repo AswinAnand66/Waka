@@ -1,0 +1,306 @@
+<!-- Loader section -->
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<!-- Add Edit Customer -->
+<div *ngIf="!isMobile" style="margin:60px 16px 0px 16px; padding:16px 0; overflow-y: auto;" [style.height.px]="screenParam.height">
+    <mat-card *ngIf="!isMobile" [style.height.px]="ht-70" style="margin:12px 20px; box-shadow: 0 4px 14px 0 rgba(69, 148, 211, 0.16);">
+        <div fxLayout="row" fxLayoutAlign="space-between start">
+          <span class="txtclr font_16" style="font-weight:600;">Basic Details</span>
+          <span matTooltip="Close" matTooltipPosition="left" class="pointer" (click)="onClose()"><mat-icon>close</mat-icon></span>
+        </div>
+        <form [formGroup]="basicFormGroup" style="margin-top: 8px;">
+            <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+                <!--company name-->
+                <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                    <label class="txtclr font_14">Company Name *</label>
+                    <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':basicFormGroup.get('CompanyName').invalid && basicFormGroup.get('CompanyName').dirty , 'validtext' : basicFormGroup.get('CompanyName').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                      <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/>
+                      <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                      <!-- <div *ngIf="basicFormGroup.get('CompanyName').value!=undefined && basicFormGroup.get('CompanyName').value!=''" class="label" [ngClass]="{'labelerr':basicFormGroup.get('CompanyName').invalid && basicFormGroup.get('CompanyName').dirty}">Company Name</div> -->
+                        <input style="outline:none; background-color:var(--white)" class="text" placeholder="Company Name" formControlName="CompanyName" name="CompanyName" id="CompanyName" (keyup)="checkCompanyName()" required>
+                      </div>
+                    </div>
+                    <div fxLayout="column">
+                      <mat-error style="margin-left:-30px; padding-top:5px; margin-top:2px;" *ngIf="basicFormGroup.get('CompanyName').invalid && basicFormGroup.get('CompanyName').dirty" class="txterror" >{{getErrorMessage(basicFormGroup.get('CompanyName'),'CompanyName')}}</mat-error>
+                    </div>
+                    </div>
+                </div>
+                <!--office category-->
+                <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                    <label class="txtclr font_14">Office Category *</label>
+                    <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':basicFormGroup.get('OfficeType').invalid && basicFormGroup.get('OfficeType').dirty , 'validtext' : basicFormGroup.get('OfficeType').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                      <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/>
+                      <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                      <mat-select placeholder=" Select Office Category" formControlName="OfficeType" name="OfficeType" class="capitalize font_12" (selectionChange)="checkParent()" required>
+                        <mat-option class="capitalize" *ngFor="let ele of officeTypesList" [value]="ele.lookup_name_id">{{ele.display_name}}</mat-option>
+                      </mat-select>                      
+                    </div>
+                    </div>
+                    <div fxLayout="column">
+                        <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="basicFormGroup.get('OfficeType').invalid&&basicFormGroup.get('OfficeType').dirty" class="txterror" >{{getErrorMessage(basicFormGroup.get('OfficeType'),'OfficeType')}}</mat-error>
+                      </div>
+                    </div>
+                </div>
+                <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                    <label class="txtclr font_14">Company Website</label>
+                    <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':basicFormGroup.get('Website').invalid && basicFormGroup.get('Website').dirty , 'validtext' : basicFormGroup.get('Website').value && basicFormGroup.get('Website').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                            <!-- <div *ngIf="basicFormGroup.get('Website').value!=undefined && basicFormGroup.get('Website').value!=''" class="label">Company Website</div> -->
+                            <input style="background-color:var(--white)" class="text" placeholder="Company Website" formControlName="Website" name="website" id="website">
+                        </div>
+                    </div>
+                    <div fxLayout="column">
+                      <mat-error style="margin-left:-30px; padding-top:2px; margin-top:2px;" *ngIf="basicFormGroup.get('Website').invalid&&basicFormGroup.get('Website').dirty" class="txterror" >{{getErrorMessage(basicFormGroup.get('Website'),'Website')}}</mat-error>
+                    </div>
+                    </div>
+                </div>
+                <!--Parent Company-->
+                <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                  <label class="txtclr font_14">Parent Company *</label>
+                  <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':basicFormGroup.get('ParentCompany').invalid && basicFormGroup.get('ParentCompany').dirty , 'validtext' : basicFormGroup.get('ParentCompany').valid}">
+                  <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                    <mat-select formControlName="ParentCompany" name="ParentCompany" class="capitalize font_12">
+                      <mat-option class="capitalize" *ngFor="let ele of parentCompanyList" [value]="ele.company_id">{{ele.company_name}}</mat-option>
+                    </mat-select>                     
+                  </div>
+                  <div fxLayout="column">
+                      <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="basicFormGroup.get('ParentCompany').invalid && basicFormGroup.get('ParentCompany').dirty || basicFormGroup.get('ParentCompany').touched" class="txterror" >{{getErrorMessage(basicFormGroup.get('ParentCompany'),'ParentCompany')}}</mat-error>
+                  </div>
+                  </div>
+                </div>
+                <!-- <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                    <label class="txtclr font_14">Parent Company</label>
+                    <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':basicFormGroup.get('ParentCompany').invalid && basicFormGroup.get('ParentCompany').dirty , 'validtext' : basicFormGroup.get('ParentCompany').valid && basicFormGroup.get('ParentCompany').value}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                        <mat-select formControlName="ParentCompany" name="ParentCompany" class="capitalize font_12">
+                            <mat-option class="capitalize" *ngFor="let ele of parentCompanyList" [value]="ele.company_id">{{ele.company_name}}</mat-option>
+                        </mat-select>                     
+                    </div>
+                    <div fxLayout="column">
+                        <mat-hint style="font-size: 10px; margin-left:-14px; padding-top:2px; margin-top:5px; color: #465e72;" *ngIf="!basicFormGroup.get('ParentCompany').invalid || !basicFormGroup.get('ParentCompany').dirty">{{'*Required for Office category other than Headquarters'}}</mat-hint>
+                        <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="basicFormGroup.get('ParentCompany').invalid && basicFormGroup.get('ParentCompany').dirty" class="txterror" >{{getErrorMessage(basicFormGroup.get('ParentCompany'),'ParentCompany')}}</mat-error>
+                    </div>
+                  </div>
+                </div> -->
+                <!--Company Type-->
+                <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                    <label class="txtclr font_14">Company Type *</label>
+                    <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':basicFormGroup.get('CompanyType').invalid && basicFormGroup.get('CompanyType').dirty , 'validtext' : basicFormGroup.get('CompanyType').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                      <mat-select formControlName="CompanyType" name="CompanyType" class="capitalize font_12">
+                        <mat-option class="capitalize" *ngFor="let ele of companyTypeList" [value]="ele.lookup_id">{{ele.name}}</mat-option>
+                      </mat-select>                     
+                    </div>
+                    <div fxLayout="column">
+                        <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="basicFormGroup.get('CompanyType').invalid && basicFormGroup.get('CompanyType').dirty || basicFormGroup.get('CompanyType').touched" class="txterror" >{{getErrorMessage(basicFormGroup.get('CompanyType'),'CompanyType')}}</mat-error>
+                    </div>
+                    </div>
+                </div>
+                <!--Country-->
+                <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                    <label class="txtclr font_14">Country *</label>
+                    <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':basicFormGroup.get('RegCountry').invalid && basicFormGroup.get('RegCountry').dirty , 'validtext' : basicFormGroup.get('RegCountry').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                        <mat-select required  formControlName="RegCountry" name="RegCountry" class="capitalize font_12" (selectionChange)="getRegState($event.value)">
+                            <mat-option class="capitalize" *ngFor="let ele of countryList" [value]="ele.country_id">{{ele.name}}</mat-option>
+                        </mat-select>                     
+                    </div>
+                    <div fxLayout="column">
+                    </div>
+                    <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="basicFormGroup.get('RegCountry').invalid && basicFormGroup.get('RegCountry').dirty || basicFormGroup.get('RegCountry').touched" class="txterror" >{{getErrorMessage(basicFormGroup.get('RegCountry'),'RegCountry')}}</mat-error>
+                    </div>
+                </div>
+              </div>
+              <div fxLayout="row wrap" fxLayoutAlign="start start">
+                <!--State-->
+                <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                  <label class="txtclr font_14">State *</label>
+                  <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':basicFormGroup.get('RegState').invalid && basicFormGroup.get('RegState').dirty , 'validtext' : basicFormGroup.get('RegState').valid}">
+                  <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                    <mat-select required formControlName="RegState" name="RegState" class="capitalize font_12"  (selectionChange)="getRegCity($event.value)">
+                      <mat-option class="capitalize" *ngFor="let ele of regStateList" [value]="ele.state_id">{{ele.name}}</mat-option>
+                    </mat-select>                   
+                  </div>
+                  <div fxLayout="column">
+                  </div>
+                  <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="basicFormGroup.get('RegState').invalid && basicFormGroup.get('RegState').dirty || basicFormGroup.get('RegState').touched" class="txterror" >{{getErrorMessage(basicFormGroup.get('RegState'),'RegState')}}</mat-error>
+                  </div>
+              </div>
+              <!--company Logo-->
+              <div style="margin-left: 150px; " fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="6px">
+                <span *ngIf="previewUrl" class="txtclr font_16" style="font-weight:600;">Company Logo</span>
+                <div fxLayout="column" fxLayoutAlign="space-between end">
+                    <div *ngIf="previewUrl !== uploadPlaceholder && previewUrl && !isEditMode"  class="circle pointer" style="transform: translate(50%, 0%); background-color:var(--white);">
+                      <mat-icon matTooltip="Remove Logo" matTooltipPosition="right" class="fntclr465e72" mat-icon-button (click)="removeLogo()">close</mat-icon>
+                    </div>
+                    <label *ngIf="!isEditMode" fxLayoutAlign="start center" style="height:50px; margin-top:20px" [ngClass]="{'btnsecondary': previewUrl == null}" for="ImgUploading">
+                      <span class="text" *ngIf="previewUrl == null">Upload Logo</span>
+                      <img style="height:80px; margin-top:-40px; width:auto;" *ngIf="!isEditMode" [src]="previewUrl" />
+                      <input style="display: none;" *ngIf="previewUrl == null" (change)="uploadLogo($event)" type="file" name="ImgUploading" id="ImgUploading">       
+                    </label>
+                </div>
+                  <div fxLayout="column" fxLayoutAlign="space-between end">
+                    <div *ngIf="previewUrl !== uploadPlaceholder && previewUrl && isEditMode"  class="circle pointer" style="transform: translate(50%, 0%); background-color:var(--white);">
+                      <mat-icon matTooltip="Remove Logo" matTooltipPosition="right"  class="fntclr465e72" mat-icon-button (click)="fileRemove()">close</mat-icon>
+                    </div>
+                    <label *ngIf="isEditMode" fxLayoutAlign="start center" style="height:50px; margin-top:20px" [ngClass]="{'btnsecondary': previewUrl == null}" for="ImgUploading">
+                      <span class="text" *ngIf="previewUrl == null">Upload Logo</span>
+                      <img style="height:80px; margin-top:-40px; width:auto;" *ngIf="isEditMode" [src]="previewUrl" />
+                      <input *ngIf="!isLogoAvailable && isEditMode" (change)="uploadLogo($event)" type="file" name="ImgUploading" id="ImgUploading" style="display: none;">
+                    </label>
+                </div>
+
+              </div>
+                
+              </div>
+        </form>
+        
+    </mat-card>
+</div>
+<div *ngIf="isMobile" style="margin:130px 16px 16px 16px;">
+  <mat-card *ngIf="isMobile" [style.height.px]="ht-130" style="box-shadow: 0 4px 14px 0 rgba(69, 148, 211, 0.16);">
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+      <span class="txtclr font_16" style="font-weight:600;">Basic Details</span>
+      <span matTooltip="Close" matTooltipPosition="left" class="pointer" (click)="onClose()"><mat-icon>close</mat-icon></span>
+    </div>
+    <form id="CompanyAddEdit" [formGroup]="basicFormGroup" fxLayout="column" fxLayoutGap="10px" style="padding: 12px;overflow-y: auto;" [style.height.px]="ht-160">
+      <!-- Company Name -->
+      <div>
+        <label class="txtclr font_14">Company Name *</label>
+        <div class="inputbox" [ngClass]="{'errtxtbdr':basicFormGroup.get('CompanyName').invalid && basicFormGroup.get('CompanyName').dirty , 'validtext' : basicFormGroup.get('CompanyName').valid}">
+          <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+            <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/>
+            <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+              <input style="outline:none; background-color:var(--white)" class="text" placeholder="Company Name" formControlName="CompanyName" name="CompanyName" id="CompanyName" (keyup)="checkCompanyName()" required>
+            </div>
+          </div>
+          <div fxLayout="column">
+            <mat-error style="margin-left:-30px; padding-top:5px; margin-top:2px;" *ngIf="basicFormGroup.get('CompanyName').invalid && basicFormGroup.get('CompanyName').dirty" class="txterror" >{{getErrorMessage(basicFormGroup.get('CompanyName'),'CompanyName')}}</mat-error>
+          </div>
+        </div>
+      </div>
+      <!-- Office Category -->
+      <div>
+        <label class="txtclr font_14">Office Category *</label>
+        <div class="inputbox" [ngClass]="{'errtxtbdr':basicFormGroup.get('OfficeType').invalid && basicFormGroup.get('OfficeType').dirty , 'validtext' : basicFormGroup.get('OfficeType').valid}">
+          <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+            <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/>
+            <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+              <mat-select placeholder=" Select Office Category" formControlName="OfficeType" name="OfficeType" class="capitalize font_12" (selectionChange)="checkParent()" required>
+                <mat-option class="capitalize" *ngFor="let ele of officeTypesList" [value]="ele.lookup_name_id">{{ele.display_name}}</mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <div fxLayout="column">
+            <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="basicFormGroup.get('OfficeType').invalid&&basicFormGroup.get('OfficeType').dirty" class="txterror" >{{getErrorMessage(basicFormGroup.get('OfficeType'),'OfficeType')}}</mat-error>
+          </div>
+        </div>
+      </div>
+      <!-- Company Website -->
+      <div>
+        <label class="txtclr font_14">Company Website</label>
+        <div class="inputbox" [ngClass]="{'errtxtbdr':basicFormGroup.get('Website').invalid && basicFormGroup.get('Website').dirty , 'validtext' : basicFormGroup.get('Website').value && basicFormGroup.get('Website').valid}">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+            <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                <input style="background-color:var(--white)" class="text" placeholder="Company Website" formControlName="Website" name="website" id="website">
+            </div>
+        </div>
+        <div fxLayout="column">
+          <mat-error style="margin-left:-30px; padding-top:2px; margin-top:2px;" *ngIf="basicFormGroup.get('Website').invalid&&basicFormGroup.get('Website').dirty" class="txterror" >{{getErrorMessage(basicFormGroup.get('Website'),'Website')}}</mat-error>
+        </div>
+        </div>
+      </div>
+      <!--Parent Company-->
+      <div>
+        <label class="txtclr font_14">Parent Company *</label>
+        <div class="inputbox" [ngClass]="{'errtxtbdr':basicFormGroup.get('ParentCompany').invalid && basicFormGroup.get('ParentCompany').dirty , 'validtext' : basicFormGroup.get('ParentCompany').valid}">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+          <mat-select formControlName="ParentCompany" name="ParentCompany" class="capitalize font_12">
+            <mat-option class="capitalize" *ngFor="let ele of parentCompanyList" [value]="ele.company_id">{{ele.company_name}}</mat-option>
+          </mat-select>                     
+        </div>
+        <div fxLayout="column">
+            <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="basicFormGroup.get('ParentCompany').invalid && basicFormGroup.get('ParentCompany').dirty || basicFormGroup.get('ParentCompany').touched" class="txterror" >{{getErrorMessage(basicFormGroup.get('ParentCompany'),'ParentCompany')}}</mat-error>
+        </div>
+        </div>
+      </div>
+      <!--Company Type-->
+      <div>
+        <label class="txtclr font_14">Company Type *</label>
+        <div class="inputbox" [ngClass]="{'errtxtbdr':basicFormGroup.get('CompanyType').invalid && basicFormGroup.get('CompanyType').dirty , 'validtext' : basicFormGroup.get('CompanyType').valid}">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+          <mat-select formControlName="CompanyType" name="CompanyType" class="capitalize font_12">
+            <mat-option class="capitalize" *ngFor="let ele of companyTypeList" [value]="ele.lookup_id">{{ele.name}}</mat-option>
+          </mat-select>                     
+        </div>
+        <div fxLayout="column">
+            <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="basicFormGroup.get('CompanyType').invalid && basicFormGroup.get('CompanyType').dirty || basicFormGroup.get('CompanyType').touched" class="txterror" >{{getErrorMessage(basicFormGroup.get('CompanyType'),'CompanyType')}}</mat-error>
+        </div>
+        </div>
+      </div>
+      <!--Country-->
+      <div>
+          <label class="txtclr font_14">Country *</label>
+          <div class="inputbox " [ngClass]="{'errtxtbdr':basicFormGroup.get('RegCountry').invalid && basicFormGroup.get('RegCountry').dirty , 'validtext' : basicFormGroup.get('RegCountry').valid}">
+          <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+              <mat-select required  formControlName="RegCountry" name="RegCountry" class="capitalize font_12" (selectionChange)="getRegState($event.value)">
+                  <mat-option class="capitalize" *ngFor="let ele of countryList" [value]="ele.country_id">{{ele.name}}</mat-option>
+              </mat-select>                     
+          </div>
+          <div fxLayout="column">
+          </div>
+          <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="basicFormGroup.get('RegCountry').invalid && basicFormGroup.get('RegCountry').dirty || basicFormGroup.get('RegCountry').touched" class="txterror" >{{getErrorMessage(basicFormGroup.get('RegCountry'),'RegCountry')}}</mat-error>
+          </div>
+      </div>
+      <!--State-->
+      <div>
+        <label class="txtclr font_14">State *</label>
+        <div class="inputbox" [ngClass]="{'errtxtbdr':basicFormGroup.get('RegState').invalid && basicFormGroup.get('RegState').dirty , 'validtext' : basicFormGroup.get('RegState').valid}">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+          <mat-select required formControlName="RegState" name="RegState" class="capitalize font_12"  (selectionChange)="getRegCity($event.value)">
+            <mat-option class="capitalize" *ngFor="let ele of regStateList" [value]="ele.state_id">{{ele.name}}</mat-option>
+          </mat-select>                   
+        </div>
+        <div fxLayout="column">
+        </div>
+        <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="basicFormGroup.get('RegState').invalid && basicFormGroup.get('RegState').dirty || basicFormGroup.get('RegState').touched" class="txterror" >{{getErrorMessage(basicFormGroup.get('RegState'),'RegState')}}</mat-error>
+        </div>
+      </div>
+      <!--company Logo-->
+      <div style="margin-left: 150px; " fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="6px">
+        <span *ngIf="previewUrl" class="txtclr font_16" style="font-weight:600;">Company Logo</span>
+        <div fxLayout="column" fxLayoutAlign="space-between end">
+            <div *ngIf="previewUrl !== uploadPlaceholder && previewUrl && !isEditMode"  class="circle pointer" style="transform: translate(50%, 0%); background-color:var(--white);">
+              <mat-icon matTooltip="Remove Logo" matTooltipPosition="right" class="fntclr465e72" mat-icon-button (click)="removeLogo()">close</mat-icon>
+            </div>
+            <label *ngIf="!isEditMode"  style="height:20px; margin-top:20px" [ngClass]="{'btnsecondary': previewUrl == null}" for="ImgUploading">
+              <span class="text" *ngIf="previewUrl == null">Upload Logo</span>
+              <img style="height:80px; margin-top:-40px; width:auto;" *ngIf="!isEditMode" [src]="previewUrl" />
+              <input style="display: none;" *ngIf="previewUrl == null" (change)="uploadLogo($event)" accept="image/*" type="file" name="ImgUploading" id="ImgUploading">       
+            </label>
+        </div>
+          <div fxLayout="column" fxLayoutAlign="space-between end">
+            <div *ngIf="previewUrl !== uploadPlaceholder && previewUrl && isEditMode"  class="circle pointer" style="transform: translate(50%, 0%); background-color:var(--white);">
+              <mat-icon matTooltip="Remove Logo" matTooltipPosition="right"  class="fntclr465e72" mat-icon-button (click)="fileRemove()">close</mat-icon>
+            </div>
+            <label *ngIf="isEditMode"  style="height:20px; margin-top:20px" [ngClass]="{'btnsecondary': previewUrl == null}" for="ImgUploading">
+              <span class="text" *ngIf="previewUrl == null">Upload Logo</span>
+              <img style="height:80px; margin-top:-40px; width:auto;" *ngIf="isEditMode" [src]="previewUrl" />
+              <input *ngIf="!isLogoAvailable && isEditMode" (change)="uploadLogo($event)" type="file" name="ImgUploading" id="ImgUploading" style="display: none;">
+            </label>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+</div>
+<footer layout="row">
+    <mat-toolbar style="background-color: var(--activebg); height: 72px;" fxLayoutAlign="end center" >
+      <div  matTooltip="Fill out Required Fields"  [matTooltipDisabled]="!basicFormGroup.invalid" fxLayoutAlign="end center" style="margin-right:40px;">
+        <button [matTooltip]="btnTitle == 'SAVE' ? 'Add Company' : 'Update Company'" class="btnpri btnprifull" [disabled]="basicFormGroup.invalid"  id="btnNext" style="width: 98px !important; height: 40px !important; padding:0px;" (click)="addUpdateCustomer()"><span class="clrwhite">{{ btnTitle }}</span></button>
+      </div>
+    </mat-toolbar>
+  </footer>

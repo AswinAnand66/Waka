@@ -1,0 +1,6 @@
+# dependencies
+/node_modules
+/log
+
+# compiled output
+/tsserver/dist

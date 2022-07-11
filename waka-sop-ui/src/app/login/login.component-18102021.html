@@ -1,0 +1,51 @@
+<app-splash></app-splash>
+<div flex fxLayout="column" fxLayoutGap="10px">
+	<div [style.height.px]="ht-20" style="padding:0px 32px !important" >
+		<form [formGroup]="form" fxLayout="row" fxLayoutAlign="end center" (submit)="login()" [style.height.px]="height">
+			<mat-card fxFlex="28" fxFlex.md="40" fxFlex.sm="50" fxFlex.xs="100"> 
+				<mat-card-header fxLayout="column" fxLayoutAlign="center center" style="margin-bottom:40px;">
+					<div ><img src="../../assets/image/svg/final-waka-tech-01.svg" style="width:226px; height:79px"/></div>
+				</mat-card-header>
+				<mat-card-content style="width:100%">
+					<div fxLayout="column" fxLayoutAlign="center center">
+						<div  class="inputbox inboxminwidth" [ngClass]="{'errtxtbdr':form.get('Email').invalid&&form.get('Email').dirty}">
+							<div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+								<mat-icon class="icon">person</mat-icon>
+								<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+									<div *ngIf="form.get('Email').value!=undefined && form.get('Email').value!=''" class="label" [ngClass]="{'labelerr':form.get('Email').invalid&&form.get('Email').dirty}">Email</div>
+									<input class="text" placeholder="Email" formControlName="Email" name="Email" id="Email" required>
+								</div>
+							</div>
+						</div>
+						<div style="width:100%">
+							<mat-error *ngIf="form.get('Email').invalid&&form.get('Email').dirty" class="txterror">{{getErrorMessage(form.get('Email'),'Email')}}</mat-error>
+						</div>
+						<div class="inputbox inboxminwidth">
+							<div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+								<mat-icon class="icon">lock</mat-icon>
+								<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+									<div *ngIf="form.get('Password').value!=undefined && form.get('Password').value!=''" class="label" [ngClass]="{'labelerr':form.get('Password').invalid&&form.get('Password').dirty}">Password</div>
+									<input class="text" [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="Password" name="Password" id="Password" required>
+								</div>
+								<button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+									<mat-icon style="transform: scale(0.8);">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div> 
+						<div style="margin-left:17px; margin-top: 10px;"><span class="pointer link" [routerLink]="['/forgotpassword']"> Forgot your password?</span></div> 
+					</div>
+					<div style="padding:16px 12px">
+						<button class="btnpri btnprifull" id="btnlogin" [disabled]="disableLoginBtn||form.invalid" (click)="login()"><span style="color:white">LOGIN</span></button>
+						<div class="mgntop10">Not having an account yet <span class="link pointer" [routerLink]="['/signup']">Sign up</span></div>
+					</div>
+				</mat-card-content>
+				<mat-card-actions>
+					<div fxLayout="column" fxLayoutAlign="center center" style="width:98%" >
+					</div>
+				</mat-card-actions>
+			</mat-card>
+		</form>
+	</div>
+</div>

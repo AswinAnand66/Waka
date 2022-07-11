@@ -1,0 +1,55 @@
+<!-- <div fxLayout="row wrap" fxLayoutAlign="start center" style="margin:16px">
+    <mat-card *ngIf="userDetails?.is_admin || userDetails?.company_admin>0" style="border-top: 6px solid blue; width:200px;" class="pointer" (click)="register()">
+        <mat-card-content >
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                <mat-icon class="md-36" style="color:blue">people</mat-icon>
+                <div class="font_20">USERS</div>
+            </div>
+        </mat-card-content>
+        <mat-card-footer style="margin-top:-14px; padding-left:16px; padding-right:16px; border-top:1px solid lightgray">
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="25px">
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <div class="font_12 clrgreen fntwt600" style="opacity:0.8">Active</div>
+                    <div class="font_12">{{userReg.active}}</div>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <div class="font_12 clrred fntwt600" style="opacity:0.8">Deleted</div>
+                    <div class="font_12">{{userReg.deleted}}</div>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <div class="font_12 clrblue fntwt600" style="opacity:0.8">Admin</div>
+                    <div class="font_12">{{userReg.admin}}</div>
+                </div>
+            </div>
+        </mat-card-footer>
+    </mat-card>
+    <mat-card style="border-top: 6px solid brown;margin-left:36px; width:200px;" class="pointer" (click)="role()">
+        <mat-card-content >
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                <mat-icon class="md-36" style="color:brown">manage_accounts</mat-icon>
+                <div class="font_20">ROLES</div>
+            </div>
+        </mat-card-content>
+        <mat-card-footer style="margin-top:-14px; padding-left:16px; padding-right:16px; border-top:1px solid lightgray">
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="25px">
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <div class="font_12 clrgreen fntwt600" style="opacity:0.8">Roles</div>
+                    <div class="font_12">{{roleCnt}}</div>
+                </div>
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <div class="font_12 clrblue fntwt600" style="opacity:0.8">Companies</div>
+                    <div class="font_12">{{companyCnt}}</div>
+                </div>
+            </div>
+        </mat-card-footer>
+    </mat-card>
+</div> -->
+<div class="scroller" fxLayout="row wrap" fxLayoutAlign="start start" cdkScrollable [style.height.px]="height" [style.padding-top.px]="paddingTop" style="overflow-y: auto; padding-bottom: 18px;" id="dashboard">
+	<div *ngFor="let card of subModuleCardsColl; let i=index">
+		<div *ngIf="card.module_name != 'Admin' && card.module_name != 'Home'" class="dashboard-card pointer" [ngClass]="{'card-gap':(i+1)%rowChartCnt != 0}" [style.width.px]="cardDivWidth" (click)="navigate(card)">
+			<div class="dashboard-title">{{card.count || 0}}</div>
+			<div class="dashboard-sub-title" style="width: 80%;">{{card.module_name}}</div>
+			<mat-icon class="far">{{card.icon}}</mat-icon>
+		</div>
+	</div>
+</div>

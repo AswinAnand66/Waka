@@ -1,0 +1,163 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div *ngIf="!isMobileView" [style.height.px]="height-90" style="padding: 60px 24px 0 24px;">
+    <div fxLayout="row" fxLayoutAlign="end center" class="tabSideAction" fxLayoutGap="15px">
+        <div class="inputboxsingle inboxminwidth" style="min-height: 30px;">
+            <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                <mat-icon class="icon">search</mat-icon>
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                    <input class="text" type="text" (keyup)="applySOFilter($event)" placeholder="Search by SO.No, PO.No, etc" name="OrderConfirmationFilter" id="OrderConfirmationFilter" required>
+                </div>
+            </div>
+        </div>
+        <mat-button-toggle-group [(ngModel)]="toggleShipment">
+            <mat-button-toggle value="table" style="line-height: 36px;" (click)="toggleNavigate('cards')">
+                <mat-icon>format_list_bulleted</mat-icon>
+            </mat-button-toggle>
+            <!-- value="cards" (click)="toggleNavigate('cards')" -->
+            <mat-button-toggle  style="line-height: 36px;" (click)="toggleNavigate('table')"> 
+                <mat-icon>grid_view</mat-icon>
+            </mat-button-toggle>
+        </mat-button-toggle-group>
+        <button mat-button style="width: 180px !important; height: 40px !important;" class="btnpri btnauto" (click)="openCustomView()">
+            <mat-icon>filter_list</mat-icon><span class="mgnleft10 font_14">CUSTOM VIEW</span>
+        </button>
+        <button mat-button style="width: 120px !important; height: 40px !important;" class="btnsecondary btnauto">
+            <span class="mgnleft10 font_14">UPLOAD</span>
+        </button>
+    </div>
+    <mat-tab-group animationDuration="700ms" (selectedTabChange)="tabChanged($event)" style="padding-top:24px" [(selectedIndex)]="selectedTabIndex">
+        <mat-tab label="Shipment Booking">
+            <div *ngIf="shipmentBookingColl.data.length > 0" class="mgntop10" fxLayout="column" fxLayoutAlign="start center" [style.height.px]="shipmentTableHeight - 60">
+                <div fxLayout="row" fxLayoutAlign="center center" style="overflow: auto; width: 100%">
+                    <table id="shipmentBookingTable" [hidden]="shipmentBookingColl.data.length == 0" mat-table #table [dataSource]="shipmentBookingColl" matSort style="border:1px lightgray solid; border-radius: 6px; overflow-x: auto; width: 100%">
+                        <ng-container  matColumnDef="so_no" sticky>
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>SO No</th>
+                            <td mat-cell style="padding-left:5px; padding-right: 5px; width: fit-content;" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">
+                                <div  fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="6px">
+                                    <mat-icon *ngIf="element.status == 'Awaiting Confirmation'" style="color: var(--inprogress);" class="mgnleft5 md-14">access_time_filled</mat-icon>
+                                    <mat-icon *ngIf="element.status != 'Awaiting Confirmation'" class="mgnleft5 md-14 clrgreen">check_circle</mat-icon>
+                                    <span>SO {{element.so_no}}</span>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="status" sticky>
+                            <th mat-header-cell  class="tbl-head" *matHeaderCellDef>Status</th>
+                            <td mat-cell style="padding-left:5px; padding-right: 5px; width: fit-content;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                                <span *ngIf="element.status == 'Shipment Authorized'" class="clrgreen fntwt600">{{element.status}}</span>
+                                <span *ngIf="element.status.includes('Awaiting')" class="clrinprogress fntwt600">{{element.status}}</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="pos">
+                            <th mat-header-cell  class="tbl-head" *matHeaderCellDef>POs</th>
+                            <td mat-cell style="padding-left: 10px; padding-right: 5px; padding-top: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element" fxLayout="row" fxLayoutGap="3px">
+                                <div *ngIf="element.pos != null" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+                                    <div class="chipset-active">PO {{element.pos[0]}}</div>
+                                    <div *ngIf="element.pos.length > 1" class="chipset-active" style="width: fit-content;">+{{element.pos.length - 1}}</div>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="principal">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>Principal</th>
+                            <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                                <img style="height:20px; width:auto;" class="pointer"  [src]="element['company_logo_'+element.principal] ? getSantizeUrl(element['company_logo_'+element.principal]) : getSantizeUrl(noimagePlaceholder)" />
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="total_cbm">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>Total CBM</th>
+                            <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.total_cbm}} <span *ngIf="element.total_cbm != null">CBM</span></td>
+                        </ng-container>
+                        <ng-container matColumnDef="total_teu">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>Total TEU</th>
+                            <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.total_teu}} <span *ngIf="element.total_teu != null">TEU</span></td>
+                        </ng-container>
+                        <ng-container matColumnDef="quantity_tolerance">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>Quantity Tolerance</th>
+                            <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                                <span *ngIf="element.quantity_tolerance == 'In tolerance'" class="clrgreen fntwt600">{{element.quantity_tolerance}}</span>
+                                <span *ngIf="element.quantity_tolerance == 'Out of tolerance'" class="clrinprogress fntwt600">{{element.quantity_tolerance}}</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="cargo_ready_date_tolerance">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>Cargo Ready Date Tolerance</th>
+                            <td mat-cell style="padding-left:5px; padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                                <span *ngIf="element.cargo_ready_date_tolerance == 'In tolerance'" class="clrgreen fntwt600">{{element.cargo_ready_date_tolerance}}</span>
+                                <span *ngIf="element.cargo_ready_date_tolerance == 'Out of tolerance'" class="clrinprogress fntwt600">{{element.cargo_ready_date_tolerance}}</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="cargo_ready_date">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>Cargo Ready Date</th>
+                            <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.cargo_ready_date | date:'longDate' }}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="shipment_date">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>Shipment Date</th>
+                            <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                                {{element.ship_date | date:'longDate' }}
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="type">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>Type</th>
+                            <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.type}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="mode">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>Mode</th>
+                            <td mat-cell style="padding-left:5px;padding-right: 5px;" style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                                <div *ngIf="element.mode == 'sea'">
+                                    <img src='../../assets/image/svg/icon-small-carrier.svg' style="width:24px; height:24px;"/>
+                                </div>
+                                <div *ngIf="element.mode == 'air'">
+                                    <img src='../../assets/image/svg/icon-small-air.svg' style="width:24px; height:24px;"/>
+                                </div>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="loading_port">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>Loading Port</th>
+                            <td mat-cell style="padding-left:5px; padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                                <!-- <img src="http://purecatamphetamine.github.io/country-flag-icons/3x2/{{element.dp_code}}.svg" class="img-responsive" width="25px" height="25px"/> -->
+                                <span>{{element.loading_port}}</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="discharging_port">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>Discharging Port</th>
+                            <td mat-cell style="padding-left:5px; padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                                <span>{{element.discharging_port}}</span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="principal_contact_name">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>Principal Contact Name</th>
+                            <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.principal_contact_name}}</td>
+                        </ng-container>
+                        <ng-container matColumnDef="edit">
+                            <th mat-header-cell class="tbl-head" *matHeaderCellDef></th>
+                            <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                                <mat-icon color="primary">edit</mat-icon>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displaySB; sticky: true;" class="tblrowht"></tr>
+                        <tr mat-row id="shipmentBookingRowHeight" class="tr-rowalt-light pointer row-highlight" *matRowDef="let row; columns: displaySB;"  (click)="openShipmentOrder(row)"></tr>
+                    </table>
+                </div>
+            </div>
+            <div *ngIf="shipmentBookingColl.data.length == 0 && !isLoading" fxLayout="column" fxLayoutAlign="center center" [style.height.px]="height- 200">
+                <img src='../../assets/image/svg/icon-small-carrier.svg' style="width: 80px; height: auto;"/>
+                <div class="txt">No shipment Data available</div>
+            </div>
+            <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 10px;">
+                <mat-paginator [hidden]="shipmentBookingColl.data.length == 0" hidePageSize  style="border-radius: 6px; width: 100%;" [length]="contentLength" [pageSize]="pageSize" (page)="changePage($event)" [pageIndex]="currentPage" [previousPageIndex]="prevPage"></mat-paginator>
+            </div>
+        </mat-tab>
+        <mat-tab label="Live Tracking">
+            <div fxLayout="column" fxLayoutAlign="center center" [style.height.px]="height- 200">
+                <img src='../../assets/image/svg/icon-small-carrier.svg' style="width: 80px; height: auto;"/>
+                <div class="txt">Live Tracking Data not available</div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Cancelled">
+            <div fxLayout="column" fxLayoutAlign="center center" [style.height.px]="height- 200">
+                <img src='../../assets/image/svg/icon-small-carrier.svg' style="width: 80px; height: auto;"/>
+                <div class="txt">Cancelled Data not available</div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

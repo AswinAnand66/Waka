@@ -1,0 +1,56 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10" style="font-weight: 600; color: #8294a3;">Add Transaction</mat-label>
+    <mat-icon id="close" class="pointer" matTooltip="Close dialog" (click)="onClose(true)" style="color: #465e72;">close</mat-icon>
+</div>
+<div mat-dialog-content style="max-height: none;">
+    <form [formGroup]="form" *ngIf="!isLoading">
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+            <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                <label class="txtclr font_14">Unit</label>
+                <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('ParentCompanyType').invalid && form.get('ParentCompanyType').dirty , 'validtext' : form.get('ParentCompanyType').valid}">
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                    <mat-select required placeholder="Select Unit"  formControlName="ParentCompanyType" name="ParentCompanyType" class="capitalize font_12">
+                        <mat-option class="capitalize" *ngFor="let ele of companyTypeList" [value]="ele.lookup_id">{{ele.name}}</mat-option>
+                    </mat-select>                     
+                </div>
+                <div fxLayout="column">
+                </div>
+                <mat-error style="margin-left:-30px; margin-top:12px;" *ngIf="form.get('ParentCompanyType').invalid && form.get('ParentCompanyType').dirty || form.get('ParentCompanyType').touched" class="txterror" >{{getErrorMessage(form.get('ParentCompanyType'),'ParentCompanyType')}}</mat-error>
+                </div>
+            </div>
+            <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                <label class="txtclr font_14">Shift/Batch</label>
+                <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('ParentCompanyType').invalid && form.get('ParentCompanyType').dirty , 'validtext' : form.get('ParentCompanyType').valid}">
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                    <mat-select required placeholder="Select Shift/Batch"  formControlName="ParentCompanyType" name="ParentCompanyType" class="capitalize font_12">
+                        <mat-option class="capitalize" *ngFor="let ele of companyTypeList" [value]="ele.lookup_id">{{ele.name}}</mat-option>
+                    </mat-select>                     
+                </div>
+                <div fxLayout="column">
+                </div>
+                <mat-error style="margin-left:-30px; margin-top:12px;" *ngIf="form.get('ParentCompanyType').invalid && form.get('ParentCompanyType').dirty || form.get('ParentCompanyType').touched" class="txterror" >{{getErrorMessage(form.get('ParentCompanyType'),'ParentCompanyType')}}</mat-error>
+                </div>
+            </div>
+            <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                <label class="txtclr font_14">Quantity</label>
+                <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('CompanyName').invalid && form.get('CompanyName').dirty , 'validtext' : form.get('CompanyName').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">                  
+                            <mat-icon class="fntclr1c75bc">business</mat-icon>  
+                            <input style="outline:none; background-color:var(--white)" class="text" placeholder="Quantity" formControlName="CompanyName" name="CompanyName" onkeyup="this.value=this.value.replace(/[^\+\w]+\s/,'')" id="CompanyName" autocomplete="new-company" (keyup)="checkEmptyCompanyName()" (blur)="validateCompany()" required>
+                    </div>
+                    <div fxLayout="column">
+                        <mat-error style="margin-left:-30px; margin-top:8px;" *ngIf="form.get('CompanyName').invalid && form.get('CompanyName').dirty" class="txterror" >{{getErrorMessage(form.get('CompanyName'),'CompanyName')}}</mat-error>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<footer style="position:absolute; bottom:5%; width:95%;" mat-dialog-actions fxlayout="row" fxLayoutAlign="center center">
+    <mat-toolbar style="background-color: var(--white); height: 50px;" fxlayout="row" fxLayoutAlign="center center">
+      <div  matTooltip="Invite Company" fxLayoutAlign="center center">
+        <button id="btnsave" style="width:100px;" class="btnpri btnpriqtr" [disabled]="form.invalid" mat-raised-button (click)="inviteCompnay()">ADD</button>
+    </div>
+    </mat-toolbar>
+</footer>
+

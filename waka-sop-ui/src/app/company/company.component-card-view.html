@@ -1,0 +1,234 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display: block">
+    <mat-progress-spinner color="primary" mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 16px 16px;" >
+    <div>
+        <div fxLayout="row" fxLayoutAlign="end center" class="tabSideAction" fxLayoutGap="15px">
+            <mat-button-toggle-group [(ngModel)]="summaryToggle" >
+                <mat-button-toggle value="table" style="line-height: 36px;"  (click)="toggleNavigate('list')">
+                    <mat-icon>format_list_bulleted</mat-icon>
+                </mat-button-toggle>
+                <mat-button-toggle value="cards" style="line-height: 36px;" >
+                    <mat-icon>grid_view</mat-icon>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+            <button mat-button style="width: 180px !important; height: 40px !important;" class="btnpri btnauto" (click)="addCompany()">
+                <mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">ADD COMPANY</span>
+            </button>
+            <button mat-button *ngIf="isInviteTab" style="width: 180px !important; height: 40px !important;" class="btnpri btnauto" (click)="inviteNewCompany()">
+                <mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">INVITE COMPANY</span>
+            </button>
+        </div>
+        <mat-tab-group (selectedTabChange)="tabChanged($event)" style="padding-top:24px" [(selectedIndex)]="selectedTabIndex">
+            <mat-tab label="My Companies">
+                <mat-drawer-container hasBackdrop="false" [style.height.px]="ht+70">
+                    <mat-drawer #drawer mode="side" opened [style.width.px]="SidePanelWidth">
+                        <mat-card class="left-cards" fxLayout="column" fxLayoutAlign="space-between" *ngFor="let ele of companyColl" (click)="getCompanyContactDetails(ele);">
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="card-heading capitalize font_14" style="color: #465e72">{{ele.company_name}}</span>
+                                <span fxLayoutAlign="end end"
+                                    class="image-upload--headshot-image">
+                                    <img [src]="ele.previewurl" style="width: auto; height: 60px" />
+                                </span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="3px">
+                                    <div *ngIf="ele.license_cnt==undefined && !ele.cci_is_accepted && !ele.is_deleted" class="pointer" matTooltip="Request Licence">
+                                        <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                                            <mat-icon class="mgnrgt5 md-14" style="color:var(--redmedium)">error</mat-icon>
+                                            <div id="lic" class="font_14"style="color:var(--redmedium)">Request License</div>    
+                                        </div>
+                                    </div>
+                                    <div *ngIf="ele.license_cnt==-1 && !ele.cci_is_accepted && !ele.is_deleted" fxLayout="row" class="pointer" matTooltip="Licence Pending">
+                                        <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                                            <mat-icon class="mgnrgt5 md-14 clrinprogress">pending</mat-icon>
+                                            <div id="lic" class="font_14">Request Pending</div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="ele.license_cnt==1 && !ele.cci_is_accepted && !ele.is_deleted" id="lic" fxLayout="row" fxLayoutAlign="start center" class="pointer" matTooltip="Licence Approved">
+                                        <mat-icon class="mgnrgt5 md-14 clrgreen">check_circle</mat-icon>
+                                        <div id="lic" class="font_14">Licensed</div>
+                                    </div>
+                                    <div *ngIf="ele.is_deleted" id="lic" fxLayout="row" fxLayoutAlign="start center" class="pointer clrbrown" matTooltip="Retrieve Company to Manage Licence">Licensed Not Allowed</div>
+                                    <span class="text-right-card font_12" style="color: #516879">License Status</span>
+                                </div>
+                                <div fxLayout="column" fxLayoutAlign="end end" fxLayoutGap="3px">
+                                    <span id="lic"  class="font_14" style="font-weight: 600;">{{ele.ci_count}}</span>
+                                    <span class="text-right-card font_12" style="color: #516879">Stackholders Company</span>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </mat-drawer>
+                    <mat-drawer-content *ngIf="contactColl || firstDisplayCompany" style="overflow: auto">
+                        <mat-card *ngFor="let i of companyTabDetail" class="right-card">
+                            <mat-toolbar *ngFor="let i of companyTabDetail" fxLayout="row" fxLayoutAlign="space-between center"
+                                style="background-color: #eef4fb; height: 56px">
+                                <span class="card-heading capitalize"
+                                    style="color: #51687a; letter-spacing: 0.18px">{{i.name}}</span>
+                                <span style="flex: 1 1 auto"></span>
+                                <mat-icon style="background-color: white;  cursor: pointer; color: var(--primary);" (click)="drawer.toggle()">crop_free</mat-icon>
+                            </mat-toolbar>
+                            <div style="padding: 12px 16px 12px 16px">
+                                <mat-tab-group #tabGroup (selectedTabChange)="tabChanged($event)">"
+                                    <mat-tab label="My Employees">
+                                        <div fxLayout="column" fxLayoutAlign="space-around">
+                                            <mat-card  *ngFor="let contact of contactColl" style="margin-top: 10px; padding: 20px 16px; border-radius: 4px; box-shadow: 0 4px 14px 0 rgba(69, 148, 211, 0.16); background-color: #fff;">
+                                                <div fxLayout="row" fxLayoutAlign="space-between center">
+                                                    <button mat-fab style="opacity: 0.8;" color="primary"><strong class="font_16 capitalize">{{contact.contact_name.substring(0,1)}}</strong></button>
+                                                    <div fxLayout="column" fxLayoutGap="3px" style="width: 150px;">
+                                                        <span class="font_14 capitalize" style="font-weight: 600; letter-spacing: 0.15px; color: #465e72;">{{contact.contact_name}}</span>
+                                                        <span class="font_12" style="letter-spacing: 0.13px; color: #465e72; line-height: 2;">Employee Name</span>
+                                                    </div>
+                                                    <div fxLayout="column" fxLayoutGap="3px"  style="width: 100px;">
+                                                        <span class="font_14 capitalize" style="color: #1c75bc; font-weight: 600; letter-spacing: 0.15px;">{{contact.role_name}}</span>
+                                                        <span class="font_12" style="letter-spacing: 0.13px; color: #465e72;line-height: 2;">Employee Role</span>
+                                                    </div>
+                                                    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="3px" style="width: 150px;">
+                                                        <span class="font_12" style="line-height: 2; letter-spacing: 0.13px; color: #465e72; text-decoration: underline;">{{contact.email}}</span>
+                                                        <span class="font_12 alignleft" style="letter-spacing: 0.13px; color: #465e72" fxLayout="row" fxLayoutAlign="center">
+                                                            <span class="material-icons mgnrgt10" [ngStyle]="{ color: '#1c75bc' }">email</span>Email Id
+                                                        </span>
+                                                    </div>
+                                                    <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="3px" style="width: 120px;">
+                                                        <span class="font_12" style="line-height: 2; letter-spacing: 0.13px; color: #465e72; text-decoration: underline;">+91 {{contact.mobile}}</span>
+                                                        <span class="font_12 alignleft"
+                                                            style="letter-spacing: 0.13px; color: #465e72"
+                                                            fxLayout="row" fxLayoutAlign=" center">
+                                                            <span class="material-icons mgnrgt10"
+                                                                [ngStyle]="{ color: '#1c75bc' }">call</span>Phone No</span>
+                                                    </div>
+                                                    <span class="circle" style="margin-right: 10px">
+                                                        <mat-icon class="pointer" mat-icon-button style="transform: scale(0.8); vertical-align: top !important;" (click)="editCompanyContact(contact)">edit</mat-icon>
+                                                    </span>
+                                                </div>
+                                            </mat-card>
+                                            
+                                        </div>
+                                    </mat-tab>
+                                    <mat-tab label="Roles & Rights">
+                                        <mat-drawer-container hasBackdrop="false" autosize>
+                                            <mat-drawer mode="side" opened>
+                                                <div>
+                                                    <mat-card class="roles-rights-menu-card"><span
+                                                            class="font_14">Senior Manager</span>
+                                                    </mat-card>
+                                                    <mat-card class="roles-rights-menu-card"><span
+                                                            class="font_14">Asst Manager</span>
+                                                    </mat-card>
+                                                    <mat-card class="roles-rights-menu-card"><span
+                                                            class="font_14">
+                                                            Executive Manager
+                                                        </span></mat-card>
+                                                </div>
+                                            </mat-drawer>
+                                            <mat-drawer-content style="overflow: auto">
+                                                <mat-toolbar fxLayout="row" fxLayoutAlign="space-around center" style=" background-color: rgba(155, 168, 179, 0.05);  height: 56px;">
+                                                    <span class="card-heading"
+                                                        style="color: #465e72; letter-spacing: 0.13px">Menu
+                                                        Details</span>
+                                                    <span style="flex: 1 1 auto"></span>
+                                                    <span class="circle" style="margin-right: 10px">
+                                                        <mat-icon class="pointer" style=" transform: scale(0.8);  vertical-align: top !important;  ">edit</mat-icon>
+                                                    </span>
+                                                </mat-toolbar>
+                                                <div>
+                                                    <mat-accordion>
+                                                        <mat-expansion-panel style="margin: 16px" hideToggle>
+                                                            <mat-expansion-panel-header>
+                                                                <mat-panel-title fxLayout="row"
+                                                                    fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                                    <mat-icon [ngStyle]="{ color: '#1c75bc' }"
+                                                                        class="font_12" [inline]="true">
+                                                                        manage_accounts</mat-icon>
+                                                                    <span class="font_12"
+                                                                        style="color: #1c75bc; font-weight: 600">Admin</span>
+                                                                </mat-panel-title>
+                                                            </mat-expansion-panel-header>
+                                                        </mat-expansion-panel>
+                                                    </mat-accordion>
+                                                    <mat-accordion>
+                                                        <mat-expansion-panel style="margin: 16px" hideToggle>
+                                                            <mat-expansion-panel-header>
+                                                                <mat-panel-title fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                                    <mat-icon [ngStyle]="{ color: '#1c75bc' }"
+                                                                        class="font_12" [inline]="true">assignment
+                                                                    </mat-icon>
+                                                                    <span class="font_12"
+                                                                        style="color: #1c75bc; font-weight: 600">
+                                                                        SOP
+                                                                    </span>
+                                                                    <span style="flex: 1 1 auto"></span>
+                                                                    <div fxLayout="row" fxLayoutAlign="space-around end"
+                                                                        fxLayoutGap="25px">
+                                                                        <span class="font_12" style=" color: #1c75bc; letter-spacing: 0.15px;">Create</span>
+                                                                        <span class="font_12" style=" color: #1c75bc;letter-spacing: 0.15px; ">Read</span>
+                                                                        <span class="font_12" style=" color: #1c75bc; letter-spacing: 0.15px;">Update</span>
+                                                                        <span class="font_12" style="  color: #1c75bc; letter-spacing: 0.15px;">Delete</span>
+                                                                    </div>
+                                                                </mat-panel-title>
+                                                            </mat-expansion-panel-header>
+                                                            </mat-expansion-panel>
+                                                        </mat-accordion> 
+                                                    <mat-accordion>
+                                                        <mat-expansion-panel style="margin: 16px" hideToggle>
+                                                            <mat-expansion-panel-header>
+                                                                <mat-panel-title fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                                    <mat-icon [ngStyle]="{ color: '#1c75bc' }" class="font_12" [inline]="true">task
+                                                                    </mat-icon>
+                                                                    <span class="font_12" style="color: #1c75bc; font-weight: 600"> Order Confirmation</span>
+                                                                </mat-panel-title>
+                                                            </mat-expansion-panel-header>
+                                                        </mat-expansion-panel>
+                                                    </mat-accordion>
+                                                    <mat-accordion>
+                                                        <mat-expansion-panel style="margin: 16px" hideToggle>
+                                                            <mat-expansion-panel-header>
+                                                                <mat-panel-title fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                                    <mat-icon [ngStyle]="{ color: '#1c75bc' }"class="font_12" [inline]="true">category
+                                                                    </mat-icon>
+                                                                    <span class="font_12" style="color: #1c75bc; font-weight: 600">Supply Chain </span>
+                                                                </mat-panel-title>
+                                                            </mat-expansion-panel-header>
+                                                        </mat-expansion-panel>
+                                                    </mat-accordion>
+                                                </div>
+                                            </mat-drawer-content>
+                                        </mat-drawer-container>
+                                    </mat-tab>
+                                </mat-tab-group>
+                            </div>
+                            <footer fxLayout="row">
+                                <mat-toolbar style="  margin-top:10px; background-color: #eef4fb; height: 72px; " fxLayoutAlign="end center">
+                                    <div fxLayoutAlign="end center">
+                                        
+                                        <button disabled class="btnpri btnprifull" type="button" id="btnNext" *ngIf="isInviteButtonActive  && i.license_cnt==1 && i.cci_is_accepted===true && i.ci_is_accepted==undefined" matTooltip="Invite Employee" (click)="addCompanyContact(companyDetails)" style="width: 169px !important; height: 40px !important">
+                                            <span style="color: white">INVITE EMPLOYEE</span>
+                                        </button>
+                                        <button class="btnpri btnprifull" type="button" id="btnNext" *ngIf="isInviteButtonActive && !i.cci_is_accepted && i.license_cnt==1" matTooltip="Invite Employee" (click)="addCompanyContact(companyDetails)" style="width: 169px !important; height: 40px !important">
+                                            <span style="color: white">INVITE EMPLOYEE</span>
+                                        </button>
+                                        <button disabled class="btnpri btnprifull" type="button" id="btnNext" *ngIf="isInviteButtonActive && i.license_cnt==-1" matTooltip="Invite Employee" (click)="addCompanyContact(companyDetails)" style="width: 169px !important; height: 40px !important">
+                                            <span style="color: white">INVITE EMPLOYEE</span>
+                                        </button>
+                                        
+                                       
+                                    </div>
+                                    <div fxLayoutAlign="end center">
+                                        <button class="btnpri btnprifull" type="button" id="btnNext"
+                                            *ngIf="isAddButtonActive"
+                                            style="width: 169px !important; height: 40px !important">
+                                            <span style="color: white">ADD ROLE</span>
+                                        </button>  
+                                    </div>
+                                </mat-toolbar>
+                            </footer>
+                        </mat-card>
+                    </mat-drawer-content>
+                </mat-drawer-container>
+            </mat-tab>
+            <mat-tab label="Associated Companies" disabled>
+                
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

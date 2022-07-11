@@ -1,0 +1,71 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10">Map User Company</mat-label>
+    <mat-icon id="close" color="warn" class="pointer" matTooltip="Close dialog" (click)="onClose(false)">cancel</mat-icon>
+</div>
+<div mat-dialog-content >
+    <div *ngIf="dispCompanyType">
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="50px">
+            <div>
+                <label id="example-radio-group-label">Company Type</label>
+                <mat-radio-group aria-labelledby="company type" [(ngModel)]="selCompanyType" (change)="getCompanyOfType($event.value)">
+                    <mat-radio-button *ngFor="let type of companyTypeColl" fxLayout="column"  style="margin-top:10px;"    color="primary" [value]="type">
+                        <span class="capitalize">{{type.lookup_name}}</span>
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+            <div class="font_14 clrblue">
+                On selection of company type, Companies of that type will be listed, user can be mapped to many companies. Only one company type allowed for an user
+            </div>
+
+        </div>
+    </div>
+    <div *ngIf="!dispCompanyType">
+        <mat-form-field style="width:100%">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyCompFilter($event)" placeholder="Ex. company name, city, state" #input>
+        </mat-form-field>
+        <table mat-table #table [dataSource]="companyColl" matSort style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%" >
+            <ng-container matColumnDef="company_name">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>COMPANY</th>
+                <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.company_name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="company_type">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>TYPE</th>
+                <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.company_type}}</td>
+            </ng-container>
+            <ng-container matColumnDef="city">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>CITY</th>
+                <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.city}}</td>
+            </ng-container>
+            <ng-container matColumnDef="state">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>STATE</th>
+                <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.state}}</td>
+            </ng-container>
+            <ng-container matColumnDef="country">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>COUNTRY</th>
+                <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.country}}</td>
+            </ng-container>
+            <ng-container matColumnDef="is_selected">
+                <th  class="tbl-head" mat-header-cell *matHeaderCellDef>Company</th>   
+                <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                    <mat-icon *ngIf="!element.is_selected" id="select{{i}}" class="pointer" (click)="element.is_selected=true;">check_box_outline_blank</mat-icon>
+                    <mat-icon *ngIf="element.is_selected" id="select{{i}}" color="primary" class="pointer" (click)="element.is_selected=false;">check_box</mat-icon>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="is_admin">
+                <th  class="tbl-head" mat-header-cell *matHeaderCellDef>Admin</th>   
+                <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                    <mat-icon *ngIf="!element.is_admin" id="select{{i}}" class="pointer clrbrown"  matTooltip="Assign user as an admin"  (click)="element.is_admin=true;">toggle_off</mat-icon>
+                    <mat-icon *ngIf="element.is_admin" id="select{{i}}"  class="pointer clrgreen" matTooltip="Click to remove admin previlege" (click)="element.is_admin=false;">toggle_on</mat-icon>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="dispCompany; sticky: true;" class="tblrowht"></tr>
+            <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispCompany;"></tr>
+        </table>
+    </div>
+
+</div>
+<div *ngIf="!dispCompanyType" mat-dialog-actions fxLayout="row" fxLayoutAlign="center center">
+    <button id="btnSave" mat-raised-button color="primary" (click)="saveMapCompany()">SAVE</button>
+    <button id="btnCancel"  mat-raised-button color="accent" mat-tooltip="Go to Login page" (click)="onClose(false)">Cancel</button>
+</div>

@@ -1,0 +1,20 @@
+<div mat-dialog-title fxLayout="column" fxLayoutAlign="space-between center">
+        <mat-label color="primary" style="font-weight: 600; color:black;">{{btnTitle}}</mat-label>
+</div>
+<div mat-dialog-content>
+    <form [formGroup]="form" >
+      <div fxFlex="100" style="padding-bottom: 20px;" fxLayoutAlign="start start" fxLayout="row wrap">
+        <div class="inputbox orderpoinputwidth" [ngClass]="{'errtxtbdr':form.get('ViewName').invalid&&form.get('ViewName').dirty}">
+           <input class="text" placeholder="View Name" formControlName="ViewName" name="ViewName" id="ViewName" required>
+        </div>
+        <mat-checkbox [(ngModel)]="is_default" [checked]="is_default" formControlName="isDefault" style=" width: 24px; height: 18px; margin-top: 5px;  margin-left: 5px;">
+                  <span>Set as Default Filter</span>
+        </mat-checkbox>
+      </div>
+    </form>    
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <button class="btnpri btnauto mgntop10" id="btnNext" style=" width: 100px !important; height: 40px !important;" (click)="saveView()"><span class="font_14">SAVE</span></button>
+</div>
+
+

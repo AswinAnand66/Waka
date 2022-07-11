@@ -1,0 +1,35 @@
+<div style="padding:0px 24px 0px 24px!important" >
+	<div *ngIf="!isMobile" fxLayout="row" fxLayoutAlign="space-between center">
+		<div>
+			<img src="../../assets/image/svg/final-waka-tech-01.svg" style="width: 134px; height: 44px;"/>
+		</div>
+		<div>
+			<ul id="navmenu">
+					<a href="#"><span>Home</span></a>
+					<a href="#"><span class="divider"></span><span class="nav-link">About Us</span></a>
+					<a href="#"><span class="divider"></span><span class="nav-link">Product</span></a>
+					<a href="#"><span class="divider"></span><span class="nav-link">Features</span></a>
+					<a href="#"><span class="divider"></span><span class="nav-link">Blog</span></a>
+					<a href="#"><span class="divider"></span><span class="nav-link">Contact Us</span></a>
+					<a href="#"><span class="divider"></span><span class="nav-link">Login</span></a>
+			</ul>
+		</div>
+	</div>
+	<div *ngIf="isMobile" fxLayout="row" fxLayoutAlign="space-between center" style="padding: 24px 0px;">
+		<div>
+			<img src="../../assets/image/svg/final-waka-tech-01.svg" style="width: 134px; height: 44px;"/>
+		</div>
+		<div>
+			<button mat-icon-button [matMenuTriggerFor]="menu">
+				<mat-icon style="transform: scale(1.2);">menu</mat-icon>
+			</button>
+			<mat-menu #menu="matMenu">
+  				<button mat-menu-item>About Us</button>
+  				<button mat-menu-item>Product</button>
+				<button mat-menu-item>Features</button>
+				<button mat-menu-item>Blog</button>
+				<button mat-menu-item>Contact Us</button>
+			</mat-menu>
+		</div>
+	</div>
+</div>

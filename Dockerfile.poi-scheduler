@@ -1,0 +1,8 @@
+FROM node:16.15
+WORKDIR /app/poi-scheduler
+COPY ./poi-scheduler .
+RUN npm install
+RUN npm run build
+RUN npm run test
+ENTRYPOINT node dist/scheduler-main.js
+EXPOSE 5400

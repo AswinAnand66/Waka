@@ -1,0 +1,239 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="padding: 60px 16px;">
+    <div fxLayout="row" fxLayoutAlign="end center" class="tabSideAction" fxLayoutGap="15px">
+        <div *ngIf="!isInviteTab" class="inputboxsingle inboxminwidth">
+            <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                <mat-icon class="icon">search</mat-icon>
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                    <input class="text" type="text" (keyup)="applyCompanyFilter($event)" placeholder="Search by Company Name, etc" name="CompanyLocalName" id="CompanyLocalName" required>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isInviteTab" class="inputboxsingle inboxminwidth">
+            <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                <mat-icon class="icon">search</mat-icon>
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                    <input class="text" type="text" (keyup)="applyAssociatedCompanyFilter($event)" placeholder="Search by Company Name, etc" name="CompanyLocalName" id="CompanyLocalName" required>
+                </div>
+            </div>
+        </div>
+        <mat-button-toggle-group [(ngModel)]="summaryToggle" >
+            <mat-button-toggle value="table" style="line-height: 36px;">
+                <mat-icon>format_list_bulleted</mat-icon>
+            </mat-button-toggle>
+            <!-- value="cards" (click)="toggleNavigate('cards')" -->
+            <mat-button-toggle disabled  style="line-height: 36px;"> 
+                <mat-icon>grid_view</mat-icon>
+                </mat-button-toggle>
+        </mat-button-toggle-group>
+        <button mat-button *ngIf="!isInviteTab" style="width: 180px !important; height: 40px !important;" class="btnpri btnauto" (click)="addCompany()">
+            <mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">ADD COMPANY</span>
+        </button>
+        <button mat-button *ngIf="isInviteTab" style="width: 180px !important; height: 40px !important;" class="btnpri btnauto" (click)="inviteNewCompany()">
+            <mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">INVITE COMPANY</span>
+        </button>
+    </div>
+    <mat-tab-group animationDuration="700ms" (selectedTabChange)="tabChanged($event)" style="padding-top:24px" [(selectedIndex)]="selectedTabIndex">
+        <mat-tab label="My Companies">
+            <div *ngIf="companyColl?.data?.length != 0 && summaryToggle == 'table'" [style.height.px]="ht" fxLayout="column" fxLayoutAlign="start center" style="overflow: auto">
+                <table mat-table #table [dataSource]="companyColl" matSort style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%" >
+                    <ng-container matColumnDef="company_logo">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef></th>
+                        <td mat-cell class="font_12 pointer tbl-row-pad capitalize"*matCellDef="let element; let i = index">
+                            <div *ngIf="!element.is_deleted && element.is_own_company">
+                                <label for="ImgUploading{{i}}">
+                                    <img style="height:30px; width:auto;" class="pointer" *ngIf="!isEditMode" [src]="element.previewurl ? getSantizeUrl(element.previewurl) : getSantizeUrl(noimagePlaceholderTable)" matTooltip="Update Logo" />
+                                </label>
+                                <input (change)="uploadLogo($event ,i)" type="file" name="ImgUploading" id="ImgUploading{{i}}" style="display: none;">
+                            </div>
+                            <div *ngIf="!element.is_deleted && !element.is_own_company">
+                                <label for="ImgUploading{{i}}">
+                                    <img [ngClass]="{'cursor_not_allowed': !element.is_edit_company , 'pointer': element.is_edit_company }" class="pointer" [matTooltip]="element.is_edit_company&& !element.is_deleted ? 'Update Logo' : 'Logo change not allowed'" style="height:30px; width:auto;" *ngIf="!isEditMode" [src]="element.previewurl ? getSantizeUrl(element.previewurl) : getSantizeUrl(noimagePlaceholderTable)" />
+                                </label>
+                                <input [disabled]="!element.is_edit_company" (change)="uploadLogo($event ,i)" type="file" name="ImgUploading" id="ImgUploading{{i}}" style="display: none;">
+                            </div>
+                            <div *ngIf="element.is_deleted">
+                                <label>
+                                    <img style="height:30px; width:auto;" *ngIf="!isEditMode" [src]="element.previewurl ? getSantizeUrl(element.previewurl) : getSantizeUrl(noimagePlaceholderTable)" />
+                                  </label>
+                            </div>
+                            
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="company_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>COMPANY NAME</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.company_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="parent_company">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>PARENT COMPANY</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.parent_company !== null ? element.parent_company : "N/A"}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="license_status">
+                        <th  class="tbl-head" mat-header-cell *matHeaderCellDef>LICENSE STATUS</th>
+                        <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                            <div *ngIf="element.license_cnt==undefined && !element.cci_is_accepted && !element.is_deleted" class="pointer" matTooltip="Request Licence" (click)="manageLicense(element)">
+                                <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                                    <div id="lic" style="color:var(--redmedium)">Request License</div>
+                                    <mat-icon class="mgnleft5 md-14" style="color:var(--redmedium)">error</mat-icon>
+                                </div>
+                            </div>
+                            <div *ngIf="element.license_cnt==-1 && !element.cci_is_accepted && !element.is_deleted" fxLayout="row" class="pointer" matTooltip="Pending Request" (click)="getLicense(element)">
+                                <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                                    <div id="lic" style="color: var(--inprogress);">Pending Request</div>
+                                    <mat-icon style="color: var(--inprogress);" class="mgnleft5 md-14">access_time_filled</mat-icon>
+                                </div>
+                            </div>
+                            <div *ngIf="element.license_cnt==1 && !element.cci_is_accepted && !element.is_deleted" id="lic" fxLayout="row" fxLayoutAlign="start center" class="pointer" matTooltip="License Approved" (click)="getLicense(element)">
+                                <div id="lic">License Approved</div>
+                                <mat-icon class="mgnleft5 md-14 clrgreen">check_circle</mat-icon>
+                            </div>
+                            <div *ngIf="element.is_deleted" id="lic" fxLayout="row" fxLayoutAlign="start center" class="pointer clrbrown" matTooltip="Retrieve Company to Manage License">License Not Applicable</div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="no_of_stakeholders">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>NO OF STAKEHOLDERS</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                            <span *ngIf="element.license_cnt != null">{{element.ci_count}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="invt_company">
+                        <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>
+                        <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index" [disabled]="element.is_deleted"> 
+                            <mat-icon *ngIf="element.is_own_company && element.license_cnt==1 && !element.cci_is_accepted  && !element.is_deleted" id="invite" class="pointer clrblue" style="color: var(--textcolor);" matTooltip="Invite Company" (click)="inviteCompany(element)">add_business</mat-icon>
+                            <mat-icon *ngIf="element.is_own_company && ((element.license_cnt == undefined && !element.is_deleted ) || (element.license_cnt==-1 && !element.cci_is_accepted  && !element.is_deleted))" disabled id="invite" class="pointer" style="cursor: default; opacity:0.5" matTooltip="License Required">add_business</mat-icon>
+                            <mat-icon *ngIf="element.is_own_company && element.is_deleted"  id="invite" class="pointer" style="cursor: default;" matTooltip="Invite Company Not Allowed">add_business</mat-icon>
+                            <mat-icon *ngIf="!element.is_own_company" id="edit{{i}}" [ngStyle]="element.license_cnt==1 ? {'color': 'var(--textcolor)'} : {'color': 'var(--textcolor)', 'opacity':'0.5'}" [ngClass]="{'cursor_not_allowed': !element.is_invite_company, 'pointer': element.is_invite_company }" [matTooltip]="element.license_cnt== null && !element.is_deleted ? 'Required license' :(element.is_deleted ? 'Invite Company Not Allowed' : (element.is_invite_company ? 'Invite Company' : 'Invite not allowed'))" (click)="element.is_invite_company && element.license_cnt==1 && !element.is_deleted ? inviteCompany(element) : ''">add_business</mat-icon>
+                            <!-- <mat-icon *ngIf="element.license_cnt==-1" id="invite" style="cursor: default;" disabled style="cursor: default; opacity:0.6" matTooltip="Invite Company - Valid Licence Required">add_business</mat-icon>
+                            <mat-icon *ngIf="element.license_cnt==undefined" id="invite" class="clrbrown" style="cursor: default; opacity:0.7" matTooltip="Invite Company - Not Applicable">add_business</mat-icon>
+                            <mat-icon *ngIf="element.license_cnt==1 && !element.cci_is_accepted  && element.is_deleted" id="invite" style="cursor: default; opacity:0.6" class="clrblue"  matTooltip="Invite Company Not Allowed">add_business</mat-icon> -->
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="invt_contact">
+                        <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>
+                        <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                            <mat-icon *ngIf="element.is_own_company && !element.is_deleted && !element.cci_is_accepted" id="contact"class="pointer" style="color: var(--textcolor);" matTooltip="Invite Contact" (click)="addCompanyContact(element)">person_add</mat-icon>
+                            <!--mat-icon *ngIf="element.license_cnt==undefined && (element.cci_is_accepted || element.ci_is_accepted)" id="contact" class="pointer clrblue" matTooltip="Invite Contact" (click)="addCompanyContact(element)">person_add</mat-icon>
+                            <mat-icon *ngIf="element.license_cnt==-1" id="contact" style="cursor: default;" class="clrbrown"  matTooltip="Invite Contact - Valid Licence Required">person_add</mat-icon-->
+                            <mat-icon *ngIf="element.is_own_company && element.is_deleted && !element.cci_is_accepted" id="contact" style="cursor: default; opacity:0.6" style="color: var(--textcolor);"  matTooltip="Invite Contact Not Allowed">person_add</mat-icon>
+                            <mat-icon *ngIf="!element.is_own_company" id="edit{{i}}" style="color: var(--textcolor);" [ngClass]="{'cursor_not_allowed': !element.is_invite_contact , 'pointer': element.is_invite_contact }" class="pointer" [matTooltip]="element.is_invite_contact && !element.is_deleted ? 'Invite Contact' : 'Invite Contact not allowed'" (click)="element.is_invite_contact && !element.is_deleted ? addCompanyContact(element) : ''">person_add</mat-icon>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="edit">
+                        <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>
+                        <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                            <mat-icon *ngIf="element.is_own_company && !element.is_deleted && !element.cci_is_accepted" id="edit{{i}}" style="color: var(--textcolor);" class="pointer" matTooltip="Edit Company Details" (click)="editCompany(element)">edit</mat-icon>
+                            <mat-icon *ngIf="element.is_own_company && element.is_deleted && !element.cci_is_accepted" id="edit{{i}}" style="color: var(--textcolor);" style="opacity: 0.6;" matTooltip="Edit Not Allowed">edit</mat-icon>
+                            <mat-icon *ngIf="!element.is_own_company" id="edit{{i}}" style="color: var(--textcolor);" [ngClass]="{'cursor_not_allowed': !element.is_edit_company , 'pointer': element.is_edit_company }" class="pointer" [matTooltip]="element.is_edit_company&& !element.is_deleted ? 'Edit Company Details' : 'Edit not allowed'" (click)="element.is_edit_company && !element.is_deleted ? editCompany(element) : ''">edit</mat-icon>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="delete">
+                        <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                        <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                            <mat-icon *ngIf="element.is_own_company && !element.is_deleted && !element.cci_is_accepted" id="delete{{i}}" style="color: var(--textcolor);" class="pointer" matTooltip="Delete Company" (click)="deleteCompany(element)">delete</mat-icon>
+                            <mat-icon *ngIf="element.is_own_company && element.is_deleted && !element.cci_is_accepted" id="delete{{i}}" style="color: rgb(61, 160, 66);" class="pointer" matTooltip="Retrieve Company" (click)="deleteCompany(element)">unarchive</mat-icon>
+                            <mat-icon *ngIf="!element.is_own_company" id="edit{{i}}" [ngStyle]="{'color':element.is_deleted? 'rgb(61,160,66)': 'var(--textcolor)' }" [ngClass]="{'cursor_not_allowed': !element.is_delete_company , 'pointer': element.is_delete_company }" [matTooltip]="element.is_deleted ? 'Retrieve Company' : (element.is_delete_company ? 'Delete Company' : 'Delete not allowed')" (click)="element.is_delete_company ? deleteCompany(element) : ''">{{element.is_deleted ? 'unarchive' : 'delete'}}</mat-icon>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="dispcompany; sticky: true;" class="tblrowht"></tr>
+                    <tr mat-row style="height:50px;" class="tr-rowalt-light" *matRowDef="let row; columns: dispcompany;"></tr>
+                </table>
+            </div>
+            <!-- <div *ngIf="companyColl?.data?.length==0  && !isLoading" fxLayoutAlign="center center">
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <img src="../../assets/image/svg/signing-a-contract-rafiki.svg" style="width:325px; height:243px;" class="pointer">
+                    <span class="txt" style="margin-top: 24px; max-width: 325px;">Add a company and Apply for license</span> 
+                    <span class="txt" style="margin-top: 12px; max-width: 325px;">You need to be invited for using this product.</span> 
+                    <button mat-button class="btnpri inboxminwidth font_14" style="margin-top:32px;" (click)="addCompany()">
+                        ADD COMPANY
+                    </button>
+                </div>
+            </div> -->
+        </mat-tab>
+        <mat-tab label="Stakeholder Companies" disabled>
+            <div *ngIf="companyInviteColl?.data?.length != 0 && summaryToggle == 'table'" fxLayout="column" fxLayoutAlign="start center" [style.height.px]="ht" style="overflow: auto;">
+                <table mat-table #TableSort="matSort" [dataSource]="companyInviteColl" matSort style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%" >
+                    <ng-container matColumnDef="invitee_company_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>COMPANY NAME</th>
+                        <td mat-cell style="color:#51687a" class="font_12 capitalize tbl-row-pad"*matCellDef="let element">{{element.invitee_company_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="company_type_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>INVITEE COMPANY TYPE</th>
+                        <td mat-cell style="color:#51687a" class="font_12 capitalize tbl-row-pad"*matCellDef="let element">{{element.company_type_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>INVITATION STATUS</th>
+                        <td mat-cell style="color:#51687a" class="font_12 tbl-row-pad"*matCellDef="let element">
+                            <div *ngIf="!element.is_accepted && !element.is_denied && !element.is_revoked" fxLayout="row" fxLayoutAlign="start center">
+                                <div id="lic">Invited</div>
+                                <mat-icon style="color: var(--inprogress)" class="mgnleft5 md-14">access_time_filled</mat-icon>
+                            </div>
+                            <div *ngIf="element.is_accepted && !element.is_denied && !element.is_revoked" id="lic" fxLayout="row" fxLayoutAlign="start center">
+                                <div id="lic">Registered</div>
+                                <mat-icon class="mgnleft5 md-14 clrgreen">check_circle</mat-icon>
+                            </div>
+
+                            <div *ngIf="element.is_denied && !element.is_revoked" fxLayout="row" fxLayoutAlign="start center">
+                                <div id="lic">Denied</div>
+                                <mat-icon style="color: #000000;" class="mgnleft5 md-14">cancel</mat-icon>
+                            </div>
+                            <div *ngIf="element.is_revoked">Revoked</div>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="module_shared">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>NO OF MODULES PERMITTED</th>
+                        <td mat-cell style="color:#51687a" class="font_12 tbl-row-pad"*matCellDef="let element">
+                            {{element.module_shared}} 
+                            <!-- <button mat-button [matMenuTriggerFor]="menu" (click)="getModules(element)">
+                                {{element.module_shared}}  
+                            </button>
+                            <div  fxFlex="40" fxFlex.md="50" fxLayout="row">
+                                <mat-menu #menu="matMenu">
+                                    <button mat-menu-item *ngFor="let ele of selectedModules">{{ele.module_name}}
+                                        <mat-divider></mat-divider>
+                                    </button>
+                                </mat-menu>
+                            </div> -->
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="invitee_contact_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>CONTACT NAME</th>
+                        <td mat-cell style="color:#51687a" class="font_12 tbl-row-pad"*matCellDef="let element">{{element.invitee_contact_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="invitee_email">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>EMAIL ID</th>
+                        <td mat-cell style="color:#51687a" class="font_12 tbl-row-pad"*matCellDef="let element">{{element.invitee_email}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="edit">
+                        <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                        <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                            <mat-icon *ngIf="!element.is_deleted && !element.is_denied" id="edit{{i}}" color="primary" class="pointer" matTooltip="Edit Company invite" (click)="inviteEditCompany(element)">edit</mat-icon>
+                            <mat-icon *ngIf="element.is_deleted && !element.is_denied" id="edit{{i}}" style="color: rgb(61, 160, 66);" class="pointer" matTooltip="Edit not allowed">edit</mat-icon>
+                            <mat-icon *ngIf="element.is_denied" id="edit{{i}}" style="color: rgb(102, 102, 102);" class="pointer" matTooltip="Edit Not Allowed">edit</mat-icon>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="delete">
+                        <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                        <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                            <mat-icon *ngIf="!element.is_deleted && !element.is_denied" id="delete{{i}}" color="warn" class="pointer" matTooltip="Delete Company" (click)="delInviteCompany(element)">delete</mat-icon>
+                            <mat-icon *ngIf="element.is_deleted && !element.is_denied" id="delete{{i}}" style="color: rgb(61, 160, 66);" class="pointer" matTooltip="Retrieve Company" (click)="delInviteCompany(element)">unarchive</mat-icon>
+                            <mat-icon *ngIf="element.is_denied" id="delete{{i}}" style="color: rgb(102, 102, 102);" class="pointer" matTooltip="Delete Not Allowed">delete</mat-icon>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="dispinvitecompany; sticky: true;" class="tblrowht"></tr>
+                    <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispinvitecompany;"></tr>
+                </table>
+            </div>
+            <div *ngIf="companyInviteColl?.data?.length == 0 && !isLoading" fxLayoutAlign="center center" style="margin-top: 60px;">
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <mat-icon class="md-96" style="opacity:0.2">add_business</mat-icon>
+                    <div class="font_12">Click on Invite Company to invite a new Company</div>
+                    <button mat-button style="width: 290px !important; height: 50px !important; object-fit: contain; box-shadow: 0 4px 14px 0 rgba(69, 148, 211, 0.4); background-color: #1c75bc;" class="btnpri mgntop10" (click)="inviteNewCompany()">
+                        <span class="mgnleft10 font_14">INVITE COMPANY</span>
+                    </button>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+</div>

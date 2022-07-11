@@ -1,0 +1,907 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal"
+	style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div>
+<mat-card style="margin-top:60px;">
+    <mat-card-content>
+        <div style="margin-top:-20px; margin-left:5px">
+            <mat-tab-group mat-align-tabs="start" [selectedIndex]="selTabIndex" (selectedIndexChange)="changeTab($event)">
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-radio-button *ngIf="selTabIndex==0" color="primary" checked="true" value="1">Stakeholders</mat-radio-button>
+                        <mat-radio-button *ngIf="selTabIndex!=0 && !validBC" color="primary" checked="false" value="1">Stakeholders</mat-radio-button>
+                        <div *ngIf="selTabIndex==0" class="caret up" style="top:31px; right:30px"></div>
+                        <div *ngIf="selTabIndex!=0 && validBC" fxLayoutAlign="start center">
+                            <span class="material-icons clrgreen mgnrgt10">check_circle</span>Stakeholders
+                        </div>
+                        <mat-icon class="mgnleft20 clrblue">business</mat-icon>
+                    </ng-template>
+                    <div style="margin:9px 16px 0 16px;" [style.height.px]="screen.height" [style.width.px]="screen.width">
+                        <div *ngIf="dispBD" fxLayout="column" class="font_12">
+                            <mat-card >
+                                <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="100px">
+                                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                                        <mat-icon style="color:blue">business</mat-icon>
+                                        <div fxLayout="column">
+                                            <div style="color:#465e72">{{sop.p_company}}</div>
+                                            <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Principal Company</div>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                                        <img src='../../assets/image/svg/icon-small-multi-globe.svg' style="width:24px; height:24px;"/>
+                                        <div fxLayout="column">
+                                            <div style="color:#465e72">{{sop.ff_company}}</div>
+                                            <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Logistics Provider</div>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                                        <mat-icon>pending_actions</mat-icon>
+                                        <div fxLayout="column">
+                                            <div style="color:#465e72">{{sop.status}}</div>
+                                            <div *ngIf="sop?.pending_days>0" class="font_12" style="color:rgba(155, 168, 179, 0.88)">Pending for {{sop.pending_days}} Days</div>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                                        <mat-icon *ngIf="!editSOPValidity" color="primary" class="pointer" matTooltip="Click to Edit Validity Period" (click)="editSOPValidity=true">edit_calendar</mat-icon>
+                                        <div *ngIf="!editSOPValidity" fxLayout="column">
+                                            <div style="color:#465e72">{{sop.valid_from | date:'dd-MMM-yyyy'}} To {{sop.valid_to | date:'dd-MMM-yyyy'}}</div>
+                                            <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">SOP Validity</div>
+                                            <div *ngIf="validityDateError!=undefined" class="clrred font_12">{{validityDateError}}</div>
+                                        </div>
+                                            <mat-form-field *ngIf="editSOPValidity" class="inputboxmedium content-wrapper" style="margin-top: 5px;">
+                                                <mat-label>Valid Between *</mat-label>
+                                                <mat-date-range-input [rangePicker]="picker" aria-required="must have date">
+                                                    <input matStartDate [(ngModel)]="sop.validFrom" placeholder="Valid From" required >
+                                                    <input matEndDate [(ngModel)]="sop.validTo" placeholder="Valid To" required (dateChange)="dateChangeTo($event.value)">
+                                                </mat-date-range-input>
+                                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                <mat-date-range-picker #picker></mat-date-range-picker>
+                                            </mat-form-field>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                            <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="10px" class="mgntop10">
+                                <div fxLayout="column">
+                                    <div fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-form-field id="ocid" appearance="fill">
+                                            <mat-label>Origin Country</mat-label>
+                                            <input type="text" placeholder="Origin Country" aria-label="Origin Country" matInput [formControl]="originCountry" [matAutocomplete]="auto">
+                                            <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" [displayWith]="displayFn">
+                                                <mat-option style="line-height:32px;height:32px;font-size: 12px;" *ngFor="let option of filterOriginOptions | async" [value]="option">
+                                                {{option.country_name}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                        <mat-icon (click)="addOriginCountry()">add_circle</mat-icon>
+                                    </div>
+                                    <div  style="border: 1px solid var(--borderclr); padding:5px">
+                                        <div class="txt" style="font-size: 14px; padding-bottom: 10px;">Origin Countries</div>
+                                        <div *ngFor="let oc of ocColl" fxLayout="row" fxLayoutAlign="space-between center" style="padding-bottom: 5px;">
+                                            <span class="txt">{{oc.country_name}}</span>
+                                            <mat-icon class="md-20 clrred" (click)="removeOrgCountry(oc)">cancel</mat-icon>
+                                        </div>
+                                    </div>
+                                    <button mat-button class="btnpri btnauto mgntop10" [disabled]="ocColl.length==0" (click)="saveOrigin()">SAVE</button>
+                                </div>
+                                <div fxLayout="column">
+                                    <div fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-form-field id="dcid" appearance="fill">
+                                        <mat-label>Destination Country</mat-label>
+                                        <input type="text" placeholder="Destination Country" aria-label="Dest Country" matInput [formControl]="destCountry" [matAutocomplete]="auto1">
+                                        <mat-autocomplete autoActiveFirstOption #auto1="matAutocomplete" [displayWith]="displayFn">
+                                            <mat-option class="font_12" *ngFor="let option of filterDestOptions | async" [value]="option">
+                                            {{option.country_name}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                        </mat-form-field>
+                                        <mat-icon (click)="addDestCountry()" >add_circle</mat-icon>
+                                    </div>
+                                    <div  style="border: 1px solid var(--borderclr); padding:5px">
+                                        <div class="txt" style="font-size: 14px; padding-bottom: 10px;">Destination Countries</div>
+                                        <div *ngFor="let dc of dcColl" fxLayout="row" fxLayoutAlign="space-between center" style="padding-bottom: 5px;">
+                                            <span class="txt">{{dc.country_name}}</span>
+                                            <mat-icon class="md-20 clrred" (click)="removeDesCountry(dc)">cancel</mat-icon>
+                                        </div>
+                                    </div>
+                                    <button mat-button class="btnpri btnauto mgntop10" [disabled]="dcColl.length==0" (click)="saveDest()">SAVE</button>
+                                </div>
+                                <div *ngIf="avlWidth" fxLayout="column" [style.width.px]="avlWidth-20" >
+                                    <mat-label class="font_14 fntwt600">Company List - Vendor, Shipper, Carrier</mat-label>
+                                    <div fxLayout="row" fxLayoutAlign="start center">
+                                        <mat-checkbox class="mgnrgt10" [(ngModel)]="allFromOrigin" (change)="allOrigin($event.checked)">All From Origin</mat-checkbox>
+                                        <mat-checkbox class="mgnrgt10" [(ngModel)]="allFromDest" (change)="allDest($event.checked)">All From Destination</mat-checkbox>
+                                        <!-- <mat-checkbox [(ngModel)]="countryOthers">Others</mat-checkbox> -->
+                                        <!-- <div fxLayoutGap="10px" fxLayoutAlign="center center"> -->
+                                            <!-- <mat-icon *ngIf="sop.copy_from && sopCompanyColl?.data?.length==0" class="pointer" matTooltip="Copy from existing SOP" (click)="copyFromSOP()">content_copy</mat-icon> -->
+                                        <button mat-button class="btnpri btnauto" [disabled]="sopCompanyColl?.data?.length==0" (click)="addComp()">SAVE</button>
+                                        <!-- </div> -->
+                                    </div>
+                                    <div *ngIf="sopCompanyColl?.data?.length > 0">
+                                        <mat-form-field style="width:100%">
+                                            <mat-label>Filter</mat-label>
+                                            <input matInput (keyup)="applyCompFilter($event, sopCompanyColl)" placeholder="Ex. companytype, companyname etc" #input>
+                                        </mat-form-field>
+                                        <table mat-table #table [dataSource]="sopCompanyColl" matSort style="border:1px lightgray solid; border-radius: 10px; margin-top:5px; width:100%" >
+                                            <ng-container matColumnDef="company_name">
+                                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>COMPANY</th>
+                                                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.company_name}}</td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="company_type">
+                                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>TYPE</th>
+                                                <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.company_type}}</td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="country_name">
+                                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>COUNTRY</th>
+                                                <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.country_name}}</td>
+                                            </ng-container>
+                                            <ng-container matColumnDef="remove">
+                                                <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                                                <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                                                    <mat-icon id="delete{{i}}" class="pointer clrred" matTooltip="Remove Company" (click)="delCompany(element)">delete</mat-icon>
+                                                </td>
+                                            </ng-container>
+                                            <tr mat-header-row *matHeaderRowDef="dispSOPCompany; sticky: true;" class="tblrowht"></tr>
+                                            <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispSOPCompany;"></tr>
+                                        </table>
+                                    </div>
+                                    <div *ngIf="sopCompanyColl?.data?.length == 0" [style.height.px]="screen.height-80-38-10-50" fxLayoutAlign="center center" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px">
+                                        <div fxLayout="column" fxLayoutAlign="center center">
+                                            <mat-icon class="md-96" style="opacity:0.2">business</mat-icon>
+                                            <div class="font_12">Add shipper,vendor or carrier company who are part of the invitee list</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-radio-button *ngIf="selTabIndex==1" color="primary" checked="true" value="1">Documents</mat-radio-button>
+                        <mat-radio-button *ngIf="!validDoc && selTabIndex!=1" color="primary" checked="false" value="1">Documents</mat-radio-button>
+                        <div *ngIf="selTabIndex==1" class="caret up" style="top:31px; right:30px"></div>
+                        <div *ngIf="selTabIndex!=1 && validDoc" fxLayoutAlign="start center">
+                            <span class="material-icons clrgreen mgnrgt10">check_circle</span>Documents
+                        </div>
+                        <mat-icon class="mgnleft20 clrblue">description</mat-icon>
+                    </ng-template>
+                    <div fxLayout="column" style="margin:30px 16px 0 16px">
+                        <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <mat-label class="font_14 fntwt600">Document List</mat-label>
+                            <button mat-raised-button style="background-color:#1c75bc; color:white;" (click)="addDoc()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW</span></button>
+                        </div>
+                        <div *ngIf="sopDocCard.length>0" style="margin-bottom:16px" >
+                            <mat-card *ngFor="let doc of sopDocCard" style="margin-top:16px">
+                                <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+                                    <mat-icon style="color:var(--red)" class="pointer" (click)="delSOPDoc(doc)">delete</mat-icon>
+                                    <div fxLayout="column" *ngFor="let dockey of objectKeys(doc)">
+                                        <div *ngIf="dockey!='dest_country' && dockey!='origin_country' && dockey!='sop_id'" class="font_14" style="color:#465e72" class="fntwt600">{{dockey}}</div>
+                                        <div *ngIf="dockey!='dest_country' && dockey!='origin_country' && dockey!='sop_id'"  class="font_10" style="color:#465e72">{{doc[dockey]}} Documents</div>
+                                        <div fxLayout="row" fxLayoutAlign="center center">
+                                            <div fxLayout="column">
+                                                <div *ngIf="dockey=='origin_country'" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                                                    <mat-icon style="color:#1c75bc;">place</mat-icon>
+                                                    <div style="color:#465e72" class="fntwt600">{{doc[dockey].country_name}}</div>
+                                                </div>
+                                                <div *ngIf="dockey=='origin_country'" style="margin-left:36px" class="font_10">Origin</div>
+                                            </div>
+                                            <mat-icon *ngIf="dockey=='origin_country'" style="color:#1c75bc; margin-left:9px" class="md-14">circle</mat-icon>
+                                            <div *ngIf="dockey=='origin_country'" style="width:50px; border-bottom:dotted 2px #1c75bc; margin-top:-1px; margin-left:0px"></div>
+                                            <div *ngIf="dockey=='origin_country'" class="caret5 right" style="margin-left:0px"></div>
+                                            <div fxLayout="column" style="margin-left:-60px;">
+                                                <div *ngIf="dockey=='dest_country'" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                                                    <mat-icon style="color:#1c75bc;">place</mat-icon>
+                                                    <div style="color:#465e72" class="fntwt600">{{doc[dockey].country_name}}</div>
+                                                </div>
+                                                <div *ngIf="dockey=='dest_country'" style="margin-left:36px" class="font_10">Destination</div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </mat-card-content>
+                            </mat-card>
+                        </div>
+                        <div *ngIf="sopDocCard.length==0" [style.height.px]="screen.height-40-38-30" fxLayoutAlign="center center" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px">
+                            <div fxLayout="column" fxLayoutAlign="center center">
+                                <mat-icon class="md-96" style="opacity:0.2">note_add</mat-icon>
+                                <div class="font_12">Click on ADD NEW to create Document Set</div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-radio-button *ngIf="selTabIndex==2" color="primary" checked="true" value="1">PO & Booking</mat-radio-button>
+                        <mat-radio-button *ngIf="!validPOB && selTabIndex!=2" color="primary" checked="false" value="1">PO & Booking</mat-radio-button>
+                        <div *ngIf="selTabIndex==2" class="caret up" style="top:31px; right:30px"></div>
+                        <div *ngIf="selTabIndex!=2 && validPOB" fxLayoutAlign="start center">
+                            <span class="material-icons clrgreen mgnrgt10">check_circle</span>PO & Booking
+                        </div>
+                        <mat-icon class="mgnleft20 clrblue">receipt_long</mat-icon>
+                    </ng-template>
+                    <div fxLayout="row" class="font_12">
+                        <div style="width:120px;padding:40px 12px 40px 13px; border:1px lightgray solid; border-radius: 10px; margin-top:9px">
+                            <div *ngFor="let grp of pobGrpColl; let i=index">
+                                <div fxLayout="column" style="margin-bottom:0px">
+                                    <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                                        <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':pobGrpParam[i]?.color}">{{i+1}}</span></div>
+                                        <div style="margin-left:10px;" [ngStyle]="{'color':pobGrpParam[i]?.color,'font-weight':pobGrpParam[i].fw}" (click)="onClickPOBGrp(i,grp.grp)">{{grp.grp}}</div>
+                                    </div>
+                                </div>
+                                <div *ngIf="pobGrpColl?.length-1>i" style="border-left-width:2px; border-left-style: solid; margin-top:-5px; margin-left:9px; height:50px" [ngStyle]="{'border-left-color':pobGrpParam[i]?.color}"></div>
+                            </div>
+                        </div>
+                        <div style="margin:9px 16px 0 16px;" [style.width.px]="screen.width-64">
+                            <mat-card *ngIf="pobTemplate=='template1'">
+                                <mat-card-title class="font_14 fntwt600" style="padding-top:20px; padding-bottom:20px">{{pobGrpTitle}}</mat-card-title>
+                                <mat-card-content >
+                                    <mat-grid-list cols="2" rowHeight="5:1" gutterSize:0px>
+                                        <mat-grid-tile *ngFor="let grid of pobSOPColl">
+                                            <div fxLayout="column" fxLayoutAlign="start start">
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                                    <div class="font_12" style="padding:16px 0 10px 16px; color:#465e72">{{grid.pob_name}}</div>
+                                                    <mat-icon *ngIf="grid.is_selected" class="clrgreen pointer" matTooltip="click to Deactivate" (click)="grid.is_selected=false;updPOBisSelected(grid)">check_circle</mat-icon>
+                                                    <mat-icon *ngIf="!grid.is_selected" class="clrred pointer" matTooltip="click to Activate" (click)="grid.is_selected=true;updPOBisSelected(grid)">cancel</mat-icon>
+                                                    <mat-icon *ngIf="grid.has_child && grid.is_selected" style= "padding: 3px;border: 1px solid #1c75bc; color: white; border-radius: 100%; background-color: #1c75bc;" class="pointer md-14" (click)="pobSOPEdit(grid)">edit</mat-icon>
+                                                </div>
+                                                <div *ngIf="grid.has_child">
+                                                    <div fxLayout="row" fxLayoutAlign="start center" style="padding:5px 0 0px 16px;">
+                                                        <span *ngIf="grid.status=='Update Successful'" class="font_12" style="color:green">{{grid?.status}}</span>
+                                                        <span *ngIf="grid.status=='Update Failed'" class="font_12" style="color:red">{{grid?.status}}</span>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="!grid.has_child" fxLayoutAlign="start center"style="padding:5px 0 0px 16px;" class="fntwt600">
+                                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                                        <span *ngIf="grid.status=='Update Successful'" class="font_12" style="color:green">{{grid?.status}}</span>
+                                                        <span *ngIf="grid.status=='Update Failed'" class="font_12" style="color:red">{{grid?.status}}</span>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="grid.has_child && grid.view_text != undefined && grid.is_selected" fxLayoutAlign="start center"style="padding:5px 0 0px 16px;" class="fntwt600 font_12">{{grid.disp_text}}</div>
+                                            </div>
+                                        </mat-grid-tile>
+                                    </mat-grid-list>
+                                </mat-card-content>
+                            </mat-card>
+                            <div *ngIf="pobTemplate=='template2'">
+                                <mat-card-title class="font_14 fntwt600" style="padding-top:20px; padding-bottom:20px">{{chGrpTitle}}</mat-card-title>
+                                <div fxLayout="row wrap">
+                                    <mat-card *ngFor="let grid of pobSOPColl" style="padding:0px;width:330px; height:220px;margin-bottom:16px;margin-right:16px;"  >
+                                        <mat-card-title style="width:330px; height:80px;" [ngStyle]="{'background-image':grid.is_selected || grid.has_child ? grid.img_url :grid.img_url_grey}">
+                                            <div fxLayout="row" fxLayoutAlign="space-between center" class="mgnleft10 mgnrgt10 padtop10">
+                                                <span style="color:white" class="font_16 fntwt600 mgntop3" >{{grid.pob_name}}</span>
+                                                <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                                    <mat-icon *ngIf="grid.is_selected" style="padding: 3px;border: 1px solid #465e72; color: white; border-radius: 100%; background-color: #465e72" class="md-14 pointer mgntop3 mgnleft3" matTooltip="click to Deactivate" (click)="grid.is_selected=false;updPOBisSelected(grid)">check</mat-icon>
+                                                    <mat-icon *ngIf="!grid.is_selected" style="padding: 3px;border: 1px solid #465e72; color: white; border-radius: 100%; background-color: #465e72" class="md-14 pointer mgntop3 mgnleft3" matTooltip="click to Activate" (click)="grid.is_selected=true;updPOBisSelected(grid)">clear</mat-icon>
+                                                    <mat-icon *ngIf="grid.has_child" style="padding: 3px;border: 1px solid #465e72; color: white; border-radius: 100%; background-color: #465e72" class="md-14 pointer mgntop3 mgnleft3" (click)="pobSOPEdit(grid)">edit</mat-icon>
+                                                </div>
+                                            </div>
+                                        </mat-card-title>
+                                        <mat-card-content *ngIf="!grid.has_child" fxLayoutAlign="start center"style="padding:5px 0 0px 16px;" class="fntwt600">
+                                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                                <span *ngIf="grid.is_selected" class="txt">Required</span>
+                                                <mat-icon *ngIf="grid.is_selected" class="mgnleft10 clrgreen md-20 pointer" matTooltip="click to Deactivate" (click)="grid.is_selected=false;updPOBisSelected(grid)">check_circle</mat-icon>
+                                                <span *ngIf="!grid.is_selected" class="txt">Not Required</span>
+                                                <mat-icon *ngIf="!grid.is_selected" class="mgnleft10 clrred md-20 pointer" matTooltip="click to Activate" (click)="grid.is_selected=true;updPOBisSelected(grid)">cancel</mat-icon>
+                                                <span *ngIf="grid.status=='Update Successful'" style="color:green">{{grid?.status}}</span>
+                                                <span *ngIf="grid.status=='Update Failed'" style="color:red">{{grid?.status}}</span>
+                                            </div>
+                                        </mat-card-content>
+                                        <mat-card-content *ngIf="grid.has_child" fxLayout="column" style="padding:5px 0 0px 16px; height:100px; overflow-y: auto;" class="fntwt600" >
+                                            <div *ngFor="let field of grid['fields']; let idx = index">
+                                                <div *ngIf="grid.pob_name!=field.group" class="txt">{{field.group}}</div>
+                                                <div *ngIf="grid.view_text!=undefined" class="txt">{{grid.disp_text}}</div>
+                                                <div *ngFor="let grpField of field.fields">
+                                                    <div [ngSwitch]="field[grpField]?.type" fxLayout="column">
+                                                        <div *ngSwitchCase="'multi'">
+                                                            <div *ngFor="let chField of field[grpField]?.field">
+                                                                <div *ngIf="chField.value" class="mgnrgt10 font_12" fxLayout="row wrap">
+                                                                    <span class="txt">{{chField.fieldname}}</span>
+                                                                    <!-- <span class="mgnleft10 clrgreen">Required</span> -->
+                                                                    <mat-icon class="mgnleft10 clrgreen md-20 pointer" matTooltip="Click to Deactivate" (click)="chField.value=false; updPOBFieldValue(idx, chField, grid)"> check_circle</mat-icon>
+                                                                    <span *ngIf="chField.status?.includes('Successful')" class="font_10 clrgreen mgnleft10">{{chField.status}}</span>
+                                                                    <span *ngIf="chField.status?.includes('Failed')" class="font_10 clrred mgnleft10">{{chField.status}}</span>
+                                                                </div>
+                                                                <div *ngIf="!chField.value" class="mgnrgt10 font_12" fxLayout="row wrap">
+                                                                    <span>{{chField.fieldname}}</span>
+                                                                    <mat-icon class="mgnleft10 clrred md-20 pointer" matTooltip="Click to Activate" (click)="chField.value=true; updPOBFieldValue(idx, chField, grid)">cancel</mat-icon>
+                                                                    <span *ngIf="chField.status?.includes('Successful')" class="font_10 clrgreen mgnleft10">{{chField.status}}</span>
+                                                                    <span *ngIf="chField.status?.includes('Failed')" class="font_10 clrred mgnleft10">{{field.status}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngSwitchCase="'numsmall'">
+                                                            <div *ngFor="let chField of field[grpField]?.field">
+                                                                <div *ngIf="grid.view_text==undefined && chField.dispname ==undefined" class="font_12">{{chField.fieldname}}: {{chField.value}}{{chField.fieldname.includes('%') ? '%':''}}
+                                                                </div>
+                                                                <div *ngIf="grid.view_text==undefined && chField.dispname!=undefined">
+                                                                    <span class="font_12">{{chField?.dispname?.replace('$$'+chField.controlname+'$$',chField.value)}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngSwitchCase="'textarea'">
+                                                            <div fxLayout="column" fxLayoutGap="5px">
+                                                                <div *ngFor="let chField of field[grpField]?.field">
+                                                                    <div class="font_12">{{chField.fieldname}}</div>
+                                                                    <div class="font_12">{{chField.value}}</div>    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngSwitchCase="'text'">
+                                                            <div fxLayout="column" fxLayoutGap="5px">
+                                                                <div *ngFor="let chField of field[grpField]?.field">
+                                                                    <div *ngIf="chField.dispname==undefined">
+                                                                        <span class="font_12">{{chField.fieldname}}: {{chField.value}}</span>
+                                                                    </div>
+                                                                    <div *ngIf="chField.dispname!=undefined">
+                                                                        <span class="font_12">{{chField?.dispname?.replace('$$'+chField.controlname+'$$',chField.value)}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngSwitchCase="'radio'">
+                                                            <div *ngIf="grid.view_text==undefined">
+                                                                <div *ngFor="let chField of field[grpField]?.field">
+                                                                    <span class="txt">{{chField.value}}</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-radio-button *ngIf="selTabIndex==3" color="primary" checked="true" value="1">Cargo Handling</mat-radio-button>
+                        <mat-radio-button *ngIf="!validCH && selTabIndex!=3" color="primary" checked="false" value="1">Cargo Handling</mat-radio-button>
+                        <div *ngIf="selTabIndex==3" class="caret up" style="top:31px; right:30px"></div>
+                        <div *ngIf="selTabIndex!=3 && validCH" fxLayoutAlign="start center">
+                            <span class="material-icons clrgreen mgnrgt10">check_circle</span>Cargo Handling
+                        </div>
+                        <mat-icon class="mgnleft20 clrblue">qr_code</mat-icon>
+                    </ng-template>
+                    <div fxLayout="row" class="font_12">
+                        <div style="width:120px;padding:40px 12px 40px 13px; border:1px lightgray solid; border-radius: 10px; margin-top:9px">
+                            <div *ngFor="let grp of chGrpColl; let i=index">
+                                <div fxLayout="column" style="margin-bottom:0px">
+                                    <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                                        <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':chGrpParam[i]?.color}">{{i+1}}</span></div>
+                                        <div style="margin-left:10px;" [ngStyle]="{'color':chGrpParam[i]?.color,'font-weight':chGrpParam[i].fw}" (click)="onClickChGrp(i,grp.grp)">{{grp.grp}}</div>
+                                    </div>
+                                </div>
+                                <div style="border-left-width:2px; border-left-style: solid; margin-top:-5px; margin-left:9px; height:50px" [ngStyle]="{'border-left-color':chGrpParam[i]?.color}"></div>
+                            </div>
+                            <div>
+                                <div fxLayout="column" style="margin-bottom:0px">
+                                    <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                                        <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorCP}">4</span></div>
+                                        <div style="margin-left:10px;" [ngStyle]="{'color':colorCP,'font-weight':fwCP}" (click)="onClickCP()">Container Preference</div>
+                                    </div>
+                                    <div style="border-left-width:2px; border-left-style: solid; margin-top:-5px; margin-left:9px; height:50px" [ngStyle]="{'border-left-color':colorCP}"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div fxLayout="column" style="margin-bottom:0px">
+                                    <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                                        <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorLCLCons}">5</span></div>
+                                        <div style="margin-left:10px;" [ngStyle]="{'color':colorLCLCons,'font-weight':fwLCLCons}" (click)="onClickLCLCons()">LCL Consolidation</div>
+                                    </div>
+                                </div>
+                                <div style="border-left-width:2px; border-left-style: solid; margin-top:-5px; margin-left:9px; height:50px" [ngStyle]="{'border-left-color':colorLCLCons}"></div>
+                            </div>
+                            <div>
+                                <div fxLayout="column" style="margin-bottom:0px">
+                                    <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                                        <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorFCLCons}">6</span></div>
+                                        <div style="margin-left:10px;" [ngStyle]="{'color':colorFCLCons,'font-weight':fwFCLCons}" (click)="onClickFCLCons()">FCL Program</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin:9px 16px 0 16px;">
+                            <div [style.width.px]="screen.width-64-120">
+                                <mat-card *ngIf="chTemplate=='template1'">
+                                    <mat-card-title class="font_14 fntwt600" style="padding-top:20px; padding-bottom:20px">{{chGrpTitle}}</mat-card-title>
+                                    <mat-card-content >
+                                        <mat-grid-list cols="2" rowHeight="5:1" gutterSize:0px>
+                                            <mat-grid-tile *ngFor="let grid of chSOPColl">
+                                                <div fxLayout="column" fxLayoutAlign="start start">
+                                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                                        <div class="font_12" style="padding:16px 0 10px 16px; color:#465e72">{{grid.ch_name}}</div>
+                                                        <mat-icon *ngIf="grid.is_selected" class="clrgreen pointer" matTooltip="click to Deactivate" (click)="grid.is_selected=false;updCHisSelected(grid)">check_circle</mat-icon>
+                                                        <mat-icon *ngIf="!grid.is_selected" class="clrred pointer" matTooltip="click to Activate" (click)="grid.is_selected=true;updCHisSelected(grid)">cancel</mat-icon>
+                                                        <mat-icon *ngIf="grid.has_child && grid.is_selected" style= "padding: 3px;border: 1px solid #1c75bc; color: white; border-radius: 100%; background-color: #1c75bc;" class="pointer md-14" (click)="chSOPEdit(grid)">edit</mat-icon>
+                                                    </div>
+                                                    <div *ngIf="grid.has_child">
+                                                        <div fxLayout="row" fxLayoutAlign="start center" style="padding:5px 0 0px 16px;">
+                                                            <span *ngIf="grid.status=='Update Successful'" style="color:green">{{grid?.status}}</span>
+                                                            <span *ngIf="grid.status=='Update Failed'" style="color:red">{{grid?.status}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="!grid.has_child" fxLayoutAlign="start center"style="padding:5px 0 0px 16px;" class="fntwt600">
+                                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                                            <span *ngIf="grid.status=='Update Successful'" style="color:green">{{grid?.status}}</span>
+                                                            <span *ngIf="grid.status=='Update Failed'" style="color:red">{{grid?.status}}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="grid.has_child && grid.view_text != undefined && grid.is_selected" fxLayoutAlign="start center"style="padding:5px 0 0px 16px;" class="fntwt600">{{grid.disp_text}}</div>
+                                                </div>
+                                            </mat-grid-tile>
+                                        </mat-grid-list>
+                                    </mat-card-content>
+                                </mat-card>
+                                <div *ngIf="chTemplate=='template2'">
+                                    <mat-card-title class="font_14 fntwt600" style="padding-top:20px; padding-bottom:20px">{{chGrpTitle}}</mat-card-title>
+                                    <div fxLayout="row wrap">
+                                        <mat-card *ngFor="let grid of chSOPColl" style="padding:0px;width:330px; height:220px;margin-bottom:16px;margin-right:16px;"  >
+                                            <mat-card-title style="width:330px; height:100px;" [ngStyle]="{'background-image':grid.is_selected || grid.has_child ? grid.img_url :grid.img_url_grey}">
+                                                <div fxLayout="row" fxLayoutAlign="space-between center" class="mgnleft10 mgnrgt10 padtop10">
+                                                    <span style="color:white" class="font_16 fntwt600">{{grid.ch_name}}</span>
+                                                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                                        <mat-icon *ngIf="grid.is_selected" style="padding: 3px;border: 1px solid #465e72; color: white; border-radius: 100%; background-color: #465e72" class="md-14 pointer mgntop3 mgnleft3" matTooltip="click to Deactivate" (click)="grid.is_selected=false;updCHisSelected(grid)">check</mat-icon>
+                                                        <mat-icon *ngIf="!grid.is_selected" style="padding: 3px;border: 1px solid #465e72; color: white; border-radius: 100%; background-color: #465e72" class="md-14 pointer mgntop3 mgnleft3" matTooltip="click to Activate" (click)="grid.is_selected=true;updCHisSelected(grid)">clear</mat-icon>
+                                                        <mat-icon *ngIf="grid.has_child" style="padding: 3px;border: 1px solid #465e72; color: white; border-radius: 100%; background-color: #465e72" class="md-14 pointer mgntop3 mgnleft3" (click)="chSOPEdit(grid)">edit</mat-icon>
+                                                    </div>
+                                                </div>
+                                            </mat-card-title>
+                                            <mat-card-content *ngIf="!grid.has_child" fxLayoutAlign="start center"style="padding:5px 0 0px 16px;" class="fntwt600">
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                                    <span *ngIf="grid.is_selected">Required</span>
+                                                    <mat-icon *ngIf="grid.is_selected" class="mgnleft10 clrgreen md-20 pointer" matTooltip="click to Deactivate" (click)="grid.is_selected=false;updCHisSelected(grid)">check_circle</mat-icon>
+                                                    <span *ngIf="!grid.is_selected">Not Required</span>
+                                                    <mat-icon *ngIf="!grid.is_selected" class="mgnleft10 clrred md-20 pointer" matTooltip="click to Activate" (click)="grid.is_selected=true;updCHisSelected(grid)">cancel</mat-icon>
+                                                    <span *ngIf="grid.status=='Update Successful'" style="color:green">{{grid?.status}}</span>
+                                                    <span *ngIf="grid.status=='Update Failed'" style="color:red">{{grid?.status}}</span>
+                                                </div>
+                                            </mat-card-content>
+                                            <mat-card-content *ngIf="grid.has_child" fxLayout="column" style="padding:5px 0 0px 16px; height:100px; overflow-y: auto;" class="fntwt600" >
+                                                <div *ngFor="let field of grid['fields']; let idx = index">
+                                                    <div *ngIf="grid.ch_name!=field.group" class="txt">{{field.group}}</div>
+                                                    <div *ngIf="grid.view_text!=undefined" class="txt">{{grid.disp_text}}</div>
+                                                    <div *ngFor="let grpField of field.fields">
+                                                        <div [ngSwitch]="field[grpField]?.type" fxLayout="column">
+                                                            <div *ngSwitchCase="'multi'">
+                                                                <div *ngFor="let chField of field[grpField]?.field">
+                                                                    <div *ngIf="chField.value" class="mgnrgt10 font_12" fxLayout="row wrap">
+                                                                        <span>{{chField.fieldname}}</span>
+                                                                        <mat-icon class="mgnleft10 clrgreen md-20 pointer" matTooltip="Click to Deactivate" (click)="chField.value=false; updFieldValue(idx, chField, grid)"> check_circle</mat-icon>
+                                                                        <span *ngIf="chField.status?.includes('Successful')" class="font_10 clrgreen mgnleft10">{{chField.status}}</span>
+                                                                        <span *ngIf="chField.status?.includes('Failed')" class="font_10 clrred mgnleft10">{{chField.status}}</span>
+                                                                    </div>
+                                                                    <div *ngIf="!chField.value" class="mgnrgt10 font_12" fxLayout="row wrap">
+                                                                        <span>{{chField.fieldname}}</span>
+                                                                        <!-- <span class="mgnleft10 clrgreen">Not Required</span> -->
+                                                                        <mat-icon class="mgnleft10 clrred md-20 pointer" matTooltip="Click to Activate" (click)="chField.value=true; updFieldValue(idx, chField, grid)">cancel</mat-icon>
+                                                                        <span *ngIf="chField.status?.includes('Successful')" class="font_10 clrgreen mgnleft10">{{chField.status}}</span>
+                                                                        <span *ngIf="chField.status?.includes('Failed')" class="font_10 clrred mgnleft10">{{field.status}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngSwitchCase="'numsmall'">
+                                                                <div *ngFor="let chField of field[grpField]?.field">
+                                                                    <div class="font_12">{{chField.fieldname}}: {{chField.value}}{{chField.fieldname.includes('%') ? '%':''}}</div>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngSwitchCase="'textarea'">
+                                                                <div fxLayout="column" fxLayoutGap="5px">
+                                                                    <div *ngFor="let chField of field[grpField]?.field">
+                                                                        <div class="font_12">{{chField.fieldname}}</div>
+                                                                        <div class="font_12">{{chField.value}}</div>    
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngSwitchCase="'text'">
+                                                                <div fxLayout="column" fxLayoutGap="5px">
+                                                                    <div *ngFor="let chField of field[grpField]?.field">
+                                                                        <span class="font_10">{{chField.fieldname}}: {{chField.value}}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </mat-card-content>
+                                        </mat-card>
+                                    </div>
+                                </div>
+                                <div *ngIf="dispCP">
+                                    <mat-card>
+                                        <div fxLayout="column">
+                                            <div fxLayout="row" fxLayoutAlign="space-between center"> 
+                                                <mat-label class="font_14 fntwt600">Container Preference</mat-label>
+                                                <button mat-raised-button style="background-color:#1c75bc; color:white;"(click)="savePref()" ><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">Save Prefered List</span></button>
+                                            </div>
+                                            <div fxLayout="row" fxLayoutAlign="space-between start">
+                                                <mat-card-content fxFlex="39">
+                                                    <mat-form-field style="width:100%" class="no-border">
+                                                        <mat-label>Filter</mat-label>
+                                                        <input matInput (keyup)="applyContainerFilter($event)" placeholder="Ex. Description, refcode etc" #input>
+                                                    </mat-form-field>
+                                                    <div [style.max-height.px]="screen.height-125" style="overflow-y: auto;">
+                                                        <table mat-table cdkDropList #table1 #list1="cdkDropList" [dataSource]="containerColl" style="border:1px lightgray solid; border-radius: 10px; margin-top:5px; width:100%" 
+                                                        [cdkDropListData]="containerColl.data" (cdkDropListDropped)="dragDrop($event)" [cdkDropListConnectedTo]="[list2]">
+                                                           <ng-container matColumnDef="iso_type_code">
+                                                               <th mat-header-cell class="tbl-head" *matHeaderCellDef>Ref Code</th>
+                                                               <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.iso_type_code}}({{element.iso_size_code}})</td>
+                                                           </ng-container>
+                                                           <ng-container matColumnDef="description">
+                                                               <th mat-header-cell class="tbl-head" *matHeaderCellDef>Description</th>
+                                                               <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.description.substring(0,100)}}</td>
+                                                           </ng-container>
+                                                           <ng-container matColumnDef="max_cbm">
+                                                               <th mat-header-cell class="tbl-head" *matHeaderCellDef>Max CBM</th>
+                                                               <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.max_cbm}}</td>
+                                                           </ng-container>
+                                                           <ng-container matColumnDef="max_weight_kgs">
+                                                               <th mat-header-cell class="tbl-head" *matHeaderCellDef>Max Wt Kgs</th>
+                                                               <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.max_weight_kgs}}</td>
+                                                           </ng-container>
+                                                           <tr mat-header-row *matHeaderRowDef="tblDispContainer; sticky: true;" class="tblrowht"></tr>
+                                                           <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: tblDispContainer;" cdkDrag [cdkDragData]="row"></tr>
+                                                       </table>
+                                                    </div>
+                                                </mat-card-content>
+                                                <mat-card-content fxFlex="59" style="margin-top:16px">
+                                                    <mat-card-title class="font_14 fntwt600">Preferred Container List</mat-card-title>
+                                                    <div [style.max-height.px]="screen.height-125" style="overflow-y: auto;">
+                                                        <table mat-table cdkDropList #table2 #list2="cdkDropList" [dataSource]="sopContainerColl" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%" 
+                                                        [cdkDropListData]="sopContainerColl.data" (cdkDropListDropped)="dragDrop($event)" [cdkDropListConnectedTo]="[list1]">
+                                                           <ng-container matColumnDef="iso_type_code">
+                                                               <th mat-header-cell class="tbl-head" *matHeaderCellDef>Ref Code</th>
+                                                               <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.iso_type_code}}({{element.iso_size_code}})</td>
+                                                           </ng-container>
+                                                           <ng-container matColumnDef="description">
+                                                               <th mat-header-cell class="tbl-head" *matHeaderCellDef>Description</th>
+                                                               <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                                                                   <div>{{element.description.substring(0,50)}}...</div>
+                                                                   <div *ngIf="element.errMsg != undefined" class="clrred font_12">{{element.errMsg}}</div>
+                                                               </td>
+                                                           </ng-container>
+                                                           <ng-container matColumnDef="fcl_min">
+                                                            <th mat-header-cell class="tbl-head" *matHeaderCellDef>FCL Min</th>
+                                                            <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                                                                <span>{{element.fcl_min}}</span>
+                                                            </td>
+                                                            </ng-container>
+                                                            <ng-container matColumnDef="min_cbm">
+                                                               <th mat-header-cell class="tbl-head" *matHeaderCellDef>LCL Min</th>
+                                                               <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                                                                   <span>{{element.min_cbm}}</span>
+                                                               </td>
+                                                           </ng-container>
+                                                           <ng-container matColumnDef="optimal_cbm">
+                                                               <th mat-header-cell class="tbl-head" *matHeaderCellDef>Optimal CBM</th>
+                                                               <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                                                                   <span>{{element.optimal_cbm}}</span>
+                                                               </td>
+                                                           </ng-container>
+                                                           <ng-container matColumnDef="max_cbm">
+                                                               <th mat-header-cell class="tbl-head" *matHeaderCellDef>Max CBM</th>
+                                                               <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.max_cbm}}</td>
+                                                           </ng-container>
+                                                           <ng-container matColumnDef="preference">
+                                                               <th mat-header-cell class="tbl-head" *matHeaderCellDef>Seq</th>
+                                                               <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element; let i=index">
+                                                                   <span>{{i+1}}</span>
+                                                               </td>
+                                                           </ng-container>
+                                                           <ng-container matColumnDef="edit">
+                                                               <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                                                               <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                                                                   <mat-icon id="edit{{i}}" color="primary" class="pointer" matTooltip="Edit Preference" (click)=editContainterPref(element)>edit</mat-icon>
+                                                                   <!-- <mat-icon *ngIf="element.edit_mode" id="edit{{i}}" class="pointer clrgreen" matTooltip="Edit Preference" (click)="element.edit_mode=false; validateInput(i, element)">save</mat-icon> -->
+                                                               </td>
+                                                           </ng-container>
+                                                           <tr mat-header-row *matHeaderRowDef="tblSOPDispContainer; sticky: true;" class="tblrowht"></tr>
+                                                           <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: tblSOPDispContainer;" cdkDrag [cdkDragData]="row"></tr>
+                                                       </table>
+                                                    </div>
+                                                    <div *ngIf="sopContainerColl?.data?.length == 0" [style.height.px]="screen.height-200" fxLayoutAlign="center center">
+                                                        <div fxLayout="column" fxLayoutAlign="center center">
+                                                            <mat-icon class="md-96" style="opacity:0.2">swap_horiz</mat-icon>
+                                                            <div class="font_12">Drag and Drop from Available list and modify your preference</div>
+                                                        </div>
+                                                    </div>
+                                                </mat-card-content>
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                </div>
+                                <div *ngIf="dispLCLCons">
+                                    <mat-card>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                            <mat-card-title class="txt">LCL Consolidation Program Details</mat-card-title>
+                                            <button mat-raised-button class="btnpri btnauto" (click)="addNewLCLInst();"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW INSTRUCTION</span></button>
+                                        </div>
+                                        <mat-card-content style="margin-top:10px" >
+                                            <mat-grid-list cols="2" rowHeight="4:1" gutterSize="2px">
+                                                <mat-grid-tile *ngFor="let grid of lclConsColl; let ix=index">
+                                                    <div fxLayout="column" fxLayoutAlign="start start" style="width:100%">
+                                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" style="width:100%">
+                                                            <div class="font_12 fntwt600" style="padding:5px 0 5px 5px; color:var(--textcolor)">{{ix+1}}.Instruction</div>
+                                                            <mat-icon *ngIf="grid.is_selected" class="clrred pointer" matTooltip="Click to remove" (click)="grid.is_selected=false;grid.edit=false;removeComm(grid,ix)">cancel</mat-icon>
+                                                            <mat-icon *ngIf="!grid.is_selected" class="clrblue pointer" matTooltip="Click to Add" (click)="grid.is_selected=true;grid.edit=false;saveCommunication(grid,'LCL Consolidation')">add_circle</mat-icon>
+                                                            <mat-icon *ngIf="grid.is_selected && !grid.edit" style= "padding: 3px;border: 1px solid var(--active); color: white; border-radius: 100%; background-color:var(--active)" class="pointer md-14" (click)="grid.edit=true; grid.focus=true">edit</mat-icon>
+                                                            <mat-icon *ngIf="grid.is_selected && grid.edit" style= "padding: 3px;border: 1px solid var(--active); color: white; border-radius: 100%; background-color:var(--active)" class="pointer md-14" (click)="grid.edit=false; grid.focus=false; saveCommunication(grid,'LCL Consolidation')">save</mat-icon>
+                                                        </div>
+                                                        <div *ngIf="grid.edit && grid.msg==undefined" style="width:100%; padding:2px;" >
+                                                            <textarea cdkTextareaAutosize mat-input id="inst{{ix}}" placeholder="Type your Instruction here" style="outline: none; max-height: 80px; width:98%" [(ngModel)]="grid.instruction"></textarea>
+                                                        </div>
+                                                        <div *ngIf="!grid.edit && grid.msg==undefined" style="padding-left:5px; max-height:80px; overflow-y: auto;">
+                                                            {{grid.instruction}}
+                                                        </div>
+                                                        <div *ngIf="grid.msg!=undefined" fxLayoutAlign="center center" style="height:100%; width:100%">{{grid.msg}}</div>
+                                                    </div>
+                                                </mat-grid-tile>
+                                            </mat-grid-list>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                                <div *ngIf="dispFCLCons">
+                                    <mat-card>
+                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                            <mat-card-title class="txt">FCL Program Details</mat-card-title>
+                                            <button mat-raised-button class="btnpri btnauto" (click)="addNewFCLInst();"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW INSTRUCTION</span></button>
+                                        </div>
+                                        <mat-card-content style="margin-top:10px" >
+                                            <mat-grid-list cols="2" rowHeight="4:1" gutterSize="2px">
+                                                <mat-grid-tile *ngFor="let grid of fclConsColl; let ix=index">
+                                                    <div fxLayout="column" fxLayoutAlign="start start" style="width:100%">
+                                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" style="width:100%">
+                                                            <div class="font_12 fntwt600" style="padding:5px 0 5px 5px; color:var(--textcolor)">{{ix+1}}.Instruction</div>
+                                                            <mat-icon *ngIf="grid.is_selected" class="clrred pointer" matTooltip="Click to remove" (click)="grid.is_selected=false;grid.edit=false;removeComm(grid,ix)">cancel</mat-icon>
+                                                            <mat-icon *ngIf="!grid.is_selected" class="clrblue pointer" matTooltip="Click to Add" (click)="grid.is_selected=true;grid.edit=false;saveCommunication(grid,'FCL Program')">add_circle</mat-icon>
+                                                            <mat-icon *ngIf="grid.is_selected && !grid.edit" style= "padding: 3px;border: 1px solid var(--active); color: white; border-radius: 100%; background-color:var(--active)" class="pointer md-14" (click)="grid.edit=true; grid.focus=true">edit</mat-icon>
+                                                            <mat-icon *ngIf="grid.is_selected && grid.edit" style= "padding: 3px;border: 1px solid var(--active); color: white; border-radius: 100%; background-color:var(--active)" class="pointer md-14" (click)="grid.edit=false; grid.focus=false; saveCommunication(grid,'FCL Program')">save</mat-icon>
+                                                        </div>
+                                                        <div *ngIf="grid.edit && grid.msg==undefined" style="width:100%; padding:2px;" >
+                                                            <textarea cdkTextareaAutosize mat-input id="inst{{ix}}" placeholder="Type your Instruction here" style="outline: none; max-height: 80px; width:98%" [(ngModel)]="grid.instruction"></textarea>
+                                                        </div>
+                                                        <div *ngIf="!grid.edit && grid.msg==undefined" style="padding-left:5px; max-height:80px; overflow-y: auto;">
+                                                            {{grid.instruction}}
+                                                        </div>
+                                                        <div *ngIf="grid.msg!=undefined" fxLayoutAlign="center center" style="height:100%; width:100%">{{grid.msg}}</div>
+                                                    </div>
+                                                </mat-grid-tile>
+                                            </mat-grid-list>
+                                        </mat-card-content>
+                                    </mat-card>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-radio-button *ngIf="selTabIndex==4" color="primary" checked="true" value="1">Carrier</mat-radio-button>
+                        <mat-radio-button *ngIf="selTabIndex!=4 && !validCA" color="primary" checked="false" value="1">Carrier</mat-radio-button>
+                        <div *ngIf="selTabIndex==4" class="caret up" style="top:31px; right:30px"></div>
+                        <div *ngIf="selTabIndex!=4 && validCA" fxLayoutAlign="start center">
+                            <span class="material-icons clrgreen mgnrgt10">check_circle</span>Carrier
+                        </div>
+                        <img src='../../assets/image/svg/icon-small-carrier.svg' style="width:24px; height:24px; margin-left:16px"/>
+                    </ng-template>
+                    <div fxLayout="row" class="font_12">
+                        <div style="width:130px;padding:0px 12px 0px 13px; border:1px lightgray solid; border-radius: 10px; margin-top:9px">
+                            <div fxLayout="column" style="margin-top:40px; margin-bottom:30px">
+                                <div fxLayout="row" class="pointer" (click)="onClickCA()">
+                                    <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorCA}">1</span></div>
+                                    <div style="margin-left:10px;" [ngStyle]="{'color':colorCA,'font-weight':fwCA}" >Carrier Allocation</div>
+                                </div>
+                                <div fxLayout="row" class="pointer mgntop30" (click)="onClickCCP()"> 
+                                    <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorCCP}">2</span></div>
+                                    <div style="margin-left:10px;" [ngStyle]="{'color':colorCCP,'font-weight':fwCCP}" >Carrier Preference</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="dispCA" fxLayout="column" style="margin:30px 16px 0 16px; width:100%">
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <mat-label class="font_14 fntwt600">Carrier Allocation</mat-label>
+                                <button mat-raised-button style="background-color:#1c75bc; color:white;" (click)="addCarrierAlloc()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW</span></button>
+                            </div>
+                            <div *ngIf="sopCarrierAllocColl.length>0" [style.max-height.px]="screen.height-125" style="overflow-y: auto;">
+                                <table mat-table [dataSource]="datasource" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%">
+                                    <ng-container matColumnDef="carrier_name">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Carrier Name</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.carrier_name}}</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="contract_number">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Contract Ref</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                                            <div>{{element.contract_number}}</div>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="allocation_percent">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Allocation</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                                            <div>{{element.allocation_percent}}%</div>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="dispCarrierAllocColumns; sticky: true;" class="tblrowht"></tr>
+                                    <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispCarrierAllocColumns;"></tr>
+                                    <!-- Group header -->
+                                    <ng-container matColumnDef="groupHeader">
+                                        <td mat-cell colspan="999" *matCellDef="let group" style="background-color: aliceblue;">
+                                            <div fxLayout="row" fxLayoutAlign="start center">
+                                                <mat-icon *ngIf="group.expanded">expand_less</mat-icon>
+                                                <mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
+                                                <img src='../../assets/image/svg/icon-small-crane.svg' style="width:36px; height:36px; margin-left:16px"/>
+                                                <div fxLayout="column" style="width:175px">
+                                                    <div style="color:#465e72; " class="fntwt600">{{group[groupByColumns[group.level-1]].split(' to ')[0].split(',')[0]}}</div>
+                                                    <div class="font_10 capitalize">Origin: {{group[groupByColumns[group.level-1]].split(' to ')[0].split(',')[1]}}</div>
+                                                </div>
+                                                <mat-icon style="color:#1c75bc; margin-left:9px" class="md-14">circle</mat-icon>
+                                                <div style="width:50px; border-bottom:dotted 2px #1c75bc; margin-top:-1px; margin-left:0px"></div>
+                                                <div class="caret5 right" style="margin-left:0px"></div>
+                                                <img src='../../assets/image/svg/icon-small-crane.svg' style="width:36px; height:36px; margin-left:16px"/>
+                                                <div fxLayout="column" style="margin-left:-10px; ">
+                                                    <div style="color:#465e72; margin-left:10px" class="fntwt600">{{group[groupByColumns[group.level-1]].split(' to ')[1].split(',')[0]}}</div>
+                                                    <div class="font_10 capitalize mgnleft10">Destination: {{group[groupByColumns[group.level-1]].split(' to ')[1].split(',')[1]}}</div>
+                                                </div>
+                                                <mat-icon class="mgnleft20 clrred pointer" (click)="delSOPCarrierAlloc(group[groupByColumns[group.level-1]])">delete</mat-icon>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup" (click)="groupHeaderClick(row)"> </tr>
+                            </table>
+                            </div>
+                            <div *ngIf="sopCarrierAllocColl.length==0" fxLayoutAlign="center center" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px">
+                                <div fxLayout="column" fxLayoutAlign="center center" [style.height.px]="screen.height-100">
+                                    <img src='../../assets/image/svg/icon-small-crane_96px.svg' style="width:96px; height:96px;"/>
+                                    <div class="font_12">Click on ADD NEW to Create Carrier Allocation</div>
+                                    <div class="font_12">Carrier Company can be created from Business Contacts->Other Company List</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="dispCCP" fxLayout="column" style="margin:30px 16px 0 16px; width:100%">
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <mat-label class="font_14 fntwt600">Carrier Preference</mat-label>
+                                <button mat-raised-button style="background-color:#1c75bc; color:white;" (click)="addCarrierPref()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW</span></button>
+                            </div>
+                            <div *ngIf="sopCarrierPrefColl.length>0" [style.max-height.px]="screen.height-125" style="overflow-y: auto;">
+                                <table mat-table [dataSource]="datasource" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%">
+                                    <ng-container matColumnDef="carrier_name">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Carrier Name</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.carrier_name}}</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="contract_number">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Contract Ref</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                                            <div>{{element.contract_number}}</div>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="preference">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Preference</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                                            <div>{{element.preference}}</div>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="dispCarrierPrefColumns; sticky: true;" class="tblrowht"></tr>
+                                    <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispCarrierPrefColumns;"></tr>
+                                    <!-- Group header -->
+                                    <ng-container matColumnDef="groupHeader">
+                                        <td mat-cell colspan="999" *matCellDef="let group" style="background-color: aliceblue;">
+                                            <div fxLayout="row" fxLayoutAlign="start center">
+                                                <mat-icon *ngIf="group.expanded">expand_less</mat-icon>
+                                                <mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
+                                                <img src='../../assets/image/svg/icon-small-crane.svg' style="width:36px; height:36px; margin-left:16px"/>
+                                                <div fxLayout="column" style="width:175px">
+                                                    <div style="color:#465e72; " class="fntwt600">{{group[groupByColumns[group.level-1]].split(' to ')[0].split(',')[0]}}</div>
+                                                    <div class="font_10 capitalize">Origin: {{group[groupByColumns[group.level-1]].split(' to ')[0].split(',')[1]}}</div>
+                                                </div>
+                                                <mat-icon style="color:#1c75bc; margin-left:9px" class="md-14">circle</mat-icon>
+                                                <div style="width:50px; border-bottom:dotted 2px #1c75bc; margin-top:-1px; margin-left:0px"></div>
+                                                <div class="caret5 right" style="margin-left:0px"></div>
+                                                <img src='../../assets/image/svg/icon-small-crane.svg' style="width:36px; height:36px; margin-left:16px"/>
+                                                <div fxLayout="column" style="margin-left:-10px; ">
+                                                    <div style="color:#465e72; margin-left:10px" class="fntwt600">{{group[groupByColumns[group.level-1]].split(' to ')[1].split(',')[0]}}</div>
+                                                    <div class="font_10 capitalize mgnleft10">Destination: {{group[groupByColumns[group.level-1]].split(' to ')[1].split(',')[1]}}</div>
+                                                </div>
+                                                <mat-icon class="mgnleft20 clrred pointer" (click)="delSOPCarrierPref(group[groupByColumns[group.level-1]])">delete</mat-icon>
+                                            </div>
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup" (click)="groupHeaderClick(row)"> </tr>
+                            </table>
+                            </div>
+                            <div *ngIf="sopCarrierPrefColl.length==0" fxLayoutAlign="center center" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px">
+                                <div fxLayout="column" fxLayoutAlign="center center" [style.height.px]="screen.height-100">
+                                    <img src='../../assets/image/svg/icon-small-crane_96px.svg' style="width:96px; height:96px;"/>
+                                    <div class="font_12">Click on ADD NEW to Create Carrier Preference</div>
+                                    <div class="font_12">Carrier Company can be created from Business Contacts->Other Company List</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                <mat-tab>
+                    <ng-template mat-tab-label>
+                        <mat-radio-button *ngIf="selTabIndex==5" color="primary" checked="true" value="1">Services</mat-radio-button>
+                        <mat-radio-button *ngIf="!validPOB && selTabIndex!=5" color="primary" checked="false" value="1">Services</mat-radio-button>
+                        <div *ngIf="selTabIndex==5" class="caret up" style="top:31px; right:30px"></div>
+                        <div *ngIf="selTabIndex!=5 && validPOB" fxLayoutAlign="start center">
+                            <span class="material-icons clrgreen mgnrgt10">check_circle</span>Services
+                        </div>
+                        <mat-icon class="mgnleft20 clrblue">settings</mat-icon>
+                    </ng-template>
+                    <div fxLayout="row" class="font_12">
+                        <div style="width:120px;padding:40px 12px 40px 13px; border:1px var(--active) solid; border-radius: 10px; margin-top:9px">
+                            <div *ngFor="let os of othServices; let i=index">
+                                <div fxLayout="column" style="margin-bottom:30px">
+                                    <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                                        <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600; background-color:gray" [ngStyle]="{'background-color':othServiceColor[i]?.color}">{{i+1}}</span></div>
+                                        <div style="margin-left:10px;" [ngStyle]="{'color':othServiceColor[i]?.color,'font-weight':othServiceColor[i]?.fw}" (click)="onClickOthSer(i,os)">{{os}}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="othServiceColor[0]?.disp">
+                            <div fxLayout="row wrap" fxLayoutAlign="start start">
+                                <mat-list class="menulist" style="margin-top:10px; margin-left:10px; background-color: white;">
+                                    <div class="font_16 fntwt600 aligncenter">Services</div>
+                                    <mat-list-item *ngFor="let type of objectKeys(serviceTypeColl)" class="pointer capitalize" [ngClass]="{'menuitemselected':selType==type,'menuitem':selType!=type}" (click)="selType=type;">{{type}}</mat-list-item>
+                                </mat-list>
+                                <div [style.max-height.px]="screen.height-20">
+                                    <div fxLayout="row">
+                                        <div fxLayout="column" style="margin-left:20px; margin-top:10px;">
+                                            <div *ngFor="let service of serviceTypeColl[selType]; let ix = index">
+                                                <mat-checkbox *ngIf="ix<15 && service.parent_service_id == undefined"  [(ngModel)]="service.is_selected" (change)="selParService(service, selType, $event.checked)">{{service.service_name}}</mat-checkbox>
+                                                <mat-checkbox *ngIf="ix<15 && service.parent_service_id != undefined"  [(ngModel)]="service.is_selected" class="mgnleft20">{{service.service_name}}</mat-checkbox>
+                                            </div>
+                                            <button *ngIf="serviceTypeColl[selType]?.length<15 && selType!=undefined" mat-button class="btnpri btnauto mgntop10" (click)="saveService()">SAVE</button>
+                                        </div>
+                                        <div fxLayout="column" style="margin-left:20px; margin-top:10px;">
+                                            <div *ngFor="let service of serviceTypeColl[selType]; let ix = index">
+                                                <mat-checkbox *ngIf="ix>=15 && service.parent_service_id == undefined"  [(ngModel)]="service.is_selected" (change)="selParService(service, selType,$event.checked)">{{service.service_name}}</mat-checkbox>
+                                                <mat-checkbox *ngIf="ix>=15 && service.parent_service_id != undefined"  [(ngModel)]="service.is_selected" class="mgnleft20">{{service.service_name}}</mat-checkbox>
+                                            </div>
+                                            <button *ngIf="serviceTypeColl[selType]?.length>=15 && selType!=undefined" mat-button class="btnpri btnauto mgntop10" (click)="saveService()">SAVE</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="othServiceColor[1]?.disp">
+                            <div style="margin:0px 16px 0 16px;" [style.width.px]="screen.width-64-16-120-16">
+                                <mat-card>
+                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                        <mat-card-title class="font_14 fntwt600">Communication Instructions</mat-card-title>
+                                        <button mat-raised-button class="btnpri btnauto" (click)="addNewInst();"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW INSTRUCTION</span></button>
+                                    </div>
+                                    <mat-card-content style="margin-top:10px" >
+                                        <mat-grid-list cols="2" rowHeight="4:1" gutterSize="2px">
+                                            <mat-grid-tile *ngFor="let grid of communicationColl; let ix=index">
+                                                <div fxLayout="column" fxLayoutAlign="start start" style="width:100%">
+                                                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" style="width:100%">
+                                                        <div class="font_12 fntwt600" style="padding:5px 0 5px 5px; color:var(--textcolor)">{{ix+1}}.Instruction</div>
+                                                        <mat-icon *ngIf="grid.is_selected" class="clrred pointer" matTooltip="Click to remove" (click)="grid.is_selected=false;grid.edit=false;removeComm(grid,ix)">cancel</mat-icon>
+                                                        <mat-icon *ngIf="!grid.is_selected" class="clrblue pointer" matTooltip="Click to Add" (click)="grid.is_selected=true;grid.edit=false;saveCommunication(grid,'communication')">add_circle</mat-icon>
+                                                        <mat-icon *ngIf="grid.is_selected && !grid.edit" style= "padding: 3px;border: 1px solid var(--active); color: white; border-radius: 100%; background-color:var(--active)" class="pointer md-14" (click)="grid.edit=true; grid.focus=true">edit</mat-icon>
+                                                        <mat-icon *ngIf="grid.is_selected && grid.edit" style= "padding: 3px;border: 1px solid var(--active); color: white; border-radius: 100%; background-color:var(--active)" class="pointer md-14" (click)="grid.edit=false; grid.focus=false; saveCommunication(grid,'communication')">save</mat-icon>
+                                                    </div>
+                                                    <div *ngIf="grid.edit && grid.msg==undefined" style="width:100%; padding:2px;" >
+                                                        <textarea cdkTextareaAutosize mat-input id="inst{{ix}}" placeholder="Type your Instruction here" style="outline: none; max-height: 80px; width:98%" [(ngModel)]="grid.instruction"></textarea>
+                                                    </div>
+                                                    <div *ngIf="!grid.edit && grid.msg==undefined" style="padding-left:5px; max-height:80px; overflow-y: auto;">
+                                                        {{grid.instruction}}
+                                                    </div>
+                                                    <div *ngIf="grid.msg!=undefined" fxLayoutAlign="center center" style="height:100%; width:100%">{{grid.msg}}</div>
+                                                </div>
+                                            </mat-grid-tile>
+                                        </mat-grid-list>
+                                    </mat-card-content>
+                                </mat-card>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </mat-card-content>
+</mat-card>

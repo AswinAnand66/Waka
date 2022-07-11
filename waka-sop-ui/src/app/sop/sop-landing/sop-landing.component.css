@@ -1,0 +1,9 @@
+/* .mattablabel{
+    padding: 0 0 !important;
+    min-width: 120px !important;
+} */
+
+::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
+    min-width: 150px !important;
+    padding: 0 8px !important;
+}

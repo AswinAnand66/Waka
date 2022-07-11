@@ -1,0 +1,86 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block;">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div>
+<div class="mgntop60">
+	<div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px" style="padding: 15px 25px;">
+	    <div class="inputboxsingle inboxminwidth">
+	    	<div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+	    		<mat-icon class="icon">search</mat-icon>
+	    		<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+	    			<input class="text" type="text" (keyup)="applyContractFilter($event)" placeholder="Search by Contract No, Stakeholder Name, etc" name="Name" id="Name" required>
+	    		</div>
+	    	</div>
+	    </div>
+	    <div>
+	    	<button mat-button class= "btnpri" (click)="addContract()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD CONTRACT</span></button>
+	    </div>
+    </div>
+	<div fxLayout="row" fxLayoutAlign="center center">
+		<div *ngIf="contractColl.data.length > 0" [style.height.px]="ht" [style.width.px]="width" style="padding: 5px 25px;" style="overflow: auto">
+			<mat-card *ngFor="let contract of contractColl.data; let i= index;" style="border: solid 1px rgba(155, 168, 179, 0.22); box-shadow:none; margin-top: 16px;">
+				<mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+					<div fxFlex="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+						<img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:28px; height:28px;"/>
+						<div fxLayout="column">
+							<div class="txtclr">{{contract.p_name}}</div>
+							<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Principal Name</div>
+						</div>
+					</div>
+					<div fxFlex="15" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="pointer" (click)="showPorts=true">
+						<div fxLayout="column">
+							<div class="txtclr" >{{contract?.sh_name}}</div>
+							<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">{{contract?.sh_type}}</div>
+						</div>
+					</div>
+					<div fxFlex="15" style="width:100%; margin-right:10px">
+						<div fxLayout="column">
+							<div class="txtclr">{{contract?.valid_from | date:'dd-MMM-yyyy'}}</div>
+							<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Valid From</div>
+						</div>
+					</div>
+					<div fxFlex="15" style="width:100%; margin-right:10px">
+						<div fxLayout="column">
+							<div class="txtclr">{{contract?.valid_to | date:'dd-MMM-yyyy'}}</div>
+							<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Valid To</div>
+						</div>
+					</div>
+					<div fxFlex="10" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+						<div fxLayout="column">
+							<div class="txtclr">{{contract?.contract_no}}</div>
+							<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Contract No</div>
+						</div>
+					</div>
+					<div fxFlex="10" style="text-decoration: underline; font-weight:bold;" [ngClass]="{'clrblue pointer': contract.is_extend_validity , 'iconinactive cursor_not_allowed': !contract.is_extend_validity}" class="font_14" (click)="contract?.is_extend_validity ? extendContract(contract): ''">EXTEND VALIDITY</div>
+				</mat-card-content>
+				<mat-accordion class="contract">
+					<mat-expansion-panel style="background-color: var(--bggroup); box-shadow:none;">
+						<mat-expansion-panel-header style="background-color: var(--bggroup1)">
+						  <mat-panel-title class="txt">
+							View Documents
+						  </mat-panel-title>
+						</mat-expansion-panel-header>
+						<div fxLayout="row" fxLayoutAlign="space-between center" class="mgntop10">
+							<div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
+								<div *ngFor="let file of contract.uploaded_files" class="font_12 mgnbtm10 chipset-active" style="width: fit-content;" >
+									<div fxLayout="row wrap" fxLayoutAlign="start center">
+										<span class="font_12">{{file}}</span>
+									</div>
+								</div>
+							</div>
+							<div (click)="contract.is_download_document ? downloadFiles(contract) : ''">
+								<mat-icon id="download{{i}}" [ngClass]="{'clrblue pointer': contract.is_download_document , 'iconinactive cursor_not_allowed': !contract.is_download_document}" class="pointer" [matTooltip]="contract.is_download_document ? 'Download Contract' : 'Download Unavailable'" >download</mat-icon>
+							</div>
+						</div>
+					  </mat-expansion-panel>
+				</mat-accordion>
+			</mat-card> 
+		</div>
+	</div>
+	<div style="margin-top: 120px;" *ngIf="contractColl.data.length == 0 && !isLoading">
+		<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+			<span class="font_12 wordwrap" style="text-align:center; width:330px; color: var(--inlineeditclr);">Add/Extend contracts with your third party associated stakeholder companies</span>
+			<button mat-button class= "btnpri" (click)="addContract()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD CONTRACT</span></button>
+		</div>
+	</div>
+</div>

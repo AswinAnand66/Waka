@@ -1,0 +1,5 @@
+:host >>> .mat-figure{
+    padding-top: 2px !important;
+    align-items: start !important;
+    justify-content: flex-start !important;
+}

@@ -1,0 +1,340 @@
+
+<div fxLayout="row" class="font_12" style="width:100%">
+    <div *ngIf="!isLoading" class="sidesection">
+        <div *ngFor="let grp of chGrpColl; let i=index">
+            <div fxLayout="column" style="margin-bottom:0px">
+                <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                    <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':chGrpParam[i]?.color}">{{i+1}}</span></div>
+                    <div style="margin-left:10px;" [ngStyle]="{'color':chGrpParam[i]?.color,'font-weight':chGrpParam[i].fw}" (click)="onClickChGrp(i,grp.grp)">{{grp.grp}}</div>
+                </div>
+            </div>
+            <div style="border-left-width:2px; border-left-style: solid; margin-top:-5px; margin-left:9px; height:50px" [ngStyle]="{'border-left-color':chGrpParam[i]?.color}"></div>
+        </div>
+        <div>
+            <div fxLayout="column" style="margin-bottom:0px">
+                <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                    <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorCP}">4</span></div>
+                    <div style="margin-left:10px;" [ngStyle]="{'color':colorCP,'font-weight':fwCP}" (click)="onClickCP()">Container Preference</div>
+                </div>
+                <div style="border-left-width:2px; border-left-style: solid; margin-top:-5px; margin-left:9px; height:50px" [ngStyle]="{'border-left-color':colorCP}"></div>
+            </div>
+        </div>
+        <div>
+            <div fxLayout="column" style="margin-bottom:0px">
+                <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                    <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorLCLCons}">5</span></div>
+                    <div style="margin-left:10px;" [ngStyle]="{'color':colorLCLCons,'font-weight':fwLCLCons}" (click)="onClickLCLCons()">LCL Consolidation</div>
+                </div>
+            </div>
+            <div style="border-left-width:2px; border-left-style: solid; margin-top:-5px; margin-left:9px; height:50px" [ngStyle]="{'border-left-color':colorLCLCons}"></div>
+        </div>
+        <div>
+            <div fxLayout="column" style="margin-bottom:0px">
+                <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                    <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorFCLCons}">6</span></div>
+                    <div style="margin-left:10px;" [ngStyle]="{'color':colorFCLCons,'font-weight':fwFCLCons}" (click)="onClickFCLCons()">FCL Program</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <!-- <mat-card *ngIf="chTemplate=='template1'">
+            <mat-card-title class="font_14 fntwt600" style="padding-top:20px; padding-bottom:20px">{{chGrpTitle}}</mat-card-title>
+            <mat-card-content >
+                <mat-grid-list cols="2" rowHeight="5:1" gutterSize:0px>
+                    <mat-grid-tile *ngFor="let grid of chSOPColl">
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                <div class="font_12" style="padding:16px 0 10px 16px; color:#465e72">{{grid.ch_name}}</div>
+                                <mat-icon *ngIf="grid.is_selected" class="clrgreen pointer" matTooltip="click to Deactivate" (click)="grid.is_selected=false;updCHisSelected(grid)">check_circle</mat-icon>
+                                <mat-icon *ngIf="!grid.is_selected" class="clrred pointer" matTooltip="click to Activate" (click)="grid.is_selected=true;updCHisSelected(grid)">cancel</mat-icon>
+                                <mat-icon *ngIf="grid.has_child && grid.is_selected" style= "padding: 3px;border: 1px solid #1c75bc; color: white; border-radius: 100%; background-color: #1c75bc;" class="pointer md-14" (click)="chSOPEdit(grid)">edit</mat-icon>
+                            </div>
+                            <div *ngIf="grid.has_child">
+                                <div fxLayout="row" fxLayoutAlign="start center" style="padding:5px 0 0px 16px;">
+                                    <span *ngIf="grid.status=='Update Successful'" style="color:green">{{grid?.status}}</span>
+                                    <span *ngIf="grid.status=='Update Failed'" style="color:red">{{grid?.status}}</span>
+                                </div>
+                            </div>
+                            <div *ngIf="!grid.has_child" fxLayoutAlign="start center"style="padding:5px 0 0px 16px;" class="fntwt600">
+                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                                    <span *ngIf="grid.status=='Update Successful'" style="color:green">{{grid?.status}}</span>
+                                    <span *ngIf="grid.status=='Update Failed'" style="color:red">{{grid?.status}}</span>
+                                </div>
+                            </div>
+                            <div *ngIf="grid.has_child && grid.view_text != undefined && grid.is_selected" fxLayoutAlign="start center"style="padding:5px 0 0px 16px;" class="fntwt600">{{grid.disp_text}}</div>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </mat-card-content>
+        </mat-card> -->
+        <div *ngIf="chTemplate=='template2' && !isLoading">
+            <div fxLayout="row wrap" class="mainsection" [style.height.px]="screen.height">
+                <mat-card *ngFor="let grid of chSOPColl" style="padding:0px;width:330px; height:220px;margin-bottom:16px;margin-right:16px;"  >
+                    <mat-card-title style="width:330px; height:100px;" [ngStyle]="{'background-image':grid.is_selected || grid.has_child ? grid.img_url :grid.img_url_grey}">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" class="mgnleft10 mgnrgt10 padtop10">
+                            <span style="color:white" class="font_16 fntwt600">{{grid.ch_name}}</span>
+                            <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                <mat-icon *ngIf="grid.is_selected" style="padding: 3px;border: 1px solid #465e72; color: white; border-radius: 100%; background-color: #465e72" class="md-14 pointer mgntop3 mgnleft3" matTooltip="click to Deactivate" (click)="grid.is_selected=false;updCHisSelected(grid)">check</mat-icon>
+                                <mat-icon *ngIf="!grid.is_selected" style="padding: 3px;border: 1px solid #465e72; color: white; border-radius: 100%; background-color: #465e72" class="md-14 pointer mgntop3 mgnleft3" matTooltip="click to Activate" (click)="grid.is_selected=true;updCHisSelected(grid)">clear</mat-icon>
+                                <mat-icon *ngIf="grid.has_child" style="padding: 3px;border: 1px solid #465e72; color: white; border-radius: 100%; background-color: #465e72" class="md-14 pointer mgntop3 mgnleft3" (click)="chSOPEdit(grid)">edit</mat-icon>
+                            </div>
+                        </div>
+                    </mat-card-title>
+                    <mat-card-content *ngIf="!grid.has_child" fxLayoutAlign="start center"style="padding:5px 0 0px 16px;" class="fntwt600">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                            <span *ngIf="grid.is_selected">Required</span>
+                            <mat-icon *ngIf="grid.is_selected" class="mgnleft10 clrgreen md-20 pointer" matTooltip="click to Deactivate" (click)="grid.is_selected=false;updCHisSelected(grid)">check_circle</mat-icon>
+                            <span *ngIf="!grid.is_selected">Not Required</span>
+                            <mat-icon *ngIf="!grid.is_selected" class="mgnleft10 clrred md-20 pointer" matTooltip="click to Activate" (click)="grid.is_selected=true;updCHisSelected(grid)">cancel</mat-icon>
+                            <span *ngIf="grid.status=='Update Successful'" style="color:green">{{grid?.status}}</span>
+                            <span *ngIf="grid.status=='Update Failed'" style="color:red">{{grid?.status}}</span>
+                        </div>
+                    </mat-card-content>
+                    <mat-card-content *ngIf="grid.has_child" fxLayout="column" style="padding:5px 0 0px 16px; height:100px; overflow-y: auto;" class="fntwt600" >
+                        <div *ngFor="let field of grid['fields']; let idx = index">
+                            <div *ngIf="grid.ch_name!=field.group" class="txt">{{field.group}}</div>
+                            <div *ngIf="grid.view_text!=undefined" class="txt">{{grid.disp_text}}</div>
+                            <div *ngFor="let grpField of field.fields">
+                                <div [ngSwitch]="field[grpField]?.type" fxLayout="column">
+                                    <div *ngSwitchCase="'multi'">
+                                        <div *ngFor="let chField of field[grpField]?.field">
+                                            <div *ngIf="chField.value" class="mgnrgt10 font_12" fxLayout="row wrap">
+                                                <span>{{chField.fieldname}}</span>
+                                                <mat-icon class="mgnleft10 clrgreen md-20 pointer" matTooltip="Click to Deactivate" (click)="chField.value=false; updFieldValue(idx, chField, grid)"> check_circle</mat-icon>
+                                                <span *ngIf="chField.status?.includes('Successful')" class="font_10 clrgreen mgnleft10">{{chField.status}}</span>
+                                                <span *ngIf="chField.status?.includes('Failed')" class="font_10 clrred mgnleft10">{{chField.status}}</span>
+                                            </div>
+                                            <div *ngIf="!chField.value" class="mgnrgt10 font_12" fxLayout="row wrap">
+                                                <span>{{chField.fieldname}}</span>
+                                                <!-- <span class="mgnleft10 clrgreen">Not Required</span> -->
+                                                <mat-icon class="mgnleft10 clrred md-20 pointer" matTooltip="Click to Activate" (click)="chField.value=true; updFieldValue(idx, chField, grid)">cancel</mat-icon>
+                                                <span *ngIf="chField.status?.includes('Successful')" class="font_10 clrgreen mgnleft10">{{chField.status}}</span>
+                                                <span *ngIf="chField.status?.includes('Failed')" class="font_10 clrred mgnleft10">{{field.status}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngSwitchCase="'numsmall'">
+                                        <div *ngFor="let chField of field[grpField]?.field">
+                                            <div class="font_12">{{chField.fieldname}}: {{chField.value}}{{chField.fieldname.includes('%') ? '%':''}}</div>
+                                        </div>
+                                    </div>
+                                    <div *ngSwitchCase="'textarea'">
+                                        <div fxLayout="column" fxLayoutGap="5px">
+                                            <div *ngFor="let chField of field[grpField]?.field">
+                                                <div class="font_12">{{chField.fieldname}}</div>
+                                                <div class="font_12">{{chField.value}}</div>    
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngSwitchCase="'text'">
+                                        <div fxLayout="column" fxLayoutGap="5px">
+                                            <div *ngFor="let chField of field[grpField]?.field">
+                                                <span class="font_10">{{chField.fieldname}}: {{chField.value}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <div *ngIf="dispCP">
+            <mat-card>
+                <div fxLayout="column">
+                    <div fxLayout="row" fxLayoutAlign="space-between center"> 
+                        <mat-label class="font_14 fntwt600">Container Preference</mat-label>
+                        <button mat-raised-button style="background-color:#1c75bc; color:white;"(click)="savePref()" ><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">Save Prefered List</span></button>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between start">
+                        <mat-card-content fxFlex="39">
+                            <mat-form-field style="width:100%" class="no-border">
+                                <mat-label>Filter</mat-label>
+                                <input matInput (keyup)="applyContainerFilter($event)" placeholder="Ex. Description, refcode etc" #input>
+                            </mat-form-field>
+                            <div [style.max-height.px]="screen.height-125" style="overflow-y: auto;">
+                                <table mat-table cdkDropList #table1 #list1="cdkDropList" [dataSource]="containerColl" style="border:1px lightgray solid; border-radius: 10px; margin-top:5px; width:100%" 
+                                [cdkDropListData]="containerColl.data" (cdkDropListDropped)="dragDrop($event)" [cdkDropListConnectedTo]="[list2]">
+                                    <ng-container matColumnDef="iso_type_code">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Ref Code</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.iso_type_code}}({{element.iso_size_code}})</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="description">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Description</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.description.substring(0,100)}}</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="max_cbm">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Max CBM</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.max_cbm}}</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="max_weight_kgs">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Max Wt Kgs</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.max_weight_kgs}}</td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="tblDispContainer; sticky: true;" class="tblrowht"></tr>
+                                    <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: tblDispContainer;" cdkDrag [cdkDragData]="row"></tr>
+                                </table>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-content fxFlex="59" style="margin-top:16px">
+                            <mat-card-title class="font_14 fntwt600">Preferred Container List</mat-card-title>
+                            <div [style.max-height.px]="screen.height-125" style="overflow-y: auto;">
+                                <table mat-table cdkDropList #table2 #list2="cdkDropList" [dataSource]="sopContainerColl" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%" 
+                                [cdkDropListData]="sopContainerColl.data" (cdkDropListDropped)="dragDrop($event)" [cdkDropListConnectedTo]="[list1]">
+                                    <ng-container matColumnDef="iso_type_code">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Ref Code</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.iso_type_code}}({{element.iso_size_code}})</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="description">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Description</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                                            <div>{{element.description.substring(0,50)}}...</div>
+                                            <div *ngIf="element.errMsg != undefined" class="clrred font_12">{{element.errMsg}}</div>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="fcl_min">
+                                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>FCL Min</th>
+                                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                                        <span>{{element.fcl_min}}</span>
+                                    </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="min_cbm">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>LCL Min</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                                            <span>{{element.min_cbm}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="optimal_cbm">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Optimal CBM</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                                            <span>{{element.optimal_cbm}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="max_cbm">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Max CBM</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.max_cbm}}</td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="preference">
+                                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Seq</th>
+                                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element; let i=index">
+                                            <span>{{i+1}}</span>
+                                        </td>
+                                    </ng-container>
+                                    <ng-container matColumnDef="edit">
+                                        <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                                        <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                                            <mat-icon id="edit{{i}}" color="primary" class="pointer" matTooltip="Edit Preference" (click)=editContainterPref(element)>edit</mat-icon>
+                                            <!-- <mat-icon *ngIf="element.edit_mode" id="edit{{i}}" class="pointer clrgreen" matTooltip="Edit Preference" (click)="element.edit_mode=false; validateInput(i, element)">save</mat-icon> -->
+                                        </td>
+                                    </ng-container>
+                                    <tr mat-header-row *matHeaderRowDef="tblSOPDispContainer; sticky: true;" class="tblrowht"></tr>
+                                    <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: tblSOPDispContainer;" cdkDrag [cdkDragData]="row"></tr>
+                                </table>
+                            </div>
+                            <div *ngIf="sopContainerColl?.data?.length == 0" [style.height.px]="screen.height-200" fxLayoutAlign="center center">
+                                <div fxLayout="column" fxLayoutAlign="center center">
+                                    <mat-icon class="md-96" style="opacity:0.2">swap_horiz</mat-icon>
+                                    <div class="font_12">Drag and Drop from Available list and modify your preference</div>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+        <div *ngIf="dispLCLCons" class="mainsection" [style.width.px]="screen.width-130" >
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                    <mat-card-title class="font_14 fntwt600">LCL Consolidation Program Details</mat-card-title>
+                    <button mat-raised-button class="btnpri btnauto" (click)="addNewLCLInst();"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW INSTRUCTION</span></button>
+                </div>
+                <div class="mgntop10">
+                    <mat-grid-list cols="1" rowHeight="50px" gutterSize="10px" style="width:100%">
+                        <mat-grid-tile *ngFor="let grid of lclConsColl; let ix=index">
+                            <div fxLayout="row" fxLayoutAlign="start center" style="width:100%">
+                                <div style="width:75px" fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-icon *ngIf="grid.is_selected" class="clrred pointer mgnleft10" matTooltip="Click to remove" (click)="grid.is_selected=false;grid.edit=false;removeComm(grid,ix)">cancel</mat-icon>
+                                    <mat-icon *ngIf="!grid.is_selected" class="clrblue pointer mgnleft10" matTooltip="Click to Add" (click)="grid.is_selected=true;grid.edit=false;saveCommunication(grid,'communication')">add_circle</mat-icon>
+                                    <mat-icon *ngIf="grid.is_selected && !grid.edit" class="clrblue pointer mgnleft10" (click)="grid.edit=true; grid.focus=true">edit</mat-icon>
+                                    <mat-icon *ngIf="grid.is_selected && grid.edit" class="clrgreen pointer mgnleft10" (click)="grid.edit=false; grid.focus=false; saveCommunication(grid,'communication')">save</mat-icon>
+                                </div>
+                                <div class="font_12 fntwt600" style="padding:5px 0 5px 5px; color:var(--textcolor); width:20px">{{ix+1}}.</div>
+                                <div *ngIf="grid.edit && grid.msg==undefined" style="width:100%; padding:2px;" >
+                                    <textarea cdkTextareaAutosize mat-input id="inst{{ix}}" placeholder="Type your Instruction here" style="outline: none; max-height: 40px; width:98%" [(ngModel)]="grid.instruction"></textarea>
+                                </div>
+                                <div *ngIf="!grid.edit && grid.msg==undefined" style="padding-left:5px; max-height:40px; overflow-y: auto; width:98%">{{grid.instruction}}</div>
+                                <div *ngIf="grid.msg!=undefined" fxLayoutAlign="center center" style="height:100%; width:100%">{{grid.msg}}</div>
+                            </div>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                </div>
+                    <!-- <mat-grid-list cols="2" rowHeight="4:1" gutterSize="10px">
+                        <mat-grid-tile *ngFor="let grid of lclConsColl; let ix=index">
+                            <div fxLayout="column" fxLayoutAlign="start start" style="width:100%">
+                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" style="width:100%">
+                                    <div class="font_12 fntwt600" style="padding:5px 0 5px 5px; color:var(--textcolor)">{{ix+1}}.Instruction</div>
+                                    <mat-icon *ngIf="grid.is_selected" class="clrred pointer" matTooltip="Click to remove" (click)="grid.is_selected=false;grid.edit=false;removeComm(grid,ix)">cancel</mat-icon>
+                                    <mat-icon *ngIf="!grid.is_selected" class="clrblue pointer" matTooltip="Click to Add" (click)="grid.is_selected=true;grid.edit=false;saveCommunication(grid,'LCL Consolidation')">add_circle</mat-icon>
+                                    <mat-icon *ngIf="grid.is_selected && !grid.edit" style= "padding: 3px;border: 1px solid var(--active); color: white; border-radius: 100%; background-color:var(--active)" class="pointer md-14" (click)="grid.edit=true; grid.focus=true">edit</mat-icon>
+                                    <mat-icon *ngIf="grid.is_selected && grid.edit" style= "padding: 3px;border: 1px solid var(--active); color: white; border-radius: 100%; background-color:var(--active)" class="pointer md-14" (click)="grid.edit=false; grid.focus=false; saveCommunication(grid,'LCL Consolidation')">save</mat-icon>
+                                </div>
+                                <div *ngIf="grid.edit && grid.msg==undefined" style="width:100%; padding:2px;" >
+                                    <textarea cdkTextareaAutosize mat-input id="inst{{ix}}" placeholder="Type your Instruction here" style="outline: none; max-height: 80px; width:98%" [(ngModel)]="grid.instruction"></textarea>
+                                </div>
+                                <div *ngIf="!grid.edit && grid.msg==undefined" style="padding-left:5px; max-height:80px; overflow-y: auto;">
+                                    {{grid.instruction}}
+                                </div>
+                                <div *ngIf="grid.msg!=undefined" fxLayoutAlign="center center" style="height:100%; width:100%">{{grid.msg}}</div>
+                            </div>
+                        </mat-grid-tile>
+                    </mat-grid-list> -->
+        </div>
+        <div *ngIf="dispFCLCons" class="mainsection" [style.width.px]="screen.width-130"> 
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                    <mat-card-title class="font_14 fntwt600">FCL Program Details</mat-card-title>
+                    <button mat-raised-button class="btnpri btnauto" (click)="addNewInst();"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_12" style="font-weight: 600;">ADD NEW INSTRUCTION</span></button>
+                </div>
+                <div style="margin-top:10px">
+                    <mat-grid-list cols="1" rowHeight="50px" gutterSize="10px">
+                        <mat-grid-tile *ngFor="let grid of fclConsColl; let ix=index">
+                            <div fxLayout="row" fxLayoutAlign="start center" style="width:100%">
+                                <div style="width:75px" fxLayout="row" fxLayoutAlign="start center">
+                                    <mat-icon *ngIf="grid.is_selected" class="clrred pointer mgnleft10" matTooltip="Click to remove" (click)="grid.is_selected=false;grid.edit=false;removeComm(grid,ix)">cancel</mat-icon>
+                                    <mat-icon *ngIf="!grid.is_selected" class="clrblue pointer mgnleft10" matTooltip="Click to Add" (click)="grid.is_selected=true;grid.edit=false;saveCommunication(grid,'communication')">add_circle</mat-icon>
+                                    <mat-icon *ngIf="grid.is_selected && !grid.edit" class="clrblue pointer mgnleft10" (click)="grid.edit=true; grid.focus=true">edit</mat-icon>
+                                    <mat-icon *ngIf="grid.is_selected && grid.edit" class="clrgreen pointer mgnleft10" (click)="grid.edit=false; grid.focus=false; saveCommunication(grid,'communication')">save</mat-icon>
+                                </div>
+                                <div class="font_12 fntwt600" style="padding:5px 0 5px 5px; color:var(--textcolor); width:20px">{{ix+1}}.</div>
+                                <div *ngIf="grid.edit && grid.msg==undefined" style="width:100%; padding:2px;" >
+                                    <textarea cdkTextareaAutosize mat-input id="inst{{ix}}" placeholder="Type your Instruction here" style="outline: none; max-height: 40px; width:98%" [(ngModel)]="grid.instruction"></textarea>
+                                </div>
+                                <div *ngIf="!grid.edit && grid.msg==undefined" style="padding-left:5px; max-height:40px; overflow-y: auto; width:98%">{{grid.instruction}}</div>
+                                <div *ngIf="grid.msg!=undefined" fxLayoutAlign="center center" style="height:100%; width:100%">{{grid.msg}}</div>
+                            </div>
+                        </mat-grid-tile>
+                    </mat-grid-list>
+                </div>
+                    <!-- <mat-grid-list cols="2" rowHeight="4:1" gutterSize="10px">
+                        <mat-grid-tile *ngFor="let grid of fclConsColl; let ix=index">
+                            <div fxLayout="column" fxLayoutAlign="start start" style="width:100%">
+                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px" style="width:100%">
+                                    <div class="font_12 fntwt600" style="padding:5px 0 5px 5px; color:var(--textcolor)">{{ix+1}}.Instruction</div>
+                                    <mat-icon *ngIf="grid.is_selected" class="clrred pointer" matTooltip="Click to remove" (click)="grid.is_selected=false;grid.edit=false;removeComm(grid,ix)">cancel</mat-icon>
+                                    <mat-icon *ngIf="!grid.is_selected" class="clrblue pointer" matTooltip="Click to Add" (click)="grid.is_selected=true;grid.edit=false;saveCommunication(grid,'FCL Program')">add_circle</mat-icon>
+                                    <mat-icon *ngIf="grid.is_selected && !grid.edit" style= "padding: 3px;border: 1px solid var(--active); color: white; border-radius: 100%; background-color:var(--active)" class="pointer md-14" (click)="grid.edit=true; grid.focus=true">edit</mat-icon>
+                                    <mat-icon *ngIf="grid.is_selected && grid.edit" style= "padding: 3px;border: 1px solid var(--active); color: white; border-radius: 100%; background-color:var(--active)" class="pointer md-14" (click)="grid.edit=false; grid.focus=false; saveCommunication(grid,'FCL Program')">save</mat-icon>
+                                </div>
+                                <div *ngIf="grid.edit && grid.msg==undefined" style="width:100%; padding:2px;" >
+                                    <textarea cdkTextareaAutosize mat-input id="inst{{ix}}" placeholder="Type your Instruction here" style="outline: none; max-height: 80px; width:98%" [(ngModel)]="grid.instruction"></textarea>
+                                </div>
+                                <div *ngIf="!grid.edit && grid.msg==undefined" style="padding-left:5px; max-height:80px; overflow-y: auto;">
+                                    {{grid.instruction}}
+                                </div>
+                                <div *ngIf="grid.msg!=undefined" fxLayoutAlign="center center" style="height:100%; width:100%">{{grid.msg}}</div>
+                            </div>
+                        </mat-grid-tile>
+                    </mat-grid-list> -->
+        </div>
+    </div>
+</div>

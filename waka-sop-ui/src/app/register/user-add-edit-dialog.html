@@ -1,0 +1,56 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <mat-label color="primary" class="mgnleft10">Register User</mat-label>
+  <mat-icon id="close" color="warn" class="pointer" matTooltip="Close dialog" (click)="onClose(false)">cancel</mat-icon>
+</div>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="24px">
+      <mat-form-field class="inputbox content-wrapper no-padding-btm">
+        <div fxLayout="row" style="margin-top:-10px">
+          <input matInput placeholder="Email" formControlName="Email" name="Email" id="Email" readonly="readonly" onfocus="javascript: this.removeAttribute('readonly')" (blur)="validateEmail()" required>
+          <span *ngIf="checkEmail" fxLayoutAlign="right"><mat-icon class="font_20 clrgreen"  matTooltip="Valid Email">check_circle</mat-icon></span>
+          <span *ngIf="!checkEmail" fxLayoutAlign="right"><mat-icon class="font_20" color="warn" matTooltip="Email already exist">cancel</mat-icon></span>
+        </div>
+        <mat-error *ngIf="form.get('Email').invalid" style="margin-top:8px">{{getErrorMessage(form.get('Email'),'Email')}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="inputbox content-wrapper no-padding-btm">
+        <input matInput placeholder="Name" formControlName="Name" name="Name" id="Name" required>
+        <mat-error *ngIf="form.get('Name').invalid" style="margin-top:8px">{{getErrorMessage(form.get('Name'),'Name')}}</mat-error>
+      </mat-form-field>
+      <mat-form-field *ngIf="data.user_id == undefined" class="inputbox content-wrapper no-padding-btm">
+        <input matInput placeholder="Password" formControlName="Password" [type]="phide ? 'password' : 'text'" name="Password" id="Password" required>
+        <button mat-icon-button matSuffix (click)="phide = !phide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="phide">
+          <mat-icon>{{phide ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+      <mat-form-field *ngIf="data.user_id == undefined" class="inputbox content-wrapper no-padding-btm">
+          <input matInput placeholder="Confirm Password" formControlName="Confirm" [type]="cphide ? 'password' : 'text'" name="Confirm" id="Confirm" required>
+          <button mat-icon-button matSuffix (click)="cphide = !cphide" [attr.aria-label]="'Hide confirm password'" [attr.aria-pressed]="cphide">
+            <mat-icon>{{cphide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+      </mat-form-field>
+      <div fxLayout="row">
+        <mat-form-field class="inputboxsmall content-wrapper no-padding-btm" style="font-weight: 600;margin-right:5px">
+          <mat-select placeholder="Country" formControlName="MobileCountry" name="MobileCountry" class="capitalize font_12">
+              <mat-select-trigger>+{{form.get('MobileCountry')?.value?.country_code}}</mat-select-trigger>
+              <mat-option class="capitalize" *ngFor="let ele of countryCodeColl" [value]="ele">{{ele.country_name}}<span class="mgnleft5">(+{{ele.country_code}})</span></mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputboxmedium content-wrapper no-padding-btm" style="margin-left:2px">
+            <input matInput placeholder="Mobile No" formControlName="Mobile" name="Mobile" id="Mobile">
+            <mat-error *ngIf="form.get('Mobile').invalid" style="margin-top:5px" class="font_10">{{getErrorMessage(form.get('Mobile'),'Mobile')}}</mat-error>
+        </mat-form-field>
+        <mat-form-field *ngIf="!data.is_admin && data.user_id==undefined" class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;margin-right:5px">
+          <mat-select placeholder="Company" formControlName="Company" name="Company" class="capitalize font_12">
+              <mat-option class="capitalize" *ngFor="let ele of compColl" [value]="ele">{{ele.company_name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <mat-label class="clrred">{{getErrorMessage(form,'form')}}</mat-label>
+  </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center">
+  <button id="btnRegister" [disabled]="form.invalid" mat-raised-button color="primary" (click)="register()">Register</button>
+  <button id="btnCancel"  mat-raised-button color="accent" mat-tooltip="Go to Login page" (click)="onClose(false)">Cancel</button>
+</div>

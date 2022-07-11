@@ -1,0 +1,101 @@
+<!-- <app-login-header></app-login-header> -->
+<!-- Loader section -->
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 16px 16px;">
+    <div style="height: 80px;">
+        <div style="position: fixed;top: 84px; left: 80px; z-index: 100;">
+            <div (click)="goBack()" class="pointer" fxLayout="row" fxLayoutAlign="center center">
+                <mat-icon>arrow_back</mat-icon>
+                <span style="margin-left:10px;">Back to Company</span>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="start center" class="tabSideAction" fxLayoutGap="15px" style="margin-right:10px"> 
+            <div class="inputboxsingle inboxminwidth">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                    <mat-icon class="icon">search</mat-icon>
+                    <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                        <input class="text" type="text" (keyup)="applyCompanyFilter($event)" placeholder="Search by Contact Name, Role etc" name="Name" id="Name" required>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button mat-button class="btnpri btnauto" (click)="addCompanyContact()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">INVITE CONTACT</span></button>
+            </div>
+        </div>
+    </div>
+        <div [hidden]="contactColl?.data?.length == 0" [style.height.px]="contactColl.data.length > 0 ? ht : ''" fxLayout="column" fxLayoutAlign="space-between center" style="overflow: auto">
+            <table mat-table #TableSort="matSort" [dataSource]="contactColl" matSort style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:98%" [hidden]="contactColl?.data?.length==0">
+                <ng-container matColumnDef="contact_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>CONTACT NAME</th>
+                    <td mat-cell class="font_12 capitalize tbl-row-pad"*matCellDef="let element">{{element.contact_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>CONTACT EMAIL</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.email}}</td>
+                </ng-container>
+                <ng-container matColumnDef="mobile">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>MOBILE</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.mobile}}</td>
+                </ng-container>
+                <ng-container matColumnDef="role_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>ASSIGNED ROLES</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element" (mouseover)="element.show = true" (mouseout)="element.show =false">
+                        {{element?.roles != null ? element?.roles.length : ''}}
+                        <div *ngIf="element.show && element?.roles != null"  style="border-radius:4px; padding:12px; box-shadow: 0 2px 4px 0 rgba(69, 148, 211, 0.16); position: absolute; display:block; right: 430px; z-index:1; background-color: var(--white);">
+                            <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px" *ngFor="let role of element.roles">
+                                <span>{{role.role_name}}</span>
+                            </div>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>LICENSE STATUS</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                        <div *ngIf="!element.is_accepted && !element.is_denied && !element.is_revoked && element.status =='admin'">
+                            <div id="lic">Admin</div>
+                        </div>
+                        <div *ngIf="!element.is_accepted && !element.is_denied && !element.is_revoked && element.status !='admin'" fxLayout="row" fxLayoutAlign="start center">
+                            <div id="lic">Invited</div>
+                            <mat-icon style="color: #feb75d;" class="mgnleft5 md-14">access_time_filled</mat-icon>
+                        </div>
+                        <div *ngIf="element.is_accepted && !element.is_denied && !element.is_revoked && element.status !='admin'" id="lic" fxLayout="row" fxLayoutAlign="start center">
+                            <div id="lic">Registered</div>
+                            <mat-icon class="mgnleft5 md-14 clrgreen">check_circle</mat-icon>
+                        </div>
+                        <div *ngIf="element.is_denied && !element.is_revoked && element.status !='admin'" fxLayout="row" fxLayoutAlign="start center">
+                            <div id="lic">Denied</div>
+                            <mat-icon style="color: #000000;" class="mgnleft5 md-14">cancel</mat-icon>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="edit">
+                    <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                    <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                        <mat-icon  color="primary" class="pointer" matTooltip="Edit Contact" (click)="editCompanyContact(element)">edit</mat-icon>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="delete">
+                    <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                    <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                        <mat-icon *ngIf="!element.is_deleted && !element.is_denied && element.status !='admin' && userDetails.user_id != element.invitee_user_id" id="delete{{i}}" color="warn" class="pointer" matTooltip="Delete Contact" (click)="delCompanyContact(element)">delete</mat-icon>
+                        <mat-icon *ngIf="element.is_deleted && element.status !='admin'" id="delete{{i}}" style="color: rgb(61, 160, 66);" class="pointer" matTooltip="Retrieve Contact" (click)="delCompanyContact(element)">unarchive</mat-icon>
+                        <mat-icon *ngIf="element.is_denied && element.status !='admin'" id="delete{{i}}" style="color: rgb(102, 102, 102);" class="pointer" matTooltip="Delete Not Allowed">delete</mat-icon> 
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="dispcompany; sticky: true;" class="tblrowht"></tr>
+                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispcompany;"></tr>
+            </table>
+        </div>
+        <div *ngIf="contactColl?.data?.length == 0 && !isLoading" [style.height.px]="screenParam?.height-90" fxLayoutAlign="center center" style="border:1px var(--lightgray) solid; border-radius: 10px;">
+            <div fxLayout="column" fxLayoutAlign="center center">
+                <mat-icon class="md-96" style="opacity:0.2">person_add</mat-icon>
+                <div class="font_12">Click on Invite Contact to invite a new contact to the Company</div>
+                <div style="margin-top: 16px;">
+                    <button mat-button class="btnpri btnauto" (click)="addCompanyContact()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">INVITE CONTACT</span></button>
+                </div>
+            </div>
+        </div>
+
+</div>

@@ -1,0 +1,35 @@
+// .footer, .footer-space { height: 0px; }
+// .header, .header-space { height: 50px;}
+// .header { position: fixed; top: 0; text-align: end; }
+// .footer { position: fixed; bottom: 0; height: 20px; background-color: #1c75bd; width: 100%;   -webkit-print-color-adjust: exact;}
+
+// .contentheader{
+//     page-break-after: always; 
+// }
+
+.header{
+    display:block; 
+    position:fixed; 
+    top: 0px;   
+    right:0px;
+}
+
+.footer {
+    z-index: 1;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width:100%;
+    display:block;
+    height: 20px;
+    background-color: #1c75bd; width: 100%;
+    -webkit-print-color-adjust: exact;
+}
+
+.header-space {
+    padding-bottom: 100px !important;
+}
+
+.footer-space {
+    padding-top: 60px !important;
+}

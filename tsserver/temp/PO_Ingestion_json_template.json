@@ -1,0 +1,95 @@
+{
+  "interfacename": "interfacename",
+  "originator": "originator",
+  "purchaseorders": [
+    {
+      "runnumber": "runnumber",
+      "rundate": "rundate",
+      "purchaseorder": [
+        {
+          "consigneecode": "consigneecode",
+          "consigneename": "consigneename",
+          "ordernumber": "ordernumber",
+          "ordercalloff": "ordercalloff",
+          "ordertype": "ordertype",
+          "orderdate": "orderdate",
+          "suppliercode": "suppliercode",
+          "suppliername": "suppliername",
+          "factorycode": "factorycode",
+          "factoryname": "factoryname",
+          "buyingagent": "buyingagent",
+          "buyercode": "buyercode",
+          "buyername": "buyername",
+          "buyingterms": "buyingterms",
+          "merchandisercode": "merchandisercode",
+          "merchandisername": "merchandisername",
+          "priority": "priority",
+          "channel": "channel",
+          "division": "division",
+          "department": "department",
+          "category": "category",
+          "season": "season",
+          "segment": "segment",
+          "promotionstartdate": "promotionstartdate",
+          "promotioncode": "promotioncode",
+          "promotionname": "promotionname",
+          "totalquantity": "totalquantity",
+          "totalcartons": "totalcartons",
+          "totalcube": "totalcube",
+          "totalweight": "totalweight",
+          "totalprice": "totalprice",
+          "allocations": [
+            {
+              "allocation": [
+                {
+                  "mode": "mode",
+                  "loadtype": "loadtype",
+                  "originportcode": "originportcode",
+                  "originportname": "originportname",
+                  "viaportcode": "viaportcode",
+                  "viaportname": "viaportname",
+                  "destinationportcode": "destinationportcode",
+                  "destinationportname": "destinationportname",
+                  "destinationdccode": "destinationdccode",
+                  "destinationdcname": "destinationdcname",
+                  "shipdate": "shipdate",
+                  "latestshipdate": "latestshipdate",
+                  "deliverydate": "deliverydate",
+				  "cargoreadydate": "cargoreadydate",
+                  "currentwarehouseduedate": "currentwarehouseduedate",
+                  "productdetails": [
+                    {
+                      "productdetail": [
+                        {
+                          "product": "product",
+                          "identifier": "identifier",
+                          "sku": "sku",
+                          "customerreference": "customerreference",
+                          "supplierreference": "supplierreference",
+                          "description": "description",
+                          "commoditycode": "commoditycode",
+                          "colour": "colour",
+                          "primarysize": "primarysize",
+                          "secondarysize": "secondarysize",
+                          "quantity": "quantity",
+                          "cartons": "cartons",
+                          "cube": "cube",
+                          "weight": "weight",
+                          "packtype": "packtype",
+                          "productpriority": "productpriority",
+                          "productdepartment": "productdepartment",
+                          "productcategory": "productcategory",
+                          "productbuyer": "productbuyer"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

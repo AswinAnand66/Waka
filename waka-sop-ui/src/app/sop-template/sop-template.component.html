@@ -1,0 +1,1419 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; background-color: rgba(255, 255, 255, 0.8); opacity: 1; margin:5px 10px;">
+    <div>
+        <mat-icon class="fa-spin" style="color: steelblue; font-size: 24px; margin-right: 5px;">data_saver_off</mat-icon>
+        <span style="font-size: 32px; font-weight: 600; color: steelblue;">Rendering Pdf ...</span>
+    </div>
+</div>
+<div style="margin-left: 35px; margin-right: 35px;">
+    <div style="page-break-before: always; margin-top: 100px;">
+        <h2 class="alignleft clrblue" style="font-weight: 600;">REVISION HISTORY</h2>
+        <div fxLayoutAlign="center center">
+            <table>
+                <tr>
+                    <th>Version No</th>
+                    <th>Aprroved on</th>
+                    <th>Effective Date</th>
+                    <th>Approver (Frightforwarder)</th>
+                    <th>Approver (Principal)</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                  <td>1.0</td>
+                  <td>--</td>
+                  <td>--</td>
+                  <td>{{sop.ff_company}}</td>
+                  <td>{{sop.p_company}}</td>
+                  <td>First Version</td>
+                </tr>
+              </table>
+        </div>
+    </div>
+    <div  id="sopdetails" style="page-break-before: always; margin-top: 100px;">
+        <h2 class="alignleft clrblue" style="font-weight: 600;">1. SOP Details</h2>
+        <div fxLayoutAlign="center center">
+            <div fxFlex="70">
+                <div fxLayout="row" fxFlex="100">
+                    <div fxFlex="55">
+                        <ul style="list-style-type:none;">
+                            <li>SOP VERSION:</li>
+                            <li>SOP EFFECTIVE DATE:</li>
+                            <li>PRINCIPAL:</li>
+                            <li>FREIGHT FORWARDER:</li>
+                            <li>MARKER DATE:</li>
+                        </ul>
+                    </div>
+                    <div fxFlex="55">
+                        <ul style="list-style-type:none;">
+                            <li>1.0</li>
+                            <li> -- </li>
+                            <li>{{sop.p_company}}</li>
+                            <li>{{sop.ff_company}}</li>
+                            <li> {{sop.rmd}} </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div  id="contacts" style="page-break-before: always; margin-top: 100px;">
+        <h2 class="alignleft clrblue" style="font-weight: 600">2. Contacts</h2>
+        <div class="mgnleft24 clrblue" style="font-weight: 600; font-size: 15px;">2.1 Contact Details of Principal</div>
+        <table mat-table #table [dataSource]="principalContacts" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%">
+            <ng-container matColumnDef="contact_name">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef >NAME</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.contact_name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>DESIGNATION</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.designation}}</td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef >EMAIL</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.email}}</td>
+            </ng-container>
+            <ng-container matColumnDef="mobile">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>MOBILE</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.mobile}}</td>
+            </ng-container>
+            <ng-container matColumnDef="wechat_id">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>WECHAT-ID</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.wechat_id}}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="tblContactDisp;" class="tblrowht"></tr>
+            <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: tblContactDisp;"></tr>
+        </table>
+        <div class="mgnleft24 clrblue" style="font-weight: 600; font-size: 15px; margin-top: 20px;">2.2 Contact Details of Logistics Provider</div>
+        <table mat-table #table [dataSource]="FFContacts" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%">
+            <ng-container matColumnDef="contact_name">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef >NAME</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.contact_name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="designation">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>DESIGNATION</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.designation}}</td>
+            </ng-container>
+            <ng-container matColumnDef="email">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef >EMAIL</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.email}}</td>
+            </ng-container>
+            <ng-container matColumnDef="mobile">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>MOBILE</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.mobile}}</td>
+            </ng-container>
+            <ng-container matColumnDef="wechat_id">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>WECHAT-ID</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.wechat_id}}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="tblContactDisp;" class="tblrowht"></tr>
+            <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: tblContactDisp;"></tr>
+        </table>
+    </div>
+    <div  id="stakeholders" style="page-break-before: always; margin-top: 100px;">
+        <h2 class="alignleft clrblue" style="font-weight: 600">3. Stakeholders</h2>
+        <div *ngFor = "let st of stakeholders; let i = index" style="page-break-inside: avoid;">
+            <div class="mgnleft24 capitalize clrblue" style="font-weight: 600; font-size: 15px; page-break-before: auto;"> 3.{{i+1}} {{st.company_type}} </div>
+            <div fxLayout="row mgnleft24" fxLayoutAlign="start">
+                <table style="border: solid 1px rgba(155, 168, 179, 0.22); width:fit-content;margin: 20px;">
+                    <tr>
+                        <th >Stakeholder Company</th>
+                        <td >{{st.company_name}}</td>
+                    </tr>
+                    <tr>
+                        <th >Contract Number</th>
+                        <td >{{st.contract_no}}</td>
+                    </tr>
+                    <tr>
+                        <th >Contract Validity</th>
+                        <td >{{st.valid_from | date:'dd MMM yyyy'}} to {{st.valid_to | date:'dd MMM yyyy'}}</td>
+                    </tr>
+                    <tr>
+                        <th >Country</th>
+                        <td >{{st.country_name}}</td>
+                    </tr>
+                    <tr>
+                        <th >Contact Name</th>
+                        <td >{{st.contact_name}}</td>
+                    </tr>
+                    <tr>
+                        <th >Contact Email</th>
+                        <td >{{st.email}}</td>
+                    </tr>
+                    <tr>
+                        <th >Contact Phone Number</th>
+                        <td >{{st.mobile}}</td>
+                    </tr>
+                </table>    
+            </div>
+        </div>
+    </div>
+    <div  id="portpairs" style="page-break-before: always; margin-top: 100px;">
+        <h2 class="alignleft clrblue" style="font-weight: 600">4. Port Pairs </h2>
+        <div fxLayout="row">
+            <table mat-table #table [dataSource]="sopPortColl" matSort style="width:99%;">
+                <ng-container matColumnDef="origin_country_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Origin Country</th>
+                    <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.origin_country_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="origin_port">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Origin Port</th>
+                    <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.origin_port}}</td>
+                </ng-container>
+                <ng-container matColumnDef="dest_port">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Destination Port</th>
+                    <td mat-cell style="color: var(--inlineeditclr);"l class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.dest_port}}</td>
+                </ng-container>
+                <ng-container matColumnDef="dest_country_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Destination Country</th>
+                    <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.dest_country_name}}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="dispSOPPort; sticky: true;" class="tblrowht"></tr>
+                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispSOPPort;"></tr>
+            </table>
+        </div>
+    </div>
+    <div  id="scopeofagreement" style="page-break-before: always; margin-top: 100px;">
+        <h2 class="alignleft clrblue" style="font-weight: 600">5. Scope of Agreement</h2>
+        <div class="mgnleft20 clrblue">The following are the services to be provided to Principal</div>
+        <div class="subporeport1" *ngFor="let ct of objectKeys(section2['Services']); let i = index">
+            <div class="mgnleft25 txt mgntop10" *ngIf="ct != 'Shipment Tracking Services'">{{ct}}</div>
+            <div class="mgnleft40 mgntop10" *ngIf="ct != 'Shipment Tracking Services'">
+                <span class="mgnleft10">Selected services will be handled by freight forwarder at origin</span>
+                <ol type="i">
+                    <div class="mgnleft20" *ngFor="let service of section2['Services'][ct]; let idx = index">
+                        <div *ngIf="service.is_selected" fxLayout="row" fxLayoutGap="5px">
+                            <li>{{service.service_name}}</li>
+                        </div>
+                    </div>
+                </ol>
+                <span class="mgnleft10">Avaliable services</span>
+                <ol type="i">
+                    <div class="mgnleft20" *ngFor="let service of section2['Services'][ct]; let idx = index">
+                        <div *ngIf="!service.is_selected" fxLayout="row" fxLayoutGap="5px">
+                            <li>{{service.service_name}}</li>
+                        </div>
+                    </div>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div  id="commins" style="page-break-before: always; margin-top: 100px;">
+        <h2 class="alignleft clrblue" style="font-weight: 600">6. Communication Instructions</h2>
+        <div class="mgnleft20 clrblue">The following are the instructions on the communications to be done during the shipment process.</div>
+        <div class="mgnleft40 mgntop20" fxLayout="column" fxLayoutGap="2px" *ngFor="let comm of section3['Communications']; let idx = index">
+            <span>{{idx+1}}. &nbsp; {{comm.instruction}}</span>
+        </div>
+    </div>
+    <div  id="exportprocedure" style="page-break-before: always; margin-top: 100px;">
+        <h2 class="alignleft clrblue" style="font-weight: 600">7. Export Procedure</h2>
+        <div id="pobooking">
+            <span class="alignleft print_content_sub_heading">a. PO and Booking</span>
+            <br/>
+            <span class="mgnleft25">This section describes the PO Management services that will be provided by the Freight forwarder by complying with the instructions provided by the Principal.</span>
+            <div class="mgnleft25 mgntop15" *ngFor="let pob of section4['PO & Booking']['PO Management']">
+                <div *ngFor="let pop of pob['fields']">
+                    <div *ngIf="pop.group == 'Purchase Order Posting'">
+                        <div *ngIf="pob.is_selected">
+                            <span class="alignleft mgnleft25 mgnbtm10 sub_heading_child">i. PO Posting</span>
+                            <div class="mgnleft40" *ngFor="let chField of pop.field0.field">
+                                <span>{{chField.pretext}} {{chField.value}} {{chField.posttext}} {{chField.child[0].field[0].value}}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="pop.group == 'Exception Alert for Purchase Order Uploaded' && pob.is_selected">
+                        <span class="alignleft mgnleft25 mgnbtm10 sub_heading_child">ii. PO upload exception alert</span>
+                        <br/>
+                        <span class="mgnleft30">The Selected Parties must be notified in case of exception alert.</span>
+                        <div class="mgnleft40" *ngFor="let chField of pop.field0.field">
+                            <div *ngIf="chField.fieldname =='Principal Details'">
+                                <div class="txt mgnbtm5">1. Principal Details</div>
+                                <div class="mgnleft40" *ngFor="let chchField of chField['child']">
+                                    <div *ngFor="let person of chchField.field[0].value">
+                                        <span>{{person.contact_name}} - {{person.company_name}}, {{person.country_name}}. </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="chField.fieldname =='Freight Forwarder'">
+                                <div  class="txt mgnbtm5 mgntop10">2. Forwarder Details</div>
+                                <div class="mgnleft40" *ngFor="let chchField of chField['child']">
+                                    <div *ngFor="let person of chchField.field[0].value">
+                                        <span>{{person.contact_name}} - {{person.company_name}}, {{person.country_name}}. </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="pop.group == 'Receive PO Confirmation by Supplier' && pob.is_selected">
+                        <div *ngIf="pob.is_selected">
+                            <span class="alignleft mgnleft25 mgnbtm10 sub_heading_child">iii. PO Confirmation</span>
+                            <div class="mgnleft40" *ngFor="let chField of pop.field0.field; let idx =index;">
+                                <span>{{idx+1}}. {{chField.pretext}} {{chField.value}} days</span>
+                            </div>
+                        </div>
+                        <div *ngIf="!pob.is_selected">
+                            <h4 class="alignleft mgnleft20 capitalize clrbrown">PO Confirmation</h4>
+                            <span>The Principal does not want the Freight Forwarder to get PO Confirmation from the Supplier.  The PO provided by the Principal is always considered Confirmed</span>
+                        </div>
+                    </div>
+                    <div class="mgntop10" *ngIf="pop.group.includes('Require Principal') && pob.is_selected">
+                        <div class="mgnleft40" *ngFor="let chField of pop.field0.field">
+                            <span>2. {{chField.selLabel}}</span>
+                            <div class="mgnleft10 mgntop5" *ngFor="let sel of chField.value; let idx =index;">
+                                <span>{{idx+1}}. {{sel}}</span>
+                            </div>
+                        </div>
+                     </div>
+                     <div class="mgntop10" *ngIf="pop.group.includes('Date of Progress Check')">
+                        <div  class="alignleft mgnleft25 mgnbtm10 sub_heading_child">iv. Progress Check</div>
+                        <div class="mgnleft40" *ngIf="pob.is_selected">
+                            <div *ngFor="let chField of pop.field0.field">
+                                <span>{{chField.pretext}} {{chField.value}} {{chField.posttext}} {{chField.child[0].field[0].value}}</span>
+                            </div>
+                        </div>
+                        <div class="mgnleft40" *ngIf="!pob.is_selected"><span>The Principal does not want the Freight Forwarder to report progress updates from the Supplier.  </span></div>
+                     </div>
+                </div>
+            </div>
+            <div class="mgntop10 mgnleft25" *ngFor="let pob of section4['PO & Booking']['Supply Chain Support']">
+                <div class="alignleft mgnleft25 mgnbtm10 sub_heading_child">v. Supply Chain Support </div>
+                <div class="mgnleft40" *ngIf="pob.is_selected">
+                    <span>The Supply chain activities of the Supplier will be reported by the Freight Forwarder</span>
+                </div>
+                <div class="mgnleft40" *ngIf="!pob.is_selected">
+                    <span>The Principal does not want the Freight Forwarder to report supply chain updates from the Supplier.</span>
+                </div>
+            </div>
+        </div>
+        <div class="subporeport mgntop15" id="shipbookmanage">
+            <span class="alignleft print_content_sub_heading">b. Shipment Booking Management</span>
+                <div class="mgntop10 mgnleft25" *ngFor="let pob of section4['PO & Booking']['Shipment Booking']">
+                    <div *ngIf="pob.sub_grp == 'Data for Booking Confirmation'">
+                        <span class="alignleft mgnleft25 mgnbtm10 sub_heading_child">i. Data for Booking Confirmation</span>
+                        <br/>
+                        <span class="mgnleft25">The following information will be included in the Booking confirmation sent to the Supplier.</span>
+                        <div class="mgnleft30" *ngFor="let sbm of pob['fields']">
+                            <div *ngIf="sbm.group == 'General Details for Booking Confirmation'">
+                                <h4 class="alignleft mgnleft20 capitalize sub_heading_child">General Details for Booking Confirmation</h4>
+                                <div class="mgnleft25 mgntop5" *ngFor="let sel of pob.fields[0].field0.field[0].value; let idx =index;">
+                                    <span>{{idx+1}}. {{sel}}</span>
+                                </div>
+                            </div>
+                            <div *ngIf="sbm.group == 'Packaging Details for Booking Confirmation'">
+                                <h4 class="alignleft mgnleft20 capitalize sub_heading_child">Packaging Details for Booking Confirmation</h4>
+                                <div class="mgnleft25 mgntop5" *ngFor="let sel of pob.fields[1].field0.field[0].value; let idx =index;">
+                                    <span>{{idx+1}}. {{sel}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="pob.sub_grp == 'Grouping Criteria for Booking Confirmation'">
+                        <span class="alignleft mgnleft25 mgnbtm10 sub_heading_child">ii. Grouping Criteria for Booking Confirmation</span>
+                        <div class="mgnleft30" *ngFor="let sbm of pob['fields']">
+                            <div *ngIf="sbm.group == 'Grouping Criteria'">
+                                <span class="alignleft mgntop5">The following attributes define the criteria to group the Purchase Orders that will be part of one shipment booking.</span>
+                                <div class="mgnleft25 mgntop5" *ngFor="let sel of pob.fields[0].field0.field[0].value; let idx =index;">
+                                    <span>{{idx+1}}. {{sel}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="pob.sub_grp == 'Generate Booking Confirmation to the Supplier'">
+                        <span class="alignleft mgnleft25 mgnbtm10 sub_heading_child">iii. Cut off Date - Booking Confirmation to Supplier</span>
+                        <div class="mgnleft40" *ngFor="let sbm of pob['fields']">
+                            <div *ngIf="sbm.group == 'Reminder to Generate Booking Confirmation'">
+                                <span>1. Booking confirmation to the Supplier should be generated no earlier than {{sbm.field0.field[0].value}}  days prior to the {{sbm.field0.field[1].child[0].field[0].value}}</span>
+                                <br/>
+                                <span>2. Booking confirmation to the Supplier should be generated no later than {{sbm.field0.field[1].value}}  days prior to the {{sbm.field0.field[1].child[0].field[0].value}}</span>
+                            </div>
+                            <div *ngIf="sbm.group == 'Generate Booking Confirmation to the Supplier'">
+                                <div *ngFor="let chField of sbm.field0.field; let idx = index">
+                                    <span>3. Estimated sailing information should be {{chField.value ? 'included' : 'not included'}} as part of shipment booking confirmation.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="pob.sub_grp == 'Booking Reconfirmation by Supplier'">
+                        <span class="alignleft mgnleft25 mgnbtm10 sub_heading_child">iv. Booking Reconfirmation by Supplier</span>
+                        <div class="mgnleft40" *ngFor="let sbm of pob['fields']">
+                            <div *ngIf="sbm.group == 'Booking Reconfirmation Reminder to Supplier'">
+                                <div *ngFor="let chField of sbm.field0.field; let idx = index">
+                                    <span>3. A reminder should be sent {{chField.value}} days prior to the {{chField.child[0]?.field[0]?.value}}, to the Supplier to reconfirm the booking.</span>
+                                </div>
+                            </div>
+                            <div *ngIf="sbm.group == 'Final Booking Confirmation Release to Supplier'">
+                                <div *ngFor="let chField of sbm.field0.field; let idx = index">
+                                    <span>1. In the case of FCL, the final booking confirmation to the supplier should be sent to the supplier no earlier than {{chField.value}} {{chField.posttext}}</span>
+                                </div>
+                                <div *ngFor="let chField of sbm.field1.field; let idx = index">
+                                    <span>2. In the case of LCL, the final booking confirmation to the supplier should be sent to the supplier no earlier than {{chField.value}} {{chField.posttext}}</span>
+                                </div>
+                            </div>	
+                        </div>
+                    </div>
+                </div>
+                <div class="mgnleft10">
+                    <span class="alignleft mgnleft40 mgnbtm10 sub_heading_child">v. Shipment Authorization</span>
+                    <div class="mgnleft40" *ngFor="let pob of section4['PO & Booking']['Shipment Authorization']; let idx = index;">
+                        <div class="mgnleft10" *ngIf="pob.sub_grp == 'Require authorisation on discrepancy between Purchase Order and Booking Confirmation'">
+                            <span>1. The principal will have to authorize any discrepancy in the data listed below, between PO and booking confirmation.</span>
+                            <div *ngFor="let sa of pob['fields']">
+                                <div *ngIf="sa.group == 'Require shipment authorization'">
+                                    <div class="mgnleft10" *ngFor="let chField of sa.field0.field">
+                                        <div *ngFor="let auth of chField.value; let idx = index">
+                                            <span>{{idx+1}}. {{auth}}</span>                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mgnleft10" *ngIf="pob.sub_grp == 'Booking Re-Confirmation by Supplier'">
+                            <div *ngFor="let sa of pob['fields']">
+                                    <span>2. The quantity variance at the time of booking confirmation should be within {{sa.field0.field[0].value }}% to {{sa.field0.field[1].value}}% of the total booking quantity.</span>
+                            </div>
+                        </div>
+                        <div class="mgnleft10" *ngIf="pob.sub_grp == 'Require Shipment Re-authorization by Principal'">
+                            <div *ngIf="pob.is_selected">
+                                <span>3. The following are the PO attributes if updated by the Supplier would require re-authorization of Shipment booking</span>
+                                <div *ngFor="let sa of pob['fields']">
+                                    <div class="mgnleft10" *ngFor="let chField of sa.field0.field">
+                                        <div *ngFor="let reauth of chField.value; let idx = index">
+                                            <span>{{idx+1}}. {{reauth}}</span>                            
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mgnleft10" *ngIf="pob.sub_grp == 'Timing of Quality Check Approval'">
+                            <div *ngFor="let sa of pob['fields']">
+                                <div *ngFor="let chField of sa.field0.field">
+                                    <span class="text">4. {{ chField.pretext}} {{chField.child[0].field[0].value}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="subporeport mgntop15" id="documents">
+            <span class="print_content_sub_heading">c. Documents</span>
+            <div class="mgntop5">
+                <span class="static_txt">This section describes the principal's choices regarding consolidation of Purchase Orders</span>
+            </div>
+            <div class="mgnleft40 mgntop10 mgnbtm20" *ngFor="let con of section4['Documents']['Country']">
+                <div style="page-break-after: always;">
+                    <div style="break-inside: avoid; height:50px; background-color: var(--tabbg); padding: 12px; border: 1px solid rgb(122, 122, 122);" fxLayout="row" fxLayoutAlign="space-around start">
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <div class="capitalize txt font_12"><span style="color: var(--inlineeditclr);" class="capitalize font_12">Origin Country: </span>{{con.origin_country}}</div>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="start start">
+                            <div class="capitalize txt font_12"><span style="color: var(--inlineeditclr);" class="capitalize font_12">Destination Country: </span>{{con.dest_country}}</div>
+                        </div>
+                    </div>
+                    <div style="break-inside: avoid;" class="mgnleft40 mgntop10">
+                        <span class="sub_heading_child">i.	Government-mandated Documents</span>
+                        <div style="break-inside: avoid;" fxLayout="column" fxLayoutAlign="space-between start">
+                            <div class="mgnleft20">
+                                <div class="mgntop5">Government Documents</div>
+                                <div *ngFor="let gov of section4['Documents']['Government']">
+                                    <div class="mgnleft10" *ngIf="gov.sop_port_id == con.sop_port_ids[0]">
+                                        <div fxLayout="row" fxLayoutAlign="start start" class="mgntop5 clrblue txt">{{gov.doc_name}}</div>
+                                        <ol type="i">
+                                            <div *ngFor="let gen of gov['fields']">
+                                                <div class="mgnleft10" *ngFor="let csd of gen.field0.field[0].value; let idx = index">
+                                                   <li>{{csd}}</li>
+                                                </div>
+                                            </div>
+                                        </ol>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mgnleft20">
+                                <div class="mgntop5">Commercial Documents</div>
+                                <div *ngFor="let comm of section4['Documents']['Commercial']">
+                                    <div  class="mgnleft10" *ngIf="comm.sop_port_id == con.sop_port_ids[0]">
+                                        <div>
+                                            <div fxLayout="row" fxLayoutAlign="start start" class="mgntop5 clrblue txt">{{comm.doc_name}}</div>
+                                            <ol type="a">
+                                                <div *ngFor="let gen of comm['fields']">
+                                                    <div *ngIf="gen.field0.type =='select'">
+                                                        <div class="mgnleft10"  *ngFor="let cd of gen['field0']['field']">
+                                                            <li>Principal wants {{cd.controlname == 'IssCommDocsSelect' ? 'Commercial Invoice' : 'Packing List'}} to be generated in WAKA using {{cd.value == 'Use WAKA standard format' ? 'Waka' : 'Principal'}} format</li>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="gen.field0.type =='inlineedit'" fxLayout="row">
+                                                        <div class="mgnleft10"  *ngFor="let cd of gen['field0']['field']">
+                                                            <div *ngIf="cd.pretext == 'Number of originals'">
+                                                                <li>Principal want {{cd.value}} Originals and</li>
+                                                            </div>
+                                                            <div *ngIf="cd.pretext == 'and number of copies'">
+                                                                <li>{{cd.value}} Copies of {{cd.controlname == 'IssCommInvNoofCopies' ? 'Commercial Invoice' : 'Packing List'}}.</li>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ol>
+                                            <div class="mgnleft10" *ngIf="comm.doc_name == 'Requirement of MSDS (Material Safety Data Sheet)'">
+                                                <span>Principal {{comm.is_selected ? 'wants' : 'does not want'}} the Freight forwarder to manage Material Safety Data Sheet (MSDS).</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mgnleft40 mgntop10">
+                        <span class="sub_heading_child">ii.	Shipping Documents</span>
+                        <br/>
+                        <span class="static_txt">This section captures the required documents and rules associated with it for each and every final destination</span>
+                        <div class="mgnleft20" *ngFor="let ship of section4['Documents']['Shipping']">
+                            <!-- {{ship | json}} -->
+                            <div class="mgnleft25" *ngIf="ship.sop_port_id == con.sop_port_ids[0]">
+                                <div>
+                                    <div *ngIf="ship.control_name != 'IssContManifest'" fxLayout="row" fxLayoutAlign="start start" class="mgntop5 clrblue txt">{{ship.doc_name}}</div>
+                                    <div *ngIf="ship.control_name != 'IssContManifest'">
+                                        <span class="static_txt" style="margin-left: 20px !important;">The following are the parties that should be notified about the documents.</span>
+                                        <ol type="a" class="mgnleft10">
+                                            <li>Shipper as in the PO.</li>
+                                            <li>Principle ({{sop.p_company}}) as per SOP.</li>
+                                            <li>Notify parties as define in the PO.</li>
+                                        </ol>
+                                    </div>
+                                    <div class="mgntop10 mgnleft20" *ngFor="let type of ship['fields']">
+                                        <div *ngIf="type.field0.type == 'chipset' && type.field0.field[0].controlname == 'IssForCargoBillsDocType'">
+                                            <div *ngIf="type.field0.field[0].value.length == 2">
+                                                <div *ngFor="let s of ship['fields']">
+                                                    <div *ngIf="s.field0.type == 'inlineedit'">
+                                                        <span *ngIf="s.field0.field[0].controlname == 'IssForCargoRemainderToGenerate'">1. {{s.field0.field[0].pretext}} {{s.field0.field[0].value}} {{s.field0.field[0].posttext}} {{s.field0.field[1].value}} for House Bill of Lading.</span>
+                                                        <span *ngIf="s.field0.field[0].controlname == 'FCRRemainderToGenerate'">2. {{s.field0.field[0].pretext}} {{s.field0.field[0].value}} {{s.field0.field[0].posttext}} {{s.field0.field[0].child[0].field[0].value}}</span>
+                                                    </div>
+                                                    <div *ngIf="s.field0.type == 'multi'">
+                                                        <div *ngFor="let mul of s.field0.field; let idx = index">
+                                                            <div *ngIf="mul.value == true">
+                                                                {{idx+3}}. {{mul.fieldname}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="type.field0.field[0].value.length == 1 && type.field0.field[0].value[0] == 'Forwarders Cargo Receipt'">
+                                                <div *ngFor="let s of ship['fields']">
+                                                    <div *ngIf="s.field0.type == 'inlineedit'">
+                                                        <span *ngIf="s.field0.field[0].controlname == 'IssForCargoRemainderToGenerate'">1. {{s.field0.field[0].pretext}} {{s.field0.field[0].value}} {{s.field0.field[0].posttext}} {{s.field0.field[1].value}} for House Bill of Lading.</span>
+                                                        <span *ngIf="s.field0.field[0].controlname == 'FCRRemainderToGenerate'">2. {{s.field0.field[0].pretext}} {{s.field0.field[0].value}} {{s.field0.field[0].posttext}} {{s.field0.field[0].child[0].field[0].value}}</span>
+                                                    </div>
+                                                    <div *ngIf="s.field0.type == 'multi'">
+                                                        <div *ngFor="let mul of s.field0.field; let idx = index">
+                                                            <div *ngIf="mul.value == true && mul.controlname != 'HouseBillIssued'">
+                                                                {{idx + 2}}. {{mul.fieldname}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="type.field0.field[0].value.length == 1 && type.field0.field[0].value[0] == 'House Bill of Lading/ House Sea Waybill'">
+                                                <div *ngFor="let s of ship['fields']">
+                                                    <div *ngIf="s.field0.type == 'inlineedit'">
+                                                        <span *ngIf="s.field0.field[0].controlname == 'IssForCargoRemainderToGenerate'">1. {{s.field0.field[0].pretext}} {{s.field0.field[0].value}} {{s.field0.field[0].posttext}} {{s.field0.field[1].value}} for House Bill of Lading.</span>
+                                                        <span *ngIf="s.field0.field[0].controlname == 'FCRRemainderToGenerate'">2. {{s.field0.field[0].pretext}} {{s.field0.field[0].value}} {{s.field0.field[0].posttext}} {{s.field0.field[0].child[0].field[0].value}}</span>
+                                                    </div>
+                                                    <div *ngIf="s.field0.type == 'multi'">
+                                                        <div *ngFor="let mul of s.field0.field; let idx = index">
+                                                            <div *ngIf="mul.value == true && mul.controlname != 'IssueReceiveShip'">
+                                                                {{idx + 2}}. {{mul.fieldname}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row" *ngIf="type.field0.type == 'inlineedit' && type.field0.field[0].controlname != 'IssForCargoRemainderToGenerate'">
+                                            <div class="mgnleft10" *ngFor="let sd of type['field0']['field']">
+                                                <div *ngIf="sd.pretext == 'Number of originals'">
+                                                    <span>1. Principal requires {{sd.value}} Originals and</span>
+                                                </div>
+                                                <div *ngIf="sd.controlname.includes('CopiesName') || sd.pretext == 'and number of copies'">
+                                                    <span>{{sd.value}} Copies for {{sd.controlname.includes('MasterAir') ? 'House Bill of Lading.' : 'Master Bill of Lading.'}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div fxLayout="row" *ngIf="type.group.includes('Reminder') && type.field0.field[0].controlname != 'FCRRemainderToGenerate'">
+                                            <div class="mgnleft10" *ngFor="let sd of type['field0']['field']">
+                                                2. {{sd.pretext}} {{sd.value}} {{sd.posttext}}
+                                            </div>
+                                        </div>
+                                        <div class="mgnleft10" *ngIf="type.field0.type == 'multi' && type.field0.field[0].controlname != 'HouseBillIssued'">
+                                            <span>3. ONE Master Bill of Lading or Master Sea Waybill should be issued for a combination of the following attributes:</span>
+                                            <ol type="a">
+                                                <li>Ship Mode</li>
+                                                <li>Loading and Discharging Port pair</li>
+                                                <li>Vessel Voyage</li>
+                                                <li>Carrier</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="break-inside: avoid;" class="mgnleft40 mgntop10">
+                        <span class="sub_heading_child">iii. Container Manifest</span>
+                        <div class="mgnleft20" *ngFor="let ship of section4['Documents']['Shipping']">
+                            <div class="mgnleft25" *ngIf="ship.sop_port_id == con.sop_port_ids[0]">
+                                <div class="mgnleft10 mgntop10" *ngIf="ship.control_name == 'IssContManifest'">
+                                    <div *ngIf="ship.is_selected">
+                                        <span>A copy of the container manifest should be affixed on the inside of the door of the container.</span>
+                                    </div>
+                                    <div *ngIf="!ship.is_selected">
+                                        <span>Container Manifest is not required by the Principal.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="break-inside: avoid;" class="mgnleft40 mgntop10">
+                        <span class="sub_heading_child">iv.	Document Dispatch</span>
+                        <br/>
+                        <div class="mgnleft20" *ngFor="let dd of section4['Documents']['Documents Despatch']">
+                            <div class="mgnleft25" *ngIf="dd.sop_port_id == con.sop_port_ids[0]">
+                                <div *ngFor="let disp of dd['fields']">
+                                    <div *ngIf="disp.field0.type == 'inlineedit'">
+                                        1. {{disp.field0.field[0].pretext}} {{disp.field0.field[0].value}} {{disp.field0.field[0].posttext}}
+                                    </div>
+                                    <div *ngIf="disp.field0.type == 'select-users'">
+                                        <span>2. The party contact details are also provided.</span>
+                                        <div class="mgnleft30" *ngFor="let chField of disp.field0.field">
+                                            <div *ngIf="chField.fieldname =='Principal Details'">
+                                                <div class="txt mgnbtm5">i. Principal Details</div>
+                                                <div class="mgnleft40" *ngFor="let chchField of chField['child']">
+                                                    <div *ngFor="let person of chchField.field[0].value">
+                                                        <span>{{person.contact_name}} - {{person.company_name}}, {{person.country_name}}. </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="chField.fieldname =='Freight Forwarder'">
+                                                <div  class="txt mgnbtm5 mgntop10">ii. Forwarder Details</div>
+                                                <div class="mgnleft40" *ngFor="let chchField of chField['child']">
+                                                    <div *ngFor="let person of chchField.field[0].value">
+                                                        <span>{{person.contact_name}} - {{person.company_name}}, {{person.country_name}}. </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  id="cargohandling" style="page-break-before: always; margin-top: 100px;">
+            <span class="alignleft print_content_sub_heading">d. Cargo Handling</span>
+            <div id="cargoHandling" class="mgnleft25 mgntop20" *ngFor="let cr of section4['Cargo Bookings']['Cargo Requirements']">
+                <div class="mgnleft25" *ngIf="cr.sub_grp == 'Free Storage Details for LCL'">
+                    <span  class="alignleft mgnbtm10 mgntop10 sub_heading_child">i. LCL Free Storage Requirements</span>
+                    <div class="mgnleft10">
+                        <span>This section captures the free storage days available at each loading port.</span>
+                    </div>
+                    <table mat-table #dynamictable2 [dataSource]="portStorageColl" class="mgntop10" style="width: 100%; height: auto; border-radius: 6px; border: solid 1px rgba(155, 168, 179, 0.22);">
+                        <ng-container *ngFor="let columnName of portColumnNames" [matColumnDef]="columnName">
+                            <th mat-header-cell *matHeaderCellDef class="tbl-head">{{ capitalize(columnName) }}</th>
+                            <td mat-cell *matCellDef="let row">{{ row[columnName] }}</td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="portColumnNames"></tr>
+                        <tr mat-row *matRowDef="let row; columns: portColumnNames" style="height:40px !important; pointer-events: none;" class="tr-rowalt-light"></tr>
+                    </table>
+                </div>
+                <div class="mgnleft25" *ngIf="cr.sub_grp == 'LCL Closing'">
+                    <span class="alignleft mgnbtm10 mgntop10 sub_heading_child">ii. LCL Closing</span>
+                    <div class="mgnleft10" *ngFor="let sa of cr['fields']">
+                        <div *ngFor="let chField of sa.field0.field">
+                            <span class="text"> {{ chField.pretext}} {{ chField.value }} {{ chField.posttext}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mgnleft25" *ngIf="cr.sub_grp == 'General Cargo Requirements'">
+                    <span class="alignleft mgnbtm10 mgntop10 sub_heading_child">iii. Scan-and-Pack or Palletisation Closing</span>
+                    <div class="mgnleft10" *ngFor="let sa of cr['fields']">
+                        <div *ngIf="sa.group == 'Scan-and-Pack/Palletisation Closing'">
+                            <div *ngFor="let chField of sa.field0.field">
+                                <span class="text"> {{ chField.pretext}} {{ chField.value }} {{ chField.posttext}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mgnleft25" *ngIf="cr.sub_grp == 'Allow Early Delivery for LCL'">
+                    <span class="alignleft mgnbtm10 mgntop10 sub_heading_child">iv. LCL Early Delivery</span>
+                    <div class="mgnleft10" *ngFor="let sa of cr['fields']">
+                        <div *ngFor="let chField of sa.field0.field">
+                            <span class="text" *ngIf="chField.value == 'Always reject'"> Principal does not want to allow early delivery of the LCL shipment to the Freight Forwarder </span>
+                            <span class="text" *ngIf="chField.value != 'Always reject'"> Supplier can deliver the LCL shipment at an earlier date than the stipulated cargo ready date provided the principal approves it. </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mgnleft25" *ngIf="cr.sub_grp == 'LCL Receiving Conditions'" style="page-break-inside: avoid;">
+                    <span class="alignleft mgnbtm10 mgntop10 sub_heading_child">v. LCL Receiving Instructions (or Conditions)</span>
+                    <div class="mgnleft10" *ngFor="let sa of cr['fields']">
+                        <ol>
+                            <div *ngFor="let chField of sa.field0.field">
+                                <li>
+                                    <span class="text" *ngIf="chField.value">The principal does not want to allow delivery of partial LCL shipments by the supplier.</span>
+                                    <span class="text" *ngIf="!chField.value">The principal has approved delivery of partial LCL shipments by the supplier.</span>
+                                </li>
+                            </div>
+                            <div>
+                                <li>
+                                    <span class="text" >{{sa.field1.field[0].pretext}} {{sa.field1.field[0].value}} {{sa.field1.field[0].posttext}} {{sa.field1.field[1].pretext}} {{sa.field1.field[1].value}} {{sa.field1.field[1].posttext}}</span>
+                                </li>
+                            </div>
+                            <div *ngFor="let chField3 of sa.field2.field">
+                                <li>
+                                    <span class="text" *ngIf="chField3.value">{{chField3.fieldname}}</span>
+                                </li>
+                            </div>
+                            <div *ngFor="let chField4 of sa.field3.field">
+                                <li>
+                                    <span class="text" *ngIf="chField4.value">{{chField4.fieldname}}</span>
+                                </li>
+                            </div>
+                        </ol>
+                    </div>
+                </div>
+                <div class="mgnleft25" *ngIf="cr.sub_grp == 'General Cargo Requirements'">
+                    <span class="alignleft mgnbtm10 mgntop10 sub_heading_child">vi. Shortfall or no-show by Suppliers</span>
+                    <div class="mgnleft10" *ngFor="let sa of cr['fields']">
+                        <div *ngIf="sa.group == 'Handling shortfall or no-show against booking confirmation from suppliers'">
+                            <div *ngFor="let chField of sa.field0.field">
+                                <span class="text"> {{ chField.pretext}} {{ chField.value }} {{ chField.posttext}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mgnleft25" *ngIf="cr.sub_grp == 'General Cargo Requirements'">
+                    <span class="alignleft mgnbtm10 mgntop10 sub_heading_child">vii. Cargo Damage</span>
+                    <div class="mgnleft10" *ngFor="let sa of cr['fields']">
+                        <div *ngIf="sa.group == 'Action required when a Cargo is damaged'">
+                            <div *ngFor="let chField of sa.field0.field">
+                                <span class="text" *ngIf="chField.value == 'Require principal approval'">The principal’s approval is required for accepting the damage to the cargo.</span>
+                                <span class="text" *ngIf="chField.value != 'Require principal approval'">The principal authorizes the Freight Forwarder to decide if the damaged Cargo should be accepted for shipment or not.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mgnleft25">
+                <div class="mgnleft25">
+                    <span class="alignleft mgnbtm10 mgntop10 sub_heading_child">viii. Value-Added Services</span>
+                    <ol>
+                        <div class="mgnleft25" *ngFor="let cr of section4['Cargo Bookings']['Value Added Services']; let idx = index;">
+                            <li><span class="alignleft mgnbtm10 txt">{{ cr.sub_grp }}</span></li> 
+                            <div class="mgnleft10" *ngIf="cr.sub_grp == 'Fumigation'">
+                                <div *ngIf="cr.is_selected">
+                                    <span class="text">The principal wants the Fumigation Services to be provided by the Freight Forwarder.</span>
+                                </div>
+                                <div *ngIf="!cr.is_selected">
+                                    <span class="text">The principal does not want fumigation services to be done.</span>
+                                </div>
+                            </div>
+                            <div class="mgnleft10" *ngIf="cr.sub_grp == 'Scan-and-Pack'">
+                                <div *ngIf="cr.is_selected">
+                                    <div *ngFor="let sa of cr['fields']">
+                                        <div *ngFor="let chField of sa.field0.field">
+                                            <div *ngIf="chField.controlname == 'VASNoShow'">
+                                                <span class="text">The principal wants the scan-and-pack to be done {{chField.child[0].field[0].value}}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="!cr.is_selected">
+                                    <span class="text">The principal does not want scan-and-pack services to be done.</span>
+                                </div>
+                            </div>
+                            <div class="mgnleft10" *ngIf="cr.sub_grp == 'Packaging Control'">
+                                <div *ngIf="cr.is_selected">
+                                    <div *ngFor="let sa of cr['fields']">
+                                        <div *ngFor="let chField of sa.field0.field">
+                                            <div *ngIf="chField.value != null">
+                                                <span class="text">{{ chField.value }}</span>
+                                            </div>
+                                            <div *ngIf="chField.value == null">
+                                                <span class="text">The principal does not want Packaging Control services to be done.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mgnleft10" *ngIf="cr.sub_grp == 'Compliance Check'">
+                                <div *ngIf="cr.is_selected">
+                                    <div *ngFor="let sa of cr['fields']">
+                                        <div *ngFor="let chField of sa.field0.field">
+                                            <div *ngIf="chField.controlname != 'VASIFCompCheck'">
+                                                <span class="text">{{ chField.pretext }} {{  chField.value }} {{ chField.posttext}}</span>
+                                            </div>
+                                            <div *ngIf="chField.controlname == 'VASIFCompCheck' && chField.value != null">
+                                                <span class="text">{{ chField.value }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="!cr.is_selected">
+                                    <span class="text">The principal does not want compliance check services to be done.</span>
+                                </div>
+                            </div>   
+                            <div class="mgnleft10" *ngIf="cr.sub_grp == 'Re-labeling'">
+                                <div *ngIf="cr.is_selected">
+                                    <span class="text">The principal wants the re-labelling services to be done.</span>
+                                    <div *ngFor="let sa of cr['fields']">
+                                        <div *ngFor="let chField of sa.field0.field">
+                                            <div *ngIf="chField.fieldname == 'Supply of New Label' && chField.value == true">
+                                                <span class="text">Must provide new labels as necessary</span>
+                                            </div>
+                                            <div *ngIf="chField.fieldname == 'Type Instructions' && chField.value != null">
+                                                <span class="text">{{ chField.value }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="!cr.is_selected">
+                                    <span class="text">The principal does not want re-labelling services to be done.</span>
+                                </div>
+                            </div> 
+                            <div class="mgnleft10" *ngIf="cr.sub_grp == 'Repackaging'">
+                                <div *ngIf="cr.is_selected">
+                                    <span class="text">The principal wants the re-packaging services to be done.</span>
+                                    <div *ngFor="let sa of cr['fields']">
+                                        <div *ngIf="sa.group == 'Supply of New Packages'">
+                                            <div *ngFor="let chField of sa.field0.field">
+                                                <div *ngIf="chField.value == true && chField.controlname == 'VASRPack'">
+                                                    <span class="text">Must provide new packages as necessary</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="sa.group == 'Re-packaging Instructions'">
+                                            <div *ngFor="let chField of sa.field0.field">
+                                                <span class="text">{{ chField.value }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="!cr.is_selected">
+                                    <span class="text">The principal does not want re-packaging services to be done.</span>
+                                </div>
+                            </div> 
+                            <div class="mgnleft10" *ngIf="cr.sub_grp == 'Palletisation/Slipsheeting'">
+                                <div *ngIf="cr.is_selected">
+                                    <div *ngFor="let sa of cr['fields']">
+                                        <div *ngFor="let chField of sa.field0.field">
+                                            <div *ngIf="chField.value">
+                                                <span class="text" *ngIf="chField.fieldname != 'Select Instruction'">{{ chField.fieldname }}</span>
+                                                <div class="mgnleft10" *ngFor="let subField of chField.child">
+                                                    <ng-container class="mgnleft10" *ngFor="let val of subField.field; let i = index" class="group">
+                                                        <span class="text" *ngIf="val.pretext">{{ val.pretext }} {{ val.value }} {{ val.posttext }}</span>
+                                                        <span class="text" *ngIf="!val.pretext">Pallet handling requirement: {{ val.value }} </span>
+                                                    </ng-container>
+                                                </div>
+                                                <div *ngIf="chField.fieldname == 'Select Instruction'" style="margin-top: 5px;">
+                                                    <span class="text">Palletisation/Slipsheeting Instructions {{ chField.value }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="!cr.is_selected">
+                                    <span class="text">The principal does not want Palletisation/Slipsheeting services to be done.</span>
+                                </div>
+                            </div>
+                            <div class="mgnleft10" *ngIf="cr.sub_grp == 'Garment on Hanger (GOH)'">
+                                <div *ngIf="cr.is_selected">
+                                    <div *ngFor="let sa of cr['fields']">
+                                        <div *ngFor="let chField of sa.field0.field">
+                                            <span class="text"> {{ chField.selLabel }} {{ chField.value }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="!cr.is_selected">
+                                    <span class="text">The principal does not want GOH service.</span>
+                                </div>
+                            </div> 
+                            <div class="mgnleft10" *ngIf="cr.sub_grp == 'Crating'">
+                                <div *ngIf="cr.is_selected">
+                                    <span class="text">The principal wants the crating services to be done by {{sop.ff_company}}</span>
+                                    <div *ngFor="let sa of cr['fields']">
+                                        <div *ngFor="let chField of sa.field0.field">
+                                            <div *ngIf="chField.fieldname == 'Supply of Crates' && chField.value == true">
+                                                <span class="text">Must provide new labels as necessary</span>
+                                            </div>
+                                            <div *ngIf="chField.fieldname == 'Type Instructions' && chField.value != null">
+                                                <span class="text">{{ chField.value }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="!cr.is_selected">
+                                    <span class="text">The principal does not want crating services to be done.</span>
+                                </div>
+                            </div> 
+                        </div>
+                    </ol>
+                </div>
+            </div>
+            <div class="mgnleft25" >
+                <div class="mgnleft25">
+                    <span class="alignleft mgnbtm10 mgntop10 sub_heading_child">ix. Cargo Handling Requirements</span>
+                    <div>
+                        <span class="alignleft mgnbtm10 mgnleft25 txt">1. Consolidation Permissions</span><br/>
+                        <span class="static_txt">This section describes the principal's choices regarding consolidation of Purchase Orders</span>
+                        <ol type="i">
+                            <div class="mgnleft25" *ngFor="let cr of section4['Cargo Bookings']['Cargo Consolidations']; let idx = index;">
+                                <li><span class="alignleft">{{ cr.sub_grp }} - </span><span class="txt">{{ cr.is_selected ? 'Allow' : 'Disallow' }}</span></li> 
+                                <div class="mgnleft10" *ngIf="cr.sub_grp != 'Split PO into Multiple Container' && cr.sub_grp != 'Allow Loading with Mix-Packaging'">
+                                    <div *ngFor="let sa of cr['fields']">
+                                        <div *ngFor="let chField of sa.field0.field">
+                                            <div *ngIf="chField.value != null">     
+                                                <span class="text">Instructions: {{ chField.value }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </ol>
+                    </div>
+                    <div>
+                        <span class="alignleft mgnbtm10 mgntop10 mgnleft25 txt">2. Container Weight Restrictions</span><br/>
+                        <span class="static_txt">This section describes the weight restrictions for each container size, specified by the Principal</span>
+                        <div fxLayout="row" fxLayoutAlign="center start">
+                            <table class="mgntop10 mgnbtm10"mat-table #table [dataSource]="sopContainerMaxWeightColl" style="width:50%;" >
+                                <ng-container matColumnDef="container_size">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center !important;">Container Size</th>
+                                    <td mat-cell style="color: var(--inlineeditclr); text-align: center !important;" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.container_size}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="max_weight">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center !important;">Max Weight (KG)</th>
+                                    <td mat-cell style="color: var(--inlineeditclr); text-align: center !important;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.max_weight_kgs}}</td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="dispContainerWeight;"></tr>
+                                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispContainerWeight;"></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="alignleft mgnbtm10 mgntop10 mgnleft25 txt">3. Export Consolidation Minimum</span><br/>
+                        <span class="static_txt">This section describes the minimum CBM restrictions for each container size, specified by the principal</span>
+                        <div class="mgntop10 mgnbtm10" fxLayout="row" fxLayoutAlign="center start">
+                            <table mat-table #table [dataSource]="sopContainerMaxWeightColl" style="width:50%;" >
+                                <ng-container matColumnDef="container_size">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center !important;">Container Size</th>
+                                    <td mat-cell style="color: var(--inlineeditclr); text-align: center !important;" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.container_size}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="min_cbm">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center !important;">Minimum CBM</th>
+                                    <td mat-cell style="color: var(--inlineeditclr); text-align: center !important;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.min_cbm}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="max_cbm">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center !important;">Optimal CBM</th>
+                                    <td mat-cell style="color: var(--inlineeditclr); text-align: center !important;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.max_cbm}}</td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="dispConMin;"></tr>
+                                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispConMin;"></tr>
+                            </table>
+                        </div>                    
+                    </div>
+                    <div>
+                        <span class="alignleft mgnbtm10 mgntop10 mgnleft25 txt">4. Container Size Usage Preference</span><br/>
+                        <span class="static_txt">This section describes the minimum CBM restrictions for each container size, specified by the principal, for FCL and LCL shipments.  It also specifies the preference priority for using Containers. The port exceptions for a particular container size are also listed.</span>
+                        <div class="mgntop10 mgnbtm10" fxLayout="row" fxLayoutAlign="center start">
+                            <table mat-table #table [dataSource]="sopContainerColl" style="width:100%;" >
+                                <ng-container matColumnDef="preference">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center !important;">Preference</th>
+                                    <td mat-cell style="color: var(--inlineeditclr); text-align: center !important;" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.preference}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="container_size">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center !important;">Container Size</th>
+                                    <td mat-cell style="color: var(--inlineeditclr); text-align: center !important;" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.iso_type_code}} {{element.description}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="lcl_min">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center !important;">LCL Minimal</th>
+                                    <td mat-cell style="color: var(--inlineeditclr); text-align: center !important;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.lcl_min}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="fcl_min">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center !important;">FCL Minimal</th>
+                                    <td mat-cell style="color: var(--inlineeditclr); text-align: center !important;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.fcl_min}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="optimal_cbm">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center !important;">Optimal CBM</th>
+                                    <td mat-cell style="color: var(--inlineeditclr); text-align: center !important;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.optimal_cbm}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="max_weight">
+                                    <th mat-header-cell *matHeaderCellDef style="text-align: center !important;">Max Weight (KG)</th>
+                                    <td mat-cell style="color: var(--inlineeditclr); text-align: center !important;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.max_weight_kgs}}</td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="dispConPreference;"></tr>
+                                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispConPreference;"></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="alignleft mgnbtm10 mgntop10 mgnleft25 txt">5. LCL Consolidation Program Detailed Instructions</span><br/>
+                        <span class="static_txt">This section lists down the detailed instructions provided by the principal for handling LCL Consolidations.</span>
+                        <div class="mgntop10 " fxLayout="row" fxLayoutAlign="center start">
+                        <div class="mgntop10 mgnbtm10 mgnleft25" *ngFor="let cr of section4['Cargo Bookings']['LCL Consolidation Program Details']; let idx = index;">
+                            <span class="text mgnleft10 mgnbtm10">{{ idx+1 }}. {{ cr.instruction }}</span>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="alignleft mgnbtm10 mgntop10 mgnleft25 txt">6. FCL Consolidation Program Detailed Instructions</span><br/>
+                        <span class="static_txt">This section lists down the detailed instructions provided by the principal for handling FCL Consolidations.</span>
+                            <div class="mgnleft25" *ngFor="let cr of section4['Cargo Bookings']['FCL Program Details']; let idx = index;">
+                                <span class="text mgnleft10 mgnbtm10">{{ idx+1 }}. {{ cr.instruction }}</span>
+                            </div>
+                    </div>
+                    <div>
+                        <span class="alignleft mgnbtm10 mgntop10 mgnleft25 txt">7. QC Center Setup</span><br/>
+                        <span class="static_txt">This section Quality Check Center setup. It mentions the total space required and also the job profile of QC Inspector</span>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="page-break-before: always;" id="carriers">
+            <span class="print_content_sub_heading">e. Carriers</span>
+            <br/>
+            <div class="mgnleft40 mgntop15" *ngFor="let cr of section4['Carriers']['Carrier Requirements']; let idx = index">
+                <span *ngIf="cr.carrier_name != 'Booking Shortfall/Rollover Exception'" class="mgntop5 clrblue txt">{{ idx == 0 ? 'i. ' : 'ii. ' }} {{cr.carrier_name}}</span>
+                <div class="mgnleft25 mgntop10" *ngFor="let chField of cr['fields']">
+                    <div *ngIf="chField.field0.type == 'inlineedit'">
+                        <div *ngFor="let chchField of chField.field0['field']">
+                            <div *ngIf="chchField.controlname == 'FFCForcast'">
+                                <span>1. The Freight forwarder should send a forecast to the carriers every {{chchField.value}} {{chchField.posttext}}</span>
+                            </div>
+                            <div *ngIf="chchField.controlname == 'ForSelNoShow' && chchField.pretext.includes('Carrier')">
+                                <span>3. The start day of the week for sending the forecast is {{chchField.child[0].field[0].value}}</span>
+                            </div>
+                            <div *ngIf="chchField.controlname == 'PUSSMaintain'">
+                                <span>1. The Freight forwarder should maintain {{chchField.value}} {{chchField.posttext}} of sailing schedules</span>
+                                <br/>
+                                <span>2. The following parties should be communicated about the sailing schedule every {{chchField.value}} {{chchField.posttext}}</span>
+                                <ol type="a">
+                                    <li>Principal</li>
+                                    <li>Supplier</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="chField.field0.type == 'chipset'">
+                        <div *ngFor="let chchField of chField.field0['field']">
+                            <div *ngIf="chchField.controlname == 'DUForcast' && chField.group == 'Sailing Schedule Details'">
+                                <span>3. The following information about the sailing schedule should be shared in email</span>
+                                <ol type="a">
+                                    <div *ngFor="let value of chchField.value">
+                                        <li>{{value}}</li>
+                                    </div>
+                                </ol>
+                            </div>
+                            <div *ngIf="chchField.controlname == 'DUForcast' && chField.group != 'Sailing Schedule Details'">
+                                <span>2. The following information should be used for forecasting</span>
+                                <ol type="a">
+                                    <div *ngFor="let value of chchField.value">
+                                        <li>{{value}}</li>
+                                    </div>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mgnleft40 mgntop15" style="page-break-before: always;">
+                <span class="mgntop5 clrblue txt">iii. Carrier Allocation</span>
+                <div>
+                    <span class="static_txt">This section describes the minimum CBM restrictions for each container size, specified by the principal</span>
+                </div>
+                <div class="mgntop10">
+                    <span class="mgnleft20 text">The principal has opted for varying allocation by time period mentioned in the table below.  These allocations will be in effect from the specified effective date
+                    </span>
+                </div>
+                <div *ngIf="section4['Carriers']['Carrier Allocation'] != []">
+                    <div class="mgnleft40 mgntop15" *ngFor="let cca of section4['Carriers']['Carrier Allocation']['Custom']; let idx = index">
+                        <div class="mgntop10">
+                            <div style="page-break-after: always;">
+                                <span class="text">Effective Date for the following allocations {{cca.effective_start_date | date:'dd-MMM-yyyy'}} - {{cca.effective_end_date | date:'dd-MMM-yyyy'}}</span>
+                                <br/>
+                                <span class="text">Time Period:  {{ cca.allocation_interval == 1 ? 'Weekly' : cca.allocation_interval == 2 ? 'Monthly' : cca.allocation_interval == 3 ? 'Quarterly' : 'Yearly' }}</span>
+                                <div class="mgntop10" style="break-inside:avoid; height:60px; background-color: var(--tabbg); padding: 12px; border: 1px solid rgb(122, 122, 122);" fxLayout="row" fxLayoutAlign="space-around start">
+                                    <div fxLayout="column" fxLayoutAlign="start start">
+                                        <div class="capitalize txt font_12"><span style="color: var(--inlineeditclr);" class="capitalize font_12">Loading Port: </span>{{cca.origin_port}}</div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutAlign="start start">
+                                        <div class="capitalize txt font_12"><span style="color: var(--inlineeditclr);" class="capitalize font_12">Discharging Port: </span>{{cca.dest_port}}</div>
+                                     </div>
+                                </div>
+                                <div style="background-color: var(--white); padding: 12px; border-bottom: 1px solid rgb(122, 122, 122); border-left: 1px solid rgb(122, 122, 122); border-right: 1px solid rgb(122, 122, 122); page-break-inside: avoid !important;" fxLayout="row" fxLayoutAlign="space-between start">
+                                    <div fxLayout="column" fxLayoutAlign="start start">
+                                        <div class="capitalize txt font_12">{{cca.effective_start_date | date:'dd-MMM-yyyy'}} - {{cca.effective_end_date | date:'dd-MMM-yyyy'}}</div>
+                                        <div style="color: var(--inlineeditclr);" class="capitalize font_12">Effective Period</div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutAlign="start start">
+                                        <div class="capitalize txt font_12">{{cca.allocation_type}}</div>
+                                        <div style="color: var(--inlineeditclr);" class="capitalize font_12">Allocation Type</div>
+                                     </div>
+                                     <div *ngIf="cca.allocation_interval != null" fxLayout="column" fxLayoutAlign="start start">
+                                         <div class="capitalize txt font_12">{{ cca.allocation_interval == 1 ? 'Weekly' : cca.allocation_interval == 2 ? 'Monthly' : cca.allocation_interval == 3 ? 'Quarterly' : 'Yearly' }}</div>
+                                         <div style="color: var(--inlineeditclr); margin-top:3px;" class="capitalize font_12">Allocation Interval</div>
+                                     </div>
+                                     <div fxLayout="column" fxLayoutAlign="start start">
+                                         <div class="capitalize txt font_12">{{cca.allocated_by}}</div>
+                                         <div style="color: var(--inlineeditclr);" class="capitalize font_12">Allocated by</div>
+                                     </div>
+                                     <div *ngIf="cca.service_type != null" fxLayout="column" fxLayoutAlign="start start">
+                                         <div class="capitalize txt font_12">{{cca.service_type || ' NA '}}</div>
+                                         <div style="color: var(--inlineeditclr);" class="capitalize font_12">Service Type</div>
+                                     </div>
+                                </div>
+                                <div *ngIf="cca.allocated_by == 'Principal'">
+                                    <!-- [style.height.px]="ht-180" style="overflow: auto;" -->
+                                    <div class="mgntop10" style="overflow: hidden;">
+                                        <table mat-table #dynamictable [dataSource]="cca.allocation_value" style="width: 100%; border-radius: 0px; overflow: hidden;">
+                                            <ng-container *ngFor="let columnName of cca.display_columns" [matColumnDef]="columnName">
+                                                <th mat-header-cell style="border: solid 0px rgba(161, 180, 196, 0.22); background-color: var(--white)" *matHeaderCellDef class="tbl-head">
+                                                    <div *ngIf="columnName.includes('date')"></div>
+                                                    <div *ngIf="columnName.includes('value')">
+                                                        <div *ngFor="let selcarrier of cca.selected_carriers; let idx = index;">
+                                                            <span fxLayout="row" fxLayoutAlign="center start" *ngIf="columnName == selcarrier.carrier_value">
+                                                                <span class="txt">{{selcarrier.company_name}}</span>
+                                                                <!-- <mat-icon [ngClass]="{'iconprimary': selcarrier.show}" (mouseover)="selcarrier.show = true" (mouseout)="selcarrier.show =false" class="pointer iconinactive mgnleft5 font_14">info</mat-icon> -->
+                                                            </span>
+                                                            <!-- <div *ngIf="columnName == selcarrier.carrier_value" style="width:auto; border: solid 1px rgba(161, 180, 196, 0.22); position:absolute; left:30px; display:block; z-index:120; padding:12px; background-color: var(--white);" fxLayout="column" fxLayoutAlign="space-around start">
+                                                                <span class="font_12" style="font-weight: normal;">Contract Number</span>
+                                                                <span class="font_12">{{selcarrier.contract_no}}</span>
+                                                                <span class="font_12" style="font-weight: normal;">Contract Validity</span>
+                                                                <span class="font_12">{{selcarrier.valid_from | date:'dd-MM-yyyy' }} to {{selcarrier.valid_to | date:'dd-MM-yyyy' }}</span>
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                </th>   
+                                                <div *ngIf="columnName.includes('date')">
+                                                    <td mat-cell style="border-bottom: 0px;" *matCellDef="let row; let i = index;">
+                                                        <div *ngIf="row['date'] != 'TEU SUM'">
+                                                            <div fxLayout="column" fxLayoutGap="2px">
+                                                            <span *ngIf="isPercentage && !isUniform" class="fntclr465e72 font_14 txt">{{cca.interval_type.slice(0, -2)}} {{cca.interval_week_numbers[i]}}</span>
+                                                            <span *ngIf="!isPercentage && !isUniform" class="fntclr465e72 font_14 txt">{{cca.interval_type.slice(0, -2)}} {{cca.interval_week_numbers[i-1]}}</span>
+                                                            <span *ngIf="!isUniform" class="fntclr465e72 font_10">({{row['date']}})</span>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="row['date'] == 'TEU SUM'">
+                                                            <div fxLayout="column" fxLayoutGap="2px">
+                                                            <span class="fntclr465e72 font_14 txt">Allocation</span>
+                                                            <span class="wordwrap fntclr465e72 font_10">{{cca.effective_start_date | date:'dd-MMM-yyyy'}} to {{cca.effective_end_date | date:'dd-MMM-yyyy'}}</span>
+                                                            </div>
+                                                        </div>
+                                                        <span class="fntclr465e72 font_14 txt" *ngIf="row['date'] == 'Allocation'">Allocation</span>
+                                                    </td>
+                                                </div>
+                                                <div *ngIf="columnName.includes('value')" >
+                                                    <td mat-cell style="border-bottom: 0px;" *matCellDef="let row; let i = index;">
+                                                        <div *ngIf="row['date'] == 'TEU SUM'" fxLayout="row" fxLayoutAlign="center start" class="inlineeditdiv">
+                                                            <div *ngFor="let carrierid of cca.carrier_ids_rows; let idx = index;">
+                                                                <span class="txt" *ngIf="columnName == carrierid">{{row[carrierid]}} TEU</span>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="row['date'] != 'TEU SUM'" fxLayout="row" fxLayoutAlign="center start" class="inlineeditdiv">
+                                                            <div *ngFor="let carrierid of cca.carrier_ids_rows; let idx = index;">
+                                                                <span *ngIf="columnName == carrierid">{{row[carrierid]}}</span>
+                                                                <!-- <span *ngIf="columnName == carrierid"><input autofocus='always' min="{{inputMinRange}}" max="{{inputMaxRange}}" name="carrierid" matInput type="number" [value]="row[carrierid]" (change)="updCAFieldValue(row,i, carrierid)" [(ngModel)]="row[carrierid]" class="ip" style="width:50px" oninput="this.value = Math.min(100,Math.max(0,this.value))"><span *ngIf="isPercentage">%</span><span *ngIf="!isPercentage">TEU</span></span> -->
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </div>
+                                            </ng-container>
+                                            <tr mat-header-row *matHeaderRowDef="cca.display_columns; sticky: true"></tr>
+                                            <tr mat-row *matRowDef="let row; columns: cca.display_columns; let k = index" style="height:50px !important; border-bottom: solid 0px rgba(161, 180, 196, 0.22); pointer-events: none;" class="tr-rowalt-light" [ngClass]="{'tr-rowalt-tabbg': '!isPercentage'}"></tr>
+                                            <!-- <tr mat-header-row *matHeaderRowDef="cca.display_columns;  sticky: true;" style="break-inside:avoid !important; break-after:avoid !important; "></tr>
+                                            <tr mat-row *matRowDef="let row; columns: cca.display_columns" style="break-inside:avoid !important; break-after:avoid !important; height:50px !important; border-bottom: solid 0px rgba(161, 180, 196, 0.22); pointer-events: none;" class="tr-rowalt-light" [ngClass]="{'tr-rowalt-tabbg': '!isPercentage'}"></tr> -->
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <span class="mgnleft20 text">The principal has provided a list of carriers in preferential order.   In this case, the Freight forwarder should book all the shipments with the carriers using this strict order of preference.   This order is also applied as of the effective date specified.</span>
+                <div *ngIf="section4['Carriers']['Carrier Allocation'] != []">
+                    <div class="mgnleft40 mgntop15" *ngFor="let uca of section4['Carriers']['Carrier Allocation']['Uniform']; let idx = index">
+                        <div class="mgntop10">
+                            <div style="page-break-after: always;">
+                                <span class="text">Effective Date of allocations: {{uca.effective_start_date | date:'dd-MMM-yyyy'}}</span>
+                                <div class="mgntop10" style="break-inside:avoid; background-color: var(--tabbg); padding: 12px; border: 1px solid rgb(122, 122, 122);" fxLayout="row" fxLayoutAlign="space-around start">
+                                    <div fxLayout="column" fxLayoutAlign="start start">
+                                        <div class="capitalize txt font_12"><span style="color: var(--inlineeditclr);" class="capitalize font_12">Loading Port: </span>{{uca.origin_port}}</div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutAlign="start start">
+                                        <div class="capitalize txt font_12"><span style="color: var(--inlineeditclr);" class="capitalize font_12">Discharging Port: </span>{{uca.dest_port}}</div>
+                                     </div>
+                                </div>
+                                <div style="background-color: var(--white); padding: 12px; border-bottom: 1px solid rgb(122, 122, 122); border-left: 1px solid rgb(122, 122, 122); border-right: 1px solid rgb(122, 122, 122); page-break-inside: avoid !important;" fxLayout="row" fxLayoutAlign="space-between start">
+                                    <div fxLayout="column" fxLayoutAlign="start start">
+                                        <div class="capitalize txt font_10">{{uca.effective_start_date | date:'dd-MMM-yyyy'}} - {{uca.effective_end_date | date:'dd-MMM-yyyy'}}</div>
+                                        <div style="color: var(--inlineeditclr);" class="capitalize font_10">Effective Period</div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutAlign="start start">
+                                        <div class="capitalize txt font_10">{{uca.allocation_type}}</div>
+                                        <div style="color: var(--inlineeditclr);" class="capitalize font_10">Allocation Type</div>
+                                     </div>
+                                     <div *ngIf="uca.allocation_interval != null" fxLayout="column" fxLayoutAlign="start start">
+                                         <div class="capitalize txt font_10">{{ uca.allocation_interval == 1 ? 'Weekly' : uca.allocation_interval == 2 ? 'Monthly' : uca.allocation_interval == 3 ? 'Quarterly' : 'Yearly' }}</div>
+                                         <div style="color: var(--inlineeditclr); margin-top:3px;" class="capitalize font_10">Allocation Interval</div>
+                                     </div>
+                                     <div fxLayout="column" fxLayoutAlign="start start">
+                                         <div class="capitalize txt font_10">{{uca.allocated_by}}</div>
+                                         <div style="color: var(--inlineeditclr);" class="capitalize font_10">Allocated by</div>
+                                     </div>
+                                     <div *ngIf="uca.service_type != null" fxLayout="column" fxLayoutAlign="start start">
+                                         <div class="capitalize txt font_10">{{uca.service_type || ' NA '}}</div>
+                                         <div style="color: var(--inlineeditclr);" class="capitalize font_10">Service Type</div>
+                                     </div>
+                                </div>
+                                <div *ngIf="uca.allocated_by == 'Principal'">
+                                    <table mat-table #table [dataSource]="sopCarrierAllocationColl" style="width:100%; padding: 1px; border: none;">
+                                        <ng-container matColumnDef="option">
+                                            <th mat-header-cell *matHeaderCellDef class="capitalize txt font_12">Preference</th>
+                                            <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element; let idx = index">{{idx +1}}</td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="carrier">
+                                            <th mat-header-cell *matHeaderCellDef class="capitalize txt font_12">Carrier</th>
+                                            <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.company_name}}</td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="contract_number">
+                                            <th mat-header-cell *matHeaderCellDef class="capitalize txt font_12">Contract Number</th>
+                                            <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.contract_no}}</td>
+                                        </ng-container>
+                                        <ng-container matColumnDef="allocation">
+                                            <th mat-header-cell *matHeaderCellDef class="capitalize txt font_12">Allocation</th>
+                                            <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize"*matCellDef="let element; let id = index">{{ element.allocation_value[0][element.allocation_value_id] | json }}%</td>
+                                        </ng-container>
+                                        <tr mat-header-row *matHeaderRowDef="dispCarrierAllocation;"></tr>
+                                        <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispCarrierAllocation;"></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- <div class="mgnleft40 mgntop15">
+                <span class="mgntop5 clrblue txt">iii. Carrier Allocation</span>
+                <div>
+                    <span class="static_txt">This section describes the minimum CBM restrictions for each container size, specified by the principal</span>
+                </div>
+                <div class="mgntop5">
+                    <div class="mgntop10">
+                        <span class="text">The principal has provided a list of carriers in preferential order.   In this case, the Freight forwarder should book all the shipments with the carriers using this strict order of preference.   This order is also applied as of the effective date specified.</span>
+                    </div>
+                    <div style="margin-top:10px; page-break-inside: avoid !important;" *ngFor="let ca of caColl" >
+                        <div class="mgntop10" *ngIf="ca.allocation_interval == null">
+                            <span class="text">The principal has opted for constant allocation throughout the period.  The following table shows the allocation done by the principal and the allocations will be in effect from the effective date specified.</span>
+                            <div class="mgntop10">
+                                <span class="text">Effective Date for the following allocations {{ca.effective_start_date | date:'dd-MMM-yyyy'}} - {{ca.effective_end_date | date:'dd-MMM-yyyy'}}</span>
+                            </div>
+                        </div>
+                        <div class="mgntop15" *ngIf="ca.allocation_interval != null">
+                            <span class="text">The principal has opted for varying allocation by time period mentioned in the table below.  These allocations will be in effect from the specified effective date</span>
+                            <div class="mgntop10">
+                                <span class="text">Effective Date of allocations: {{ca.effective_start_date | date:'dd-MMM-yyyy'}}     Time Period:  {{ allocation_interval == 1 ? 'Weekly' : allocation_interval == 2 ? 'Monthly' : allocation_interval == 3 ? 'Quarterly' : 'Yearly' }}</span>
+                            </div>
+                        </div>
+                        <div class="mgntop10" style="background-color: var(--tabbg); padding: 12px; border: 1px solid rgb(122, 122, 122);" fxLayout="row" fxLayoutAlign="space-around start">
+                            <div fxLayout="column" fxLayoutAlign="start start">
+                                <div class="capitalize txt font_12"><span style="color: var(--inlineeditclr);" class="capitalize font_12">Loading Port: </span>{{ca.origin_port}}</div>
+                            </div>
+                            <div fxLayout="column" fxLayoutAlign="start start">
+                                <div class="capitalize txt font_12"><span style="color: var(--inlineeditclr);" class="capitalize font_12">Discharging Port: </span>{{ca.dest_port}}</div>
+                             </div>
+                        </div>
+                        <div style="background-color: var(--white); padding: 12px; border-bottom: 1px solid rgb(122, 122, 122); border-left: 1px solid rgb(122, 122, 122); border-right: 1px solid rgb(122, 122, 122); page-break-inside: avoid !important;" fxLayout="row" fxLayoutAlign="space-between start">
+                            <div fxLayout="column" fxLayoutAlign="start start">
+                                <div class="capitalize txt font_12">{{ca.effective_start_date | date:'dd-MMM-yyyy'}} - {{ca.effective_end_date | date:'dd-MMM-yyyy'}}</div>
+                                <div style="color: var(--inlineeditclr);" class="capitalize font_12">Effective Period</div>
+                            </div>
+                            <div fxLayout="column" fxLayoutAlign="start start">
+                                <div class="capitalize txt font_12">{{ca.allocation_type}}</div>
+                                <div style="color: var(--inlineeditclr);" class="capitalize font_12">Allocation Type</div>
+                             </div>
+                             <div *ngIf="ca.allocation_interval != null" fxLayout="column" fxLayoutAlign="start start">
+                                 <div class="capitalize txt font_12">{{ allocation_interval == 1 ? 'Weekly' : allocation_interval == 2 ? 'Monthly' : allocation_interval == 3 ? 'Quarterly' : 'Yearly' }}</div>
+                                 <div style="color: var(--inlineeditclr); margin-top:3px;" class="capitalize font_12">Allocation Interval</div>
+                             </div>
+                             <div fxLayout="column" fxLayoutAlign="start start">
+                                 <div class="capitalize txt font_12">{{ca.allocated_by}}</div>
+                                 <div style="color: var(--inlineeditclr);" class="capitalize font_12">Allocated by</div>
+                             </div>
+                             <div *ngIf="ca.service_type != null" fxLayout="column" fxLayoutAlign="start start">
+                                 <div class="capitalize txt font_12">{{ca.service_type || ' NA '}}</div>
+                                 <div style="color: var(--inlineeditclr);" class="capitalize font_12">Service Type</div>
+                             </div>
+                         </div>
+                         <table *ngIf="ca.allocation_interval == null" mat-table #table [dataSource]="sopCarrierAllocationColl" style="width:100%; padding: 1px; border: none;">
+                            <ng-container matColumnDef="option">
+                                <th mat-header-cell *matHeaderCellDef class="capitalize txt font_12">Preference</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element; let idx = index">{{idx +1}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="carrier">
+                                <th mat-header-cell *matHeaderCellDef class="capitalize txt font_12">Carrier</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.company_name}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="contract_number">
+                                <th mat-header-cell *matHeaderCellDef class="capitalize txt font_12">Contract Number</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.contract_no}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="allocation">
+                                <th mat-header-cell *matHeaderCellDef class="capitalize txt font_12">Allocation</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize"*matCellDef="let element; let id = index">{{ element.allocation_value[0][element.allocation_value_id] | json }}%</td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="dispCarrierAllocation;"></tr>
+                            <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispCarrierAllocation;"></tr>
+                        </table>
+                        <table class="mgntop20" *ngIf="ca.allocation_interval != null" mat-table #dynamictable [dataSource]="allocatedValuesColl" style="width:100%; padding: 1px; border: none;">
+                            <ng-container *ngFor="let columnName of displayColumns" [matColumnDef]="columnName">
+                                <th mat-header-cell class="capitalize txt font_12" style="background-color: var(--tabbg) !important; color: var(--inlineeditclr) !important;" *matHeaderCellDef>
+                                    <div *ngIf="columnName.includes('date')">
+                                        <span fxLayout="row" fxLayoutAlign="start start">
+                                            <span>Time period</span>
+                                        </span>
+                                    </div> 
+                                    <div *ngIf="columnName.includes('value')">
+                                        <div *ngFor="let selcarrier of carriersCA; let idx = index;">
+                                            <span fxLayout="column" fxLayoutAlign="start start" *ngIf="columnName == selcarrier.allocation_value_id">
+                                                <span>{{selcarrier.company_name}}</span>
+                                                <span>Contract No: {{selcarrier.contract_no}}</span>
+                                                <span>Preference: {{idx +1}}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </th> 
+                                <div *ngIf="columnName.includes('date')">
+                                    <td mat-cell *matCellDef="let row; let i = index;">
+                                        <div *ngIf="row['date'] != 'TEU SUM'">
+                                            <div fxLayout="column">
+                                            <span *ngIf="isPercentage" class="fntclr465e72 font_14 txt">{{intervalType.slice(0, -2)}} {{IntervalWeekNumbers[i]}}</span>
+                                            <span *ngIf="!isPercentage" class="fntclr465e72 font_14 txt">{{intervalType.slice(0, -2)}} {{IntervalWeekNumbers[i-1]}}</span>
+                                            <span class="fntclr465e72 font_10"> {{ row['date'] }}</span>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="row['date'] == 'TEU SUM'">
+                                            <div fxLayout="column" fxLayoutGap="2px">
+                                            <span class="fntclr465e72 font_14 txt">Allocation</span>
+                                            <span class="wordwrap fntclr465e72 font_10">{{effectiveStartDate | date:'dd-MMM-yyyy'}} to {{effectiveEndDate | date:'dd-MMM-yyyy'}}</span>
+                                            </div>
+                                        </div>
+                                        <span class="fntclr465e72 font_14 txt" *ngIf="row['date'] == 'Allocation'">Allocation</span>
+                                    </td>
+                                </div>
+                                <div *ngIf="columnName.includes('value')" >
+                                    <td mat-cell *matCellDef="let row; let i = index;">
+                                        <div *ngIf="row['date'] == 'TEU SUM'" fxLayout="row" fxLayoutAlign="start start">
+                                                <span class="txt" *ngIf="columnName == carrierid">{{row[columnName]}} TEU</span>
+                                        </div>
+                                        <div *ngIf="row['date'] != 'TEU SUM'" fxLayout="row" fxLayoutAlign="start start">
+                                                <span class="txt">{{row[columnName]}}%</span>
+                                        </div>
+                                    </td>
+                                </div>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+                            <tr mat-row *matRowDef="let row; columns: displayColumns" style="height:40px !important; pointer-events: none;" class="tr-rowalt-light"></tr>
+                        </table>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+        <div  id="shipmentvisibility" style="page-break-before: always; margin-top: 100px;">
+            <span class="alignleft print_content_sub_heading">f. Shipment Visibility</span>
+            <div class="mgnleft40 mgntop10" style="width:90%">
+                <span class="mgnleft40">Once the Purchase Orders from the Principal are ingested into the WAKA platform, the progress of the Purchase Order throughout the shipment lifecycle can be tracked on the platform. The following is the information that can be tracked.</span>
+            </div>
+            <div class="subporeport1" *ngFor="let ct of objectKeys(section2['Services']); let i = index">
+                <div class="mgnleft40 mgntop10" *ngIf="ct == 'Shipment Tracking Services'">
+                    <span class="mgnleft10">Selected services will be tracked on the platform</span>
+                    <ol type="i">
+                        <div class="mgnleft20" *ngFor="let service of section2['Services'][ct]; let idx = index">
+                            <div *ngIf="service.is_selected" fxLayout="row" fxLayoutGap="5px">
+                                <li>{{service.service_name}}</li>
+                            </div>
+                        </div>
+                    </ol>
+                    <!-- <span class="mgnleft10">Avaliable services to be tracked</span>
+                    <ol type="i">
+                        <div class="mgnleft20" *ngFor="let service of section2['Services'][ct]; let idx = index">
+                            <div *ngIf="!service.is_selected" fxLayout="row" fxLayoutGap="5px">
+                                <li>{{service.service_name}}</li>
+                            </div>
+                        </div>
+                    </ol> -->
+                </div>
+            </div>
+        </div>
+        <div  id="invoice" style="page-break-before: always; margin-top: 100px;">
+            <span class="print_content_sub_heading">g. Invoices and Payments</span><br/>
+            <span class="static_txt">This section describes the invoicing and payment schedules for the services provided by the Freight forwarder</span>
+            <div class="mgntop20 mgnleft20" *ngFor="let inv of section4['Service Charges']['Invoicing']">
+                <div class="mgnleft40" *ngIf="inv.control_name == 'IncInfoOtherSer'">
+                    <span class="sub_heading_child">i. Other Services</span>
+                    <br/> 
+                    <div class="mgnleft10 mgntop5" fxLayout="row wrap">
+                        <span>The Freight forwarder  will raise invoices for the services to {{sop.p_company}} on a &nbsp; </span>
+                        <div  *ngFor="let sa of inv['fields']">
+                            <div *ngIf="sa.field0.type == 'inlineedit'">
+                                <div *ngFor="let item of sa.field0['field']"> 
+                                    <div *ngIf="item.controlname == 'IncSelNoShow'">
+                                        {{item.child[0].field[0].value}}
+                                        <span> basis on &nbsp; </span>
+                                    </div>
+                                    <div *ngIf="item.controlname == 'IncGenTime'">
+                                        {{item.value}}{{item.posttext}}
+                                        <span>and &nbsp;</span>
+                                    </div>
+                                    <div *ngIf="item.controlname == 'IncRemTime'">
+                                        {{item.value}} {{item.posttext}}
+                                    </div>
+                                </div>     
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mgnleft40" *ngIf="inv.control_name == 'IncInfoShipser'">
+                    <span class="sub_heading_child">ii.	Services for Shipments</span>
+                    <br/>
+                    <div class="mgnleft10 mgntop5" fxLayout="row wrap">
+                        <span>The Freight forwarder will raise invoices for the services for shipments to  {{sop.p_company}} on a &nbsp; </span>
+                        <div  *ngFor="let sa of inv['fields']">
+                            <div fxLayout="row" *ngIf="sa.field0.type == 'inlineedit'">
+                                <div fxLayout="row" *ngFor="let item of sa.field0['field']"> 
+                                    <div  *ngIf="item.controlname == 'IncSelNoShow'">
+                                        {{item.child[0].field[0].value}}
+                                        <span>basis on &nbsp;</span>
+                                    </div>
+                                    <div *ngIf="item.controlname == 'IncGenTime'">
+                                        {{item.value}}{{item.posttext}}
+                                        <span>and &nbsp;</span>
+                                    </div>
+                                    <div *ngIf="item.controlname == 'IncRemTime'">
+                                        {{item.value}} {{item.posttext}}
+                                    </div>
+                                </div>     
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mgnleft40" *ngIf="inv.control_name == 'payRem'">
+                    <span class="sub_heading_child">iii. Payments</span>
+                    <br/>
+                    <div class="mgnleft10 mgntop5" *ngFor="let sa of inv['fields']">
+                        <div *ngIf="sa.field0.type == 'inlineedit'">
+                            <div fxLayout="row" *ngFor="let item of sa.field0['field']">
+                                <span>Principal will pay the Freight Forwarder against the Monthly Statement Account, after reconciliation, no later than the {{item.value}}th day after the invoice issue date, or the working day after the 30th day. Any invoices which cannot be reconciled will be postponed to the next week for payment.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

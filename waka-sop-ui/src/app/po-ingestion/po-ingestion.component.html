@@ -1,0 +1,60 @@
+<div style="padding-top: 60px;">
+	<div [style.height.px]="height - 80" style="overflow-y: auto;">
+		<div *ngFor="let card of poIngestionCardsColl; let i=index">
+			<mat-card fxLayout="row" fxLayoutAlign="space-between center" style="width: 94%; margin: 24px; border-radius: 8px;">
+				<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex="40">
+					<img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:28px; height:28px;"/>
+					<div fxLayout="column">
+						<div class="txtclr capitalize">{{card.company_name}}</div>
+						<div class="font_12 capitalize txtclr">{{card.office_category}}</div>
+						<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Company Name</div>
+					</div>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex="15">
+					<mat-icon class="pointer" style="transform: scale(1.3); color: var(--primary);" (click)="navigate('POI Config', card.company_id)">settings_applications</mat-icon>
+					<div style="cursor: default;" fxLayout="column">
+						<div class="txtclr capitalize">
+							<div>
+								<span *ngIf="!card.is_validated" style="font-size: 11px; color: white; background-color: rgb(240, 178, 62); padding: 2px 4px; border-radius: 5px;">Validation Pending</span>
+								<span *ngIf="!card.is_scheduled && card.is_validated" style="font-size: 11px; color: white; background-color: rgb(240, 178, 62); padding: 2px 4px; border-radius: 5px;">Schedule Pending</span>
+								<span *ngIf="card.is_scheduled && card.is_validated" style="font-size: 11px; color: white; background-color: rgba(0, 128, 0, 0.856); padding: 2px 4px; border-radius: 5px;">Scheduled</span>
+							</div>
+						</div>
+						<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">POI Config</div>
+					</div>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex="15">
+					<mat-icon *ngIf="card.schemaErrorCount == 0" style="transform: scale(1.3); color: var(--primary); cursor: default;">schema</mat-icon>
+					<mat-icon *ngIf="card.schemaErrorCount != 0" class="pointer" style="transform: scale(1.3); color: var(--primary);" (click)="navigate('Schema Validation', card.company_id)">schema</mat-icon>
+					<div style="cursor: default;" fxLayout="column">
+						<div class="txtclr capitalize">{{ card.schemaErrorCount || 0}}</div>
+						<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Schema Errors</div>
+					</div>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex="15">
+					<mat-icon *ngIf="card.masterErrorCount == 0" style="transform: scale(1.3); color: var(--primary);">sim_card_alert</mat-icon>
+					<mat-icon *ngIf="card.masterErrorCount != 0" class="pointer" style="transform: scale(1.3); color: var(--primary);" (click)="navigate('Master Validation', card.company_id, card.company_type_id)">sim_card_alert</mat-icon>
+					<div style="cursor: default;" fxLayout="column">
+						<div class="txtclr capitalize">{{ card.masterErrorCount || 0}}</div>
+						<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Master Validation</div>
+					</div>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex="15">
+					<mat-icon class="pointer" style="transform: scale(1.3); color: var(--primary);">assignment_late</mat-icon>
+					<div class="pointer" fxLayout="column">
+						<div class="txtclr capitalize">0</div>
+						<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">SOP Validation</div>
+					</div>
+				</div>
+				<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex="15" >
+					<mat-icon *ngIf="card.runningStatusCount == 0" style="transform: scale(1.3); color: var(--primary); cursor: default;">signal_cellular_alt</mat-icon>
+					<mat-icon *ngIf="card.runningStatusCount != 0" class="pointer" style="transform: scale(1.3); color: var(--primary);" (click)="navigate('Running Status', card.company_id)">signal_cellular_alt</mat-icon>
+					<div style="cursor: default;" fxLayout="column">
+						<div class="txtclr capitalize">{{ card.runningStatusCount || 0}}</div>
+						<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Running Status</div>
+					</div>
+				</div>
+			</mat-card>
+		</div>
+	</div>
+</div>

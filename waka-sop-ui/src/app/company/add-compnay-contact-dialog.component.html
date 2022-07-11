@@ -1,0 +1,72 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10" style="font-weight: 600; color: #8294a3;">{{title}}</mat-label>
+    <mat-icon id="close" class="pointer" matTooltip="Close dialog" (click)="onClose(false)" style="color: #465e72;">close</mat-icon>
+</div>
+<div mat-dialog-content>
+    <form [formGroup]="form" class="mgnleft10">
+        <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+        <!--Contact name-->
+        <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+            <label class="txtclr font_14">Contact Name *</label>
+            <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('Name').invalid && form.get('Name').dirty , 'validtext' : form.get('Name').valid}">
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">                  
+                        <mat-icon class="fntclr1c75bc">person</mat-icon>  
+                        <input style="outline:none; background-color:var(--white)" class="text" placeholder="Name" formControlName="Name" name="Name" id="Name" required>
+                </div>
+                <div fxLayout="column">
+                    <mat-error style="margin-left:-30px; margin-top:6px;" *ngIf="form.get('Name').invalid && form.get('Name').dirty" class="txterror" >{{getErrorMessage(form.get('Name'),'Name')}}</mat-error>
+                </div>
+            </div>
+        </div>
+        <!--Email ID-->
+        <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+            <label class="txtclr font_14">Email ID *</label>
+            <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('Email').invalid && form.get('Email').dirty , 'validtext' : form.get('Email').valid}">
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">                  
+                        <mat-icon class="fntclr1c75bc">mail</mat-icon>  
+                        <input style="outline:none; background-color:var(--white)" class="text" placeholder="Email" formControlName="Email" name="Email" id="Email" (blur)="validateEmail()" (keyup)="validateEmailError()" required>
+                </div>
+                <div fxLayout="column">
+                    <mat-error style="margin-left:-30px; margin-top:6px;" *ngIf="form.get('Email').invalid && form.get('Email').dirty" class="txterror" >{{getErrorMessage(form.get('Email'),'Email')}}</mat-error>
+                </div>
+            </div>
+        </div>
+        <!--Phone Number-->
+        <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+            <label class="txtclr font_14">Phone No *</label>
+            <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('Mobile').invalid && form.get('Mobile').dirty , 'validtext' : form.get('Mobile').valid}">
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">                  
+                        <mat-icon class="fntclr1c75bc">call</mat-icon>  
+                        <input style="outline:none; background-color:var(--white)" class="text" placeholder="Mobile" formControlName="Mobile" name="Mobile" id="Mobile" required>
+                </div>
+                <div fxLayout="column">
+                    <mat-error style="margin-left:-30px; margin-top:6px;" *ngIf="form.get('Mobile').invalid && form.get('Mobile').dirty" class="txterror" >{{getErrorMessage(form.get('Mobile'),'Mobile')}}</mat-error>
+                </div>
+            </div>
+        </div>
+        <!--Role Type-->
+        <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+            <label class="txtclr font_14">Role *</label>
+            <div class="inputbox companyinputminwidth validtext">
+            <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                <mat-select multiple placeholder="select Roles" required  formControlName="Role" name="Role" class="capitalize font_12">
+                    <mat-option class="capitalize" [matTooltip]="ele.company_name" *ngFor="let ele of roleList" [value]="ele.role_id">{{ele.role_name}}</mat-option>
+                </mat-select>                     
+            </div>
+            <div fxLayout="column">
+            </div>
+            <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="form.get('Role').invalid && form.get('Role').dirty || form.get('Role').touched" class="txterror" >{{getErrorMessage(form.get('Role'),'Role')}}</mat-error>
+            </div>
+        </div>
+        </div>
+        
+        
+    </form>
+</div>
+<footer  mat-dialog-actions fxlayout="row" fxLayoutAlign="center center">
+    <mat-toolbar style="background-color: var(--white); height: 72px;" fxlayout="row" fxLayoutAlign="end center">
+      <div  matTooltip="Invite Contact" fxLayoutAlign="center center">
+        <button id="btnsave" style="width:100px;" class="btnpri btnpriqtr" [disabled]="form.invalid || !isValid" mat-raised-button (click)="addCompanyContact()">{{btnTitle}}</button>
+    </div>
+    </mat-toolbar>
+</footer>

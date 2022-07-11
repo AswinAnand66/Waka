@@ -1,0 +1,41 @@
+.subporeport { 
+    page-break-after: always; 
+}
+
+.subporeport:last-child { 
+    page-break-after: avoid; 
+}
+
+
+.subporeport1 { 
+    page-break-before: auto; 
+}
+
+.subporeport1:last-child { 
+    page-break-before: avoid; 
+}
+
+.list-item-bdr {
+    padding:10px 10px; 
+    border:1px solid lightgray;
+}
+.list-item-bdr:not(:last-child){
+    border-bottom: none;
+}
+
+td, th {
+    border-color: black;
+    text-align: left;
+    padding: 8px;
+  }
+
+th {
+    background-color: #1c75bd;
+    color: white !important;
+    margin-top: 20px;
+}
+
+/* .spacer {
+    height: 60px !important;
+    width: 100% !important;
+} */

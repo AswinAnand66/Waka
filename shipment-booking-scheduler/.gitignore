@@ -1,0 +1,9 @@
+# dependencies
+/node_modules
+/log
+
+# compiled output
+/dist/scheduler-main.js
+
+#etc
+/fileuploads/*

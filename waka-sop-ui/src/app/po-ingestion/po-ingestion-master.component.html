@@ -1,0 +1,188 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 0px 16px; padding:16px 16px; overflow-y: auto;" [style.height.px]="screen.height-95">
+  <mat-accordion [style.height.px]="screen.height-120" style="padding: 14px;" multi>
+    <mat-expansion-panel *ngFor="let mErrors of masterErrors" expanded disabled hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title fxLayoutAlign="space-between center">
+          <div fxLayoutAlign="start center" fxLayoutGap="6px">
+            <mat-icon *ngIf="mErrors.error_type=='MASTER_FACTORY_NAME'" style="color: var(--inprogressmedium);">business</mat-icon>
+            <mat-icon *ngIf="mErrors.error_type=='MASTER_SUPPLIER_NAME'" style="color: var(--inprogressmedium);">business</mat-icon>
+            <mat-icon *ngIf="mErrors.error_type=='MASTER_BUYER_NAME'" style="color: var(--inprogressmedium);">business</mat-icon>
+            <mat-icon *ngIf="mErrors.error_type=='MASTER_DESTINATION_PORT'" style="color: var(--inprogressmedium);">directions_boat_filled</mat-icon>
+            <mat-icon *ngIf="mErrors.error_type=='MASTER_ORIGIN_PORT'" style="color: var(--inprogressmedium);">directions_boat_filled</mat-icon>
+            <mat-icon *ngIf="mErrors.error_type=='MASTER_INCOTERMS_NAME'" style="color: var(--inprogressmedium);">ballot</mat-icon>
+            <span *ngIf="mErrors.error_type=='MASTER_FACTORY_NAME'" style="font-weight: 600;">Factory Name Not Matched</span>
+            <span *ngIf="mErrors.error_type=='MASTER_SUPPLIER_NAME'" style="font-weight: 600;">Supplier Name Not Matched</span>
+            <span *ngIf="mErrors.error_type=='MASTER_BUYER_NAME'" style="font-weight: 600;">Buyer Name Not Matched</span>
+            <span *ngIf="mErrors.error_type=='MASTER_DESTINATION_PORT'" style="font-weight: 600;">Destination Port Not Matched</span>
+            <span *ngIf="mErrors.error_type=='MASTER_ORIGIN_PORT'" style="font-weight: 600;">Origin Port Not Matched</span>
+            <span *ngIf="mErrors.error_type=='MASTER_INCOTERMS_NAME'" style="font-weight: 600;">Incoterms Not Matched</span>
+          </div>
+          <div fxLayoutAlign="end center">
+            <div matTooltip="Click to unmatch" *ngIf="mErrors.matchedWithExisting" fxLayoutAlign="start center" fxLayoutGap="6px" style="border: 2px solid var(--active); border-radius: 8px; padding: 4px; cursor: pointer;" (click)="unMatchMappedCompany(mErrors)">
+              <span style="color: var(--active); font-weight: 600;">Matched to {{ mErrors.matchedWithExisting }}</span>
+            </div>
+          </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div style="padding: 8px;">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+          <div fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row wrap" fxFlex="60">
+            <span *ngIf="mErrors.error_type=='MASTER_FACTORY_NAME'">Factory: <span style="font-weight: 600;"> {{mErrors.error_value }} </span> not matched with the Existing Records</span>
+            <span *ngIf="mErrors.error_type=='MASTER_SUPPLIER_NAME'">Supplier: <span style="font-weight: 600;"> {{mErrors.error_value }} </span> not matched with the Existing Records</span>
+            <span *ngIf="mErrors.error_type=='MASTER_BUYER_NAME'">Buyer: <span style="font-weight: 600;"> {{mErrors.error_value }} </span> not matched with the Existing Records</span>
+            <span *ngIf="mErrors.error_type=='MASTER_DESTINATION_PORT'">Destination Port: <span style="font-weight: 600;"> {{mErrors.error_value }} </span> not matched with the Existing Records</span>
+            <span *ngIf="mErrors.error_type=='MASTER_ORIGIN_PORT'">Origin Port: <span style="font-weight: 600;"> {{mErrors.error_value }} </span> not matched with the Existing Records</span>
+            <span *ngIf="mErrors.error_type=='MASTER_INCOTERMS_NAME'">Incoterm: <span style="font-weight: 600;"> {{mErrors.error_value }} </span> not matched with the Existing Records </span>
+          </div>
+          <div *ngIf="mErrors.error_type=='MASTER_DESTINATION_PORT'" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+            <div>
+              <mat-select #ele class="text" placeholder="Map Here" style="width:180px" class="capitalize select" (selectionChange)="OnPortChange($event.value, mErrors, ele)" >
+                <mat-option *ngFor="let sel of portList.filteredData" [value]="sel">{{sel.port_name}} ({{sel.country}})</mat-option>
+              </mat-select>            
+            </div>
+            <div>
+              <button [disabled]="!mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" (click)="applyAll(mErrors)">
+                <span class="mgnleft10 font_14">APPLY</span>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="mErrors.error_type=='MASTER_ORIGIN_PORT'" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+            <div>
+              <mat-select #eleRef class="text" placeholder="Map Here" style="width:180px" class="capitalize select" (selectionChange)="OnPortChange($event.value, mErrors, eleRef)" disableOptionCentering >
+                <input (keyup)="searchPorts($event.target.value)" (keydown)="$event.stopPropagation()" style="width: 90% !important; height: 30px; outline: none; border: none; text-transform:lowercase;" autofocus>
+                <mat-option *ngFor="let sel of portList.filteredData" [value]="sel">{{sel.port_name}} ({{sel.country}})</mat-option>
+              </mat-select>            
+            </div>
+            <div>
+              <button [disabled]="!mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" (click)="applyAll(mErrors)">
+                <span class="mgnleft10 font_14">APPLY</span>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="mErrors.error_type=='MASTER_INCOTERMS_NAME'" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+            <div>
+              <mat-select #incoEle class="text" placeholder="Map Here" style="width:180px" class="capitalize select" (selectionChange)="OnIncotermsChange($event.value, mErrors, incoEle)" >
+                <mat-option *ngFor="let sel of incotermsList" [value]="sel">{{sel.display_name}}</mat-option>
+              </mat-select>            
+            </div>
+            <div>
+              <button *ngIf="!mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" [disabled]="mErrors.matchedWithExisting" (click)="addNewIncoterm(mErrors)">
+                <mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">ADD INCOTERMS</span>
+              </button>
+              <button *ngIf="mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" (click)="applyAll(mErrors)">
+                <span class="mgnleft10 font_14">APPLY</span>
+              </button>
+            </div>
+          </div>
+          <div *ngIf="mErrors.error_type=='MASTER_FACTORY_NAME'" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+            <div *ngIf="!mErrors.is_invite_sent && !mErrors.is_company_already_exists">
+              <mat-select #factEle class="text" placeholder="Map Here" style="min-width: 250px !important" class="capitalize select" (selectionChange)="OnConsigneeChange($event.value, mErrors, factEle)">
+                <input (keyup)="searchCompany($event.target.value)" style="width: 90% !important; height: 30px; outline: none; border: none; text-transform:lowercase;" autofocus>
+                <mat-option *ngFor="let sel of consigneeList.filteredData" [value]="sel">{{sel.company_name}}</mat-option>
+              </mat-select>            
+            </div>
+            <div *ngIf="!mErrors.is_invite_sent && !mErrors.is_company_already_exists">
+              <button *ngIf="!mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" [disabled]="mErrors.matchedWithExisting" (click)="inviteNewCompany(mErrors.error_value, mErrors)">
+                <mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">INVITE FACTORY</span>
+              </button>
+              <button *ngIf="mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" (click)="applyAll(mErrors)">
+                <span class="mgnleft10 font_14">APPLY</span>
+              </button>
+            </div>
+            <div *ngIf="!mErrors.is_invite_sent && mErrors.is_company_already_exists">
+              <button *ngIf="!mErrors.matchedWithExisting" mat-raised-button style="width: fit-content !important; height: 40px !important;  max-width: 280px; text-overflow: ellipsis !important; overflow:hidden;" class="btnpri" [disabled]="mErrors.matchedWithExisting" (click)="inviteNewCompany(mErrors.error_value, mErrors)">
+                <mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">INVITE {{mErrors.error_value}}</span>
+              </button>
+              <button *ngIf="mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" (click)="applyAll(mErrors)">
+                <span class="mgnleft10 font_14">APPLY</span>
+              </button>
+            </div>
+            <div *ngIf="mErrors.is_invite_sent">
+              <span style= "font-size: 14px; color:var(--primary); font-weight: 600;" class="card-sub-heading" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+                <mat-icon class="clrinprogress md-18" style="vertical-align: middle !important; transform: scale(1);">access_time_filled</mat-icon> 
+                <span>Invite sent to {{ mErrors.error_value }}</span>
+                <mat-icon class="md-18" matTooltip="Delete the Invite" style="vertical-align: middle !important; transform: scale(1); margin-left: 8px; color: red; cursor: pointer;" (click)="delInviteCompany(mErrors)">delete_outline</mat-icon>
+              </span>
+            </div>
+          </div>
+          <div *ngIf="mErrors.error_type=='MASTER_SUPPLIER_NAME'" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+            <div *ngIf="!mErrors.is_invite_sent && !mErrors.is_company_already_exists">
+              <mat-select #supplierEle class="text" placeholder="Map Here" style="min-width: 250px !important" class="capitalize select" (selectionChange)="OnConsigneeChange($event.value, mErrors, supplierEle)">
+                <input (keyup)="searchCompany($event.target.value)" style="width: 90% !important; height: 30px; outline: none; border: none; text-transform:lowercase;" autofocus>
+                <mat-option *ngFor="let sel of consigneeList.filteredData" [value]="sel">{{sel.company_name}}</mat-option>
+              </mat-select>            
+            </div>
+            <div *ngIf="!mErrors.is_invite_sent && !mErrors.is_company_already_exists">
+              <button *ngIf="!mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" [disabled]="mErrors.matchedWithExisting" (click)="inviteNewCompany(mErrors.error_value, mErrors)">
+                <mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">INVITE SUPPLIER</span>
+              </button>
+              <button *ngIf="mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" (click)="applyAll(mErrors)">
+                <span class="mgnleft10 font_14">APPLY</span>
+              </button>
+            </div>
+            <div *ngIf="!mErrors.is_invite_sent && mErrors.is_company_already_exists">
+              <button *ngIf="!mErrors.matchedWithExisting" mat-raised-button style="width: fit-content !important; height: 40px !important; max-width: 280px; text-overflow: ellipsis !important; overflow:hidden;" class="btnpri" [disabled]="mErrors.matchedWithExisting" (click)="inviteNewCompany(mErrors.error_value, mErrors)">
+                <mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">INVITE {{mErrors.error_value}}</span>
+              </button>
+              <button *ngIf="mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" (click)="applyAll(mErrors)">
+                <span class="mgnleft10 font_14">APPLY</span>
+              </button>
+            </div>
+            <div *ngIf="mErrors.is_invite_sent">
+              <span style= "font-size: 14px; color:var(--primary); font-weight: 600;" class="card-sub-heading" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+                <mat-icon class="clrinprogress md-18" style="vertical-align: middle !important; transform: scale(1);">access_time_filled</mat-icon>
+                <span>Invite Sent to {{ mErrors.error_value }}</span>
+                <mat-icon class="md-18" matTooltip="Delete the Invite" style="vertical-align: middle !important; transform: scale(1); margin-left: 8px; color: red; cursor: pointer;" (click)="delInviteCompany(mErrors)">delete_outline</mat-icon>
+              </span>
+            </div>
+          </div>
+
+          <div *ngIf="mErrors.error_type=='MASTER_BUYER_NAME'" fxLayoutAlign="space-between center" fxLayoutGap="12px">
+            <div *ngIf="!mErrors.is_invite_sent && !mErrors.is_company_already_exists">
+              <mat-select #buyerEle class="text" placeholder="Map Here" style="min-width: 250px !important" class="capitalize select" (selectionChange)="OnConsigneeChange($event.value, mErrors, buyerEle)">
+                <input (keyup)="searchCompany($event.target.value)"  (keydown)="$event.stopPropagation()" style="width: 90% !important; height: 30px; outline: none; border: none; text-transform:lowercase;" autofocus>
+                <mat-option *ngFor="let sel of consigneeList.filteredData" [value]="sel">{{sel.company_name}}</mat-option>
+              </mat-select>
+            </div>
+            <div *ngIf="!mErrors.is_invite_sent && !mErrors.is_company_already_exists">
+              <button *ngIf="!mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" [disabled]="mErrors.matchedWithExisting" (click)="inviteNewCompany(mErrors.error_value, mErrors)">
+                <mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">INVITE BUYER</span>
+              </button>
+              <button *ngIf="mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" (click)="applyAll(mErrors)">
+                <span class="mgnleft10 font_14">APPLY</span>
+              </button>
+            </div>
+            <div *ngIf="!mErrors.is_invite_sent && mErrors.is_company_already_exists">
+              <button *ngIf="!mErrors.matchedWithExisting" mat-raised-button style="width: fit-content !important; height: 40px !important; max-width: 280px; text-overflow: ellipsis !important; overflow:hidden;" class="btnpri" [disabled]="mErrors.matchedWithExisting" (click)="inviteNewCompany(mErrors.error_value, mErrors)">
+                <mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">INVITE {{mErrors.error_value}}</span>
+              </button>
+              <button *ngIf="mErrors.matchedWithExisting" mat-raised-button style="width: 195px !important; height: 40px !important;" class="btnpri" (click)="applyAll(mErrors)">
+                <span class="mgnleft10 font_14">APPLY</span>
+              </button>
+            </div>
+            <div *ngIf="mErrors.is_invite_sent">
+              <span style= "font-size: 14px; color:var(--primary); font-weight: 600;" class="card-sub-heading" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5px">
+                <mat-icon class="clrinprogress md-18" style="vertical-align: middle !important; transform: scale(1);">access_time_filled</mat-icon>
+                <span>Invite Sent to {{ mErrors.error_value }}</span>
+                <mat-icon class="md-18" matTooltip="Delete the Invite" style="vertical-align: middle !important; transform: scale(1); margin-left: 8px; color: red; cursor: pointer;" (click)="delInviteCompany(mErrors)">delete_outline</mat-icon>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<footer fxLayout="row">
+    <mat-toolbar style="background-color: var(--activebg); height: 72px;" fxLayoutAlign="end center" >
+        <div fxLayoutAlign="space-between center" style="margin-right:40px; width: 100%;">
+            <button class="btnsecondary" id="btnBack" style="width: auto !important; height: 40px !important; padding:0px 8px;" (click)="goBack();"><span>BACK</span></button>
+            <div fxLayoutAlign="space-between center" fxLayoutGap="8px">
+              <!-- <button class="btnpri btnprifull" id="btnNext" style="width: 98px !important; height: 40px !important; padding:0px;" (click)="applyAll();"><span class="clrwhite">APPLY ALL</span></button> -->
+            </div>
+        </div>
+    </mat-toolbar>
+</footer>

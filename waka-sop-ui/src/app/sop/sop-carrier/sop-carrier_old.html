@@ -1,0 +1,132 @@
+<div fxLayout="row" class="font_12">
+    <div class="sidesection">
+        <div fxLayout="column">
+            <div fxLayout="row" class="pointer" (click)="onClickCA()">
+                <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorCA}">1</span></div>
+                <div style="margin-left:10px;" [ngStyle]="{'color':colorCA,'font-weight':fwCA}" >Carrier Allocation</div>
+            </div>
+            <div fxLayout="row" class="pointer mgntop30" (click)="onClickCCP()"> 
+                <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorCCP}">2</span></div>
+                <div style="margin-left:10px;" [ngStyle]="{'color':colorCCP,'font-weight':fwCCP}" >Carrier Preference</div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="dispCA" fxLayout="column" class="mainsection" [style.height.px]="screen.height-16">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-label class="font_14 fntwt600">Carrier Allocation</mat-label>
+            <button mat-raised-button style="background-color:#1c75bc; color:white;" (click)="addCarrierAlloc()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW</span></button>
+        </div>
+        <div *ngIf="sopCarrierAllocColl.length>0" [style.height.px]="screen.height-16" style="overflow-y: auto;">
+            <table mat-table [dataSource]="datasource" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%">
+                <ng-container matColumnDef="carrier_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Carrier Name</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.carrier_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="contract_number">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Contract Ref</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                        <div>{{element.contract_number}}</div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="allocation_percent">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Allocation</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                        <div>{{element.allocation_percent}}%</div>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="dispCarrierAllocColumns; sticky: true;" class="tblrowht"></tr>
+                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispCarrierAllocColumns;"></tr>
+                <!-- Group header -->
+                <ng-container matColumnDef="groupHeader">
+                    <td mat-cell colspan="999" *matCellDef="let group" style="background-color: aliceblue;">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <mat-icon *ngIf="group.expanded">expand_less</mat-icon>
+                            <mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
+                            <img src='../../assets/image/svg/icon-small-crane.svg' style="width:36px; height:36px; margin-left:16px"/>
+                            <div fxLayout="column" style="width:175px">
+                                <div style="color:#465e72; " class="fntwt600">{{group[groupByColumns[group.level-1]].split(' to ')[0].split(',')[0]}}</div>
+                                <div class="font_10 capitalize">Origin: {{group[groupByColumns[group.level-1]].split(' to ')[0].split(',')[1]}}</div>
+                            </div>
+                            <mat-icon style="color:#1c75bc; margin-left:9px" class="md-14">circle</mat-icon>
+                            <div style="width:50px; border-bottom:dotted 2px #1c75bc; margin-top:-1px; margin-left:0px"></div>
+                            <div class="caret5 right" style="margin-left:0px"></div>
+                            <img src='../../assets/image/svg/icon-small-crane.svg' style="width:36px; height:36px; margin-left:16px"/>
+                            <div fxLayout="column" style="margin-left:-10px; ">
+                                <div style="color:#465e72; margin-left:10px" class="fntwt600">{{group[groupByColumns[group.level-1]].split(' to ')[1].split(',')[0]}}</div>
+                                <div class="font_10 capitalize mgnleft10">Destination: {{group[groupByColumns[group.level-1]].split(' to ')[1].split(',')[1]}}</div>
+                            </div>
+                            <mat-icon class="mgnleft20 clrred pointer" (click)="delSOPCarrierAlloc(group[groupByColumns[group.level-1]])">delete</mat-icon>
+                        </div>
+                    </td>
+                </ng-container>
+                <tr mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup" (click)="groupHeaderClick(row)"> </tr>
+        </table>
+        </div>
+        <div *ngIf="sopCarrierAllocColl.length==0" fxLayoutAlign="center center" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px">
+            <div fxLayout="column" fxLayoutAlign="center center" [style.height.px]="screen.height-100">
+                <img src='../../assets/image/svg/icon-small-crane_96px.svg' style="width:96px; height:96px;"/>
+                <div class="font_12">Click on ADD NEW to Create Carrier Allocation</div>
+                <div class="font_12">Carrier Company can be created from Business Contacts->Other Company List</div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="dispCCP" fxLayout="column" class="mainsection" [style.height.px]="screen.height-16">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-label class="font_14 fntwt600">Carrier Preference</mat-label>
+            <button mat-raised-button style="background-color:#1c75bc; color:white;" (click)="addCarrierPref()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW</span></button>
+        </div>
+        <div *ngIf="sopCarrierPrefColl.length>0" [style.max-height.px]="screen.height-125" style="overflow-y: auto;">
+            <table mat-table [dataSource]="datasource" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%">
+                <ng-container matColumnDef="carrier_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Carrier Name</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.carrier_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="contract_number">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Contract Ref</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                        <div>{{element.contract_number}}</div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="preference">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Preference</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                        <div>{{element.preference}}</div>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="dispCarrierPrefColumns; sticky: true;" class="tblrowht"></tr>
+                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispCarrierPrefColumns;"></tr>
+                <!-- Group header -->
+                <ng-container matColumnDef="groupHeader">
+                    <td mat-cell colspan="999" *matCellDef="let group" style="background-color: aliceblue;">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <mat-icon *ngIf="group.expanded">expand_less</mat-icon>
+                            <mat-icon *ngIf="!group.expanded">expand_more</mat-icon>
+                            <img src='../../assets/image/svg/icon-small-crane.svg' style="width:36px; height:36px; margin-left:16px"/>
+                            <div fxLayout="column" style="width:175px">
+                                <div style="color:#465e72; " class="fntwt600">{{group[groupByColumns[group.level-1]].split(' to ')[0].split(',')[0]}}</div>
+                                <div class="font_10 capitalize">Origin: {{group[groupByColumns[group.level-1]].split(' to ')[0].split(',')[1]}}</div>
+                            </div>
+                            <mat-icon style="color:#1c75bc; margin-left:9px" class="md-14">circle</mat-icon>
+                            <div style="width:50px; border-bottom:dotted 2px #1c75bc; margin-top:-1px; margin-left:0px"></div>
+                            <div class="caret5 right" style="margin-left:0px"></div>
+                            <img src='../../assets/image/svg/icon-small-crane.svg' style="width:36px; height:36px; margin-left:16px"/>
+                            <div fxLayout="column" style="margin-left:-10px; ">
+                                <div style="color:#465e72; margin-left:10px" class="fntwt600">{{group[groupByColumns[group.level-1]].split(' to ')[1].split(',')[0]}}</div>
+                                <div class="font_10 capitalize mgnleft10">Destination: {{group[groupByColumns[group.level-1]].split(' to ')[1].split(',')[1]}}</div>
+                            </div>
+                            <mat-icon class="mgnleft20 clrred pointer" (click)="delSOPCarrierPref(group[groupByColumns[group.level-1]])">delete</mat-icon>
+                        </div>
+                    </td>
+                </ng-container>
+                <tr mat-row *matRowDef="let row; columns: ['groupHeader']; when: isGroup" (click)="groupHeaderClick(row)"> </tr>
+        </table>
+        </div>
+        <div *ngIf="sopCarrierPrefColl.length==0" fxLayoutAlign="center center" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px">
+            <div fxLayout="column" fxLayoutAlign="center center" [style.height.px]="screen.height-100">
+                <img src='../../assets/image/svg/icon-small-crane_96px.svg' style="width:96px; height:96px;"/>
+                <div class="font_12">Click on ADD NEW to Create Carrier Preference</div>
+                <div class="font_12">Carrier Company can be created from Business Contacts->Other Company List</div>
+            </div>
+        </div>
+    </div>
+</div>

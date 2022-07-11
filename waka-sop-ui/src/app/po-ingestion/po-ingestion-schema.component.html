@@ -1,0 +1,91 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 0px 16px; padding:16px 16px; overflow-y: auto;" [style.height.px]="screen.height-95">
+      <mat-accordion [style.height.px]="screen.height-120" style="padding: 14px;" multi>
+        <mat-expansion-panel *ngFor="let sources of schemaErrorKeys" expanded disabled hideToggle>
+          <mat-expansion-panel-header [ngClass]="{'keys-header-new':sources.isSelected == false && sources.isNewColumn == true, 'keys-header-reject':sources.isSelected == false && sources.isRejectedColumn == true}">
+            <mat-panel-title fxLayoutAlign="space-between center">
+              <div fxLayoutAlign="start center" fxLayoutGap="6px">
+                <mat-icon style="color: var(--inprogressmedium);">nearby_error</mat-icon>
+                <span style="font-weight: 600;">{{ sources.missing_key | titlecase }}</span>
+              </div>
+              <div fxLayoutAlign="end center">
+                <div *ngIf="sources.isNewColumn" fxLayoutAlign="start center" fxLayoutGap="6px" style="border: 2px solid var(--green); border-radius: 8px; padding: 4px;">
+                  <mat-icon style="color: var(--green);">beenhere</mat-icon>
+                  <span style="color: var(--green); font-weight: 600;">Marked as New Key</span>
+                </div>
+                <div *ngIf="sources.isRejectedColumn" fxLayoutAlign="start center" fxLayoutGap="6px" style="border: 2px solid var(--red); border-radius: 8px; padding: 4px;">
+                  <mat-icon style="color: var(--red);">backspace</mat-icon>
+                  <span style="color: var(--red); font-weight: 600;">Marked as Rejected Key</span>
+                </div>
+                <div *ngIf="sources.targetKey != '' && !sources.isRejectedColumn && !sources.isNewColumn" fxLayoutAlign="start center" fxLayoutGap="6px"  (click)="unMapTargetKey(sources)" style="border: 2px solid var(--active); border-radius: 8px; padding: 4px;">
+                  <span style="color: var(--active); font-weight: 600;">Mapped to {{ sources.targetKey | titlecase }}</span>
+                </div>
+              </div>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div style="padding: 8px;">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row wrap" fxFlex="92">
+                <ng-container *ngFor="let keys of sources.display; let i = index">
+                  <span>{{ keys | titlecase }}</span>
+                  <mat-icon *ngIf="i != sources.display.length-1" [ngStyle]="{'color': sources.isSelected ? '#fff' : 'var(--textcolor)'}">double_arrow</mat-icon>
+                </ng-container>  
+              </div>
+              <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px">
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="inlineeditdiv">
+                  <mat-select #eleRef class="text" placeholder="Map here" style="width:180px" class="capitalize select" (selectionChange)="OnUMTargetsChange($event.value, sources, eleRef)">
+                      <mat-option *ngFor="let sel of unMappedTargets" [value]="sel">{{sel}}</mat-option>
+                  </mat-select>
+                </div>
+                <!-- <div *ngIf="sources.targetKey != ''" (click)="unMapTargetKey(sources)" style="cursor: pointer;">
+                  <span style="font-weight: 600;">{{ sources.targetKey | titlecase }}</span>
+                </div> -->
+                <div class="pointer">
+                  <mat-icon *ngIf="!sources.isNewColumn" style="color: #1c75bd; transform: scale(1.1);" matTooltip="Mark as New Column" matTooltipPosition="left" (click)="sources.isNewColumn = true; sources.isRejectedColumn = false; markNewKey(sources);">new_label</mat-icon>
+                  <mat-icon *ngIf="sources.isNewColumn" style="color: #1c75bd; transform: scale(1.1);" matTooltip="Unmark the New Column" matTooltipPosition="left" (click)="sources.isNewColumn = false; unMarkNewKey(sources);">new_label</mat-icon>
+                </div>
+                <div class="pointer">
+                  <mat-icon *ngIf="!sources.isRejectedColumn" style="color: #E23533; transform: scale(1.1);" matTooltip="Reject the Column" matTooltipPosition="left" (click)="sources.isRejectedColumn = true; sources.isNewColumn = false; markRejectedKey(sources);">backspace</mat-icon>
+                  <mat-icon *ngIf="sources.isRejectedColumn" style="color: #E23533; transform: scale(1.1);" matTooltip="Reject the Column" matTooltipPosition="left" (click)="sources.isRejectedColumn = false; unMarkRejectedKey(sources);">backspace</mat-icon>
+                </div>
+              </div>
+            </div>
+            <!-- <div *ngIf="sources.isNewColumn" (click)="sourceMapping(sources); sources.isSelected = false" fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row wrap" fxFlex="94">
+                <ng-container *ngFor="let keys of sources.display; let i = index">
+                  <span>{{ keys | titlecase }}</span>
+                  <mat-icon *ngIf="i != sources.display.length-1" style="color: var(--textcolor)">double_arrow</mat-icon>
+                </ng-container>  
+              </div>
+              <div>
+                <mat-icon style="color: var(--green); transform: scale(1.1); pointer-events: all !important; cursor: pointer;" matTooltip="Marked as New Column" matTooltipPosition="left" (click)="sources.isNewColumn = false; unMarkNewKey(sources);">beenhere</mat-icon>
+              </div>
+            </div>
+            <div *ngIf="sources.isRejectedColumn" (click)="sourceMapping(sources); sources.isSelected = false" fxLayout="row" fxLayoutAlign="space-between center">
+              <div fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row wrap" fxFlex="94">
+                <ng-container *ngFor="let keys of sources.display; let i = index">
+                  <span>{{ keys | titlecase }}</span>
+                  <mat-icon *ngIf="i != sources.display.length-1" style="color: var(--textcolor)">double_arrow</mat-icon>
+                </ng-container>  
+              </div>
+              <div>
+                <mat-icon style="color: var(--redalt); transform: scale(1.1); pointer-events: all !important; cursor: pointer;" matTooltip="Marked as Rejected Column" matTooltipPosition="left" (click)="sources.isRejectedColumn = false; markRejectedKey(sources);">cancel_presentation</mat-icon>
+              </div>
+            </div>  -->
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+</div>
+<footer fxLayout="row">
+    <mat-toolbar style="background-color: var(--activebg); height: 72px;" fxLayoutAlign="end center" >
+        <div fxLayoutAlign="space-between center" style="margin-right:40px; width: 100%;">
+            <button class="btnsecondary" id="btnBack" style="width: auto !important; height: 40px !important; padding:0px 8px;" (click)="goBack();"><span>BACK</span></button>
+            <div fxLayoutAlign="space-between center" fxLayoutGap="8px">
+              <button class="btnpri btnprifull" id="btnBack" style="width: auto !important; height: 40px !important; padding:0px 8px;" (click)="viewMapping();"><span>VIEW MAPPED KEYS</span></button> 
+              <button class="btnpri btnprifull" id="btnNext" style="width: 98px !important; height: 40px !important; padding:0px;" (click)="applyAll();"><span class="clrwhite">APPLY ALL</span></button>
+            </div>
+        </div>
+    </mat-toolbar>
+</footer>

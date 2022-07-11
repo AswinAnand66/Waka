@@ -1,0 +1,9 @@
+<div class="scroller" fxLayout="row wrap" fxLayoutAlign="start start" [style.height.px]="height" [style.padding-top.px]="paddingTop" style="overflow-y: auto; padding-bottom: 18px;" id="dashboard">
+	<div *ngFor="let card of moduleCardsColl; let i=index">
+		<div *ngIf="card.module_name != 'Home'" class="dashboard-card pointer" [ngClass]="{'card-gap':(i)%rowChartCnt != 0}" [style.width.px]="cardDivWidth" (click)="getSubModule(card)">
+			<div class="dashboard-title">{{card.count || 0}}</div>
+			<div class="dashboard-sub-title">{{card.module_name}}</div>
+			<mat-icon class="far">{{card.icon}}</mat-icon>
+		</div>
+	</div>
+</div>

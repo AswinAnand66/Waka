@@ -1,0 +1,22 @@
+FROM node:16.15
+ARG BUILD_ENVIRONMENT
+ENV BUILD_ENVIRONMENT=$BUILD_ENVIRONMENT
+WORKDIR /app/waka-sop-ui
+COPY ./waka-sop-ui .
+RUN npm install
+COPY ./iconfont/MaterialIcons-Regular.woff2 ./node_modules/material-design-icons/iconfont/MaterialIcons-Regular.woff2
+RUN node_modules/.bin/ng build --prod
+WORKDIR /app/waka-sop-ui/node_modules/material-design-icons/iconfont
+COPY ./iconfont .
+WORKDIR /sslcerts
+COPY ./qa_ssl .
+WORKDIR /app/tsserver
+COPY ./tsserver .
+RUN if [ $BUILD_ENVIRONMENT == "qa_v2" ]; then mv src/configs/constants_qa_v2.ts src/configs/constants.ts; elif [ $BUILD_ENVIRONMENT == "demo" ]; then mv src/configs/constants_demo.ts src/configs/constants.ts; else echo "environment not present"; fi
+RUN npm install
+RUN npm run build
+RUN npm run wpdev
+RUN mkdir -p /tsserver/fileuploads/ordersTransaction
+RUN mkdir -p /tsserver/fileuploads/ingestion
+ENTRYPOINT node dist/main.js
+EXPOSE 3000

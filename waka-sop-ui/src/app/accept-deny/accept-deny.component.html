@@ -1,0 +1,60 @@
+<div>
+    <app-login-header></app-login-header>
+    <mat-tab-group *ngIf="isPendInvite || isPendContactInvite" style="margin:60px 16px 16px 16px">
+      <mat-tab *ngIf="isPendInvite" label="Pending Company Invite">
+        <div *ngIf="isPendInvite" style="overflow-y: auto;" [style.height.px]="ht">
+          <div  style="margin:60px 16px 16px 16px;" fxLayout="center center" fxLayoutGap="25px">
+            <table mat-table #table [dataSource]="pendingInviteColl" matSort style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:97%">
+              <ng-container matColumnDef="company_name">
+                  <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>INVITED BY</th>
+                  <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.company_name}}</td>
+              </ng-container>
+              <ng-container matColumnDef="invitee_company_name">
+                  <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>YOUR COMPANY NAME</th>
+                  <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.invitee_company_name}}</td>
+              </ng-container>
+              <ng-container matColumnDef="invitee_company_type">
+                  <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>INVITED AS</th>
+                  <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.invitee_company_type}}</td>
+              </ng-container>
+              <ng-container matColumnDef="status">
+                  <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>STATUS</th>
+                  <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                    <mat-radio-group aria-label="Select an option"  color="primary" [(ngModel)]="selStatus" (change)="onChange($event.value, element)">
+                      <mat-radio-button *ngFor="let stat of statusColl" class="mgnleft10 capitalize" [value]="stat">{{stat}}</mat-radio-button>
+                      </mat-radio-group>
+                  </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="displayPending; sticky: true;" class="tblrowht"></tr>
+              <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: displayPending;"></tr>
+            </table>
+          </div>
+        </div>
+  </mat-tab>
+  <mat-tab *ngIf="isPendContactInvite" label="Pending Contact Invite"> 
+    <div *ngIf="isPendContactInvite" style="margin:60px 16px 16px 16px" fxLayout = "center center" fxLayoutGap="25px">
+        <table mat-table #table [dataSource]="pendingContactInviteColl" matSort style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:97%">
+          <ng-container matColumnDef="company_name">
+              <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>INVITED COMPANY NAME</th>
+              <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.invited_company_name}}</td>
+          </ng-container>
+          <ng-container matColumnDef="contact_name">
+              <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>CONTACT NAME</th>
+              <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.contact_name}}</td>
+          </ng-container>
+          <ng-container matColumnDef="status">
+              <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>STATUS</th>
+              <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                <mat-radio-group aria-label="Select an option"  color="primary"[(ngModel)]="selStatus" (change)="onChangeContact($event.value, element)">
+                  <mat-radio-button *ngFor="let stat of statusColl" class="mgnleft10 capitalize" [value]="stat">{{stat}}</mat-radio-button>
+                </mat-radio-group>
+              </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayContactPending; sticky: true;" class="tblrowht"></tr>
+          <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: displayContactPending;"></tr>
+        </table>
+   </div>
+ </mat-tab>
+    </mat-tab-group>
+    <router-outlet [style.width.px]="width"></router-outlet>
+  </div>

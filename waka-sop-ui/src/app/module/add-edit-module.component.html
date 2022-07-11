@@ -1,0 +1,17 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10" style="font-weight: 600; color: darkgrey;">ADD EDIT Module</mat-label>
+</div>
+<div mat-dialog-content>
+    <form [formGroup]="form">
+         <div flex fxLayout="row warp" fxLayoutAlign="space-between center">
+            <mat-form-field fxFlex="100" fxFlex.xs="100" class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+                <input matInput type="text" placeholder="ModuleName" formControlName="ModuleName" name="ModuleName" required>
+                <mat-error *ngIf="form.get('ModuleName').invalid" style="margin-top:14px">{{getErrorMessage(form.get('ModuleName'),'ModuleName')}}</mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center">
+    <button id="btnsave" [disabled]="form.invalid || isSaving" mat-raised-button class="btnclrprimary" color="primary" (click)="saveModule()">{{btnTitle}}</button>
+    <button id="btnCancel"  mat-raised-button class="btnclraccent" color="accent" (click)="onClose(false)">Cancel</button>
+</div>

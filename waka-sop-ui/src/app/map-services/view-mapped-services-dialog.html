@@ -1,0 +1,20 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="font_16" style="font-weight: bold; color:#8294A3;">Mapped Services for {{data['account_type']}}</mat-label>
+    <mat-icon id="close" class="pointer" matTooltip="Close" (click)="onClose(false)" style=" color: #465e72; 
+     cursor: pointer">close</mat-icon>
+</div>
+<div [style.height.px]="ht-300">
+        <mat-tab-group [@.disabled]="true">
+            <div *ngFor="let types of selectesSeviceTypes">
+                <mat-tab [label]="types">
+                    <div *ngFor="let eventdesc of availableServiceColl[types];" style="margin: 8px;">
+                        <span *ngIf="eventdesc.is_selected" style="color: #000; padding: 16px;"> {{eventdesc.service_name}}</span>
+                    </div>
+                </mat-tab>
+            </div>
+        </mat-tab-group>
+</div>
+

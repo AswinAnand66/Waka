@@ -1,0 +1,73 @@
+	<div >
+		<form [formGroup]="form" [style.height.px]="height" fxLayout="row" [fxLayoutAlign]="formLayoutAlign">
+			<mat-card style="padding:10px 48px"> 
+				<div fxLayout="column" fxLayoutAlign="start center" style="background-color: var(--active);margin:-10px -48px -10px -48px; padding:10px 0px" >
+					<img src="../../assets/image/svg/final-waka-tech-plain.svg" style="width:144px; height:auto"/>
+				</div>
+				<mat-card-header style="margin-top: 16px; margin-bottom: 0px;">
+					<mat-card-title>Sign up</mat-card-title>
+				</mat-card-header>
+				<mat-card-content style="margin-top:0px;width:100%">
+					<div fxLayout="column" fxLayoutAlign="center center" >
+						<div class="inputbox inboxminwidth" [ngClass]="{'errtxtbdr':form.get('Email').invalid&&form.get('Email').dirty}">
+							<div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+								<mat-icon class="icon">email</mat-icon>
+								<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+									<div *ngIf="form.get('Email').value!=undefined && form.get('Email').value!=''" class="label" [ngClass]="{'labelerr':form.get('Email').invalid&&form.get('Email').dirty}">Email</div>
+									<input class="text" placeholder="Email" formControlName="Email" name="email" id="email" required (blur)="validateEmailSignUp()">
+								</div>
+							</div>
+						</div>
+						<div style="width:100%">
+							<mat-error *ngIf="form.get('Email').invalid&&form.get('Email').dirty" class="txterror padleft32" >{{getErrorMessage(form.get('Email'),'Email')}}</mat-error>
+						</div>
+						<div class="inputbox inboxminwidth" [ngClass]="{'errtxtbdr':form.get('Email').invalid&&form.get('Email').dirty}">
+							<div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+								<mat-icon class="icon">person</mat-icon>
+								<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+									<div *ngIf="form.get('Name').value!=undefined && form.get('Name').value!=''" class="label" [ngClass]="{'labelerr':form.get('Name').invalid&&form.get('Name').dirty}">Fullname</div>
+									<input class="text" placeholder="Fullname" formControlName="Name" name="name" id="name" required>
+								</div>
+							</div>
+						</div>
+						<div style="width:100%">
+							<mat-error *ngIf="form.get('Name').invalid&&form.get('Name').dirty" class="txterror padleft32" >{{getErrorMessage(form.get('Name'),'Name')}}</mat-error>
+						</div>
+						<div class="inputbox inboxminwidth" [ngClass]="{'errtxtbdr':form.get('Password').invalid&&form.get('Password').dirty}">
+                            <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                                <mat-icon class="icon">lock</mat-icon>
+                                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                                    <div *ngIf="form.get('Password').value!=undefined && form.get('Password').value!=''" class="label">Password</div>
+                                    <input type="password" class="text" placeholder="Password" formControlName="Password" name="password" id="password" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inputbox inboxminwidth">
+                            <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                                <mat-icon class="icon">lock</mat-icon>
+                                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                                    <div *ngIf="form.get('Confirm').value!=undefined && form.get('Confirm').value!=''" class="label">Confirm Password</div>
+                                    <input type="password" class="text" placeholder="Confirm Password" formControlName="Confirm" name="confirm" id="confirm" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="txterror">{{getErrorMessage(form,'form')}}</div>
+						<div fxLayout="column" fxLayoutGap="15px" class="mgntop10" style="max-width:300px">
+							<div>
+								<input type="checkbox" [checked]="acceptUpdEmails" style="transform: scale(1.15)" class="clrblue"><span class="mgnleft5">Yes, I want to receive email updates of WakaTech.</span>
+							</div>
+							<div>
+								<input type="checkbox" [checked]="checkModel" (change)="onChange($event)" style="transform: scale(1.15)"><span class="mgnleft5">I accept all <span class="linkterms mgnleft5 mgnrgt5"> Terms & Conditions </span> and <span class="linkterms mgnleft5"> Privacy Polices </span></span>
+							</div>
+						</div>
+					</div>
+				</mat-card-content>
+				<mat-card-actions style="margin-top:-16px">
+					<div fxLayout="column" fxLayoutAlign="center center">
+						<button [disabled]="!checkModel || form.invalid || !checkEmail" id="btnRegister" class="btnpri btnauto" (click)="register()">SIGN UP</button>
+						<div>Already have an account? <span class="clrblue pointer" [routerLink]="['/login']"><u> Sign in</u></span></div>
+					</div>
+				</mat-card-actions>
+			</mat-card>
+		</form>
+	</div>

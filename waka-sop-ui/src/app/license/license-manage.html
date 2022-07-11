@@ -1,0 +1,31 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10" style="font-weight: 600; color: #8294a3;">Manage License Module</mat-label>
+    <div class="pointer" matTooltip="Close"><mat-icon class="font_24" mat-dialog-close >close</mat-icon></div>
+</div>
+<mat-dialog-content style="max-height: none;">
+    <div style="margin-top: 24px;" fxLayout="column" fxLayoutAlign="space-around" fxLayoutGap="16px">
+        <label class="mgnleft10 fntwt600 fntclr465e72">Requested Modules</label>
+        <div class="mgnleft10" fxLayout="column" fxFlex="48" fxFlex.xs="100">
+        <div *ngFor = "let ele of modulesList,let i = index">
+            <div style="margin:8px 0px;">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-checkbox labelPosition="before" class="capitalize" style="color: var(--primary);" (change)="onChange(ele,i)"  [checked]="ele.is_selected">
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <mat-icon class="fntclr1c75bc">{{ele.icon}}</mat-icon>
+                        <span style="width:270px;"  class="fntclr465e72 mgnleft10">{{ele.module_name}}</span> 
+                    </div>
+                </mat-checkbox>
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</mat-dialog-content>
+<footer style="margin-top: 20px;" mat-dialog-actions fxlayout="row" fxLayoutAlign="center center">
+    <mat-toolbar style="background-color: var(--white); height: 72px;" fxlayout="row" fxLayoutAlign="end center">
+      <div  matTooltip='{{btnTitle}} License' fxLayoutAlign="center center">
+        <button [disabled]="isModulesValid" id="btnsave" mat-raised-button class="btnclrprimary" (click)="updateLicense()">{{btnTitle}}</button>
+    </div>
+    </mat-toolbar>
+</footer>
+

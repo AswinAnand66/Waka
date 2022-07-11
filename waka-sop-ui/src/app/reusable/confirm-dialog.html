@@ -1,0 +1,162 @@
+<div *ngIf="type == 'welcome-msg'">
+    <mat-icon class="dialog-close-icon pointer" (click)="redirectToCompanyAddEdit()">close</mat-icon>
+    <div style="width: 457px; height: 316px;" fxLayout="column" fxLayoutAlign="start none">
+       <div>
+           <img src="../../assets/image/svg/final-waka-tech-01.svg" style="width:176px; height:62px; padding: 16px 16px;"/>
+       </div>
+       <div style="margin-bottom: 26px; padding-left: 16px;">
+           <span style="color: var(--primary); font-size: 24px; font-weight: bold; letter-spacing: 0.26px; line-height: normal;">Hello {{ userName }}, <br/> Welcome to WakaTech!</span>
+       </div>
+       <span style="color: var(--textcolor); font-size: 14px; font-weight: 600; font-stretch: normal; font-style: normal; line-height: normal; letter-spacing: 0.15px; padding-left: 16px;">Thank you for registering, we are glad you’re here! <br/> We are here to simplify your freight journey.</span>
+       <div style="width: 169px !important; height: 40px !important; margin-top: 30px; padding-left: 16px;">
+           <button class="btnpri btnprifull" type="reset" tabindex="-1" id="btnclose" (click)="redirectToCompanyAddEdit()" ><span style="color:white">START USING WAKATECH</span></button>
+       </div>
+   </div>
+</div>
+<div *ngIf="type == 'info-success-company-add'">
+    <div style="width: 372px; height: 267px;" fxLayout="column" fxLayoutAlign="center center">
+        <div>
+            <img src="../../assets/image/svg/icon-small-info-sucess.svg" style="width: 95px; height: 95px; object-fit: contain;"/>
+        </div>
+        <div style="margin-top: 25px; width: 256px; text-align: center !important;">
+            <span style="color: var(--textcolor); font-weight: bold; font-size: 20px; text-align: center !important;">{{ content }}</span>
+        </div>
+        <div style="border-bottom: solid 2px var(--primary); width: 83px; margin-top: 36px; text-align: center !important;">
+            <span class="confirm-dialog-btn2" (click)="redirectToCompany()">CONTINUE</span>
+        </div>
+    </div>
+</div>
+<div *ngIf="type == 'info-success-req-license-contact'">
+    <mat-icon class="dialog-close-icon pointer" (click)="actionClose()">close</mat-icon>
+    <div style="width: 372px; height: 267px;" fxLayout="column" fxLayoutAlign="center center">
+        <div>
+            <img src="../../assets/image/svg/icon-small-info-sucess.svg" style="width: 95px; height: 95px; object-fit: contain;"/>
+        </div>
+        <div style="margin-top: 25px; width: 256px; text-align: center !important;">
+            <span style="color: var(--textcolor); font-weight: bold; font-size: 20px; text-align: center !important;">{{ content }}</span>
+        </div>
+        <div  style="margin-top: 16px;" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+            <div style="border-bottom: solid 2px var(--primary); margin-top: 36px; text-align: center !important;">
+                <span class="confirm-dialog-btn2" (click)="redirectToRequestLicense()">REQUEST LICENSE</span>
+            </div>
+            <div style="border-bottom: solid 2px var(--primary); margin-top: 36px; text-align: center !important;">
+                <span class="confirm-dialog-btn2" (click)="redirectToAddContact()">ADD CONTACT</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="type == 'info-success'">
+    <div style="width: 372px; height: 267px;" fxLayout="column" fxLayoutAlign="center center">
+        <div>
+            <img src="../../assets/image/svg/icon-small-info-sucess.svg" style="width: 95px; height: 95px; object-fit: contain;"/>
+        </div>
+        <div style="margin-top: 25px; width: 256px; text-align: center !important;">
+            <span style="color: var(--textcolor); font-weight: bold; font-size: 20px; text-align: center !important;">{{ content }}</span>
+        </div>
+        <div style="border-bottom: solid 2px var(--primary); width: 83px; margin-top: 36px; text-align: center !important;">
+            <span class="confirm-dialog-btn2" (click)="actionClose()">CONTINUE</span>
+        </div>
+    </div>
+</div>
+<div *ngIf="type == 'info-pending-req-license-pending'">
+    <mat-icon class="dialog-close-icon pointer" (click)="actionClose()">close</mat-icon>
+    <div style="width: 372px; height: 267px;" fxLayout="column" fxLayoutAlign="center center">
+        <div style="border-radius: 100%; border: var(--inprogressmedium) 5px solid; height: 90px !important; width: 90px !important;">
+            <mat-icon [inline]="false" style="color: var(--inprogressmedium); font-size: 38px !important; padding: 26px 26px">hourglass_top</mat-icon>
+        </div>
+        <div style="margin-top: 25px; width: 256px; text-align: center !important;">
+            <span style="color: var(--textcolor); font-weight: bold; font-size: 20px; text-align: center !important;">{{ content }}</span>
+        </div>
+        <div style="border-bottom: solid 2px var(--primary); width: 83px; margin-top: 36px; text-align: center !important;">
+            <span class="confirm-dialog-btn2" (click)="actionClose()">GOT IT</span>
+        </div>
+    </div>
+</div>
+<div *ngIf="type == 'info-success-licensed-company-contact'">
+    <div style="width: 372px; height: 267px;" fxLayout="column" fxLayoutAlign="center center">
+        <mat-icon class="dialog-close-icon pointer" (click)="redirectToCompany()">close</mat-icon>
+        <div>
+            <img src="../../assets/image/svg/icon-small-info-sucess.svg" style="width: 95px; height: 95px; object-fit: contain;"/>
+        </div>
+        <div style="margin-top: 25px; width: 256px; text-align: center !important;">
+            <span style="color: var(--textcolor); font-weight: bold; font-size: 20px; text-align: center !important;">{{ content }}</span>
+        </div>
+        <div  style="margin-top: 16px;" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+            <div style="border-bottom: solid 2px var(--primary); margin-top: 36px; text-align: center !important;">
+                <span class="confirm-dialog-btn2" (click)="redirectToInviteCompany()">INVITE COMPANY</span>
+            </div>
+            <div style="border-bottom: solid 2px var(--primary); margin-top: 36px; text-align: center !important;">
+                <span class="confirm-dialog-btn2" (click)="redirectToAddContact()">ADD CONTACT</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="type == 'info-success-licensed-contact'">
+    <div style="width: 372px; height: 267px;" fxLayout="column" fxLayoutAlign="center center">
+        <mat-icon class="dialog-close-icon pointer" (click)="redirectToCompany()">close</mat-icon>
+        <div>
+            <img src="../../assets/image/svg/icon-small-info-sucess.svg" style="width: 95px; height: 95px; object-fit: contain;"/>
+        </div>
+        <div style="margin-top: 25px; width: 256px; text-align: center !important;">
+            <span style="color: var(--textcolor); font-weight: bold; font-size: 20px; text-align: center !important;">{{ content }}</span>
+        </div>
+        <div  style="margin-top: 16px;" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="16px">
+            <div style="border-bottom: solid 2px var(--primary); margin-top: 36px; text-align: center !important;">
+                <span class="confirm-dialog-btn2" (click)="redirectToAddContact()">ADD CONTACT</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="type == 'info-pending'">
+    <div style="width: 372px; height: 267px;" fxLayout="column" fxLayoutAlign="center center">
+        <div style="border-radius: 100%; border: var(--inprogressmedium) 5px solid; height: 90px !important; width: 90px !important;">
+            <mat-icon [inline]="false" style="color: var(--inprogressmedium); font-size: 38px !important; padding: 26px 26px">hourglass_top</mat-icon>
+        </div>
+        <div style="margin-top: 25px; width: 256px; text-align: center !important;">
+            <span style="color: var(--textcolor); font-weight: bold; font-size: 20px; text-align: center !important;">{{ content }}</span>
+        </div>
+        <div style="border-bottom: solid 2px var(--primary); width: 83px; margin-top: 36px; text-align: center !important;">
+            <span class="confirm-dialog-btn2" (click)="actionClose()">CONTINUE</span>
+        </div>
+    </div>
+</div>
+<div *ngIf="type == 'info-success-role-add'">
+    <div style="width: 372px; height: 267px;" fxLayout="column" fxLayoutAlign="center center">
+        <div>
+            <img src="../../assets/image/svg/icon-small-info-sucess.svg" style="width: 95px; height: 95px; object-fit: contain;"/>
+        </div>
+        <div style="margin-top: 25px; width: 256px; text-align: center !important;">
+            <span style="color: var(--textcolor); font-weight: bold; font-size: 20px; text-align: center !important;">{{ content }}</span>
+        </div>
+        <div style="border-bottom: solid 2px var(--primary); width: 83px; margin-top: 36px; text-align: center !important;">
+            <span class="confirm-dialog-btn2" (click)="redirectToRole()">CONTINUE</span>
+        </div>
+    </div>
+</div>
+<div *ngIf="type == 'add-port-info'">
+    <div style="width: 372px; height: 267px;" fxLayout="column" fxLayoutAlign="center center">
+        <div style="border-radius: 100%; border: var(--red) 5px solid; height: 90px !important; width: 90px !important;">
+            <mat-icon [inline]="false" style="color: var(--red); font-size: 38px !important; padding: 26px 26px">warning</mat-icon>
+        </div>
+        <div style="margin-top: 25px; width: 256px; text-align: center !important;">
+            <span style="color: var(--textcolor); font-weight: bold; font-size: 16px; text-align: center !important;">{{ content }}</span>
+        </div>
+        <div style="margin-top: 10px;">
+            <span class="font_12" style="color: var(--primary); font-weight: bold; text-align: center !important;">automatically redirecting to stakeholders tab in 5 seconds</span>
+        </div>
+    </div>
+</div>
+<div *ngIf="type == 'add-role-redirect'">
+    <div style="width: 372px; height: 267px;" fxLayout="column" fxLayoutAlign="center center">
+        <div style="border-radius: 100%; border: var(--red) 5px solid; height: 90px !important; width: 90px !important;">
+            <mat-icon [inline]="false" style="color: var(--red); font-size: 38px !important; padding: 26px 26px">warning</mat-icon>
+        </div>
+        <div style="margin-top: 25px; width: 256px; text-align: center !important;">
+            <span style="color: var(--textcolor); font-weight: bold; font-size: 16px; text-align: center !important;">{{ content }}</span>
+        </div>
+        <div style="margin-top: 10px;">
+            <span class="font_12" style="color: var(--primary); font-weight: bold; text-align: center !important;">automatically redirecting to Company in 5 seconds</span>
+        </div>
+    </div>
+</div>

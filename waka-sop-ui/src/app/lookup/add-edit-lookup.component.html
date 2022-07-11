@@ -1,0 +1,44 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10" style="font-weight: 600; color: darkgrey;">ADD EDIT LOOKUP</mat-label>
+    <mat-icon id="close" class="pointer" matTooltip="Close dialog" (click)="onClose(false)" class="dialog-close-btn">close</mat-icon>
+</div>
+<div mat-dialog-content>
+    <form [formGroup]="form">
+         <div flex fxLayout="row warp" fxLayoutAlign="space-between center">
+            <div fxFlex="48" fxFlex.sm="100" class="inputbox inboxminwidth">
+                <div class="label">Company</div>
+                <mat-select placeholder="Company" formControlName="Company" name="Company" class="capitalize font_12" required>
+                    <mat-option class="capitalize" *ngFor="let ele of companyList" [value]="ele.company_id">{{ele.company_name}}</mat-option>
+                </mat-select>
+            </div>
+             <div fxFlex="48" fxFlex.xs="100" class="inputbox inboxminwidth">
+                <div class="label">Lookup Type</div>
+                <mat-select placeholder="Lookup Type" formControlName="LookUpType" name="LookUpType" class="capitalize font_12" (selectionChange)="onLookUpTypeChange($event.value)" required>
+                    <mat-option class="capitalize" *ngFor="let ele of lookupTypesList" [value]="ele.lookup_type_id">{{ele.display_name}}</mat-option>
+                </mat-select>
+            </div>
+            <div fxFlex="48" fxFlex.xs="100"  >
+                <div  class="inputbox inboxminwidth" fxLayout="column" fxLayoutAlign="center start">
+                    <div class="label" *ngIf="form.get('LookUpName').value!=undefined && form.get('LookUpName').value!=''" [ngClass]="{'labelerr':form.get('LookUpName').invalid&&form.get('LookUpName').dirty}">Lookup Name</div>
+                    <input class="text" type="text" placeholder="Lookup Name" formControlName="LookUpName" name="LookUpName" required>
+                </div>
+                <div style="width:100%">
+                    <mat-error *ngIf="form.get('LookUpName').invalid&&form.get('LookUpName').dirty" class="txterror">{{getErrorMessage(form.get('LookUpName'),'Lookup Name')}}</mat-error>
+                </div>
+            </div>
+            <div fxFlex="48" fxFlex.xs="100" >
+                <div class="inputbox inboxminwidth" fxLayout="column" fxLayoutAlign="center start">
+                    <div class="label" *ngIf="form.get('LookUpDispName').value!=undefined && form.get('LookUpDispName').value!=''" [ngClass]="{'labelerr':form.get('LookUpDispName').invalid&&form.get('LookUpDispName').dirty}">Display Name</div>
+                    <input class="text" type="text" placeholder="Display Name" formControlName="LookUpDispName" name="LookUpDispName" required>
+                </div>
+                <div style="width:100%">
+                    <mat-error *ngIf="form.get('LookUpDispName').invalid&&form.get('LookUpDispName').dirty" class="txterror">{{getErrorMessage(form.get('LookUpDispName'),'Display Name')}}</mat-error>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <button id="btnsave" [disabled]="form.invalid || isSaving" class="btnpri btnauto" (click)="saveLookup()">{{btnTitle}}</button>
+    <button id="btnCancel"  class="btnsecondary btnauto" (click)="onClose(false)">Cancel</button>
+</div>

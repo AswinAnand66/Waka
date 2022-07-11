@@ -1,0 +1,84 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <mat-label color="primary" class="mgnleft10" style="font-weight: 600; color: darkgrey;">{{title}}</mat-label>
+  <mat-icon id="close" class="pointer" matTooltip="Close dialog" (click)="onClose(false)" style="color: #465e72;">close</mat-icon>
+</div>
+<div mat-dialog-content style="height: 170px;">
+  <form [formGroup]="form">
+      <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-around center">
+            <div class="inputbox companyinputminwidthPer" [ngClass]="{'errtxtbdr':form.get('Email').invalid&&form.get('Email').dirty}">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                  <mat-icon class="icon">email</mat-icon>
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                    <div *ngIf="form.get('Email').value!=undefined && form.get('Email').value!=''" class="label" [ngClass]="{'labelerr':form.get('Email').invalid&&form.get('Email').dirty}">Email</div>
+                    <input class="text" placeholder="Email" formControlName="Email" name="Email" id="Email" (blur)="validateEmail()" required>
+                  </div>
+                </div>
+                <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; margin-top:2px; padding-top: 2px;" *ngIf="form.get('Email').invalid&&form.get('Email').dirty" class="txterror" >{{getErrorMessage(form.get('Email'),'Email')}}</mat-error>
+              </div>
+              </div>
+              <div class="inputbox companyinputminwidthPer" [ngClass]="{'errtxtbdr':form.get('Name').invalid&&form.get('Name').dirty}">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                  <mat-icon class="icon">person</mat-icon>
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                    <div *ngIf="form.get('Name').value!=undefined && form.get('Name').value!=''" class="label" [ngClass]="{'labelerr':form.get('Name').invalid&&form.get('Name').dirty}">Name</div>
+                    <input class="text" placeholder="Name" formControlName="Name" name="Name" id="Name" required>
+                  </div>
+                </div>
+                <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; margin-top:2px; padding-top:2px" *ngIf="form.get('Name').invalid&&form.get('Name').dirty" class="txterror" >{{getErrorMessage(form.get('Name'),'Name')}}</mat-error>
+                </div>
+              </div>
+              <div class="inputbox companyinputminwidthPer" [ngClass]="{'errtxtbdr':form.get('Mobile').invalid&&form.get('Mobile').dirty}">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                  <mat-icon class="icon">phone</mat-icon>
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                    <div *ngIf="form.get('Mobile').value!=undefined && form.get('Mobile').value!=''" class="label" [ngClass]="{'labelerr':form.get('Mobile').invalid&&form.get('Mobile').dirty}">Mobile</div>
+                    <input class="text" placeholder="Mobile" formControlName="Mobile" name="Mobile" id="Mobile"  required>
+                  </div>
+                </div>
+                <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; margin-top:2px; padding-top:2px" *ngIf="form.get('Mobile').invalid&&form.get('Mobile').dirty" class="txterror" >{{getErrorMessage(form.get('Mobile'),'Mobile')}}</mat-error>
+                </div>
+              </div>
+              <div class="inputbox companyinputminwidthPer" [ngClass]="{'errtxtbdr':form.get('Department').invalid&&form.get('Department').dirty}">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                  <mat-icon class="icon">home_work</mat-icon>
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                    <div *ngIf="form.get('Designation').value!=undefined && form.get('Department').value!=''" class="label" [ngClass]="{'labelerr':form.get('Designation').invalid&&form.get('Department').dirty}">Department</div>
+                    <input class="text" placeholder="Department" formControlName="Department" name="Department" id="Department" required>
+                  </div>
+                </div>
+                <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; margin-top:2px; padding-top:2px" *ngIf="form.get('Department').invalid&&form.get('Department').dirty" class="txterror" >{{getErrorMessage(form.get('Department'),'Department')}}</mat-error>
+                </div>
+              </div>
+              <div class="inputbox companyinputminwidthPer" [ngClass]="{'errtxtbdr':form.get('Designation').invalid&&form.get('Designation').dirty}">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                  <mat-icon class="icon">work</mat-icon>
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                    <div *ngIf="form.get('Designation').value!=undefined && form.get('Designation').value!=''" class="label" [ngClass]="{'labelerr':form.get('Designation').invalid&&form.get('Designation').dirty}">Designation</div>
+                    <input class="text" placeholder="Designation" formControlName="Designation" name="Designation" id="Designation"  required>
+                  </div>
+                </div>
+                <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; margin-top:2px; padding-top: 2px;" *ngIf="form.get('Designation').invalid&&form.get('Designation').dirty" class="txterror" >{{getErrorMessage(form.get('Designation'),'Designation')}}</mat-error>
+                </div> 
+              </div>
+              <div class="inputbox companyinputminwidthPer">
+                <div class="label">Role</div>
+                <mat-select formControlName="Role" name="Role" class="capitalize font_12" required>
+                  <mat-option class="capitalize" *ngFor="let ele of roleList" [value]="ele.role_id">{{ele.role_name}} - {{ele.sub_module_name}}</mat-option>
+                </mat-select>
+                <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; margin-top:2px; padding-top: 2px;" *ngIf="form.get('Role').invalid&&form.get('Role').dirty" class="txterror" >{{getErrorMessage(form.get('Role'),'Role')}}</mat-error>
+                </div>
+              </div>
+              
+      </div>
+  </form>    
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+  <button id="btnsave" class="btnpri btnpriqtr" [disabled]="form.invalid" mat-raised-button (click)="addCompanyContact()">{{btnTitle}}</button>
+  <button id="btnCancel" class="btnpri btnpriqtr" mat-raised-button (click)="onClose(false)">Cancel</button>
+</div>

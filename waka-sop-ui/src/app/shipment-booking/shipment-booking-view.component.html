@@ -1,0 +1,377 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div *ngIf="!isMobileView && !underProgress" [style.height.px]="height - 60" style="padding-top: 60px;">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px" style="margin: 24px;">
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+            <span class="pointer" style="color: var(--active); font-size: 14px; font-weight: 600; text-decoration: underline var(--active) 2.5px; text-underline-offset: 5px">Shipment Details</span>
+            <span class="pointer" style="color: var(--textcolor); font-size: 14px; font-weight: 600;">Chat</span>
+            <span class="pointer" style="color: var(--textcolor); font-size: 14px; font-weight: 600;">Activity Log</span>
+        </div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="10px" style="overflow-y: auto; height: 80%;" >
+        <mat-card style="box-shadow: none; border-radius: 6px; border: solid 1px rgba(155, 168, 179, 0.22); padding: 16px;" [style.width.px]="width - 80" >
+            <mat-card-content fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 96%;">
+                    <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="6px">
+                            <mat-icon class="clrinprogress md-18">access_time_filled</mat-icon>
+                            <div class="txtclr">{{soDetails.status}}</div>
+                        </div>
+                        <div fxLayout="column">
+                            <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Status</div>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+                        <!-- <div class="txtclr">{{soDetails.principal_logo}}</div> -->
+                        <img style="height:30px; width:auto;" class="pointer"  [src]="soDetails.principal_logo ? getSantizeUrl(soDetails.principal_logo) : getSantizeUrl(noimagePlaceholder)" />
+                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Principal</div>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+                        <!-- <div class="txtclr">{{soDetails.logistics_provider_logo}}</div> -->
+                        <img style="height:30px; width:auto;" class="pointer"  [src]="soDetails.logistics_provider_logo ? getSantizeUrl(soDetails.logistics_provider_logo) : getSantizeUrl(noimagePlaceholder)" />
+                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Logistic Provider</div>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 96%;">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="50px">
+                        <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="6px">
+                                <img src="../../assets/image/location-single.png" style="width:auto; height: 18px;"/>
+                                <div class="txtclr">{{soDetails.loading_port}}</div>
+                            </div>
+                            <div fxLayout="column">
+                                <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Loading Port</div>
+                            </div>
+                        </div>
+                        <div fxLayout="column">
+                            <div fxLayout="row" fxLayoutAlign="space-evenly center">
+                                <div *ngIf="soDetails.mode == 'sea'">
+                                    <img src='../../assets/image/svg/icon-small-carrier.svg' style="width:24px; height:24px;"/>
+                                </div>
+                                <div *ngIf="soDetails.mode == 'air'">
+                                    <img src='../../assets/image/svg/icon-small-air.svg' style="width:24px; height:24px;"/>
+                                </div>
+                                <div fxLayout="row">
+                                    <span class="clrprimary fntwt600">{{soDetails.type}}</span>
+                                </div>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="center center">
+                            <div style="border-top: 2px dashed var(--active); width: 200px;"></div>
+                            <mat-icon style="position:absolute; z-index: 20; font-size: 40px; padding-bottom: 18px;" color="primary">arrow_right</mat-icon>
+                        </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="6px">
+                                <img src="../../assets/image/location-single.png" style="width:auto; height: 18px;"/>
+                                <div class="txtclr">{{soDetails.discharging_port}}</div>
+                            </div>
+                            <div fxLayout="column">
+                                <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Discharging Port</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="center start" fxLayoutGap="10px">
+                        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="6px">
+                            <mat-icon color="primary" class="md-18">event</mat-icon>
+                            <div class="txtclr">{{soDetails.ship_date | date: 'longDate' }}</div>
+                        </div>
+                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Contract Shipment Date</div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px" [style.width.px]="width - 50">
+            <div [ngClass]="{'so_details_success_card': soDetails.cargo_ready_date_tolerance == 'In tolerance' , 'so_details_error_card' : soDetails.cargo_ready_date_tolerance == 'Out of tolerance'}" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" fxFlex="50">
+                <mat-icon color="primary">event</mat-icon>
+                <span class="fntwt600">{{ soDetails.cargo_ready_date_tolerance == 'In tolerance' ? 'Cargo Ready Date is within Tolerance' : ''}}</span>
+            </div>
+            <div [ngClass]="{'so_details_success_card': soDetails.quantity_tolerance == 'In tolerance' , 'so_details_error_card' : soDetails.quantity_tolerance == 'Out of tolerance'}" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" fxFlex="50">
+                <mat-icon color="primary">shopping_cart</mat-icon>
+                <span class="fntwt600">{{ soDetails.quantity_tolerance == 'In tolerance' ? 'Cargo Ready Date is within Tolerance' : 'Quantity is out of Tolerance for PO 1234'}}</span>
+            </div>
+        </div>
+        <mat-card style="box-shadow: none;border-radius: 6px; border: solid 1px rgba(155, 168, 179, 0.22);" [style.width.px]="width - 50" fxLayout="column" fxLayoutGap="10px" class="pointer" (click)="showTodo = !showTodo">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                <mat-icon color="primary">fact_check</mat-icon>
+                <span class="txt font_14">Tasks To Do</span>
+            </div>
+            <div *ngIf="showTodo" fxLayout="row" fxLayoutAlign="start center" style="background-color: var(--bgheader); padding: 13px 16px; border-radius: 4px;" fxLayoutGap="10px">
+                <img src='../../assets/image/svg/task_to_do.svg' style="width: 40px; height: auto;"/>
+                <span class="fntwt600">No current task</span>
+            </div>
+        </mat-card>
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <mat-card style="box-shadow: none;border-radius: 6px 6px 0px 0px; border: solid 1px rgba(155, 168, 179, 0.22);" [style.width.px]="width - 50" fxLayout="column" fxLayoutGap="10px" class="pointer" (click)="showShipmentDetails = !showShipmentDetails">
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                    <img src='../../assets/image/svg/icon-small-shipment.svg' style="width: 18px; height: auto;"/>
+                    <span class="txt font_14">Shipment Details</span>
+                </div>
+            </mat-card>
+            <div *ngIf="showShipmentDetails" fxLayout="column" fxLayoutAlign="start center" style="background-color: var(--bgheader); border-radius: 0px 0px 6px 6px;" [style.width.px]="width - 50" class="font_14">
+                <div fxLayout="row" fxLayoutAlign="start start" style="width: 100%;">
+                    <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" [style.width.px]="(width - 50) / 3">
+                        <span>Cargo Ready Date</span>
+                        <mat-form-field appearance="legacy">
+                            <mat-label></mat-label>
+                            <mat-date-range-input [rangePicker]="picker1" aria-required="must have date">
+                                <input readonly="readonly" style="font-weight: 600;" matStartDate #dateRangeStart placeholder="Start Date" required>
+                                <input readonly="readonly" style="font-weight: 600;" matEndDate #dateRangeEnd placeholder="End Date" required>
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matPrefix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-date-range-picker color="primary" #picker></mat-date-range-picker>
+                        </mat-form-field>
+                    </div>
+                    <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" [style.width.px]="(width - 50) / 3">
+                        <span>Cargo Shipment Date</span>
+                        <mat-form-field appearance="legacy">
+                            <mat-label></mat-label>
+                            <mat-date-range-input [rangePicker]="picker2" aria-required="must have date">
+                                <input readonly="readonly" style="font-weight: 600;" matStartDate #dateRangeStart placeholder="Start Date" required>
+                                <input readonly="readonly" style="font-weight: 600;" matEndDate #dateRangeEnd placeholder="End Date" required>
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matPrefix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-date-range-picker color="primary" #picker></mat-date-range-picker>
+                        </mat-form-field>
+                    </div>
+                    <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" [style.width.px]="(width - 50) / 3">
+                        <span>Into DC Date</span>
+                        <mat-form-field appearance="legacy">
+                            <mat-label></mat-label>
+                            <mat-date-range-input [rangePicker]="picker3" aria-required="must have date">
+                                <input readonly="readonly" style="font-weight: 600;" matStartDate #dateRangeStart placeholder="Start Date" required>
+                                <input readonly="readonly" style="font-weight: 600;" matEndDate #dateRangeEnd placeholder="End Date" required>
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matPrefix [for]="picker3"></mat-datepicker-toggle>
+                            <mat-date-range-picker color="primary" #picker></mat-date-range-picker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start start" style="width: 100%;">
+                    <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px"  [style.width.px]="(width - 50) / 3">
+                        <span>Fowarder Booking No.</span>
+                        <span>CSFE 8469</span>
+                    </div>
+                    <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px"  [style.width.px]="(width - 50) / 3">
+                        <span>Cargo Quantity</span>
+                        <span>2262</span>
+                    </div>
+                    <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px"  [style.width.px]="(width - 50) / 3">
+                        <span>Cargo Gross Weight</span>
+                        <span>100000 KG</span>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start start" style="width: 100%;">
+                    <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px" [style.width.px]="(width - 50) / 3">
+                        <span>Cargo Volume</span>
+                        <span>360 CBM</span>
+                    </div>
+                    <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px" [style.width.px]="(width - 50) / 3">
+                        <span>DG Information</span>
+                        <span>None</span>
+                    </div>
+                    <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px" [style.width.px]="(width - 50) / 3">
+                        <span>Total TEU</span>
+                        <mat-form-field appearance="legacy">
+                            <mat-label></mat-label>
+                            <input matInput placeholder="Enter total TEU" [formControl]="TotalTEU" (keyup)="validateNumberOnly($event)" (blur)="updateTEUValue($event)" (keypress)="$event.key == 'Enter' ? updateTEUValue($event) : ''">
+                            <mat-hint *ngIf="messages['TotalTEU']" style="color: var(--green) !important;">TEU updated successfully</mat-hint>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <mat-card style="box-shadow: none; border-radius: 6px 6px 0px 0px; border: solid 1px rgba(155, 168, 179, 0.22);" [style.width.px]="width - 50" fxLayout="column" fxLayoutGap="10px" class="pointer" (click)="showPODetails = !showPODetails">
+                <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <mat-icon color="primary">task</mat-icon>
+                        <span class="txt font_14">PO List</span>
+                    </div>
+                    <!-- (click)="openAddPO()" -->
+                    <span class="clrprimary fntwt600 cursor_not_allowed" style="text-decoration: underline" >{{addRemoveButton}}</span>
+                </div>
+            </mat-card>
+            <div *ngIf="showPODetails" fxLayout="column" fxLayoutAlign="start center" style="background-color: var(--bgheader); border-radius: 0px 0px 6px 6px;" class="font_14">
+                <div *ngIf="POList.filteredData.length > 0" fxLayout="column" fxLayoutAlign="center center" style="width: 100%;">
+                    <div fxLayout="row" fxLayoutAlign="start start" [style.width.px]="width - 50" style="background-color: var(--white); padding: 12px 8px; border: solid 1px rgba(155, 168, 179, 0.22);">
+                        <mat-checkbox *ngIf="dispPO.length > 0" fxFlex="5" [indeterminate]="checkSelected()" [checked]="allSelected" (change)="setAll($event.checked)"></mat-checkbox>
+                        <div *ngFor="let header of dispPO" fxFlex="12">
+                            <div class="capitalize txt">{{header.replaceAll('_',' ')}}</div>
+                        </div>
+                        <div fxFlex="2"></div>
+                    </div>
+                    <div *ngFor="let selPO of POList.filteredData" [style.width.px]="width - 50">
+                        <div fxLayout="row" fxLayoutAlign="start start" class="font_12 pointer po_card" (click)="selPOforCartons(selPO)">
+                            <mat-checkbox [checked]="selPO.is_selected" *ngIf="POList.filteredData.length > 0" fxFlex="5" (change)="addRemovePO($event.checked, selPO)"></mat-checkbox>
+                            <span fxFlex="12">{{selPO.product_description}}</span>
+                            <span fxFlex="12">{{selPO.product}}</span>
+                            <span fxFlex="12">PO {{selPO.po_no}}</span>
+                            <span fxFlex="12">
+                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+                                    <mat-icon class="mgnleft5 md-14 clrgreen">check_circle</mat-icon>
+                                    <span>{{selPO.status}}</span>
+                                </div>
+                            </span>
+                            <span fxFlex="12">{{selPO.po_qty}}</span>
+                            <span fxFlex="12" *ngIf="!selPO.edit">{{selPO.mfg_qty}}</span>
+                            <span fxFlex="12" *ngIf="selPO.edit">
+                                <input type="number" style="width: 60px;" [(ngModel)]="selPO.mfg_qty">
+                            </span>
+                            <span fxFlex="12" *ngIf="!selPO.edit">{{selPO.ready_qty}}</span>
+                            <span fxFlex="12" *ngIf="selPO.edit">
+                                <input type="number" style="width: 60px;" [(ngModel)]="selPO.ready_qty">
+                            </span>
+                            <span fxFlex="12" *ngIf="!selPO.edit">{{selPO.total_volume}} {{selPO.total_volume != null ? 'CBM' : ''}}</span>
+                            <span fxFlex="12" *ngIf="selPO.edit" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+                                <input type="number" style="width: 60px;" [(ngModel)]="selPO.total_volume">
+                                <span>CBM</span>
+                            </span>
+                            <mat-icon *ngIf="!selPO.edit" fxFlex="2" class="pointer" color="primary" (click)="editSelectedPO(selPO)">edit_note</mat-icon>
+                            <mat-icon *ngIf="selPO.edit" fxFlex="2" class="pointer" color="primary" (click)="saveSelectedPO(selPO)">check</mat-icon>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="POList.filteredData.length == 0" style="height: 100px;" [style.width.px]="width - 50" fxLayout="column" fxLayoutAlign="center center">
+                    <span>Click <span class="clrprimary fntwt600" style="text-decoration: underline"Z>ADD PO</span> to add POs</span>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between start" [style.width.px]="width - 50">
+            <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" fxFlex="49">
+                <div fxLayout="column" fxLayoutAlign="center center" fxFlex="49"  [style.width.px]="width / 2 - 40">
+                    <mat-card style="width: 100%; box-shadow: none;border-radius: 6px 6px 0px 0px; border: solid 1px rgba(155, 168, 179, 0.22);" fxLayout="column" fxLayoutGap="10px" class="pointer">
+                        <!-- (click)="showProductDetails = !showProductDetails -->
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                <img src='../../assets/image/svg/icon-small-container.svg' style="width: 30px; height: auto;"/>
+                                <span class="txt font_14">Product Details</span>
+                            </div>
+                            <span *ngIf="showProductDetails" class="clrprimary fntwt600" style="text-decoration: underline" (click)="saveEditProductDetails()">{{productDetailsButton}}</span>
+                            <span *ngIf="!showProductDetails" matTooltip="Select PO to show Carton Details" class="clrprimary fntwt600 font_10">
+                                <mat-icon>info</mat-icon>
+                            </span>
+                        </div>
+                    </mat-card>
+                    <div *ngIf="showProductDetails" fxLayout="column" fxLayoutAlign="start center" style="background-color: var(--bgheader); border-radius: 0px 0px 6px 6px;" class="font_14"  [style.width.px]="width / 2 - 40">
+                        <div style="width: 100%; background-color: var(--white); height: fit-content; padding: 4px;" class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start">
+                            <span class="font_14 fntwt600">Product : <span class="font_12 fntwt200">{{ selPOsProductDetails.product }}</span></span>
+                            <span class="font_14 fntwt600">Product Description : <span class="font_12 fntwt200">{{ selPOsProductDetails.product_description }}</span></span>
+                            <span class="font_14 fntwt600">PO No : <span class="font_12 fntwt200">{{ selPOsProductDetails.po_no }}</span></span>
+                        </div>
+                        <div style="width: 100%;" fxLayout="row wrap" fxLayoutAlign="start start">
+                            <div *ngFor="let carton of cartonDet" fxFlex="50">
+                                <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px">
+                                    <span>{{carton.type}}</span>
+                                    <span *ngIf="!carton.edit">{{carton.value}} <span>{{carton?.unit}}</span></span>
+                                    <span *ngIf="carton.edit && carton.edit_type == 'number'" fxLayoutGap="5px">
+                                        <input type="number" name="carton.type" id="carton.type"  [(ngModel)]="carton.value" style="width: 50px;">
+                                        <span>{{carton?.unit}}</span>
+                                    </span>
+                                    <span *ngIf="carton.edit && carton.edit_type == 'text'">
+                                        <mat-form-field appearance="legacy">
+                                            <mat-label></mat-label>
+                                            <input type="text" matInput placeholder="type here" [(ngModel)]="carton.value" style="width: 150px;">
+                                        </mat-form-field>
+                                    </span>
+                                    <span *ngIf="carton.edit && carton.edit_type == 'select'" class="inlineeditdiv">
+                                        <mat-select disableOptionCentering formControlName="AllocatedBy" class="capitalize select" required (selectionChange)="selectAllocatedBy()" style="width: 150px;">
+                                            <mat-option style="border-bottom: solid 1px rgba(155, 168, 179, 0.22);" class="txt capitalize" *ngFor="let sel of cartonType" [value]="sel">{{sel}}</mat-option>
+                                        </mat-select> 
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <!-- <div fxLayout="column" fxLayoutAlign="center center" fxFlex="49"  [style.width.px]="width / 2 - 40">
+                    <mat-card style="width: 100%; box-shadow: none;border-radius: 6px 6px 0px 0px; border: solid 1px rgba(155, 168, 179, 0.22);" fxLayout="column" fxLayoutGap="10px" class="pointer" (click)="showContainerDetails = !showContainerDetails">
+                        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                <img src='../../assets/image/svg/icon-small-container.svg' style="width: 30px; height: auto;"/>
+                                <span class="txt font_14">Container Details</span>
+                            </div>
+                            <span class="clrprimary fntwt600" style="text-decoration: underline" (click)="editContainerDetails()">EDIT</span>
+                        </div>
+                    </mat-card>
+                    <div *ngIf="showContainerDetails" fxLayout="column" fxLayoutAlign="start center" style="background-color: var(--bgheader); border-radius: 0px 0px 6px 6px;" class="font_14">
+                        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" style="width: 100%; padding: 8px;">
+                            <div *ngFor="let selContainer of ContainerColl.filteredData" class="sel_container_box">
+                                <div fxLayout="row" fxLayoutAlign="space-between center">
+                                    <div fxLayout="column" fxLayoutGap="8px">
+                                        <div class="font_10" fxLayout="row" fxLayoutAlign="space-between center" style="width: 60px;">
+                                            <div style="border-left: 2px solid var(--active); height: 10px;"></div>
+                                            <span class="fntwt600">{{selContainer.container_size_first}}</span>
+                                            <div style="border-left: 2px solid var(--active); height: 10px;"></div>
+                                        </div>
+                                        <img (click)="incdecContainerCount(container,'-')" src="../../assets/image/container_icon.png" style="width: 60px; height: auto;" class="pointer"/>
+                                        <span class="txt font_14">{{selContainer.container_type}}</span>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutAlign="end end" fxLayoutGap="8px">
+                                        <span class="txt" style="font-size: 20px;">{{selContainer.container_count}}</span>
+                                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">No.of Containers</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="ContainerColl.filteredData.length == 0" style="height: 100px;" fxLayout="column" fxLayoutAlign="center center">
+                                <span>Click <span class="clrprimary fntwt600" style="text-decoration: underline"Z>EDIT</span> to add Containers</span>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <div fxLayout="column" fxLayoutAlign="center center" fxFlex="49">
+                <mat-card style="width: 100%; box-shadow: none;border-radius: 6px 6px 0px 0px; border: solid 1px rgba(155, 168, 179, 0.22);" fxLayout="column" fxLayoutGap="10px" class="pointer" (click)="showCarrierDetails = !showCarrierDetails">
+                    <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                            <img src='../../assets/image/svg/icon-small-carrier.svg' style="width:30px; height: auto;"/>
+                            <span class="txt font_14">Carrier Details</span>
+                        </div>
+                    </div>
+                </mat-card>
+                <div *ngIf="showCarrierDetails" fxLayout="column" fxLayoutAlign="start center" style="background-color: var(--bgheader); border-radius: 0px 0px 6px 6px;" class="font_14" [style.width.px]="width / 2 - 40">
+                    <div fxLayout="row wrap" fxLayoutAlign="start start" style="width: 100%;">
+                        <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px"  fxFlex="50">
+                            <span>Fowarder Booking No.</span>
+                            <span>None</span>
+                        </div>
+                        <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px"  fxFlex="50">
+                            <span>Carrier Confirmation No.</span>
+                            <span>None</span>
+                        </div>
+                        <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px"  fxFlex="50">
+                            <span>Vessel Name</span>
+                            <span>None</span>
+                        </div>
+                        <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px"  fxFlex="50">
+                            <span>Vessel Voyage</span>
+                            <span>None</span>
+                        </div>
+                        <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px"  fxFlex="50">
+                            <span>Departure Date</span>
+                            <span>None</span>
+                        </div>
+                        <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px"  fxFlex="50">
+                            <span>Arrival Date</span>
+                            <span>None</span>
+                        </div>
+                        <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px"  fxFlex="50">
+                            <span>CY Cutoff Date</span>
+                            <span>None</span>
+                        </div>
+                        <div class="shipment_details_border" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px"  fxFlex="50">
+                            <span>In-Transit Time</span>
+                            <span>None</span>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="underProgress" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px" [style.height.px]="height">
+    <mat-icon class="clrprimary work_in_progress md-24">settings</mat-icon>
+    <span>Work in Progress</span>
+</div>

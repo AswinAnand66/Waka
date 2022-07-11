@@ -1,0 +1,39 @@
+:host >>> .mat-figure{
+    padding-top: 2px !important;
+    align-items: start !important;
+    justify-content: flex-start !important;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+#CommunicationCollList::-webkit-scrollbar {
+    width: 0px;
+    display: none !important;
+}
+
+.table-del-icon {
+    pointer-events: all; 
+    color: var(--primary); 
+    cursor:pointer;
+    visibility: hidden;
+}
+  
+.mat-grid-tile:hover .table-del-icon { 
+    visibility: visible;
+}
+
+
+.load_in_progress{
+    animation-name: rotate;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    border-radius: 50%;
+}
+
+@keyframes rotate{
+    from{ transform: rotate(-360deg); }
+    to{ transform: rotate(360deg); }
+}

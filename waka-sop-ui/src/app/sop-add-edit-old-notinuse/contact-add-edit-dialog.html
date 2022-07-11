@@ -1,0 +1,70 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10">{{title}}</mat-label>
+    <mat-icon id="close" color="warn" class="pointer" matTooltip="Close dialog" (click)="onClose()">cancel</mat-icon>
+</div>
+<div mat-dialog-content>
+    <form  [formGroup]="form">
+        <mat-form-field *ngIf="data.contact_type!='Consignee'&&data.contact_type!='Freight Forwarder'" class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <mat-select placeholder="Company" formControlName="Company" name="Company" class="capitalize font_12" required>
+                <mat-option class="capitalize" *ngFor="let ele of data.companys" [value]="ele">{{ele.company_name}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <input  matInput placeholder="Email" formControlName="Email" required (blur)="validateEmail()">
+            <button type="button" mat-icon-button matSuffix>
+                <mat-icon *ngIf="!emailValid" style="color:red">cancel</mat-icon>
+                <mat-icon *ngIf="emailValid" style="color:green">check_circle</mat-icon>
+            </button>
+            <mat-error *ngIf="form.get('Email').invalid" style="margin-top:8px">{{getErrorMessage(form.get('Email'),'Email')}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <input  matInput placeholder="Name" formControlName="Name" required>
+            <mat-error *ngIf="form.get('Name').invalid" style="margin-top:8px">{{getErrorMessage(form.get('Name'),'Name')}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <input  matInput placeholder="Division" formControlName="Division" required>
+            <mat-error *ngIf="form.get('Division').invalid" style="margin-top:8px">{{getErrorMessage(form.get('Division'),'Division')}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <input  matInput placeholder="Position" formControlName="Position" required>
+            <mat-error *ngIf="form.get('Position').invalid" style="margin-top:8px">{{getErrorMessage(form.get('Position'),'Position')}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputboxsmall content-wrapper no-padding-btm" style="font-weight: 600;margin-right:5px">
+            <mat-select placeholder="Country" formControlName="PhoneCountry" name="PhoneCountry" class="capitalize font_12">
+                <mat-select-trigger>+{{form.get('PhoneCountry')?.value?.country_code}}</mat-select-trigger>
+                <mat-option class="capitalize" *ngFor="let ele of countryCodeColl" [value]="ele">{{ele.country_name}}<span class="mgnleft5">(+{{ele.country_code}})</span></mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputboxmedium content-wrapper no-padding-btm" style="font-weight: 600; margin-left:0px">
+            <input  matInput placeholder="Phone" formControlName="Phone">
+        </mat-form-field>
+        <mat-form-field class="inputboxsmall content-wrapper no-padding-btm" style="font-weight: 600; margin-right:5px">
+            <mat-select placeholder="Country" formControlName="MobileCountry" name="MobileCountry" class="capitalize font_12" required>
+                <mat-select-trigger>+{{form.get('MobileCountry')?.value?.country_code}}</mat-select-trigger>
+                <mat-option class="capitalize" *ngFor="let ele of countryCodeColl" [value]="ele">{{ele.country_name}}<span class="mgnleft5">(+{{ele.country_code}})</span></mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('MobileCountry').invalid" style="margin-top:8px">{{getErrorMessage(form.get('MobileCountry'),'MobileCountry')}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputboxmedium content-wrapper no-padding-btm" style="font-weight: 600; margin-left:0px">
+            <input  matInput placeholder="Mobile" formControlName="Mobile" required>
+            <mat-error *ngIf="form.get('Mobile').invalid" style="margin-top:8px">{{getErrorMessage(form.get('Mobile'),'Mobile')}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <mat-select placeholder="Origin Port" formControlName="Ports" name="Ports" class="capitalize font_12" multiple>
+                <input type="text" style="border:none; border-bottom:1px solid lightgray; margin-left:20px; margin-top:10px" placeholder="filter" formControlName="FilterP">
+                <mat-option class="capitalize" *ngFor="let ele of filterPort | async" [value]="ele">{{ele.portwithregion}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <input  matInput placeholder="WeChat ID" formControlName="WeChatID" >
+        </mat-form-field>
+        <mat-checkbox class="mgnleft25 fntwt600" color="primary" formControlName="EscalationAlerts">Escalation Alerts</mat-checkbox>
+        <mat-checkbox class="mgnleft64 fntwt600" color="primary" formControlName="RemainderAlerts">Remainder Alerts</mat-checkbox>
+    </form>
+</div>
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end center" fxLayoutGap="20px">
+    <button *ngIf="form.valid" mat-raised-button style="background-color:#1c75bc; color:white;" (click)="saveContact('close')"><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE & CLOSE</span></button>
+    <button *ngIf="form.valid" mat-raised-button style="background-color:#1c75bc; color:white;" (click)="saveContact('add')"><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE & ADD</span></button>
+    <button *ngIf="form.invalid" mat-raised-button style="background-color:#1c75bc; color:white; opacity:0.5" disabled='true'><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE & CLOSE</span></button>
+    <button *ngIf="form.invalid" mat-raised-button style="background-color:#1c75bc; color:white; opacity:0.5" disabled='true'><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE & ADD</span></button>
+</mat-dialog-actions>

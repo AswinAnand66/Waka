@@ -1,0 +1,73 @@
+<mat-toolbar *ngIf="!isMobileView" class="mat-elevation-z0" style="position:fixed; top:0; height:60px; z-index: 100">
+	<div fxFlex="20" fxFlex.lg="20" fxFlex.md="15" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+		<div *ngIf="curRoute != null" fxLayout="row" fxLayoutAlign="center">
+			<span style="margin-top: 10px;" *ngIf="curRoute != null">
+				<a *ngIf="router.url != curRoute && modName != 'Home'" [routerLink]=curRoute>
+					<mat-icon style="color: var(--textcolor);">arrow_back</mat-icon>
+				</a>
+			</span>
+		</div>
+		<span class="moduleHeader">{{modName}}</span>
+	</div>
+	<div fxFlex="75" fxFlex.md="50" fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px">
+		<span class="usernameHeader">{{userDetails['full_name']}}</span>
+		<mat-icon style="background-color: var(--white); border-radius: 100%; padding:8px" class="pointer" [matMenuTriggerFor]="menu">person</mat-icon>	
+		<mat-icon style="background-color: var(--white); border-radius: 100%; padding:8px; color:var(--active)" class="pointer">notifications</mat-icon>
+		<mat-menu #menu="matMenu">
+			<button mat-menu-item aria-label="Change password" [routerLink]="['/nav/changepassword']">
+				<mat-icon color="primary">lock</mat-icon>
+				<span>Change Password</span>
+			</button>
+			<mat-divider style="background-color: var(--primary);"></mat-divider>
+			<button mat-menu-item aria-label="Profile update" [routerLink]="['/nav/updateprofile']">
+				<mat-icon color="accent">person</mat-icon>
+				<span>Edit Profile</span>
+			</button>
+			<mat-divider style="background-color: var(--primary);"></mat-divider>
+			<button mat-menu-item (click)="logout()" aria-label="Sign Out">
+				<mat-icon color="warn">exit_to_app</mat-icon>
+				<span>Log Out</span>
+			</button>
+		</mat-menu>
+	</div>
+</mat-toolbar>
+<mat-toolbar *ngIf="isMobileView" fxLayout="column" class="mat-elevation-z0" style="position:fixed; top:0; left:0; height:120px; z-index: 100; background-color: var(--primary); width: 100%; padding-bottom: 24px;" fxLayoutAlign="start none">
+	<div fxFlex="50" fxLayoutAlign="space-between center">
+		<div>
+			<img src={{cusLogo}} class="smalllogo mgntop10" />
+		</div>
+		<div fxLayoutGap="8px" class="mgntop10">
+			<mat-icon style="background-color: var(--white); border-radius: 100%; padding:6px; color:var(--active)" class="pointer">notifications</mat-icon>
+			<mat-icon style="background-color: var(--white); border-radius: 100%; padding:6px; color:var(--textcolor);"  class="pointer" [matMenuTriggerFor]="menu">person</mat-icon>	
+			<mat-menu #menu="matMenu">
+				<button mat-menu-item aria-label="Change password" [routerLink]="['/nav/changepassword']">
+					<mat-icon color="primary">lock</mat-icon>
+					<span>Change Password</span>
+				</button>
+				<mat-divider style="background-color: var(--primary);"></mat-divider>
+				<button mat-menu-item aria-label="Profile update" [routerLink]="['/nav/updateprofile']">
+					<mat-icon color="accent">person</mat-icon>
+					<span>Edit Profile</span>
+				</button>
+				<mat-divider style="background-color: var(--primary);"></mat-divider>
+				<button mat-menu-item (click)="logout()" aria-label="Sign Out">
+					<mat-icon color="warn">exit_to_app</mat-icon>
+					<span>Log Out</span>
+				</button>
+			</mat-menu>
+		</div>
+	</div>
+	<div fxFlex="50" fxLayout="row" fxLayoutAlign="start end" style="width: 100%;">
+		<div fxFlex="70" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center">
+			<mat-icon style="color: var(--white);" class="pointer">format_align_left</mat-icon>
+			<span style="font-size: 20px; font-weight: bold; color: #fff;">{{modName}}</span>
+		</div>
+		<div *ngIf="mobileSearchFilter" fxFlex="30" fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="end center">
+			<mat-icon style="color: var(--white);" class="pointer">search</mat-icon>
+			<mat-icon style="color: var(--white);" class="pointer">filter_list</mat-icon>
+		</div>
+	</div>
+</mat-toolbar>
+<div *ngIf="!amIOnline" fxLayout="row" fxLayoutAlign="center center">
+	<span class="font_12 clrred" style="margin-top:10px;">You are offline</span>
+</div>

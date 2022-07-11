@@ -1,0 +1,848 @@
+PortName,Country,Latitude,Longitude,Region,Sub Region,country_id,created_by
+Durres,Albania,19.45469,41.32355,Europe,Southern Europe,3,1
+Alger (Algiers),Algeria,3.05,36.75,Africa,Northern Africa,4,1
+Arzew,Algeria,-0.316666667,35.86666667,Africa,Northern Africa,4,1
+Ghazaouet,Algeria,-1.85,35.1,Africa,Northern Africa,4,1
+Mostaganem,Algeria,0.08918,35.93115,Africa,Northern Africa,4,1
+Oran,Algeria,-0.63588,35.69906,Africa,Northern Africa,4,1
+Pago Pago,American Samoa,-170.7,14.26666667,Oceania,Polynesia,5,1
+Cabinda,Angola,12.2,-5.55,Africa,Sub-Saharan Africa,7,1
+Lobito,Angola,13.53601,-12.3644,Africa,Sub-Saharan Africa,7,1
+Luanda,Angola,13.23432,-8.83682,Africa,Sub-Saharan Africa,7,1
+Malongo,Angola,12.1980218,-5.396406482,Africa,Sub-Saharan Africa,7,1
+Namibe,Angola,12.15222,-15.19611,Africa,Sub-Saharan Africa,7,1
+Soyo,Angola,12.36894,-6.1349,Africa,Sub-Saharan Africa,7,1
+Anguilla,Anguilla,-63.09375,18.17648,Americas,Latin America and the Caribbean,8,1
+Saint John's,Antigua and Barbuda,-61.85,17.11666667,Americas,Latin America and the Caribbean,10,1
+Bahia Blanca,Argentina,-62.28333333,-38.71666667,Americas,Latin America and the Caribbean,11,1
+Buenos Aires,Argentina,-58.66666667,-34.58333333,Americas,Latin America and the Caribbean,11,1
+Mar del Plata,Argentina,-57.53333333,-38.05,Americas,Latin America and the Caribbean,11,1
+Puerto Deseado,Argentina,-65.9,-47.75,Americas,Latin America and the Caribbean,11,1
+Puerto Madryn,Argentina,-65.03333333,-42.75,Americas,Latin America and the Caribbean,11,1
+Rosario,Argentina,-60.65,-32.95,Americas,Latin America and the Caribbean,11,1
+San Antonio Este,Argentina,-64.73333333,-40.8,Americas,Latin America and the Caribbean,11,1
+Ushuaia,Argentina,-68.3,-54.8,Americas,Latin America and the Caribbean,11,1
+Zarate,Argentina,-59.03333333,-34.1,Americas,Latin America and the Caribbean,11,1
+Barcadera,Aruba,-69.98333333,12.48333333,Americas,Latin America and the Caribbean,13,1
+Oranjestad,Aruba,-70.02703,12.52398,Americas,Latin America and the Caribbean,13,1
+Adelaide,Australia,138.5833333,-34.91666667,Oceania,Australia and New Zealand,14,1
+Bell Bay,Australia,146.87,-41.13,Oceania,Australia and New Zealand,14,1
+Brisbane,Australia,153.0166667,-27.46666667,Oceania,Australia and New Zealand,14,1
+Burnie,Australia,145.90375,-41.05584,Oceania,Australia and New Zealand,14,1
+Cairns,Australia,145.76613,-16.92366,Oceania,Australia and New Zealand,14,1
+Dampier,Australia,116.71256,-20.66275,Oceania,Australia and New Zealand,14,1
+Darwin,Australia,130.8333333,-12.45,Oceania,Australia and New Zealand,14,1
+Devonport,Australia,146.35152,-41.17695,Oceania,Australia and New Zealand,14,1
+Fremantle,Australia,115.74557,-32.05632,Oceania,Australia and New Zealand,14,1
+Geelong,Australia,144.36069,-38.14711,Oceania,Australia and New Zealand,14,1
+Melbourne,Australia,144.9666667,-37.81666667,Oceania,Australia and New Zealand,14,1
+Newcastle,Australia,151.7801,-32.92953,Oceania,Australia and New Zealand,14,1
+Port Botany,Australia,151.22277,-33.97447,Oceania,Australia and New Zealand,14,1
+Port Kembla,Australia,150.9012,-34.4818,Oceania,Australia and New Zealand,14,1
+Sydney,Australia,151.2,-33.85,Oceania,Australia and New Zealand,14,1
+Townsville,Australia,146.80569,-19.26639,Oceania,Australia and New Zealand,14,1
+Weipa,Australia,141.87883,-12.62346,Oceania,Australia and New Zealand,14,1
+Nassau,Bahamas The,-77.35,25.08333333,Americas,Latin America and the Caribbean,17,1
+Mina Sulman Port,Bahrain,50.61666667,26.2,Asia,Western Asia,18,1
+Chattogram,Bangladesh,91.83333333,22.33333333,Asia,Southern Asia,19,1
+Mongla,Bangladesh,89.61095,22.47223,Asia,Southern Asia,19,1
+Bridgetown,Barbados,-59.62021,13.10732,Americas,Latin America and the Caribbean,20,1
+Antwerpen,Belgium,4.416666667,51.21666667,Europe,Western Europe,22,1
+Gent (Ghent),Belgium,3.716666667,51.05,Europe,Western Europe,22,1
+Zeebrugge,Belgium,3.2,51.33333333,Europe,Western Europe,22,1
+Belize City,Belize,-88.19756,17.49952,Americas,Latin America and the Caribbean,23,1
+Big Creek,Belize,-88.4,16.51666667,Americas,Latin America and the Caribbean,23,1
+Cotonou,Benin,2.41833,6.36536,Africa,Sub-Saharan Africa,24,1
+Hamilton,Bermuda,-64.78303,32.2949,Americas,Northern America,25,1
+Kralendijk,"Bonaire, Sint Eustatius and Saba",-68.26666667,12.15,Americas,Latin America and the Caribbean,155,1
+Fortaleza,Brazil,-38.54306,-3.71722,Americas,Latin America and the Caribbean,31,1
+Ilheus,Brazil,-39.03949,-14.79364,Americas,Latin America and the Caribbean,31,1
+Imbituba,Brazil,-48.67028,-28.24,Americas,Latin America and the Caribbean,31,1
+Itaguai,Brazil,-43.76666667,-22.86666667,Americas,Latin America and the Caribbean,31,1
+Itajai,Brazil,-48.66194,-26.90778,Americas,Latin America and the Caribbean,31,1
+Itapoa,Brazil,-48.6,-26.11666667,Americas,Latin America and the Caribbean,31,1
+Manaus,Brazil,-60.025,-3.10194,Americas,Latin America and the Caribbean,31,1
+Natal,Brazil,-35.20944,-5.795,Americas,Latin America and the Caribbean,31,1
+Navegantes,Brazil,-48.65,-26.9,Americas,Latin America and the Caribbean,31,1
+Paranagua,Brazil,-48.5,-25.51666667,Americas,Latin America and the Caribbean,31,1
+Pecem Pt/Sao Goncalo do Amarante,Brazil,-38.86666667,-3.533333333,Americas,Latin America and the Caribbean,31,1
+Rio de Janeiro,Brazil,-43.23333333,-22.88333333,Americas,Latin America and the Caribbean,31,1
+Rio Grande,Brazil,-43.18223,-22.90642,Americas,Latin America and the Caribbean,31,1
+Salvador,Brazil,-38.51083,-12.97111,Americas,Latin America and the Caribbean,31,1
+Santana Pt./Macapa,Brazil,-51.16666667,-0.05,Americas,Latin America and the Caribbean,31,1
+Santos,Brazil,-46.33333333,-23.95,Americas,Latin America and the Caribbean,31,1
+Sao Luis,Brazil,-44.3,-2.5,Americas,Latin America and the Caribbean,31,1
+Suape,Brazil,-38.62083,-12.74083,Americas,Latin America and the Caribbean,31,1
+Vitoria Pt,Brazil,-40.33333333,-20.31666667,Americas,Latin America and the Caribbean,31,1
+Burgas,Bulgaria,27.46781,42.50606,Europe,Eastern Europe,34,1
+Varna,Bulgaria,27.91667,43.21667,Europe,Eastern Europe,34,1
+Kampong Saom,Cambodia,103.5166667,10.6,Asia,South-eastern Asia,37,1
+Douala,Cameroon,9.70428,4.04827,Africa,Sub-Saharan Africa,38,1
+Kribi,Cameroon,9.90765,2.93725,Africa,Sub-Saharan Africa,38,1
+Argentia,Canada,-54,47.3,Americas,Northern America,39,1
+Halifax,Canada,-63.57291,44.6464,Americas,Northern America,39,1
+Montreal,Canada,-73.58781,45.50884,Americas,Northern America,39,1
+New Westminster,Canada,-122.91092,49.20678,Americas,Northern America,39,1
+Prince Rupert,Canada,-130.32098,54.31507,Americas,Northern America,39,1
+Saint-John,Canada,-66.06666667,45.26666667,Americas,Northern America,39,1
+Saint-John's,Canada,-52.73333333,47.56666667,Americas,Northern America,39,1
+Squamish,Canada,-122.95396,50.11817,Americas,Northern America,39,1
+Toronto,Canada,-79.4163,43.70011,Americas,Northern America,39,1
+Vancouver,Canada,-123.11934,49.24966,Americas,Northern America,39,1
+Mindelo,Cape Verde,-25,16.88333333,Africa,Sub-Saharan Africa,40,1
+Palmeira,Cape Verde,-22.98348,16.75754,Africa,Sub-Saharan Africa,40,1
+Praia,Cape Verde,-23.51254,14.93152,Africa,Sub-Saharan Africa,40,1
+Sal Rei,Cape Verde,-22.91722,16.17611,Africa,Sub-Saharan Africa,40,1
+Georgetown Grand ,Cayman Islands,-81.38333333,19.3,Americas,Latin America and the Caribbean,41,1
+Antofagasta,Chile,-70.38333333,-23.63333333,Americas,Latin America and the Caribbean,44,1
+Arica,Chile,-70.31666667,-18.48333333,Americas,Latin America and the Caribbean,44,1
+Coronel,Chile,-73.15,-37.01666667,Americas,Latin America and the Caribbean,44,1
+Iquique,Chile,-70.13333333,-20.21666667,Americas,Latin America and the Caribbean,44,1
+Lirquen,Chile,-72.98333333,-36.7,Americas,Latin America and the Caribbean,44,1
+Mejillones,Chile,-70.45,-23.1,Americas,Latin America and the Caribbean,44,1
+Puerto Angamos,Chile,-70.45,-23.08333333,Americas,Latin America and the Caribbean,44,1
+Punta Arenas,Chile,-70.93333333,-53.13333333,Americas,Latin America and the Caribbean,44,1
+San Antonio,Chile,-71.6,-33.6,Americas,Latin America and the Caribbean,44,1
+San Vicente,Chile,-73.13333333,-36.7,Americas,Latin America and the Caribbean,44,1
+Valparaiso,Chile,-71.63333333,-33.03333333,Americas,Latin America and the Caribbean,44,1
+Caofeidian Pt,China,118.5333333,38.95,Asia,Eastern Asia,45,1
+DA CHAN BAY,China,113.8666667,22.53333333,Asia,Eastern Asia,45,1
+Dongguan Pt,China,113.75,23.03333333,Asia,Eastern Asia,45,1
+Dongjiangkou,China,119.5225398,35.30888533,Asia,Eastern Asia,45,1
+Fuqing,China,119.3666667,25.71666667,Asia,Eastern Asia,45,1
+Huizhou Pt,China,114.3666667,23.08333333,Asia,Eastern Asia,45,1
+Humen Pt,China,113.6666667,22.83333333,Asia,Eastern Asia,45,1
+Jiangyin,China,119.3,25.46666667,Asia,Eastern Asia,45,1
+Jinzhou Pt,China,121.15,41.11666667,Asia,Eastern Asia,45,1
+Lianyungang,China,119.4333333,34.71666667,Asia,Eastern Asia,45,1
+Nansha Pt,China,113.5833333,22.75,Asia,Eastern Asia,45,1
+Nantong Pt,China,120.85,32.01666667,Asia,Eastern Asia,45,1
+Qinhuangdao Pt,China,119.5833333,39.91666667,Asia,Eastern Asia,45,1
+Quanzhou Pt,China,118.6,24.93333333,Asia,Eastern Asia,45,1
+Rizhao Pt,China,119.5333333,35.38333333,Asia,Eastern Asia,45,1
+Shekou Pt,China,113.9166667,22.48333333,Asia,Eastern Asia,45,1
+Shidao Pt,China,122.4333333,36.86666667,Asia,Eastern Asia,45,1
+Waihai,China,113.1333333,22.58333333,Asia,Eastern Asia,45,1
+Weifang Pt,China,119.1,36.71666667,Asia,Eastern Asia,45,1
+Weihai,China,122.1166667,37.51666667,Asia,Eastern Asia,45,1
+Yangpu Pt,China,109.2,19.7,Asia,Eastern Asia,45,1
+Yantian Pt,China,119.8666667,26.85,Asia,Eastern Asia,45,1
+Yingkou Pt,China,122.2166667,40.65,Asia,Eastern Asia,45,1
+Zhangjiagang,China,120.5333333,31.86666667,Asia,Eastern Asia,45,1
+Zhangzhou Pt,China,117.65,24.51666667,Asia,Eastern Asia,45,1
+Zhuhai Pt,China,113.5666667,22.28333333,Asia,Eastern Asia,45,1
+Flying Fish Cove,Christmas Island,105.7166667,-10.41666667,Oceania,Australia and New Zealand,46,1
+Barranquilla,Colombia,-74.78132,10.96854,Americas,Latin America and the Caribbean,48,1
+Buenaventura,Colombia,-77.03116,3.8801,Americas,Latin America and the Caribbean,48,1
+Cartagena,Colombia,-75.51444,10.39972,Americas,Latin America and the Caribbean,48,1
+Leticia,Colombia,-69.93333333,-4.216666667,Americas,Latin America and the Caribbean,48,1
+Santa Marta,Colombia,-74.19904,11.24079,Americas,Latin America and the Caribbean,48,1
+Tolu,Colombia,-75.58333333,9.533333333,Americas,Latin America and the Caribbean,48,1
+Turbo,Colombia,-76.71666667,8.083333333,Americas,Latin America and the Caribbean,48,1
+Moroni,Comoros,43.25506,-11.70216,Africa,Sub-Saharan Africa,49,1
+Mutsamudu Anjouan ,Comoros,44.38333333,-12.15,Africa,Sub-Saharan Africa,49,1
+Pointe Noire,Congo,11.85,-4.8,Africa,Sub-Saharan Africa,50,1
+Banana,Congo The Democratic Republic Of The,12.40121189,-6.003633267,Africa,Sub-Saharan Africa,51,1
+Aitutaki,Cook Islands,-159.79293,-18.85195,Oceania,Polynesia,52,1
+Rarotonga,Cook Islands,-159.77545,-21.2075,Oceania,Polynesia,52,1
+Caldera,Costa Rica,-84.71666667,9.95,Americas,Latin America and the Caribbean,53,1
+Moin,Costa Rica,-83.08333333,10,Americas,Latin America and the Caribbean,53,1
+Puerto Limon,Costa Rica,-83.03333333,10,Americas,Latin America and the Caribbean,53,1
+Abidjan,Cote D'Ivoire (Ivory Coast),-4.016666667,5.333333333,Africa,Sub-Saharan Africa,54,1
+San-Pedro,Cote D'Ivoire (Ivory Coast),-6.616666667,4.733333333,Africa,Sub-Saharan Africa,54,1
+Ploce,Croatia (Hrvatska),17.43333333,43.05,Europe,Southern Europe,55,1
+Rijeka,Croatia (Hrvatska),14.4,45.33333333,Europe,Southern Europe,55,1
+Split,Croatia (Hrvatska),16.45,43.5,Europe,Southern Europe,55,1
+Mariel,Cuba,-82.75,23,Americas,Latin America and the Caribbean,56,1
+Moa,Cuba,-74.95075,20.65776,Americas,Latin America and the Caribbean,56,1
+Santiago de Cuba,Cuba,-75.82667,20.02083,Americas,Latin America and the Caribbean,56,1
+Willemstad,Curaao,-68.91666667,12.1,Americas,Latin America and the Caribbean,249,1
+Limassol,Cyprus,33.05,34.68333333,Asia,Western Asia,57,1
+Aalborg,Denmark,9.9187,57.048,Europe,Northern Europe,59,1
+Aarhus,Denmark,10.21666667,56.15,Europe,Northern Europe,59,1
+Esbjerg,Denmark,8.45187,55.47028,Europe,Northern Europe,59,1
+Fredericia,Denmark,9.75257,55.56568,Europe,Northern Europe,59,1
+Grenaa,Denmark,10.87825,56.41578,Europe,Northern Europe,59,1
+Hundested,Denmark,11.85044,55.96397,Europe,Northern Europe,59,1
+Kobenhavn,Denmark,12.58333333,55.66666667,Europe,Northern Europe,59,1
+Skagen,Denmark,10.58394,57.72093,Europe,Northern Europe,59,1
+Djibouti,Djibouti,43.14503,11.58901,Africa,Sub-Saharan Africa,60,1
+Roseau,Dominica,-61.38808,15.30174,Americas,Latin America and the Caribbean,61,1
+Boca Chica,Dominican Republic,-69.6,18.45,Americas,Latin America and the Caribbean,62,1
+Caucedo,Dominican Republic,-69.63333333,18.41666667,Americas,Latin America and the Caribbean,62,1
+Manzanillo,Dominican Republic,-71.75,19.7,Americas,Latin America and the Caribbean,62,1
+Puerto Plata,Dominican Republic,-70.6884,19.79344,Americas,Latin America and the Caribbean,62,1
+Dili,East Timor,125.5666667,-8.55,Asia,South-eastern Asia,63,1
+Esmeraldas,Ecuador,-79.7,0.983333333,Americas,Latin America and the Caribbean,64,1
+Guayaquil,Ecuador,-79.9,-2.166666667,Americas,Latin America and the Caribbean,64,1
+Posorja,Ecuador,-80.25,-2.7,Americas,Latin America and the Caribbean,64,1
+Puerto Bolivar,Ecuador,-79.98333333,-3.266666667,Americas,Latin America and the Caribbean,64,1
+Dumyat (Damietta),Egypt,31.81666667,31.41666667,Africa,Northern Africa,65,1
+El Dekheila,Egypt,29.82126,31.13133,Africa,Northern Africa,65,1
+El Iskandariya (Alexandria),Egypt,29.91666667,31.18333333,Africa,Northern Africa,65,1
+Port Said,Egypt,32.3019,31.26531,Africa,Northern Africa,65,1
+Sokhna Port,Egypt,32.35,29.65,Africa,Northern Africa,65,1
+Acajutla,El Salvador,-89.8275,13.59278,Americas,Latin America and the Caribbean,66,1
+San Salvador,El Salvador,-89.18718,13.68935,Americas,Latin America and the Caribbean,66,1
+Bata,Equatorial Guinea,9.76582,1.86391,Africa,Sub-Saharan Africa,67,1
+Malabo,Equatorial Guinea,8.78166,3.75578,Africa,Sub-Saharan Africa,67,1
+Massawa (Mitsiwa),Eritrea,39.45,15.6,Africa,Sub-Saharan Africa,68,1
+Kunda,Estonia,26.53333333,59.51666667,Europe,Northern Europe,69,1
+Muuga,Estonia,24.96666667,59.5,Europe,Northern Europe,69,1
+Paldiski,Estonia,24.05,59.35,Europe,Northern Europe,69,1
+Tallinn,Estonia,24.73333333,59.43333333,Europe,Northern Europe,69,1
+Kollafjordur,Faroe Islands,-6.883333333,62.11666667,Europe,Northern Europe,72,1
+Thorshavn,Faroe Islands,-6.766666667,62.01666667,Europe,Northern Europe,72,1
+Lautoka,Fiji Islands,177.45,-17.61666667,Oceania,Melanesia,73,1
+Suva,Fiji Islands,178.45,-18.13333333,Oceania,Melanesia,73,1
+Abo (Turku),Finland,22.28333333,60.45,Europe,Northern Europe,74,1
+Bjorneborg (Pori),Finland,21.8,61.48333333,Europe,Northern Europe,74,1
+Fredrikshamn (Hamina),Finland,27.2,60.56666667,Europe,Northern Europe,74,1
+Hamina (Fredrikshamn),Finland,27.2,60.56666667,Europe,Northern Europe,74,1
+Hango (Hanko),Finland,22.95,59.83333,Europe,Northern Europe,74,1
+Hanko (Hango),Finland,22.95,59.83333,Europe,Northern Europe,74,1
+Helsingfors (Helsinki),Finland,24.93545,60.16952,Europe,Northern Europe,74,1
+Helsinki (Helsingfors),Finland,24.93545,60.16952,Europe,Northern Europe,74,1
+Jakobstad (Pietarsaari),Finland,22.78333333,63.68333333,Europe,Northern Europe,74,1
+Karleby (Kokkola),Finland,23.11666667,63.83333333,Europe,Northern Europe,74,1
+Kemi/Tornea (Kemi/Tornio),Finland,24.56666667,65.73333333,Europe,Northern Europe,74,1
+Kemi/Tornio (Kemi/Tornea),Finland,24.56666667,65.73333333,Europe,Northern Europe,74,1
+Kokkola (Karleby),Finland,23.11666667,63.83333333,Europe,Northern Europe,74,1
+Kotka,Finland,26.91666667,60.46666667,Europe,Northern Europe,74,1
+Pietarsaari (Jakobstad),Finland,22.78333333,63.68333333,Europe,Northern Europe,74,1
+Pori (Bjorneborg),Finland,21.8,61.48333333,Europe,Northern Europe,74,1
+Rauma (Raumo),Finland,21.5,61.13333333,Europe,Northern Europe,74,1
+Raumo (Rauma),Finland,21.5,61.13333333,Europe,Northern Europe,74,1
+Tornea (Tornio),Finland,24.18333333,65.85,Europe,Northern Europe,74,1
+Tornio (Tornea),Finland,24.18333333,65.85,Europe,Northern Europe,74,1
+Turku (Abo),Finland,22.28333333,60.45,Europe,Northern Europe,74,1
+Valko (Valkom),Finland,26.24664,60.41392,Europe,Northern Europe,74,1
+Valkom (Valko),Finland,26.24664,60.41392,Europe,Northern Europe,74,1
+Bassens,France,-0.516666667,44.9,Europe,Western Europe,75,1
+Brest,France,-4.483333333,48.4,Europe,Western Europe,75,1
+Dunkerque,France,2.383333333,51.03333333,Europe,Western Europe,75,1
+Fos-sur-Mer,France,4.933333333,43.43333333,Europe,Western Europe,75,1
+la Pallice,France,-1.216666667,46.16666667,Europe,Western Europe,75,1
+La Rochelle,France,-1.15,46.16666667,Europe,Western Europe,75,1
+Le Havre,France,0.1,49.5,Europe,Western Europe,75,1
+Marseille,France,5.4,43.3,Europe,Western Europe,75,1
+Montoir-de-Bretagne,France,-2.15,47.33333333,Europe,Western Europe,75,1
+Port-Vendres,France,3.116666667,42.51666667,Europe,Western Europe,75,1
+Radicatel,France,0.5,49.5,Europe,Western Europe,75,1
+Rouen,France,1.1,49.45,Europe,Western Europe,75,1
+Sete,France,3.7,43.4,Europe,Western Europe,75,1
+Toulon,France,5.933333333,43.11666667,Europe,Western Europe,75,1
+Degrad des Cannes,French Guiana,-52.26666667,4.85,Americas,Latin America and the Caribbean,76,1
+Bora Bora,French Polynesia,-151.75,-16.45,Oceania,Polynesia,77,1
+Papeete,French Polynesia,-149.6166667,-17.55,Oceania,Polynesia,77,1
+Libreville,Gabon,9.45356,0.39241,Africa,Sub-Saharan Africa,79,1
+Port Gentil,Gabon,8.78151,-0.71933,Africa,Sub-Saharan Africa,79,1
+Banjul,Gambia The,-16.57803,13.45274,Africa,Sub-Saharan Africa,80,1
+Batumi,Georgia,41.63392,41.64228,Asia,Western Asia,81,1
+Poti,Georgia,41.67384,42.14272,Asia,Western Asia,81,1
+Brake,Germany,8.483333333,53.33333333,Europe,Western Europe,82,1
+Bremen,Germany,8.80717,53.07582,Europe,Western Europe,82,1
+Bremerhaven,Germany,8.59298,53.53615,Europe,Western Europe,82,1
+Cuxhaven,Germany,8.7,53.88333333,Europe,Western Europe,82,1
+Emden,Germany,7.216666667,53.36666667,Europe,Western Europe,82,1
+Hamburg,Germany,9.99302,53.55073,Europe,Western Europe,82,1
+Kiel,Germany,10.13333333,54.33333333,Europe,Western Europe,82,1
+Lubeck,Germany,10.68729,53.86893,Europe,Western Europe,82,1
+Rostock,Germany,12.13333333,54.08333333,Europe,Western Europe,82,1
+Travemunde,Germany,10.8709,53.96304,Europe,Western Europe,82,1
+Wilhelmshaven,Germany,8.133333333,53.51666667,Europe,Western Europe,82,1
+Takoradi,Ghana,-1.76029,4.89816,Africa,Sub-Saharan Africa,83,1
+Tema,Ghana,-0.01657,5.6698,Africa,Sub-Saharan Africa,83,1
+Gibraltar,Gibraltar,-5.35257,36.14474,Europe,Southern Europe,84,1
+Heraklion (Iraklion),Greece,25.16666667,35.33333333,Europe,Southern Europe,85,1
+Iraklion (Heraklion),Greece,25.16666667,35.33333333,Europe,Southern Europe,85,1
+Piraeus,Greece,23.61666667,37.93333333,Europe,Southern Europe,85,1
+Thessaloniki,Greece,22.95,40.63333333,Europe,Southern Europe,85,1
+Volos,Greece,22.95,39.36666667,Europe,Southern Europe,85,1
+Nuuk (Godthaab),Greenland,-51.75,64.18333333,Americas,Northern America,86,1
+Sisimiut (Holsteinsborg),Greenland,-53.6735,66.93946,Americas,Northern America,86,1
+Saint George's,Grenada,-61.75226,12.05288,Americas,Latin America and the Caribbean,87,1
+Point-a-Pitre Apt,Guadeloupe,-61.51666667,16.26666667,Americas,Latin America and the Caribbean,88,1
+Piti,Guam,144.6833333,13.43333333,Oceania,Micronesia,89,1
+Puerto Barrios,Guatemala,-88.59444,15.72778,Americas,Latin America and the Caribbean,90,1
+Puerto Santo Tomas de Castilla,Guatemala,-88.61666667,15.7,Americas,Latin America and the Caribbean,90,1
+Conakry,Guinea,-13.67729,9.53795,Africa,Sub-Saharan Africa,92,1
+Bissau,Guinea-Bissau,-15.58333333,11.85,Africa,Sub-Saharan Africa,93,1
+Georgetown,Guyana,-58.15527,6.80448,Americas,Latin America and the Caribbean,94,1
+Cap-Haitien,Haiti,-72.2,19.75,Americas,Latin America and the Caribbean,95,1
+Lafiteau,Haiti,-72.43333333,18.48333333,Americas,Latin America and the Caribbean,95,1
+Port-au-Prince,Haiti,-72.33881,18.54349,Americas,Latin America and the Caribbean,95,1
+Puerto Castilla,Honduras,-85.96667,16.01667,Americas,Latin America and the Caribbean,97,1
+Puerto Cortes,Honduras,-87.92968,15.82562,Americas,Latin America and the Caribbean,97,1
+San Lorenzo,Honduras,-87.44722,13.42417,Americas,Latin America and the Caribbean,97,1
+Hong Kong,Hong Kong S.A.R.,114.17469,22.27832,Asia,Eastern Asia,98,1
+Grundarfjordur,Iceland,-23.26313,64.92427,Europe,Northern Europe,100,1
+Reydarfjordur,Iceland,-14.21832,65.03164,Europe,Northern Europe,100,1
+Reykjavik,Iceland,-21.95,64.15,Europe,Northern Europe,100,1
+Chennai (ex Madras),India,80.28333333,13.08333333,Asia,Southern Asia,101,1
+Cochin,India,76.23333333,9.966666667,Asia,Southern Asia,101,1
+Ennore,India,80.32835,13.24751,Asia,Southern Asia,101,1
+Haldia,India,88.10975,22.06046,Asia,Southern Asia,101,1
+Hazira,India,72.62343557,21.09641041,Asia,Southern Asia,101,1
+Kandla,India,70.21666667,23.03333333,Asia,Southern Asia,101,1
+Kattupalli Port,India,80.38333333,13.3,Asia,Southern Asia,101,1
+Kolkata (ex Calcutta),India,88.35,22.56666667,Asia,Southern Asia,101,1
+Krishnapatnam,India,80.12388,14.28874,Asia,Southern Asia,101,1
+Mangalore,India,74.85603,12.91723,Asia,Southern Asia,101,1
+Marmagao (Marmugao),India,73.78333333,15.4,Asia,Southern Asia,101,1
+Mumbai (ex Bombay),India,72.81666667,18.96666667,Asia,Southern Asia,101,1
+Mundra,India,69.7219,22.83918,Asia,Southern Asia,101,1
+Paradip Garh,India,86.61666667,20.31666667,Asia,Southern Asia,101,1
+Pipavav (Victor) Port,India,71.55,20.96666667,Asia,Southern Asia,101,1
+Port Blair,India,92.74635,11.66613,Asia,Southern Asia,101,1
+Tuticorin,India,78.13333333,8.783333333,Asia,Southern Asia,101,1
+Visakhapatnam,India,83.3,17.7,Asia,Southern Asia,101,1
+Balikpapan,Indonesia,116.8333333,-1.283333333,Asia,South-eastern Asia,102,1
+Banjarmasin,Indonesia,114.59075,-3.31987,Asia,South-eastern Asia,102,1
+Batam Island,Indonesia,104.0333333,1.083333333,Asia,South-eastern Asia,102,1
+Belawan Sumatra,Indonesia,98.6832,3.7755,Asia,South-eastern Asia,102,1
+Benete,Indonesia,116.7166667,-8.866666667,Asia,South-eastern Asia,102,1
+Benoa,Indonesia,115.2166667,-8.766666667,Asia,South-eastern Asia,102,1
+Bitung Sulawesi ,Indonesia,125.12824,1.44059,Asia,South-eastern Asia,102,1
+Gorontalo Sulawesi ,Indonesia,123.3908,-0.8985,Asia,South-eastern Asia,102,1
+Jakarta Java ,Indonesia,106.8333333,-6.133333333,Asia,South-eastern Asia,102,1
+Jayapura Irian Jaya ,Indonesia,140.7,-2.533333333,Asia,South-eastern Asia,102,1
+Kendari Sulawesi ,Indonesia,122.51507,-3.9778,Asia,South-eastern Asia,102,1
+Kumai,Indonesia,111.7166667,-2.733333333,Asia,South-eastern Asia,102,1
+Luwuk,Indonesia,122.7875,-0.9516,Asia,South-eastern Asia,102,1
+Makassar,Indonesia,119.4,-5.116666667,Asia,South-eastern Asia,102,1
+Medan Sumatra ,Indonesia,98.66667,3.58333,Asia,South-eastern Asia,102,1
+Padang,Indonesia,100.35,-0.95,Asia,South-eastern Asia,102,1
+Palembang Sumatra ,Indonesia,104.7458,-2.91673,Asia,South-eastern Asia,102,1
+Panjang,Indonesia,100.6199,0.3087,Asia,South-eastern Asia,102,1
+Perawang,Indonesia,102.8666667,1.066666667,Asia,South-eastern Asia,102,1
+Pontianak Kalimantan ,Indonesia,109.325,-0.03194,Asia,South-eastern Asia,102,1
+Samarinda Kalimantan ,Indonesia,117.14583,-0.49167,Asia,South-eastern Asia,102,1
+Semarang,Indonesia,110.4833333,-6.966666667,Asia,South-eastern Asia,102,1
+Sorong,Indonesia,131.26104,-0.87956,Asia,South-eastern Asia,102,1
+Surabaya,Indonesia,112.75,-7.233333333,Asia,South-eastern Asia,102,1
+Tanjungpinang,Indonesia,104.45,0.916666667,Asia,South-eastern Asia,102,1
+Tarakan Kalimantan ,Indonesia,117.59152,3.31332,Asia,South-eastern Asia,102,1
+Timika,Indonesia,136.55,-4.75,Asia,South-eastern Asia,102,1
+Tolitoli,Indonesia,121.1679,1.2718,Asia,South-eastern Asia,102,1
+Tual,Indonesia,132.7333333,-5.633333333,Asia,South-eastern Asia,102,1
+Asaluyeh,Iran,52.6,27.46666667,Asia,Southern Asia,103,1
+Bandar Abbas,Iran,56.26666667,27.18333333,Asia,Southern Asia,103,1
+Bandar Khomeini,Iran,49.1,30.43333333,Asia,Southern Asia,103,1
+Bushehr,Iran,50.83333333,28.96666667,Asia,Southern Asia,103,1
+Abu Al Fulus,Iraq,48.04246,30.44783,Asia,Western Asia,104,1
+Basra,Iraq,47.7804,30.50852,Asia,Western Asia,104,1
+Umm Qasr Port,Iraq,47.93333333,30.03333333,Asia,Western Asia,104,1
+Cork,Ireland,-8.47061,51.89797,Europe,Northern Europe,105,1
+Dublin,Ireland,-6.24889,53.33306,Europe,Northern Europe,105,1
+Waterford,Ireland,-7.1,52.25,Europe,Northern Europe,105,1
+Ashdod,Israel,34.64966,31.79213,Asia,Western Asia,106,1
+Haifa,Israel,34.98333333,32.8,Asia,Western Asia,106,1
+Ancona,Italy,13.5,43.63333333,Europe,Southern Europe,107,1
+Bari,Italy,16.85,41.13333333,Europe,Southern Europe,107,1
+Cagliari,Italy,9.116666667,39.21666667,Europe,Southern Europe,107,1
+Catania,Italy,15.1,37.5,Europe,Southern Europe,107,1
+Civitavecchia,Italy,11.8,42.1,Europe,Southern Europe,107,1
+Genova,Italy,8.95,44.41666667,Europe,Southern Europe,107,1
+Gioia Tauro,Italy,15.9,38.41666667,Europe,Southern Europe,107,1
+La Spezia,Italy,9.833333333,44.11666667,Europe,Southern Europe,107,1
+Livorno,Italy,10.31666667,43.55,Europe,Southern Europe,107,1
+Marina di Carrara,Italy,10.04142,44.03837,Europe,Southern Europe,107,1
+Monfalcone,Italy,13.53292,45.80463,Europe,Southern Europe,107,1
+Napoli,Italy,14.25,40.83333333,Europe,Southern Europe,107,1
+Olbia,Italy,9.516666667,40.91666667,Europe,Southern Europe,107,1
+Palermo,Italy,13.36666667,38.11666667,Europe,Southern Europe,107,1
+Pozzuoli,Italy,14.0952,40.84394,Europe,Southern Europe,107,1
+Ravenna,Italy,12.20121,44.41344,Europe,Southern Europe,107,1
+Salerno,Italy,14.79328,40.67545,Europe,Southern Europe,107,1
+Savona,Italy,8.5,44.28333333,Europe,Southern Europe,107,1
+Trapani,Italy,12.48333333,38.01666667,Europe,Southern Europe,107,1
+Trieste,Italy,13.77678,45.64953,Europe,Southern Europe,107,1
+Vado Ligure,Italy,8.45,44.26666667,Europe,Southern Europe,107,1
+Venezia,Italy,12.33333333,45.43333333,Europe,Southern Europe,107,1
+Kingston,Jamaica,-76.79358,17.99702,Americas,Latin America and the Caribbean,108,1
+Montego Bay,Jamaica,-77.91883,18.47116,Americas,Latin America and the Caribbean,108,1
+Aburatsu,Japan,144.26971,44.02127,Asia,Eastern Asia,109,1
+Akita,Japan,140.11667,39.71667,Asia,Eastern Asia,109,1
+Chiba,Japan,140.11667,35.6,Asia,Eastern Asia,109,1
+Fukuyama Hiroshima ,Japan,133.36667,34.48333,Asia,Eastern Asia,109,1
+Hachinohe,Japan,141.5,40.5,Asia,Eastern Asia,109,1
+Hakata,Japan,133.1,34.18333333,Asia,Eastern Asia,109,1
+Hiroshima,Japan,132.45,34.4,Asia,Eastern Asia,109,1
+Hitachi,Japan,140.65,36.6,Asia,Eastern Asia,109,1
+Hososhima,Japan,131.66667,32.43333,Asia,Eastern Asia,109,1
+Imabari,Japan,133.00023,34.07001,Asia,Eastern Asia,109,1
+Imari,Japan,129.87877,33.27362,Asia,Eastern Asia,109,1
+Isa,Japan,130.6,32.05,Asia,Eastern Asia,109,1
+Iwakuni,Japan,132.22,34.16297,Asia,Eastern Asia,109,1
+Kanazawa,Japan,136.61667,36.6,Asia,Eastern Asia,109,1
+Kashima Ibaraki ,Japan,140.64474,35.96536,Asia,Eastern Asia,109,1
+Kawasaki,Japan,139.71722,35.52056,Asia,Eastern Asia,109,1
+Kitakyushu,Japan,130.8333333,33.83333333,Asia,Eastern Asia,109,1
+Kobe,Japan,135.1666667,34.68333333,Asia,Eastern Asia,109,1
+Kochi,Japan,133.53333,33.55,Asia,Eastern Asia,109,1
+Kumamoto,Japan,130.69181,32.80589,Asia,Eastern Asia,109,1
+Maizuru,Japan,135.33333,35.45,Asia,Eastern Asia,109,1
+Matsuyama,Japan,132.76574,33.83916,Asia,Eastern Asia,109,1
+Miike Fukuoka ,Japan,130.47791,33.05207,Asia,Eastern Asia,109,1
+Mitajiri,Japan,131.5833333,34.03333333,Asia,Eastern Asia,109,1
+Mizushima,Japan,133.73896,34.5298,Asia,Eastern Asia,109,1
+Moji/Kitakyushu,Japan,130.9666667,33.9,Asia,Eastern Asia,109,1
+Muroran,Japan,140.98806,42.31722,Asia,Eastern Asia,109,1
+Nagasaki,Japan,129.88333,32.75,Asia,Eastern Asia,109,1
+Nagoya Aichi ,Japan,136.90641,35.18147,Asia,Eastern Asia,109,1
+Naha Okinawa ,Japan,127.68333,26.21667,Asia,Eastern Asia,109,1
+Naoetsu,Japan,138.25,37.18333,Asia,Eastern Asia,109,1
+Niigata,Japan,139.00589,37.88637,Asia,Eastern Asia,109,1
+Oita,Japan,131.6,33.23333,Asia,Eastern Asia,109,1
+Omaezaki,Japan,138.21934,34.59882,Asia,Eastern Asia,109,1
+Onahama,Japan,140.9,36.95,Asia,Eastern Asia,109,1
+Osaka,Japan,135.5,34.66666667,Asia,Eastern Asia,109,1
+Otake,Japan,132.22063,34.20754,Asia,Eastern Asia,109,1
+Otaru,Japan,141.00222,43.18944,Asia,Eastern Asia,109,1
+Sakaiminato,Japan,133.23094,35.53774,Asia,Eastern Asia,109,1
+Sakata,Japan,139.855,38.91667,Asia,Eastern Asia,109,1
+Satsumasendai,Japan,130.25,31.81666667,Asia,Eastern Asia,109,1
+Shibushi,Japan,131.10114,31.476,Asia,Eastern Asia,109,1
+Shimizu,Japan,142.88472,43.00611,Asia,Eastern Asia,109,1
+Takamatsu,Japan,134.05,34.33333,Asia,Eastern Asia,109,1
+Tokushima,Japan,134.56667,34.06667,Asia,Eastern Asia,109,1
+Tokuyama,Japan,131.81667,34.05,Asia,Eastern Asia,109,1
+Tokyo,Japan,139.75,35.68333333,Asia,Eastern Asia,109,1
+Tomakomai,Japan,141.60333,42.63694,Asia,Eastern Asia,109,1
+Toyohashi,Japan,137.38333,34.76667,Asia,Eastern Asia,109,1
+Tsuruga,Japan,136.0558,35.64547,Asia,Eastern Asia,109,1
+Ube,Japan,131.25111,33.94306,Asia,Eastern Asia,109,1
+Wakayama,Japan,135.16667,34.23333,Asia,Eastern Asia,109,1
+Yatsushiro,Japan,130.59952,32.50439,Asia,Eastern Asia,109,1
+Yokkaichi,Japan,136.61667,34.96667,Asia,Eastern Asia,109,1
+Yokohama,Japan,139.65,35.45,Asia,Eastern Asia,109,1
+Al 'Aqabah,Jordan,35,29.53333333,Asia,Western Asia,111,1
+Mombasa,Kenya,39.66359,-4.05466,Africa,Sub-Saharan Africa,113,1
+Tarawa,Kiribati,172.97696,1.3278,Oceania,Micronesia,114,1
+Busan,Korea South,129.05,35.13333333,Asia,Eastern Asia,116,1
+Daesan/Seosan,Korea South,126.3666667,37,Asia,Eastern Asia,116,1
+Dangjin,Korea South,126.7833333,36.96666667,Asia,Eastern Asia,116,1
+Gunsan,Korea South,126.7166667,35.98333333,Asia,Eastern Asia,116,1
+Gwangyang,Korea South,127.7,34.93333333,Asia,Eastern Asia,116,1
+Incheon,Korea South,126.6166667,37.45,Asia,Eastern Asia,116,1
+Masan,Korea South,128.5666667,35.2,Asia,Eastern Asia,116,1
+Mokpo,Korea South,126.3833333,34.8,Asia,Eastern Asia,116,1
+Pohang,Korea South,129.3666667,36.03333333,Asia,Eastern Asia,116,1
+Pyeongtaek,Korea South,127.1,36.96666667,Asia,Eastern Asia,116,1
+Ulsan,Korea South,129.3166667,35.53333333,Asia,Eastern Asia,116,1
+Shuaiba,Kuwait,48.13333333,29.03333333,Asia,Western Asia,117,1
+Shuwaikh,Kuwait,47.93333333,29.35,Asia,Western Asia,117,1
+Riga,Latvia,24.10589,56.946,Europe,Northern Europe,120,1
+Beirut,Lebanon,35.48333333,33.83333333,Asia,Western Asia,121,1
+Tripoli,Lebanon,35.84415,34.43352,Asia,Western Asia,121,1
+Monrovia,Liberia,-10.8,6.3,Africa,Sub-Saharan Africa,123,1
+Al Khums,Libya,14.26666667,32.65,Africa,Northern Africa,124,1
+Bingazi (Benghazi),Libya,20.06859,32.11486,Africa,Northern Africa,124,1
+Misurata,Libya,15.09254,32.37535,Africa,Northern Africa,124,1
+Tripoli,Libya,13.18733,32.88743,Africa,Northern Africa,124,1
+Klaipeda,Lithuania,21.13912,55.7068,Europe,Northern Europe,126,1
+Antsiranana,Madagascar,49.29188,-12.31732,Africa,Sub-Saharan Africa,130,1
+Ehoala,Madagascar,46.95,-25.06666667,Africa,Sub-Saharan Africa,130,1
+Majunga (Mahajanga),Madagascar,46.31667,-15.71667,Africa,Sub-Saharan Africa,130,1
+Nosy-Be,Madagascar,48.25,-13.33333333,Africa,Sub-Saharan Africa,130,1
+Tamatave (Toamasina),Madagascar,49.40234,-18.1492,Africa,Sub-Saharan Africa,130,1
+Tulear (Toliara),Madagascar,43.66667,-23.35,Africa,Sub-Saharan Africa,130,1
+Bintulu Sarawak ,Malaysia,113.03333,3.16667,Asia,South-eastern Asia,132,1
+Kota Kinabalu Sabah ,Malaysia,116.0724,5.9749,Asia,South-eastern Asia,132,1
+Kuching Sarawak ,Malaysia,110.33333,1.55,Asia,South-eastern Asia,132,1
+Labuan Sabah ,Malaysia,115.26924,5.28883,Asia,South-eastern Asia,132,1
+Malacca,Malaysia,102.2405,2.196,Asia,South-eastern Asia,132,1
+Pasir Gudang Johor ,Malaysia,103.878,1.4726,Asia,South-eastern Asia,132,1
+Penang (Georgetown),Malaysia,100.3166667,5.416666667,Asia,South-eastern Asia,132,1
+Port Klang (Pelabuhan Klang),Malaysia,101.4,3,Asia,South-eastern Asia,132,1
+Sandakan Sabah ,Malaysia,118.1179,5.8402,Asia,South-eastern Asia,132,1
+Sibu Sarawak ,Malaysia,111.81667,2.3,Asia,South-eastern Asia,132,1
+Tanjung Pelepas,Malaysia,103.55,1.366666667,Asia,South-eastern Asia,132,1
+Tawau Sabah ,Malaysia,117.89115,4.24482,Asia,South-eastern Asia,132,1
+Male,Maldives,73.5,4.166666667,Asia,Southern Asia,133,1
+Marsaxlokk,Malta,14.53333333,35.83333333,Europe,Southern Europe,135,1
+Kwajalein,Marshall Islands,167.73919,8.77479,Oceania,Micronesia,137,1
+Majuro,Marshall Islands,171.3833333,7.1,Oceania,Micronesia,137,1
+Fort-de-France,Martinique,-61.07418,14.60365,Americas,Latin America and the Caribbean,138,1
+Nouadhibou,Mauritania,-17.03842,20.94188,Africa,Sub-Saharan Africa,139,1
+Nouakchott,Mauritania,-15.9785,18.08581,Africa,Sub-Saharan Africa,139,1
+Port Louis,Mauritius,57.49889,-20.16194,Africa,Sub-Saharan Africa,140,1
+Port Mathurin,Mauritius,63.41666667,-19.68333333,Africa,Sub-Saharan Africa,140,1
+Longoni,Mayotte,45.16666667,-12.71666667,Africa,Sub-Saharan Africa,141,1
+Altamira,Mexico,-97.91666667,22.4,Americas,Latin America and the Caribbean,142,1
+Coatzacoalcos,Mexico,-94.4,18.13333333,Americas,Latin America and the Caribbean,142,1
+Ensenada,Mexico,-116.6,31.85,Americas,Latin America and the Caribbean,142,1
+Guaymas,Mexico,-110.8833333,27.91666667,Americas,Latin America and the Caribbean,142,1
+Lazaro Cardenas,Mexico,-102.1833333,17.95,Americas,Latin America and the Caribbean,142,1
+Manzanillo,Mexico,-104.3,19.05,Americas,Latin America and the Caribbean,142,1
+Mazatlan,Mexico,-106.4,23.4,Americas,Latin America and the Caribbean,142,1
+Paraiso,Mexico,-92.2,18.18333333,Americas,Latin America and the Caribbean,142,1
+Puerto Madero,Mexico,-92.41666667,14.71666667,Americas,Latin America and the Caribbean,142,1
+Puerto Morelos,Mexico,-86.86666667,20.83333333,Americas,Latin America and the Caribbean,142,1
+Tampico,Mexico,-97.86666667,22.25,Americas,Latin America and the Caribbean,142,1
+Tuxpan,Mexico,-97.4,20.95,Americas,Latin America and the Caribbean,142,1
+Veracruz,Mexico,-96.08333333,19.2,Americas,Latin America and the Caribbean,142,1
+Giurgiulesti,Moldova,28.18333333,45.46666667,Europe,Eastern Europe,144,1
+Bar,Montenegro,19.08333333,42.08333333,Europe,Southern Europe,147,1
+Plymouth,Montserrat,-62.21292,16.70555,Americas,Latin America and the Caribbean,148,1
+Agadir,Morocco,-9.59815,30.42018,Africa,Northern Africa,149,1
+Casablanca,Morocco,-7.6,33.58333333,Africa,Northern Africa,149,1
+Nador,Morocco,-2.93352,35.16813,Africa,Northern Africa,149,1
+Tanger Med,Morocco,-5.56323,35.82674,Africa,Northern Africa,149,1
+Beira,Mozambique,34.83889,-19.84361,Africa,Sub-Saharan Africa,150,1
+Maputo,Mozambique,32.58322,-25.96553,Africa,Sub-Saharan Africa,150,1
+Nacala,Mozambique,40.68538,-14.56257,Africa,Sub-Saharan Africa,150,1
+Quelimane,Mozambique,36.88833,-17.87861,Africa,Sub-Saharan Africa,150,1
+Thilawa,Myanmar,96.25,16.65,Asia,South-eastern Asia,151,1
+Yangon,Myanmar,96.15611,16.80528,Asia,South-eastern Asia,151,1
+Luderitz,Namibia,15.16666667,-26.65,Africa,Sub-Saharan Africa,152,1
+Walvis Bay,Namibia,14.50528,-22.9575,Africa,Sub-Saharan Africa,152,1
+Nauru Island,Nauru,166.9166667,-0.55,Oceania,Micronesia,153,1
+Amsterdam,Netherlands The,4.816666667,52.4,Europe,Western Europe,156,1
+Botlek,Netherlands The,4.283333333,51.88333333,Europe,Western Europe,156,1
+IJmuiden/Velsen,Netherlands The,4.6,52.46666667,Europe,Western Europe,156,1
+Moerdijk,Netherlands The,4.566666667,51.68333333,Europe,Western Europe,156,1
+Rotterdam,Netherlands The,4.5,51.91666667,Europe,Western Europe,156,1
+Terneuzen,Netherlands The,3.816666667,51.46666667,Europe,Western Europe,156,1
+Vlissingen,Netherlands The,3.7,51.45,Europe,Western Europe,156,1
+Noumea,New Caledonia,166.45,-22.26666667,Oceania,Melanesia,157,1
+Auckland,New Zealand,174.8,-36.83333333,Oceania,Australia and New Zealand,158,1
+Bluff,New Zealand,168.3166667,-46.6,Oceania,Australia and New Zealand,158,1
+Lyttelton,New Zealand,172.7166667,-43.6,Oceania,Australia and New Zealand,158,1
+Marsden Point,New Zealand,174.5,-35.83333333,Oceania,Australia and New Zealand,158,1
+Napier,New Zealand,176.9,-39.46666667,Oceania,Australia and New Zealand,158,1
+Nelson,New Zealand,173.2666667,-41.25,Oceania,Australia and New Zealand,158,1
+Port Chalmers,New Zealand,170.6,-45.81666667,Oceania,Australia and New Zealand,158,1
+Tauranga,New Zealand,176.1666667,-37.68333333,Oceania,Australia and New Zealand,158,1
+Timaru,New Zealand,171.25,-44.38333333,Oceania,Australia and New Zealand,158,1
+Wellington,New Zealand,174.7833333,-41.26666667,Oceania,Australia and New Zealand,158,1
+Corinto,Nicaragua,-87.17304,12.4825,Americas,Latin America and the Caribbean,159,1
+Rama,Nicaragua,-84.21666667,12.15,Americas,Latin America and the Caribbean,159,1
+Apapa,Nigeria,3.35901,6.4488,Africa,Sub-Saharan Africa,161,1
+Calabar,Nigeria,8.32695,4.95893,Africa,Sub-Saharan Africa,161,1
+Lagos,Nigeria,3.39467,6.45407,Africa,Sub-Saharan Africa,161,1
+Lekki,Nigeria,3.1,6.45,Africa,Sub-Saharan Africa,161,1
+Onne,Nigeria,7.15,4.716666667,Africa,Sub-Saharan Africa,161,1
+Port Harcourt,Nigeria,7.0134,4.77742,Africa,Sub-Saharan Africa,161,1
+Alesund,Norway,6.15,62.46666667,Europe,Northern Europe,165,1
+Ardalstangen,Norway,7.7,61.23333333,Europe,Northern Europe,165,1
+Averoy,Norway,7.666666667,63.05,Europe,Northern Europe,165,1
+Bergen,Norway,5.316666667,60.38333333,Europe,Northern Europe,165,1
+Bodo,Norway,14.36666667,67.28333333,Europe,Northern Europe,165,1
+Brevik,Norway,9.7,59.05,Europe,Northern Europe,165,1
+Drammen,Norway,10.23333333,59.73333333,Europe,Northern Europe,165,1
+Egersund,Norway,6,58.45,Europe,Northern Europe,165,1
+Floro,Norway,5.016666667,61.6,Europe,Northern Europe,165,1
+Fredrikstad,Norway,10.91666667,59.2,Europe,Northern Europe,165,1
+Fusa,Norway,5.616666667,60.2,Europe,Northern Europe,165,1
+Gjemnes,Norway,8.08604,62.89225,Europe,Northern Europe,165,1
+Glomfjord,Norway,13.93333333,66.8,Europe,Northern Europe,165,1
+Hammerfest,Norway,23.66666667,70.65,Europe,Northern Europe,165,1
+Harstad,Norway,16.53333333,68.78333333,Europe,Northern Europe,165,1
+Haugesund,Norway,5.25,59.4,Europe,Northern Europe,165,1
+Havik,Norway,5.316666667,59.3,Europe,Northern Europe,165,1
+Holla,Norway,9.183333333,59.6,Europe,Northern Europe,165,1
+Hoyanger,Norway,6.05,61.21666667,Europe,Northern Europe,165,1
+Husoy - Tonsberg,Norway,10.45,59.23333333,Europe,Northern Europe,165,1
+Ikornnes,Norway,6.55,62.38333333,Europe,Northern Europe,165,1
+Kristiansand,Norway,7.983333333,58.13333333,Europe,Northern Europe,165,1
+Larvik,Norway,10.01666667,59.03333333,Europe,Northern Europe,165,1
+Maloy,Norway,5.1,61.93333333,Europe,Northern Europe,165,1
+Molde,Norway,7.15,62.73333333,Europe,Northern Europe,165,1
+Mosjoen,Norway,13.2,65.83333333,Europe,Northern Europe,165,1
+Moss,Norway,10.65,59.41666667,Europe,Northern Europe,165,1
+Odda,Norway,6.533333333,60.06666667,Europe,Northern Europe,165,1
+Orkanger,Norway,9.833333333,63.31666667,Europe,Northern Europe,165,1
+Oslo,Norway,10.73333333,59.9,Europe,Northern Europe,165,1
+Salten,Norway,15.58333333,67.36666667,Europe,Northern Europe,165,1
+Stavanger,Norway,5.75,58.96666667,Europe,Northern Europe,165,1
+Stokmarknes,Norway,14.9,68.56666667,Europe,Northern Europe,165,1
+Sunndalsora,Norway,8.55,62.66666667,Europe,Northern Europe,165,1
+Svelgen,Norway,5.283333333,61.76666667,Europe,Northern Europe,165,1
+Svolvar,Norway,14.55,68.21666667,Europe,Northern Europe,165,1
+Tananger,Norway,5.583333333,58.91666667,Europe,Northern Europe,165,1
+Tromso,Norway,18.96666667,69.66666667,Europe,Northern Europe,165,1
+Trondheim,Norway,10.4,63.43333333,Europe,Northern Europe,165,1
+Salalah,Oman,54.09237,17.01505,Asia,Western Asia,166,1
+Sohar,Oman,56.70937,24.34745,Asia,Western Asia,166,1
+Gwadar,Pakistan,62.32541,25.12163,Asia,Southern Asia,167,1
+Karachi,Pakistan,67.0104,24.8608,Asia,Southern Asia,167,1
+Koror,Palau,134.47326,7.33978,Oceania,Micronesia,168,1
+Almirante,Panama,-82.4018,9.30091,Americas,Latin America and the Caribbean,170,1
+Balboa,Panama,-79.56672,8.94814,Americas,Latin America and the Caribbean,170,1
+Coco Solo,Panama,-79.88168,9.37091,Americas,Latin America and the Caribbean,170,1
+Colon,Panama,-79.86666667,9.35,Americas,Latin America and the Caribbean,170,1
+Cristobal,Panama,-79.9,9.35,Americas,Latin America and the Caribbean,170,1
+Manzanillo,Panama,-81.16667,7.53667,Americas,Latin America and the Caribbean,170,1
+Panama Ciudad de ,Panama,-79.53333333,8.966666667,Americas,Latin America and the Caribbean,170,1
+Rodman,Panama,-79.56666667,8.95,Americas,Latin America and the Caribbean,170,1
+Alotau,Papua New Guinea,150.45742,-10.31509,Oceania,Melanesia,171,1
+Buka,Papua New Guinea,154.67098,-5.43261,Oceania,Melanesia,171,1
+Kimbe,Papua New Guinea,150.13766,-5.55085,Oceania,Melanesia,171,1
+Lae,Papua New Guinea,146.99611,-6.72333,Oceania,Melanesia,171,1
+Madang,Papua New Guinea,145.7833333,-5.216666667,Oceania,Melanesia,171,1
+Motukea Island,Papua New Guinea,147.1,-9.433333333,Oceania,Melanesia,171,1
+Port Moresby,Papua New Guinea,147.15089,-9.47723,Oceania,Melanesia,171,1
+Rabaul,Papua New Guinea,152.16297,-4.20037,Oceania,Melanesia,171,1
+Wewak,Papua New Guinea,143.63229,-3.54964,Oceania,Melanesia,171,1
+Asuncion,Paraguay,-57.66666667,-25.26666667,Americas,Latin America and the Caribbean,172,1
+Callao,Peru,-77.11814,-12.05659,Americas,Latin America and the Caribbean,173,1
+Ilo,Peru,-71.34108,-17.63185,Americas,Latin America and the Caribbean,173,1
+Iquitos,Peru,-73.25383,-3.74912,Americas,Latin America and the Caribbean,173,1
+Matarani,Peru,-72.10563,-16.99639,Americas,Latin America and the Caribbean,173,1
+Paita,Peru,-81.11444,-5.08917,Americas,Latin America and the Caribbean,173,1
+Pisco,Peru,-76.20538,-13.71029,Americas,Latin America and the Caribbean,173,1
+Bacolod Negros,Philippines,122.95,10.66667,Asia,South-eastern Asia,174,1
+Batangas/Luzon,Philippines,121.05,13.75,Asia,South-eastern Asia,174,1
+Cagayan de Oro Mindanao ,Philippines,124.64722,8.48222,Asia,South-eastern Asia,174,1
+Cebu,Philippines,123.89071,10.31672,Asia,South-eastern Asia,174,1
+Cotabato Mindanao ,Philippines,124.24639,7.22361,Asia,South-eastern Asia,174,1
+Dumaguete,Philippines,123.30261,9.30722,Asia,South-eastern Asia,174,1
+General Santos,Philippines,125.15,6.116666667,Asia,South-eastern Asia,174,1
+Manila,Philippines,120.9822,14.6042,Asia,South-eastern Asia,174,1
+Ozamis Mindanao ,Philippines,123.8405,8.1481,Asia,South-eastern Asia,174,1
+Polloc,Philippines,124.22088,7.3534,Asia,South-eastern Asia,174,1
+Puerto Princesa Palawan ,Philippines,118.73528,9.73917,Asia,South-eastern Asia,174,1
+Subic Bay,Philippines,120.27987,14.78899,Asia,South-eastern Asia,174,1
+Tagbilaran Bohol ,Philippines,123.85219,9.65556,Asia,South-eastern Asia,174,1
+Tagoloan,Philippines,124.75,8.533333333,Asia,South-eastern Asia,174,1
+Zamboanga,Philippines,122.07389,6.91028,Asia,South-eastern Asia,174,1
+Gdansk,Poland,18.64912,54.35227,Europe,Eastern Europe,176,1
+Gdynia,Poland,18.55,54.5,Europe,Eastern Europe,176,1
+Swinoujscie,Poland,14.25,53.9,Europe,Eastern Europe,176,1
+Szczecin,Poland,14.55302,53.42894,Europe,Eastern Europe,176,1
+Canical,Portugal,-16.73333333,32.73333333,Europe,Southern Europe,177,1
+Figueira da Foz,Portugal,-8.866666667,40.15,Europe,Southern Europe,177,1
+Horta,Portugal,-28.63333333,38.53333333,Europe,Southern Europe,177,1
+Leixoes,Portugal,-8.683333333,41.18333333,Europe,Southern Europe,177,1
+Lisboa,Portugal,-9.133333333,38.71666667,Europe,Southern Europe,177,1
+Pico,Portugal,-8.416666667,41.68333333,Europe,Southern Europe,177,1
+Ponta Delgada,Portugal,-25.66666667,37.73333333,Europe,Southern Europe,177,1
+Porto Santo Island,Portugal,-16.33333333,33.06666667,Europe,Southern Europe,177,1
+Praia da Graciosa,Portugal,-27.96666667,39.05,Europe,Southern Europe,177,1
+Praia da Vitoria,Portugal,-27.06666667,38.73333333,Europe,Southern Europe,177,1
+Santa Cruz das Flores,Portugal,-31.11666667,39.45,Europe,Southern Europe,177,1
+Setubal,Portugal,-8.9,38.53333333,Europe,Southern Europe,177,1
+Sines,Portugal,-8.866666667,37.95,Europe,Southern Europe,177,1
+Velas,Portugal,-28.21666667,38.68333333,Europe,Southern Europe,177,1
+Vila do Porto,Portugal,-25.15,36.93333333,Europe,Southern Europe,177,1
+San Juan,Puerto Rico,-66.08333333,18.45,Americas,Latin America and the Caribbean,178,1
+BGN/PCGN1956 - HAMAD,Qatar,51.61666667,25,Asia,Western Asia,179,1
+Mesaieed,Qatar,51.91666667,25.63333333,Asia,Western Asia,179,1
+Constanta,Romania,28.65,44.18333333,Europe,Eastern Europe,181,1
+Arkhangelsk,Russia,40.5433,64.5401,Europe,Eastern Europe,182,1
+Dudinka,Russia,86.17778,69.40583,Europe,Eastern Europe,182,1
+Kaliningrad,Russia,20.51095,54.70649,Europe,Eastern Europe,182,1
+Korsakov,Russia,142.77722,46.6342,Europe,Eastern Europe,182,1
+Lomonosov,Russia,29.73333333,59.9,Europe,Eastern Europe,182,1
+Magadan,Russia,150.80347,59.5638,Europe,Eastern Europe,182,1
+Novorossiysk,Russia,37.76666667,44.71666667,Europe,Eastern Europe,182,1
+Petropavlovsk-Kamchatskiy,Russia,158.65076,53.04444,Europe,Eastern Europe,182,1
+Saint Petersburg (ex Leningrad),Russia,30.25,59.88333333,Europe,Eastern Europe,182,1
+Ust'-Luga,Russia,28.31666667,59.66666667,Europe,Eastern Europe,182,1
+Vladivostok,Russia,131.87353,43.10562,Europe,Eastern Europe,182,1
+Vostochnyy Port,Russia,133.05,42.76666667,Europe,Eastern Europe,182,1
+Zarubino,Russia,131.0833333,42.61666667,Europe,Eastern Europe,182,1
+Charlestown,Saint Kitts and Nevis,-62.61666667,17.13333333,Americas,Latin America and the Caribbean,185,1
+Castries,Saint Lucia,-60.96666667,14.01666667,Americas,Latin America and the Caribbean,186,1
+Kingstown,Saint Vincent and the Grenadines,-61.21666667,13.13333333,Americas,Latin America and the Caribbean,188,1
+Apia,Samoa,-171.76666,-13.83333,Oceania,Polynesia,191,1
+Ad Dammam,Saudi Arabia,50.1,26.41666667,Asia,Western Asia,194,1
+Jeddah,Saudi Arabia,39.16666667,21.53333333,Asia,Western Asia,194,1
+Jubail,Saudi Arabia,49.62251,27.0174,Asia,Western Asia,194,1
+King Abdullah City,Saudi Arabia,39.08333333,22.4,Asia,Western Asia,194,1
+Yanbu al-Bahr,Saudi Arabia,38.03333333,24.08333333,Asia,Western Asia,194,1
+Dakar,Senegal,-17.44406,14.6937,Africa,Sub-Saharan Africa,195,1
+Port Victoria,Seychelles,55.45501,-4.62001,Africa,Sub-Saharan Africa,197,1
+Freetown,Sierra Leone,-13.2356,8.48714,Africa,Sub-Saharan Africa,198,1
+Singapore,Singapore,103.85007,1.28967,Asia,South-eastern Asia,199,1
+Koper,Slovenia,13.72944,45.54694,Europe,Southern Europe,201,1
+Berbera,Somalia,45.01432,10.43959,Africa,Sub-Saharan Africa,203,1
+Kismayu,Somalia,42.54536,-0.35817,Africa,Sub-Saharan Africa,203,1
+Mogadishu,Somalia,45.34375,2.03711,Africa,Sub-Saharan Africa,203,1
+Cape Town,South Africa,18.41666667,-33.91666667,Africa,Sub-Saharan Africa,204,1
+Coega,South Africa,25.66666667,-33.76666667,Africa,Sub-Saharan Africa,204,1
+Durban,South Africa,31.01666667,-29.85,Africa,Sub-Saharan Africa,204,1
+East London,South Africa,27.91162,-33.01529,Africa,Sub-Saharan Africa,204,1
+Port Elizabeth,South Africa,25.61494,-33.96109,Africa,Sub-Saharan Africa,204,1
+Richards Bay,South Africa,32.03768,-28.78301,Africa,Sub-Saharan Africa,204,1
+Algeciras,Spain,-5.45051,36.13326,Europe,Southern Europe,207,1
+Alicante,Spain,-0.48149,38.34517,Europe,Southern Europe,207,1
+Almeria,Spain,-2.45,36.83333333,Europe,Southern Europe,207,1
+Barcelona,Spain,2.15899,41.38879,Europe,Southern Europe,207,1
+Bilbao,Spain,-2.966666667,43.25,Europe,Southern Europe,207,1
+Cadiz,Spain,-6.2891,36.52672,Europe,Southern Europe,207,1
+Cartagena,Spain,-0.983333333,37.6,Europe,Southern Europe,207,1
+Castellon de la Plana,Spain,-0.033333333,39.98333333,Europe,Southern Europe,207,1
+Ceuta,Spain,-5.32042,35.88919,Europe,Southern Europe,207,1
+Ferrol,Spain,-8.25,43.48333333,Europe,Southern Europe,207,1
+Gijon,Spain,-5.666666667,43.53333333,Europe,Southern Europe,207,1
+Huelva,Spain,-6.94004,37.26638,Europe,Southern Europe,207,1
+Lanzarote,Spain,-13.53333333,28.96666667,Europe,Southern Europe,207,1
+Las Palmas de Gran Canaria,Spain,-15.41666667,28.1,Europe,Southern Europe,207,1
+Malaga,Spain,-4.416666667,36.71666667,Europe,Southern Europe,207,1
+Melilla,Spain,-2.883333333,35.31666667,Europe,Southern Europe,207,1
+Puerto del Rosario-Fuerteventura,Spain,-13.86272,28.50038,Europe,Southern Europe,207,1
+Sagunto,Spain,-0.266666667,39.68333333,Europe,Southern Europe,207,1
+Santa Cruz de La Palma,Spain,-17.76666667,28.68333333,Europe,Southern Europe,207,1
+Santa Cruz de Tenerife,Spain,-16.25462,28.46824,Europe,Southern Europe,207,1
+Santander,Spain,-3.80444,43.46472,Europe,Southern Europe,207,1
+Sevilla,Spain,-5.97317,37.38283,Europe,Southern Europe,207,1
+Tarragona,Spain,1.25,41.11667,Europe,Southern Europe,207,1
+Valencia,Spain,-0.37739,39.46975,Europe,Southern Europe,207,1
+Vigo,Spain,-8.72264,42.23282,Europe,Southern Europe,207,1
+Villagarcia de Arosa,Spain,-8.75,42.6,Europe,Southern Europe,207,1
+Colombo,Sri Lanka,79.85,6.916666667,Asia,Southern Asia,208,1
+Port Sudan,Sudan,37.21644,19.61745,Africa,Northern Africa,209,1
+Paramaribo,Suriname,-55.16682,5.86638,Americas,Latin America and the Caribbean,210,1
+Ahus,Sweden,14.28333333,55.91666667,Europe,Northern Europe,213,1
+Gavle,Sweden,17.16666667,60.66666667,Europe,Northern Europe,213,1
+Goteborg,Sweden,11.96666667,57.71666667,Europe,Northern Europe,213,1
+Halmstad,Sweden,12.85,56.66666667,Europe,Northern Europe,213,1
+Helsingborg,Sweden,12.69437,56.04673,Europe,Northern Europe,213,1
+Karlstad,Sweden,13.5,59.36666667,Europe,Northern Europe,213,1
+Norrkoping,Sweden,16.18333333,58.6,Europe,Northern Europe,213,1
+Oskarshamn,Sweden,16.43333333,57.26666667,Europe,Northern Europe,213,1
+Oxelosund,Sweden,17.1,58.66666667,Europe,Northern Europe,213,1
+Pitea,Sweden,21.5,65.33333333,Europe,Northern Europe,213,1
+Sodertalje,Sweden,17.61666667,59.2,Europe,Northern Europe,213,1
+Stockholm,Sweden,18.05,59.33333333,Europe,Northern Europe,213,1
+Sundsvall,Sweden,17.3,62.38333333,Europe,Northern Europe,213,1
+Umea,Sweden,20.25,63.83333333,Europe,Northern Europe,213,1
+Varberg,Sweden,12.25078,57.10557,Europe,Northern Europe,213,1
+Vasteras,Sweden,16.55,59.61666667,Europe,Northern Europe,213,1
+Latakia,Syria,35.78333333,35.51666667,Asia,Western Asia,215,1
+Tartus,Syria,35.9,34.9,Asia,Western Asia,215,1
+Taipei,Taiwan,121.5166667,25.03333333,Asia,Eastern Asia,216,1
+Dar es Salaam,Tanzania,39.28333333,-6.8,Africa,Sub-Saharan Africa,218,1
+Bangkok,Thailand,100.5166667,13.75,Asia,South-eastern Asia,219,1
+Laem Chabang,Thailand,100.8833333,13.08333333,Asia,South-eastern Asia,219,1
+Phuket International Apt,Thailand,98.31666667,8.116666667,Asia,South-eastern Asia,219,1
+Sahathai Coastal Seaport,Thailand,100.5333333,13.65,Asia,South-eastern Asia,219,1
+Sriracha,Thailand,100.93111,13.17372,Asia,South-eastern Asia,219,1
+Lome,Togo,1.22154,6.12874,Africa,Sub-Saharan Africa,220,1
+Nuku'alofa,Tonga,-175.2,-21.13333333,Oceania,Polynesia,222,1
+Port-of-Spain,Trinidad and Tobago,-61.51666667,10.65,Americas,Latin America and the Caribbean,223,1
+Bizerte,Tunisia,9.87391,37.27442,Africa,Northern Africa,224,1
+Sfax,Tunisia,10.76028,34.74056,Africa,Northern Africa,224,1
+Sousse,Tunisia,10.63699,35.82539,Africa,Northern Africa,224,1
+Tunis,Tunisia,10.16579,36.81897,Africa,Northern Africa,224,1
+Aliaga,Turkey,26.97203,38.79975,Asia,Western Asia,225,1
+Ambarli,Turkey,39.16666667,41.03333333,Asia,Western Asia,225,1
+Antalya,Turkey,30.6,36.83333333,Asia,Western Asia,225,1
+Bandirma,Turkey,27.96666667,40.35,Asia,Western Asia,225,1
+Derince,Turkey,29.81472,40.75694,Asia,Western Asia,225,1
+Eregli,Turkey,34.05,37.5,Asia,Western Asia,225,1
+Evyap Port /Kocaeli,Turkey,29.7,40.76666667,Asia,Western Asia,225,1
+Gebze,Turkey,29.41666667,40.78333333,Asia,Western Asia,225,1
+Gemlik,Turkey,29.15,40.41666667,Asia,Western Asia,225,1
+Haydarpasa,Turkey,29.02459,40.99596,Asia,Western Asia,225,1
+Iskenderun,Turkey,36.16666667,36.58333333,Asia,Western Asia,225,1
+Izmir,Turkey,27.15,38.41666667,Asia,Western Asia,225,1
+Izmit,Turkey,29.95,40.78333333,Asia,Western Asia,225,1
+Kumport,Turkey,28.81666667,40.95,Asia,Western Asia,225,1
+Limas,Turkey,26.91666667,38.75,Asia,Western Asia,225,1
+Mardas,Turkey,28.95,41.01666667,Asia,Western Asia,225,1
+Mersin,Turkey,34.63333333,36.71666667,Asia,Western Asia,225,1
+Samsun,Turkey,36.33333333,41.28333333,Asia,Western Asia,225,1
+Tekirdag,Turkey,27.51666667,40.96666667,Asia,Western Asia,225,1
+Trabzon,Turkey,39.73333333,41,Asia,Western Asia,225,1
+Yarimca,Turkey,31.14194,39.08361,Asia,Western Asia,225,1
+Yilport,Turkey,29.53333333,40.76666667,Asia,Western Asia,225,1
+Chornomorsk,Ukraine,30.66666667,46.31666667,Europe,Eastern Europe,230,1
+Odesa,Ukraine,30.75,46.5,Europe,Eastern Europe,230,1
+Yuzhnyi,Ukraine,31.01666667,46.6,Europe,Eastern Europe,230,1
+Abu Dhabi,United Arab Emirates,54.36666667,24.46666667,Asia,Western Asia,231,1
+Ajman,United Arab Emirates,55.47878,25.40177,Asia,Western Asia,231,1
+Ar Ruways,United Arab Emirates,52.73333333,24.11666667,Asia,Western Asia,231,1
+Jebel Ali,United Arab Emirates,55.10811,25.00255,Asia,Western Asia,231,1
+Khor al Fakkan,United Arab Emirates,56.35,25.33333333,Asia,Western Asia,231,1
+Mina Khalid,United Arab Emirates,55.36666667,25.35,Asia,Western Asia,231,1
+Mina Khalifa/Abu Dhabi,United Arab Emirates,54.66666667,24.83333333,Asia,Western Asia,231,1
+Umm al Qaiwain,United Arab Emirates,55.55,25.56666667,Asia,Western Asia,231,1
+Aberdeen,United Kingdom,-2.1,57.13333333,Europe,Northern Europe,232,1
+Belfast,United Kingdom,-5.916666667,54.98333333,Europe,Northern Europe,232,1
+Blyth,United Kingdom,-1.50856,55.12708,Europe,Northern Europe,232,1
+Bristol,United Kingdom,-2.59665,51.45523,Europe,Northern Europe,232,1
+Dover,United Kingdom,1.31257,51.12598,Europe,Northern Europe,232,1
+Felixstowe,United Kingdom,1.3511,51.96375,Europe,Northern Europe,232,1
+Fowey,United Kingdom,-4.6386,50.33634,Europe,Northern Europe,232,1
+Grangemouth,United Kingdom,-3.716666667,56,Europe,Northern Europe,232,1
+Greenock,United Kingdom,-4.75,55.93333333,Europe,Northern Europe,232,1
+Harwich,United Kingdom,1.28437,51.94194,Europe,Northern Europe,232,1
+Hull,United Kingdom,-0.316666667,53.73333333,Europe,Northern Europe,232,1
+Immingham,United Kingdom,-0.216666667,53.6,Europe,Northern Europe,232,1
+Liverpool,United Kingdom,-3,53.41666667,Europe,Northern Europe,232,1
+London Gateway Port,United Kingdom,0.483333333,51.5,Europe,Northern Europe,232,1
+Poole,United Kingdom,-1.98458,50.71429,Europe,Northern Europe,232,1
+Portsmouth,United Kingdom,-1.09125,50.79899,Europe,Northern Europe,232,1
+Scrabster,United Kingdom,-3.54627,58.61277,Europe,Northern Europe,232,1
+Sheerness,United Kingdom,0.76252,51.44042,Europe,Northern Europe,232,1
+Southampton,United Kingdom,-1.40428,50.90395,Europe,Northern Europe,232,1
+Teesport,United Kingdom,-1.15,54.58333333,Europe,Northern Europe,232,1
+Tilbury,United Kingdom,0.35856,51.46248,Europe,Northern Europe,232,1
+Tyne,United Kingdom,-1.433333333,55,Europe,Northern Europe,232,1
+Anchorage,United States,-149.90028,61.21806,Americas,Northern America,233,1
+Baltimore,United States,-76.61666667,39.28333333,Americas,Northern America,233,1
+Beaumont,United States,-94.10185,30.08605,Americas,Northern America,233,1
+Boston,United States,-71.05977,42.35843,Americas,Northern America,233,1
+Brunswick,United States,-74.45182,40.48622,Americas,Northern America,233,1
+Camden,United States,-75.11962,39.92595,Americas,Northern America,233,1
+Charleston,United States,-79.92442668,32.78501734,Americas,Northern America,233,1
+Chester,United States,-72.58333333,43.26666667,Americas,Northern America,233,1
+Cleveland,United States,-81.69541,41.4995,Americas,Northern America,233,1
+Corpus Christi,United States,-97.39638,27.80058,Americas,Northern America,233,1
+Dutch Harbor,United States,-166.5422,53.8898,Americas,Northern America,233,1
+Eastport,United States,-67.00046037,44.9189639,Americas,Northern America,233,1
+Everett,United States,-122.20208,47.97898,Americas,Northern America,233,1
+Fernandina Beach,United States,-81.45,30.66666667,Americas,Northern America,233,1
+Freeport,United States,-70.10311,43.85702,Americas,Northern America,233,1
+Galveston,United States,-94.7977,29.30135,Americas,Northern America,233,1
+Gloucester City,United States,-70.66313,42.61405,Americas,Northern America,233,1
+Gulfport,United States,-89.08490622,30.37815646,Americas,Northern America,233,1
+Honolulu,United States,-157.85,21.3,Americas,Northern America,233,1
+Houston,United States,-149.8166667,61.63333333,Americas,Northern America,233,1
+Jacksonville,United States,-81.65565,30.33218,Americas,Northern America,233,1
+Kodiak,United States,-152.40533,57.78852,Americas,Northern America,233,1
+Long Beach,United States,-118.1833333,33.76666667,Americas,Northern America,233,1
+Los Angeles,United States,-118.24368,34.05223,Americas,Northern America,233,1
+Miami,United States,-80.19366,25.77427,Americas,Northern America,233,1
+Mobile,United States,-88.04305,30.69436,Americas,Northern America,233,1
+Morehead City,United States,-76.72604,34.72294,Americas,Northern America,233,1
+New Orleans,United States,-90.07507,29.95465,Americas,Northern America,233,1
+New York,United States,-74,40.7,Americas,Northern America,233,1
+Norfolk,United States,-73.2,42,Americas,Northern America,233,1
+Oakland,United States,-122.2202546,37.9329048,Americas,Northern America,233,1
+Panama City,United States,-85.65983,30.15946,Americas,Northern America,233,1
+Philadelphia,United States,-75.71666667,44.15,Americas,Northern America,233,1
+Port Everglades,United States,-80.13333333,26.1,Americas,Northern America,233,1
+Port Hueneme,United States,-119.1833333,34.13333333,Americas,Northern America,233,1
+Port Manatee,United States,-82.55,27.63333333,Americas,Northern America,233,1
+Portland,United States,-122.67621,45.52345,Americas,Northern America,233,1
+San Diego,United States,-117.15,32.7,Americas,Northern America,233,1
+Savannah,United States,-81.09983,32.08354,Americas,Northern America,233,1
+Seattle,United States,-122.33207,47.60621,Americas,Northern America,233,1
+Stockton,United States,-121.2833333,37.95,Americas,Northern America,233,1
+Tacoma,United States,-122.44429,47.25288,Americas,Northern America,233,1
+Tampa,United States,-82.45843,27.94752,Americas,Northern America,233,1
+Vancouver,United States,-122.66149,45.63873,Americas,Northern America,233,1
+West Palm Beach,United States,-80.05337,26.71534,Americas,Northern America,233,1
+Wilmington,United States,-77.93333333,34.21666667,Americas,Northern America,233,1
+Montevideo,Uruguay,-56.18816,-34.90328,Americas,Latin America and the Caribbean,235,1
+Punta Pereyra,Uruguay,-58.06666667,-34.23333333,Americas,Latin America and the Caribbean,235,1
+Port Vila,Vanuatu,168.31366,-17.73648,Oceania,Melanesia,237,1
+Santo,Vanuatu,167.16235,-15.51989,Oceania,Melanesia,237,1
+Palua,Venezuela,-62.66666667,8.35,Americas,Latin America and the Caribbean,239,1
+Chu Lai,Vietnam,108.7,15.4,Asia,South-eastern Asia,240,1
+Da Nang,Vietnam,108.2166667,16.06666667,Asia,South-eastern Asia,240,1
+Haiphong,Vietnam,106.68345,20.86481,Asia,South-eastern Asia,240,1
+Ho Chi Minh City,Vietnam,106.6666667,10.76666667,Asia,South-eastern Asia,240,1
+Nghi Son,Vietnam,105.8333333,19.33333333,Asia,South-eastern Asia,240,1
+Qui Nhon,Vietnam,109.2166667,13.76666667,Asia,South-eastern Asia,240,1
+Vung Tau,Vietnam,107.0666667,10.35,Asia,South-eastern Asia,240,1
+Christiansted  Saint Croix,Virgin Islands (US),-64.75,17.75,Americas,Latin America and the Caribbean,242,1
+Saint Thomas,Virgin Islands (US),-64.9307,18.3419,Americas,Latin America and the Caribbean,242,1
+Vele Futuna I. Apt,Wallis And Futuna Islands,-178.0833333,-14.31666667,Oceania,Polynesia,243,1
+Aden,Yemen,45.03667,12.77944,Asia,Western Asia,245,1
+Mukalla,Yemen,49.12424,14.54248,Asia,Western Asia,245,1

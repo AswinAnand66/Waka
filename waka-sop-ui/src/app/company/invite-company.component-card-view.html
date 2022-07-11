@@ -1,0 +1,155 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 16px 16px;" >
+    <div>
+        <div fxLayout="row" fxLayoutAlign="end center" class="tabSideAction" fxLayoutGap="15px">
+            <mat-button-toggle-group [(ngModel)]="summaryToggle" >
+                <mat-button-toggle value="table" style="line-height: 36px;" (click)="toggleNavigate('table')">
+                    <mat-icon>format_list_bulleted</mat-icon>
+                </mat-button-toggle>
+                <mat-button-toggle value="cards" style="line-height: 36px;">
+                    <mat-icon>grid_view</mat-icon>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+            <button mat-raised-button style="width: 180px !important; height: 40px !important;" class="btnpri" (click)="inviteNewCompany()">
+                <mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">INVITE COMPANY</span>
+            </button>
+        </div>
+        <mat-tab-group animationDuration="700ms" (selectedTabChange)="tabChanged($event)" style="padding-top: 24px;" [(selectedIndex)]="selectedTabIndex">
+            <mat-tab label="My Companies" disabled>
+            </mat-tab>
+            <mat-tab label="Associated Companies">
+                <mat-drawer-container hasBackdrop="false" [style.height.px]="ht+70">
+                    <mat-drawer #drawer mode="side" opened [style.width.px]="SidePanelWidth">
+                        <mat-card class="left-cards" fxLayout="column" fxLayoutAlign="space-between" *ngFor="let ele of companyColl" (click)="getCompanyDetail(ele)">
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="column" fxLayoutAlign="start start">
+                                    <span class="card-heading" style="color: var(--textcolor);">{{ele.invitee_company_name}}</span>
+                                    <span  style="color: #465e72; font-size: 12px; font-weight: normal" class="text-left-card">{{ele.display_name}}</span>
+                                </div>
+                                <span *ngIf = "ele.company_logo_path != null" fxLayoutAlign="end end" class=" image-upload--headshot-image">
+                                    <img [src]="ele.previewUrl" style="width:60px; height:40px;">
+                                </span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="end end">
+                                <span class="text-left-card">{{ele.invitee_contact_name}}</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="column" fxLayoutAlign="start start">
+                                    <span *ngIf = "ele.revoked" style= "font-size: 12px; color:var(--primary)"class="card-sub-heading"><mat-icon color="warn" style="vertical-align: middle !important; transform: scale(0.7);">error</mat-icon>Revoked</span>
+                                    <span *ngIf = "!ele.is_denied && !ele.is_accepted && !ele.revoked" style= "font-size: 12px; color:var(--primary)" class="card-sub-heading"><mat-icon class="clrinprogress" style="vertical-align: middle !important; transform: scale(0.7);">pending</mat-icon>Pending</span>
+                                    <span *ngIf = "ele.is_accepted" style= "font-weight: 200px;" style= "font-size: 12px; color:var(--primary)"class="card-sub-heading"><mat-icon class="clrgreen" style="vertical-align: middle !important; transform: scale(0.7);">check_circle</mat-icon>Registered</span>
+                                    <span *ngIf = "ele.is_denied" style= "font-weight: 200px;" style= "font-size: 12px; color:var(--primary)" class="card-sub-heading"><mat-icon style="color: darkgray;" style="vertical-align: middle !important; transform: scale(0.7);">unpublished</mat-icon>Denied</span>
+
+                                    <span style="color: #465e72; font-size: 11px;
+                                    " class="text-left-card capitalize">{{ele.company_name}}</span>
+                                </div>
+                                <div fxLayout="column" fxLayoutAlign="end end">
+                                    <span style="color: #465e72; font-size: 11px; font-family: OpenSans;
+                                    " class="text-left-card"><u>{{ele.mobile}}</u></span>
+                                    <span  style="color: #465e72; font-size: 11px; font-family: OpenSans;
+                                    " class="text-left-card"><u>{{ele.invitee_email}}</u></span>
+                                </div>
+                            </div>
+                      </mat-card>
+                    </mat-drawer>
+                    <mat-drawer-content *ngIf="companyDetail">
+                        <mat-card class="right-card" [style.height.px]="ht+70">
+                            <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center" style="background-color: #eef4fb; height: 56px;">
+                                <span class="font_14 card-sub-heading-right-card">{{companyDetail[0].invitee_company_name}}</span>
+                                <span style="flex: 1 1 auto;"></span>
+                                <mat-icon style="background-color: white; cursor: pointer; color: var(--primary);" (click)="drawer.toggle()">crop_free</mat-icon>
+                            </mat-toolbar>
+                            <div style="padding-top: 12px;">
+                                <div fxLayout="row" fxLayoutAlign="space-between center">
+                                    <span class="card-sub-heading-right-card" style="margin-left: 10px;">Company Details</span>
+                                    <span style="flex: 1 1 auto;"></span>
+                                    <span class="circle" style="margin-right: 10px"><mat-icon *ngIf="!companyDetail[0].is_deleted" (click) = "editCompany(companyDetail[0])" class="pointer" style="transform: scale(0.8); vertical-align: top !important;">edit</mat-icon>
+                                    <mat-icon *ngIf="companyDetail[0].is_deleted" id="edit{{i}}" color="primary" style="opacity: 0.6;" matTooltip="Edit Not Alowed">edit</mat-icon></span>
+                                </div>
+                            </div>
+                            <div style="padding-top: 24px;" >
+                                <div style="margin-left:40px; width: 900px; height: 285px; border-radius: 4px; background-color: #f6f6f6;" fxLayout="column">
+                                    <div fxFlex="27" fxLayout="row wrap" fxLayoutAlign="start" fxLayoutGap="25px"
+                                    style="line-height: 35px; border-bottom: solid 1px rgba(155, 168, 179, 0.22); margin-top:15px; padding-bottom:6px;
+                                    ;">
+                                        <div fxLayout="column" fxLayoutAlign="start start" style= "height:110% ; border-right: solid 1px rgba(155, 168, 179, 0.22) !important;
+                                        ;"  class ="padleft10 padright25">
+                                            <span class="card-sub-heading-right-card">Company Type</span>
+                                            <span class="font_12" style="color: #51687a;
+                                            ">{{companyDetail[0].display_name}}</span>
+                                        </div>
+                                        <div fxLayout="column" fxLayoutAlign="start start" style=" height:110%; border-right: solid 1px rgba(155, 168, 179, 0.22) !important;
+                                        ;" class ="padright25">
+                                            <span class="card-sub-heading-right-card">Contact Name</span>
+                                            <span class="font_12"  style="color: #51687a;">{{companyDetail[0].invitee_contact_name}}</span>
+                                        </div> 
+                                        <div fxLayout="column" fxLayoutAlign="start start" style=" height:110%; border-right: solid 1px rgba(155, 168, 179, 0.22) !important;
+                                        ;"class ="padright25">
+                                            <span class="card-sub-heading-right-card">Email</span>
+                                            <span fxLayoutAlign="start center" class="font_12" style=" 
+                                             color: #51687a;"><mat-icon style="color:blue ; opacity:0.6; transform:scale(0.6)">email</mat-icon><u style="color:rgb(85, 125, 184) ;">{{companyDetail[0].invitee_email}}</u></span>
+                                        </div> 
+                                        <div fxLayout="column" fxLayoutAlign="start start" style=" height:110%; border-right: solid 1px rgba(155, 168, 179, 0.22) !important;
+                                        ;" class ="padright25">
+                                            <span class="card-sub-heading-right-card">Contact Number</span>
+                                            <span fxLayoutAlign="start center" class="font_12" style="
+                                            color: #51687a;"><mat-icon style=" color:blue ; opacity:0.6; transform:scale(0.6)">phone</mat-icon><u style="color:rgb(85, 125, 184) ;">{{companyDetail[0].mobile}}</u></span>
+                                        </div>
+                                        <div fxLayout="column" fxLayoutAlign="start start" style=" height:110%;">
+                                            <span class="card-sub-heading-right-card"></span>
+                                            <span  *ngIf = "companyDetail[0].company_logo_path != null" fxLayoutAlign="center center" class="image-upload--headshot-image"><img [src]="previewUrl" style="width:80px; height:60px;"></span> 
+                                        </div>  
+                                        <!--div fxLayout="column" fxLayoutAlign="start start">
+                                            <span  *ngIf = "companyDetail[0].company_logo_path != null" fxLayoutAlign="center center" class="image-upload--headshot-image"><img [src]="previewUrl" style="width:80px; height:60px;"></span>                                       </div-->   
+                                    </div>
+                                    <div fxFlex= "100" style="margin-left: 15px; margin-top: 6px;"  fxLayout="row wrap" fxLayoutAlign="space-around start" fxLayoutGap="20px">
+                                        <div fxFlex= "48" class="text-wrap" fxLayout="column" fxLayoutAlign="start start" style="height:100%; border-right: solid 1px rgba(155, 168, 179, 0.22) !important;
+                                        ;">
+                                            <span class="card-sub-heading-right-card" style="line-height: 35px;">Communication Address</span>
+                                            <span class="font_12" style="color: #51687a;">{{companyDetail[0].RegAddress}}</span>
+                                            <span class="font_12" style="color: #51687a;">{{companyDetail[0].RegCountry}}</span>
+                                            <span class="font_12" style="color: #51687a;">{{companyDetail[0].RegState}}</span>
+                                            <span class="font_12" style="color: #51687a;">{{companyDetail[0].RegCity}}</span>
+                                            <span class="font_12" style="color: #51687a;">{{companyDetail[0].RegZipCode}}</span>
+                                            <span class="font_12" style="color: #51687a;">{{companyDetail[0].RegMobile}}</span>                                        </div>
+                                        <div fxFlex= "48" class="text-wrap" fxLayout="column" fxLayoutAlign="start start">
+                                            <span class="card-sub-heading-right-card" style="line-height: 35px;">Billing Address</span>
+                                            <span class="font_12" style="color: #51687a;">{{companyDetail[0].BillAddress}}</span>
+                                            <span class="font_12" style="color: #51687a;">{{companyDetail[0].BillCountry}}</span>
+                                            <span class="font_12" style="color: #51687a;">{{companyDetail[0].BillState}}</span>
+                                            <span class="font_12" style="color: #51687a;">{{companyDetail[0].BillCity}}</span>
+                                            <span class="font_12" style="color: #51687a;">{{companyDetail[0].BillZipCode}}</span>
+                                            <span class="font_12" style="color: #51687a;">{{companyDetail[0].BillMobile}}</span>                                        
+                                        </div> 
+                                    </div>
+                            </div>
+                            </div>
+                            <div style="padding-top: 24px;">
+                                <div style="margin-left: 15px;" fxLayout="column" fxLayoutAlign="space-around start">
+                                    <div fxLayout="column" fxLayoutAlign="start start">
+                                        <span class="card-sub-heading-right-card">Invitation Status</span>
+                                             <span class="text-right-card">
+                                                <mat-icon *ngIf = "companyDetail[0].is_revoked" color="warn" style="vertical-align: middle !important; transform: scale(0.7);">error</mat-icon>
+                                                <mat-icon *ngIf = "!companyDetail[0].is_denied && !companyDetail[0].is_accepted && !companyDetail[0].revoked" class="clrinprogress" style="vertical-align: middle !important; transform: scale(0.7);">pending</mat-icon>
+                                                <mat-icon *ngIf = "companyDetail[0].is_accepted"class="clrgreen" style="vertical-align: middle !important; transform: scale(0.7);">check_circle</mat-icon>
+                                                <mat-icon *ngIf = "companyDetail[0].is_denied"style="color: darkgray;" style="vertical-align: middle !important; transform: scale(0.7);">unpublished</mat-icon>
+                                                {{license_status}}
+                                            </span>
+                                    </div>                                   
+                                    <div style="margin-top: 15px;" fxLayout="column" fxLayoutAlign="start start">
+                                        <span class="card-sub-heading-right-card">Accessible Modules</span>
+                                        <mat-chip-list style= "margin-top: 6px;" #chipList> <mat-chip style=" background-color: #eef4fb; color:#1c75bc" 
+                                            *ngFor="let ele of accesibleModules">{{ele}}</mat-chip></mat-chip-list>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card>
+                    </mat-drawer-content>
+                  </mat-drawer-container>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
+

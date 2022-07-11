@@ -1,0 +1,153 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 0px 16px;">
+  <div [style.height.px]="ht+50" [style.width.px]="width-50" fxLayout="row" fxLayoutAlign="center center">
+    <div *ngIf="compColl.length == 0 && !isLoading">
+      <div fxLayout="row" fxLayoutAlign="center center">
+          <mat-card class="mattabgrp">
+              <mat-card-content >
+                  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                      <mat-icon class="clrblue">error_outline</mat-icon>
+                      <div class="clrblue" style="font-size: 14px; font-weight: bold;">For your Role, Add/Edit access denied by the company admin</div>
+                  </div>
+              </mat-card-content>
+          </mat-card>
+      </div>
+  </div>
+    <div *ngIf="compColl.length > 0" fxFlex="30">
+      <form [formGroup]="form" fxLayout="column" fxLayoutAlign="space-between center">
+          <!--company name-->
+          <div style="margin-bottom:20px; width: 280px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+              <label class="txtclr font_14">Company Name *</label>
+              <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('Company').invalid && form.get('Company').dirty , 'validtext' : form.get('Company').valid}" style="width: 240px;">
+              <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/>
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                <mat-select placeholder=" Select Company" formControlName="Company" name="Company" class="capitalize font_12" (selectionChange)="getRolesOfCompany()"  required>
+                  <mat-option class="capitalize" *ngFor="let ele of compColl" [value]="ele.company_id">{{ele.company_name}} <span *ngIf="ele.office_category != null">-</span> {{ ele.office_category}}</mat-option>
+                </mat-select>                      
+              </div>
+              </div>
+              <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="form.get('Company').invalid&&form.get('Company').dirty" class="txterror" >{{getErrorMessage(form.get('Company'),'Company')}}</mat-error>
+                </div>
+              </div>
+          </div>
+          <!--Role name-->
+          <div style="margin-bottom:20px; width: 280px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+              <label [ngClass]="{'clrwarn txtclr':form.get('RoleName').invalid && form.get('RoleName').dirty , 'txtclr' : form.get('RoleName').valid}" class="txtclr font_14">Role Name *</label>
+              <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('RoleName').invalid && form.get('RoleName').dirty , 'validtext' : form.get('RoleName').valid}" style="width: 240px;">
+              <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                <!-- <div *ngIf="form.get('RoleName').value!=undefined && form.get('RoleName').value!=''" class="label" [ngClass]="{'labelerr':form.get('RoleName').invalid && form.get('RoleName').dirty}">Company Name</div> -->
+                <input style="outline:none; background-color:var(--sectionbg)" class="text fntwt600" (keypress)="acceptedChars($event)" placeholder="Role Name" formControlName="RoleName" name="RoleName" id="RoleName" (keyup)="validateRoleName()" onkeyup="this.value=this.value.replace(/[^\+\w\d]+\s/,'')" required>
+                <!-- [matAutocomplete]="auto" (blur)="setRoles()"-->
+                <!-- <mat-autocomplete (optionSelected)="setRoleData($event)" autoActiveFirstOption #auto="matAutocomplete">
+                  <mat-option id={{option}} *ngFor="let option of CompanyRoles | async" [value]="option">{{option}}</mat-option>
+                </mat-autocomplete> -->
+              </div>
+              </div>
+              <div fxLayout="column">
+                <mat-error style="margin-left:-30px; padding-top:5px; margin-top:2px;" *ngIf="form.get('RoleName').invalid && form.get('RoleName').dirty" class="txterror" >{{getErrorMessage(form.get('RoleName'),'RoleName')}}</mat-error>
+              </div>
+              </div>
+          </div>
+          <!--Module name-->
+          <div style="margin-bottom:20px; width: 280px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+              <label class="txtclr font_14">Module Name *</label>
+              <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('Module').invalid && form.get('Module').dirty , 'validtext' : form.get('Module').valid}" style="width: 240px;">
+              <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/>
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                <mat-select multiple placeholder=" Select Module" formControlName="Module" name="Module" class="capitalize font_12" (selectionChange)="onChangeModules($event.value)" required (closed)="setSubModules()">
+                  <mat-option class="capitalize" *ngFor="let ele of moduleColl" [value]="ele.module_id">{{ele.module_name}}</mat-option>
+                </mat-select>                      
+              </div>
+              </div>
+              <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="form.get('Module').invalid&&form.get('Module').dirty" class="txterror" >{{getErrorMessage(form.get('Module'),'Module')}}</mat-error>
+                </div>
+              </div>
+          </div>
+          <div style="margin-bottom:20px; width: 280px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+              <label class="txtclr font_14">Submodule Name *</label>
+              <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('SubModule').invalid && form.get('SubModule').dirty , 'validtext' : form.get('SubModule').valid}" style="width: 240px;">
+              <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/>
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                <mat-select multiple placeholder=" Select Sub Module" formControlName="SubModule" name="SubModule" class="capitalize font_12" (selectionChange)="onChangeSubModules($event.value)" required (closed)="setEventRoles()">
+                  <mat-optgroup class="capitalize" *ngFor="let mod of subModuleColl.filteredData" [label]="mod?.module_name"
+                                [disabled]="mod.disabled">
+                    <mat-option *ngFor="let submod of mod.sub_modules" [value]="submod.sub_module_id" [disabled]="submod.disabled">
+                      {{submod.sub_module_name}}
+                    </mat-option>
+                  </mat-optgroup>
+                </mat-select>                    
+              </div>
+              </div>
+              <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="form.get('Module').invalid&&form.get('Module').dirty" class="txterror" >{{getErrorMessage(form.get('Module'),'Module')}}</mat-error>
+                </div>
+              </div>
+          </div>
+      </form>
+    </div>
+    <div *ngIf="compColl.length > 0" fxFlex="70">
+      <div *ngIf="form.valid && selectedSubModules.length > 0 && selectedModules.length > 0 && EventsColl.length > 0">
+        <mat-card>
+          <mat-card-content>
+            <div [style.height.px]="ht-100" [style.width.px]="width-500" >
+              <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+                <div *ngFor="let mod of selectedModules">
+                  <div class="pointer" [ngClass]="{'module-chip': !mod.is_selected, 'module-chip-selected': mod.is_selected}" (click)="moduleSelected(mod)">{{mod.module_name}}</div>
+                </div>
+              </div>
+              <div *ngIf="selectedSubModules.length > 0">
+                <mat-tab-group [@.disabled]="true" [(selectedIndex)]="selSectionTabIndex" [style.width.px]="width-500" [style.height.px]="ht-130">
+                  <div *ngFor="let submod of selectedSubModules">
+                    <mat-tab *ngIf="currentModule == submod.module_id" label={{submod.sub_module_name}}>
+                      <div *ngFor="let event of EventsColl; let i = index">
+                        <div *ngIf="event.sub_module_id == submod.sub_module_id" style="padding: 6px;">
+                          <div fxLayout="row" fxLayoutAlign="space-between center" class="section-title">
+                            <span fxFlex="90">{{event.section_name}} ({{event.events.length}})</span>
+                          </div>
+                          <div *ngFor="let eventdesc of event['events']">
+                            <div fxLayout="row" fxLayoutAlign="space-between center" class="fntclr465e72 font_14 capitalize" style="padding: 6px 8px;">
+                              <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="6px" fxFlex="80">
+                                <span style="color: #000;" class="pointer" (click)="eventdesc.is_selected = !eventdesc.is_selected; onChangePermission(eventdesc, i)">{{eventdesc.event_description}}</span>
+                              </div>
+                              <mat-checkbox [checked]="eventdesc.is_selected" (change)="eventdesc.is_selected = !eventdesc.is_selected; onChangePermission(eventdesc, i);"></mat-checkbox>
+                            </div>
+                          </div>
+                          <!-- <div fxLayout="row" fxLayoutAlign="space-between center" class="fntclr465e72 font_14 capitalize">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="6px" fxFlex="90">
+                                <span style="color: #000;">{{.event_description}}</span>
+                            </div>
+                            <mat-checkbox [checked]="submoddata.is_selected" (change)="submoddata.is_selected = !submoddata.is_selected; onChangePermission(submoddata,selSubMod.sub_module_name);"></mat-checkbox>
+                          </div> -->
+                        </div>
+                      </div>
+                    </mat-tab>
+                  </div>
+                </mat-tab-group>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div *ngIf="form.invalid || selectedSubModules.length == 0 || selectedModules.length == 0 || EventsColl.length == 0" [style.height,px]="ht-100" [style.width.px]="width-500">
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <span class="fntwt600 fntclr465e72" fxLayout="row" fxLayoutAlign="center center">Select Modules <mat-icon style="transform:scale(1.20); color:var(--active); margin: 0px 6px;">view_agenda</mat-icon> and Submodules <mat-icon style="transform:scale(1.20); color:var(--active); margin: 0px 6px;">auto_awesome_mosaic</mat-icon> to list Events</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<footer layout="row">
+    <mat-toolbar style="position:fixed; bottom:4px; width: 100%; background-color: var(--activebg); height: 72px;" fxLayoutAlign="end center">
+      <div fxLayoutAlign="end" style="margin-right:60px;">
+        <button class="btnpri btnprifull"  [disabled]="form.invalid || selectedEventIds.length == 0 " id="btnNext" style="width: 100px !important; height: 40px !important; padding:0px;" (click)="createUpdateRole()"><span class="clrwhite">{{buttonTitle}}</span></button>
+      </div>
+    </mat-toolbar>
+</footer>

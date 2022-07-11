@@ -1,0 +1,45 @@
+Add Company empty records
+Add Company empty records (grid page)
+Option1 - Add a company and Apply for license
+Option2 - You need to be invited for using this product.
+
+Add Company - 
+Parrent company requires a hint - 'Requried for office Category other than Headquarters'
+Parrent company is mandatory for office category other than headquarters
+
+
+Company Grid
+
+When user is not applied for license
+on click of help icon
+show menu
+Option 1 - bold 
+	Apply icon with message - Apply for License
+Option 2 - bold
+	only text - Get yourself invited by company having license
+
+Pending for approval 
+help icon click
+Contact Waka admin to approve your license.
+
+License  is approved
+Help icon
+Now you can invite other companies who provide services for you. Ex. Invite fright forwarder/Logistics provider or invite supplier etc.
+You can also invite employees who need to use this product
+
+
+Invited Company (not licensed)
+help icon
+when contact does not exist
+You invite your employee list and allow access to them
+
+When contact exist.
+your already have the contact invited, you can invite more contacts or you can still apply your own license and get full feature of the product
+
+
+
+
+
+
+
+	

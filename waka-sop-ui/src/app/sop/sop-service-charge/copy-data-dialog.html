@@ -1,0 +1,67 @@
+<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="width:100%;">
+        <span class="txt" style="font-size: 20px;">{{dataCopied ? 'Data Copied' : 'Copy Data'}}</span>
+        <mat-icon *ngIf="!dataCopied" class="pointer" mat-dialog-close matTooltip="close">clear</mat-icon>
+    </div>
+    <div *ngIf="!dataCopied && !isSuccessLoading" fxLayout="row" fxLayoutAlign="space-between start">
+        <span class="font_12 txt">Copy values of charge items of <span style="text-transform: lowercase;">{{data['sel_servicech_grp']}}</span> from one port pair to other port pairs</span>
+    </div>
+    <form *ngIf="!dataCopied && !isSuccessLoading" [formGroup]="copyDataForm" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <!-- Copy from -->
+        <div>
+            <label class="txtclr font_14">Copy from</label>
+            <div class="inputbox" [ngClass]="{'errtxtbdr':copyDataForm.get('CopyFrom').invalid && copyDataForm.get('CopyFrom').dirty , 'validtext' : copyDataForm.get('CopyFrom').valid}">
+            <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                <img src='../../assets/image/svg/icon-small-carrier.svg' style="width:24px; height:24px;"/>
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                <mat-select placeholder=" Select port pair" formControlName="CopyFrom" name="CopyFrom" class="capitalize font_12" [style.width.px]="width - 50" style="min-width: 180px; max-width: 210px;" required (selectionChange)="onChangeCopyFrom()">
+                    <mat-option class="capitalize" *ngFor="let ele of portPairColl.data" [value]="ele">{{ele.origin_port}}  -  {{ele.dest_port}}</mat-option>
+                </mat-select>
+                </div>
+            </div>
+            <div fxLayout="column">
+                <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px; text-transform: none;" *ngIf="copyDataForm.get('CopyFrom').invalid && copyDataForm.get('CopyFrom').dirty" class="txterror">{{getErrorMessage(copyDataForm.get('CopyFrom'),'CopyFrom')}}</mat-error>
+            </div>
+            </div>
+        </div>
+        <!-- Copy to -->
+        <div>
+            <label class="txtclr font_14">Copy to</label>
+            <div class="inputbox" [ngClass]="{'errtxtbdr':copyDataForm.get('CopyTo').invalid && copyDataForm.get('CopyTo').dirty , 'validtext' : copyDataForm.get('CopyTo').valid}">
+            <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                <img src='../../assets/image/svg/icon-small-carrier.svg' style="width:24px; height:24px;"/>
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                <mat-select multiple placeholder=" Select port pair" formControlName="CopyTo" name="CopyTo" class="capitalize font_12" [style.width.px]="width - 50" style="min-width: 180px; max-width: 210px;" required (selectionChange)="onChangeCopyTo($event)">
+                    <mat-option class="capitalize" *ngFor="let ele of portPairColl.filteredData" [value]="ele.sop_port_id">{{ele.origin_port}}  -  {{ele.dest_port}}</mat-option>
+                </mat-select>
+                </div>
+            </div>
+            <div fxLayout="column">
+                <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px; text-transform: none;" *ngIf="copyDataForm.get('CopyTo').invalid && copyDataForm.get('CopyTo').dirty" class="txterror">{{getErrorMessage(copyDataForm.get('CopyTo'),'CopyTo')}}</mat-error>
+            </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center" style="width: 100%; height: 60px;">
+            <button matTooltip="Cancel" class="btnpri btnprifull" id="btnNext" style="width: fit-content !important; height: 40px !important; padding: 6px 12px;" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px" mat-dialog-close>
+                <mat-icon>block</mat-icon>
+                <span class="clrwhite">Cancel</span>
+            </button>
+            <button [disabled]="copyDataForm.invalid" matTooltip="Save" class="btnpri btnprifull" id="btnNext" style="width: fit-content !important; height: 40px !important; padding: 6px 12px;" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px" (click)="saveCopyData()">
+                <mat-icon>check</mat-icon>
+                <span class="clrwhite">Save</span>
+            </button>
+        </div>
+    </form>
+    <div *ngIf="dataCopied" fxLayout="column" fxLayoutAlign="center center" [style.height.px]="ht - 150" style="font-size: 18px">
+        <span>Data copied from</span>
+        <span class="clrprimary">{{this.copyDataForm.get('CopyFrom').value.origin_port}} - {{this.copyDataForm.get('CopyFrom').value.dest_port}}</span>
+        <span>Successfully!</span>
+        <button class="btnpri btnprifull" id="btnNext" style="width: fit-content !important; height: 40px !important; padding: 6px 12px; margin-top: 40px !important;" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px" mat-dialog-close>
+            <span class="clrwhite">Proceed</span>
+        </button>
+    </div>
+    <div *ngIf="isSuccessLoading && !dataCopied" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" [style.height.px]="ht - 150">
+        <mat-icon color="primary" class="work_in_progress">autorenew</mat-icon>
+        <span class="txt">Copying content</span>
+    </div>
+</div>

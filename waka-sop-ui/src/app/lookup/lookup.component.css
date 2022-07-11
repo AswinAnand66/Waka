@@ -1,0 +1,32 @@
+[hidden] {
+    display: none !important;
+}
+
+#LookupNameList::-webkit-scrollbar{
+  width: 0 !important;
+  display: none !important;
+}
+
+.del-lookup {
+  pointer-events: all; 
+  color: var(--primary); 
+  cursor:pointer;
+  visibility: hidden;
+}
+
+.save-lookup {
+  pointer-events: all; 
+  color: var(--green); 
+  cursor:pointer;
+  visibility: visible;
+}
+
+#lookupCard:hover .del-lookup {
+  visibility: visible;
+}
+
+#AddLookup {
+  position: absolute;
+  top: 100px;
+  right: 20px;
+}

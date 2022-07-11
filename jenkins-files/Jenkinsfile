@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+    stage('run parallel') // run stages parallely
+    {
+        parallel{
+            stage('ssh-server') {
+                steps {
+                    sshagent(credentials: ['ssh-key']){
+                        sh '''
+                        [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
+                        ssh-keyscan -t rsa,dsa dev-wakatech-app-db.wakatech.io >> ~/.ssh/known_hosts
+                        scp -r * ubuntu@dev-wakatech-app-db.wakatech.io:~/
+                        ssh ubuntu@dev-wakatech-app-db.wakatech.io "sudo docker build -t tsserver:$GIT_COMMIT --build-arg BUILD_ENVIRONMENT=qa_v2 -f Dockerfile.main ."
+                        ssh ubuntu@dev-wakatech-app-db.wakatech.io "sudo docker stop wakatech-app || true"
+                        ssh ubuntu@dev-wakatech-app-db.wakatech.io "sudo docker kill wakatech-app || true"
+                        ssh ubuntu@dev-wakatech-app-db.wakatech.io "sudo docker rm wakatech-app || true"
+                        ssh ubuntu@dev-wakatech-app-db.wakatech.io "sudo docker run -d -p 3000:3000 --name wakatech-app tsserver:$GIT_COMMIT"
+                        ssh ubuntu@dev-wakatech-app-db.wakatech.io "sudo docker build -t poi-scheduler:$GIT_COMMIT -f Dockerfile.poi-scheduler ."
+                        ssh ubuntu@dev-wakatech-app-db.wakatech.io "sudo docker stop poi-scheduler || true"
+                        ssh ubuntu@dev-wakatech-app-db.wakatech.io "sudo docker kill poi-scheduler || true"
+                        ssh ubuntu@dev-wakatech-app-db.wakatech.io "sudo docker rm poi-scheduler || true"
+                        ssh ubuntu@dev-wakatech-app-db.wakatech.io "sudo docker run -d -p 5400:5400 --name poi-scheduler poi-scheduler:$GIT_COMMIT"
+                        '''
+                    }
+                }
+            }
+            stage('demo-ssh') {
+                steps { 
+                    sshagent(credentials: ['demo-ssh-key']){
+                        sh '''
+                        [ -d ~/.ssh ] || mkdir ~/.ssh && chmod 0700 ~/.ssh
+                        ssh-keyscan -t rsa,dsa dev-wakatech-demo-app-db.wakatech.io >> ~/.ssh/known_hosts
+                        scp -r * ubuntu@dev-wakatech-demo-app-db.wakatech.io:~/
+                        ssh ubuntu@dev-wakatech-demo-app-db.wakatech.io "sudo docker build -t tsserver:$GIT_COMMIT --build-arg BUILD_ENVIRONMENT=demo -f Dockerfile.main ."
+                        ssh ubuntu@dev-wakatech-demo-app-db.wakatech.io "sudo docker stop wakatech-app || true"
+                        ssh ubuntu@dev-wakatech-demo-app-db.wakatech.io "sudo docker kill wakatech-app || true"
+                        ssh ubuntu@dev-wakatech-demo-app-db.wakatech.io "sudo docker rm wakatech-app || true"
+                        ssh ubuntu@dev-wakatech-demo-app-db.wakatech.io "sudo docker run -d -p 3000:3000 --name wakatech-app tsserver:$GIT_COMMIT"
+                        ssh ubuntu@dev-wakatech-demo-app-db.wakatech.io "sudo docker build -t poi-scheduler:$GIT_COMMIT -f Dockerfile.poi-scheduler ."
+                        ssh ubuntu@dev-wakatech-demo-app-db.wakatech.io "sudo docker stop poi-scheduler || true"
+                        ssh ubuntu@dev-wakatech-demo-app-db.wakatech.io "sudo docker kill poi-scheduler || true"
+                        ssh ubuntu@dev-wakatech-demo-app-db.wakatech.io "sudo docker rm poi-scheduler || true"
+                        ssh ubuntu@dev-wakatech-demo-app-db.wakatech.io "sudo docker run -d -p 5400:5400 --name poi-scheduler poi-scheduler:$GIT_COMMIT"
+                        '''
+                    }
+                }
+            }
+        }
+    }     
+}

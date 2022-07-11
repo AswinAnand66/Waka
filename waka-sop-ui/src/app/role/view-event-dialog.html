@@ -1,0 +1,55 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="font_16" style="font-weight: bold; color:#8294A3;">
+        <!-- {{data[0].company_name}} - {{data[0].role_name}} -->
+        <span style="text-transform: capitalize !important;">{{data[0].role_name | lowercase}}</span> - Module Access Details
+    </mat-label>
+    <mat-icon id="close" class="pointer" matTooltip="Close" (click)="onClose(false)" style=" color: #465e72; 
+     cursor: pointer">close</mat-icon>
+</div>
+<div [style.height.px]="ht-300">
+    <div style="height: 10px; padding-bottom: 30px;">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div #subModuleCategory fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="pointer category-middle">
+                <div *ngFor="let module of moduleList; let idx= index">
+                    <div [ngClass]="{'sub-module': !module.is_selected, 'sub-module-selected': module.is_selected}" (click) = "moduleSelection(module,idx); changeSectionTabSubModule(0) ">{{module.module_name}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center">
+        <div [style.height.px]="ht-300" [style.width.px]="width-600" fxLayout="row" fxLayoutAlign="start center">
+            <mat-card class="box-shadow">
+                <mat-card-content>
+                    <mat-tab-group [@.disabled]="true" [(selectedIndex)]="selSectionTabIndex" [style.width.px]="width-640" (selectedIndexChange)="changeSectionTabSubModule($event)">
+                        <div *ngFor="let submod of subModuleList">
+                            <div *ngFor="let sub of submod['sub_modules']">
+                                <mat-tab *ngIf="currentModule == sub.module_id" label="{{sub.sub_module_name}}">
+                                    <div [style.height.px]="ht-400" style="overflow: auto;padding: 10px !important;">
+                                        <div *ngFor="let event of eventViewColl.filteredData">
+                                            <div *ngIf="currentSubModule == event.sub_module_id">
+                                                <div fxLayout="row" fxLayoutAlign="space-between center" class="section-title">
+                                                    <span>{{event.section_name}}</span>
+                                                </div>
+                                                <div *ngFor="let event_des of event['events']">
+                                                    <div class="capitalize" style="padding: 10px 6px" >
+                                                        <span>{{event_des.event_description}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                            </div>
+                        </div>
+                      </mat-tab-group>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>
+
+
+

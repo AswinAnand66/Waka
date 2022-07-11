@@ -1,0 +1,35 @@
+<div mat-dialog-title fxLayout="row wrap" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10">Container Preference</mat-label>
+    <mat-icon id="close" color="warn" class="pointer" matTooltip="Close dialog" (click)="onClose()">cancel</mat-icon>
+</div>
+<div class="font_12">{{data.description}}</div>
+<div class="font_12 clrblue">{{data.iso_type_code}}({{data.iso_size_code}}) - Max Stowage {{data.max_cbm}} CBM</div>
+<div mat-dialog-content>
+    <form  [formGroup]="form">
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <input  matInput type="number" placeholder="LCL Min" formControlName="MinCBM" name="MinCBM" required>
+            <mat-error *ngIf="form.get('MinCBM').invalid" style="margin-top:8px">{{getErrorMessage(form.get('MinCBM'),'MinCBM')}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <input  matInput type="number" placeholder="Optimal CBM" formControlName="OptimalCBM" name="OptimalCBM" required>
+            <mat-error *ngIf="form.get('OptimalCBM').invalid" style="margin-top:8px">{{getErrorMessage(form.get('OptimalCBM'),'OptimalCBM')}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <input  matInput type="number" placeholder="FCL Stowage Min" formControlName="FCLMin" name="FCLMin" required>
+            <mat-error *ngIf="form.get('FCLMin').invalid" style="margin-top:8px">{{getErrorMessage(form.get('FCLMin'),'FCLMin')}}</mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <mat-select placeholder="Exception Port" formControlName="ExceptPort" name="ExceptPort" class="capitalize font_12" multiple>
+                <input type="text" style="border:none; border-bottom:1px solid lightgray; margin-left:20px; margin-top:10px" placeholder="filter" formControlName="FilterP">
+                <mat-option class="capitalize" *ngFor="let ele of filterPort | async" [value]="ele">{{ele.portwithregion}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div>
+            <mat-label class="clrred">{{getErrorMessage(form,'form')}}</mat-label>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center">
+    <button id="btnSave" [disabled]="form.invalid" mat-raised-button color="primary" (click)="save()">Save</button>
+    <button id="btnCancel"  mat-raised-button color="accent" mat-tooltip="Go to Login page" (click)="onClose()">Cancel</button>
+</div>

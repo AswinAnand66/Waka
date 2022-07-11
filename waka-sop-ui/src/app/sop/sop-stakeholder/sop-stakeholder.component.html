@@ -1,0 +1,287 @@
+<!-- <div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal"
+	style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div> -->
+<div *ngIf="accessibleEvents.length == 0 && !isLoading && permissionDenied">
+    <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 200px;">
+        <mat-card class="mattabgrp">
+            <mat-card-content >
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <mat-icon class="clrblue">error_outline</mat-icon>
+                    <div class="clrblue" style="font-size: 14px; font-weight: bold;">For your Role, Stakeholder access denied by the company admin</div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<div *ngIf="accessibleEvents.length > 0" style="margin:9px 16px 0 16px;" [style.height.px]="screen.height" [style.width.px]="screen.width">
+    <div class="font_12">
+        <mat-card style="box-shadow: none;border-radius: 6px; border: solid 1px rgba(155, 168, 179, 0.22);">
+            <mat-card-content fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="100px">
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:28px; height:28px;"/>
+                    <div fxLayout="column">
+                        <div class="txtclr">{{sop.p_company}}</div>
+                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Principal Company</div>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <img src='../../assets/image/svg/icon-small-multi-globe.svg' style="width:36px; height:36px;"/>
+                    <div fxLayout="column">
+                        <div class="txtclr">{{sop.ff_company}}</div>
+                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Logistics Provider</div>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" class="pointer" (click)="isAccessible.VIEW_PORT_PAIR ? changeTab(0,true) : ''">
+                    <img src='../../assets/image/svg/icon-small-crane.svg' style="width:40px; height:40px;" />
+                    <div fxLayout="column">
+                        <div class="txtclr" >{{port_count}}</div>
+                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Trade</div>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" (click)="isAccessible.STAKEHOLDER_MAP_CONTRACT ? changeTab(1,false) : ''">
+                    <mat-icon *ngIf="isDisabled" style="transform:scale(1.5); color:rgba(26, 40, 167, 0.808)">domain_disabled</mat-icon>
+                    <img *ngIf="!isDisabled" src='../../assets/image/svg/pending-actions-24-px.svg' style="width:36px; height:36px;" class="pointer"/>
+                    <div fxLayout="column" class="pointer">
+                        <div class="txtclr">{{sopStakeholderColl?.data?.length}}</div>
+                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Stakeholder</div>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <mat-icon style="transform:scale(1.25);">pending_actions</mat-icon>
+                    <div fxLayout="column">
+                        <div class="txtclr">{{sop.status}}</div>
+                        <div *ngIf="sop?.pending_days>0" class="font_12" style="color:rgba(155, 168, 179, 0.88)">Pending for {{sop.pending_days}} Days</div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>   
+    </div>
+    <mat-tab-group *ngIf="isAccessible != null" animationDuration="0ms" (selectedTabChange)="tabChanged($event)" style="padding:16px 0px" [(selectedIndex)]="selectedTabIndex">
+		<mat-tab [disabled]="isEventDisable || !isAccessible.VIEW_PORT_PAIR" label="Trade">
+            <div *ngIf="showPorts" fxLayout="row" fxLayoutGap="16px">
+                <div style="width:100%">
+                    <div *ngIf="sopPortColl?.data?.length>0 && isAccessible.VIEW_PORT_PAIR" style="margin-top:12px; width:100%; overflow-y: auto;" [style.height.px]="screen.height-147">
+                        <table mat-table #table [dataSource]="sopPortColl" matSort style="border: solid 1px rgba(155, 168, 179, 0.22); border-radius: 10px; width:99%;" >
+                            <ng-container matColumnDef="origin_country_name">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Origin Country</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.origin_country_name}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="origin_port">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Origin Port</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.origin_port}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="dest_port">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Destination Port</th>
+                                <td mat-cell style="color: var(--inlineeditclr);"l class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.dest_port}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="dest_country_name">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Destination Country</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.dest_country_name}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="remove">
+                                <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                                <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                                    <mat-icon *ngIf="isAccessible.DEL_PORT_PAIR" id="delete{{i}}" class="table-del-icon pointer" matTooltip="Remove Port Pair" (click)="delSOPPort(element)">delete</mat-icon>
+                                </td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="dispSOPPort; sticky: true;" class="tblrowht"></tr>
+                            <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispSOPPort;"></tr>
+                        </table>
+                    </div>
+                    <div *ngIf="sopPortColl?.data?.length==0 && !isLoading" [style.height.px]="screen.height-147" fxLayoutAlign="center center" style="border: solid 1px rgba(155, 168, 179, 0.22); background-color: var(--white); border-radius: 10px; margin-top: 12px;">
+                        <div fxLayout="column" fxLayoutAlign="center center">
+                            <img src='../../assets/image/svg/icon-small-crane.svg' style=" opacity:0.45; width:90px; height:90px;" />
+                            <div class="font_12" style="color: var(--inlineeditclr);">Click on Add Port Pair to create various port pair combinations</div>
+                            <button [disabled]='isEventDisable || !isAccessible.ADD_PORT_PAIR' class="btnpri inboxminwidth font_14" style="margin-top:32px;" (click)="showAddPort=true">ADD PORT PAIR</button>
+                        </div>
+                    </div>
+                    <div *ngIf="isLoading" [style.height.px]="screen.height-147" fxLayout="column" fxLayoutAlign="center center" ><mat-icon class="fa-spin">data_saver_off</mat-icon></div>
+                </div>
+                <div *ngIf="showAddPort" fxLayout="column" fxLayoutAlign="start start" style="margin-top:8px; box-shadow: 0 4px 14px 0 rgba(69, 148, 211, 0.16); border: solid 1px rgba(155, 168, 179, 0.22); background-color: var(--white); padding:5px">
+                    <form class="mgntop10" style="padding: 8px;" [formGroup]="form">
+                        <div fxLayout="column" fxLayoutAlign="start start" class="selwrapper">
+                            <div class="select">
+                                <mat-label class="txtclr alignleft">Origin Ports *</mat-label>
+                                <div class="inputbox" style="margin-top:6px; width:332px;">
+                                    <mat-select disableOptionCentering panelClass="mat_select_dropdown" style="margin-top: 8px; text-align: left; position:relative" placeholder="Select Origin Ports" formControlName="OriginPort" name="OriginPort" class="capitalize" required (selectionChange)="onSelOP()" multiple>
+                                        <input type="text" style="min-height:30px; border:none; border-bottom:1px solid lightgray; left:0px; top:0px; position:absolute; z-index: 100; width:90%; height:24px; padding-left:20px" placeholder="Search Ports" formControlName="FilterOP">
+                                        <div style="padding-top: 30px; height: 213px; overflow-y: auto;" >
+                                            <mat-option class="capitalize" *ngFor="let ele of filterPortOP | async" [value]="ele">{{ele.portwithregion}}</mat-option>                                    
+                                        </div>
+                                    </mat-select>
+                                </div>
+                            </div>
+                            <div class="select">
+                                <mat-label class="txtclr alignleft">Destination Ports *</mat-label>
+                                <div class="inputbox" style="margin-top:6px; width:332px;">
+                                    <mat-select disableOptionCentering panelClass="mat_select_dropdown" style="margin-top: 8px; text-align: left; position:relative" placeholder="Select Destination Ports" formControlName="DestPort" name="DestPort" class="capitalize" required (selectionChange)="onSelDP()" multiple>
+                                        <input type="text" style="min-height:30px; border:none; border-bottom:1px solid lightgray; left:0px; top:0px; position:absolute; z-index: 100; width:90%; height:24px; padding-left:20px" placeholder="Search Ports" formControlName="FilterDP">
+                                        <div style="padding-top: 30px; height: 213px; overflow-y: auto;" >
+                                            <mat-option class="capitalize" *ngFor="let ele of filterPortDP | async" [value]="ele">{{ele.portwithregion}}</mat-option>                                    
+                                        </div>
+                                    </mat-select>
+                                </div>
+                            </div>
+                            <!-- <div class="inputbox content-wrapper inboxminwidth">
+                                <div class="label">Destination Port</div>
+                                <mat-select placeholder="Destination Port" formControlName="DestPort" name="DestPort" class="capitalize font_12" (selectionChange)="onSelDP()" multiple>
+                                    <input type="text" style="border:none; border-bottom:1px solid lightgray; margin-left:20px; margin-top:10px" placeholder="filter" formControlName="FilterDP">
+                                    <mat-option class="capitalize" *ngFor="let ele of filterPortDP | async" [value]="ele">{{ele.portwithregion}}</mat-option>
+                                </mat-select>
+                            </div> -->
+                            <div fxLayout="row" fxLayoutAlign="space-between center" style="width:100%" class="mgntop30">
+                                <button class="btnsecondary btnauto" style="padding: 12px 30px; border-radius:4px;" [disabled]="isLoading" (click)="showAddPort=false; closeAddPort()"><span style="font-weight: 600;">CANCEL</span></button>                                
+                                <button class="btnpri btnauto " style="padding: 12px 30px; border-radius:4px;" [disabled]="form.invalid || isLoading" (click)="isLoading=true; addPort()"><span style="font-weight: 600;">SAVE</span></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </mat-tab>
+		<mat-tab [disabled]="isEventDisable || !isAccessible.STAKEHOLDER_MAP_CONTRACT" label="Stakeholders">
+            <div *ngIf="!showPorts" fxLayout="row" fxLayoutGap="16px">
+                <div style="width:100%">
+                    <div *ngIf="sopStakeholderColl?.data?.length>0" style="margin-top:12px; width:100%; overflow-y: auto;" [style.height.px]="screen.height-147">
+                        <table #TableSort="matSort" mat-table [dataSource]="sopStakeholderColl.filteredData" matSort style="border: solid 1px rgba(155, 168, 179, 0.22); border-radius: 10px; width:100%" >
+                            <ng-container matColumnDef="company_name">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Stakeholder Company</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.company_name}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="company_type">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef>
+                                    <div fxLayout="row" fxLayoutAlign="start center">
+                                        <span>Stakeholder Type</span>
+                                        <mat-icon (click)="openFilterOptions();$event.stopPropagation();" class="mgnleft10 mgntop10 font_14 pointer">filter_list</mat-icon>
+                                    </div>
+                                </th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.company_type}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="contract_no">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef >Contract No.</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">
+                                    <div *ngIf="element.contractColl" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px">
+                                        <mat-form-field class="no-border no-padding-btm content-wrapper" *ngIf="element?.edit">
+                                            <mat-select [formControl]="element.FrmCntrlContract" name="element.FrmCntrlContract" class="font_12">
+                                                <mat-option class="capitalize" *ngFor="let ele of element.contractColl" [value]="ele">{{ele.contract_no}} {{ele.valid_from|date:'dd-MMM-yyyy'}} To {{ele.valid_to|date:'dd-MMM-yyyy'}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <span *ngIf="!element?.edit && element.err==undefined">{{element.contract_no}}</span>
+                                        <mat-icon *ngIf="!element?.edit && element.contract_no == undefined" class="md-16 clrblue mgnleft60 pointer" (click)="element['edit']=true">edit</mat-icon>
+                                        <mat-icon *ngIf="!element?.edit && element.contract_no != undefined" class="md-16 clrblue pointer" (click)="element['edit']=true">edit</mat-icon>
+                                        <mat-icon *ngIf="element?.edit" class="md-16 clrgreen pointer" (click)="element['edit']=false; saveSOPStakeHolder(element)">save</mat-icon>
+                                        <mat-icon *ngIf="element?.edit" class="md-16 clrred pointer" (click)="element['edit']=false">cancel</mat-icon>
+                                    </div>
+                                    <span *ngIf="!element.contractColl && !element?.edit && element.err==undefined">{{element.contract_no}}</span>
+                                    <div *ngIf="element.err" class="txterror">{{element.err}}</div>
+        
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="contract_validity">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef>Contract Validity</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad" *matCellDef="let element">
+                                    <span *ngIf="element.contract_no != null">{{element.valid_from | date:'dd MMM yyyy'}} to {{element.valid_to | date:'dd MMM yyyy'}}</span>
+                                </td>
+                            </ng-container>
+                            <!-- <ng-container matColumnDef="valid_from">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>VALID FROM</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.valid_from | date:'dd-MMM-yyyy'}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="valid_to">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>VALID TO</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.valid_to | date:'dd-MMM-yyyy'}}</td>
+                            </ng-container> -->
+                            <ng-container matColumnDef="country_name">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Country</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.country_name}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="name">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Contact Name</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.name}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="email">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Contact Email</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad" *matCellDef="let element">{{element.email}}</td>
+                            </ng-container>
+                            <ng-container matColumnDef="mobile">
+                                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Contact Phone No</th>
+                                <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.mobile}}</td>
+                            </ng-container>
+                            <tr mat-header-row *matHeaderRowDef="dispSOPStakeholder; sticky: true;" class="tblrowht"></tr>
+                            <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispSOPStakeholder;"></tr>
+                        </table>
+                        <!-- <div *ngIf="sopStakeholderColl?.filteredData?.length == 0 && !isLoading" [style.height.px]="screen.height-300" fxLayoutAlign="center center" style="z-index:120; margin-top: 15px;">
+                            <div fxLayout="column" fxLayoutAlign="center center">
+                                <div class="font_16" style="color: var(--inlineeditclr);">Company type your are looking for is not available</div>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div (click)="$event.stopPropagation();" style="position: absolute; top:60px; left:330px; z-index:110; border: solid 1px rgba(155, 168, 179, 0.22);" *ngIf="isOpenFilter">
+                        <div fxLayout="column" style="padding:6px 16px; width: fit-content; background-color: var(--white)">
+                            <div fxLayout="row" fxLayoutAlign="space-between center">
+                                <mat-checkbox class="font_12 txt" [checked]="isAllSelected" [(ngModel)]="isAllSelected" (ngModelChange)="updateSelectAll()">Select All</mat-checkbox>
+                                <span style="text-decoration: underline; font-weight:bold;" (click)="clearAllSelected()" class="pointer fntclr1c75bc font_12">CLEAR ALL</span>
+                            </div>
+                            <div class="mgntop5" *ngFor="let type of stakeholderTypes">
+                                <div style="border-bottom: solid 1px rgba(155, 168, 179, 0.22); padding:6px 0px;">
+                                    <mat-checkbox [(ngModel)]="type.type_check" (ngModelChange)="updateTypeCheck()">
+                                        <span class="font_12 txt">{{type.name}}</span>
+                                    </mat-checkbox>
+                                </div>
+                            </div>
+                            <div class="mgntop10" fxLayout="row" fxLayoutAlign="space-between start">
+                                <button style="padding:8px 26px;" class="btnsecondary" (click)="isOpenFilter = false;">CANCEL</button>
+                                <button [disabled]="validateFilterSave()" style="padding:8px 26px;" class="mgnleft10 btnpri" (click)="saveFilterOptions()">SAVE</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="sopStakeholderColl?.data?.length == 0 && !isLoading && sopPortColl?.data?.length !=0" [style.height.px]="screen.height-160" fxLayoutAlign="center center" style="background-color: var(--white); border:solid 1px rgba(155, 168, 179, 0.22); border-radius: 10px; margin-top: 15px;">
+                        <div fxLayout="column" fxLayoutAlign="center center">
+                            <div class="font_16" style="color: var(--inlineeditclr);">Invite stakeholders through company module to have it listed here</div>
+                        </div>
+                    </div>
+                    <div *ngIf="sopPortColl?.data?.length==0 && !isLoading" [style.height.px]="screen.height-130-100" fxLayoutAlign="center center" style="border:1px lightgray solid; border-radius: 10px; margin-top: 15px;">
+                        <div fxLayout="column" fxLayoutAlign="center center">
+                            <div class="font_16">Please add at least one port pair to view associated stakeholders</div>
+                        </div>
+                    </div>
+                    <div *ngIf="isLoading" [style.height.px]="screen.height-147" fxLayout="column" fxLayoutAlign="center center" ><mat-icon class="fa-spin">data_saver_off</mat-icon></div>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    <div fxLayout="row" fxLayoutAlign="start center" class="tabSideActionForPort" fxLayoutGap="15px">
+		<div class="inputboxsingle inboxminwidth">
+			<div *ngIf="showPorts" fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+				<mat-icon class="icon">search</mat-icon>
+				<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+					<input class="text" type="text" (keyup)="applyPortSearchFilter($event)" placeholder="Search by Origin, Destination port, etc" name="search" id="search" required>
+				</div>
+			</div>
+			<div *ngIf="!showPorts" fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+				<mat-icon class="icon">search</mat-icon>
+				<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+					<input class="text" type="text" (keyup)="applyStakeSearchFilter($event)" placeholder="Search by Stakeholders, etc" name="search" id="search" required>
+				</div>
+			</div>
+		</div>
+		<div *ngIf="sopPortColl.data.length > 0">
+			<button *ngIf="showPorts" [disabled]='isEventDisable || !isAccessible.ADD_PORT_PAIR' mat-button class="btnpri" (click)="showAddPort=true"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD PORT PAIR</span></button>
+		</div>
+	</div>
+
+    <!-- <div *ngIf="showPorts" fxLayout="row" fxLayoutGap="16px">
+        
+    </div>
+     -->
+    <!-- <div style="position: fixed; bottom: 0; left:46px;" [style.width.px]="screen.width+48">
+        <mat-toolbar style="background-color: var(--activebg); height: 72px;" fxLayout="row" fxLayoutAlign="space-between center" >
+          <div>
+          </div>
+          <div>
+            <button class="btnpri btnprifull pointer" [disabled]="isDisabled" id="btnNext" (click)="nextTab()"><span style="color:white">NEXT</span></button>
+          </div>
+        </mat-toolbar>
+    </div> -->
+</div>

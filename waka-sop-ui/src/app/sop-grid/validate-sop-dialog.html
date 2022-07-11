@@ -1,0 +1,59 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal"
+	style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div>
+<div mat-dialog-title fxLayout="column" fxLayoutAlign="start center">
+    <div fxLayout="row" fxLayoutAlign="space-between start" style="width:100%">
+        <div></div>
+        <!-- <img src='../../assets/image/svg/signing-a-contract-wop.svg' style="width:135px; height:auto;"/> -->
+        <div class="txt20" style="margin-top: 14px; height:27px; letter-spacing: 0.21px; font-weight: bold;">Create New SOP</div>
+        <div >
+            <mat-icon id="close" class="pointer txtclr" matTooltip="Close dialog" (click)="onClose(false)">clear</mat-icon>
+        </div>
+    </div>
+</div>
+<div mat-dialog-content>
+    <form  [formGroup]="form" style="width:100%; height:100%">
+        <div style="width:95%; margin-left:auto; margin-right: auto;" class="selwrapper">
+            <div  class="select">
+                <mat-label class="txtclr alignleft">Principal *</mat-label>
+                <div class="inputbox " style="margin-top:6px; width:332px;">
+                    <mat-select style="margin-top: 8px; text-align: left;" placeholder="Select the Principal Company" formControlName="Buyer" name="Buyer" class="capitalize" (selectionChange)="getStakeHolderList($event.value)" required>
+                        <mat-option class="capitalize" *ngFor="let ele of buyerColl" [value]="ele">{{ele.company_name}}</mat-option>
+                    </mat-select>
+                </div>
+            </div>
+            <div style="width:100%; text-align: left;" class="select">
+                <mat-label class="txtclr">Logistics Provider/Freight Forwarder *</mat-label>
+                <div class="inputbox" style="margin-top:6px;width:332px;">
+                    <mat-select style="margin-top: 8px;" placeholder="Select Freight Forwarder" formControlName="FF" name="FF" class="capitalize" required>
+                        <mat-option class="capitalize" *ngFor="let ele of ffColl" [value]="ele">{{ele.company_name}}</mat-option>
+                    </mat-select>
+                </div>
+            </div>
+            <div style="width:100%; text-align: left;" class="select">
+                <mat-label class="txtclr">Reference Marker Date *</mat-label>
+                <div class="inputbox" style="margin-top:6px;width:332px;">
+                    <mat-select style="margin-top: 8px;" placeholder="Select Reference Marker Date" formControlName="RMD" name="RMD" class="capitalize" required>
+                        <mat-option class="capitalize" *ngFor="let rmd of ReferenceMD" [value]="rmd">{{rmd}}</mat-option>
+                    </mat-select>
+                </div>
+            </div>
+            <div class="aligncenter select" >
+                <button *ngIf="form.valid" class="btnpri btnprifull" style="width:300px" (click)="addSOP()">CREATE SOP</button>
+                <button *ngIf="form.invalid" class="btnpri btnprifull" style="width:300px" disabled='true'>CREATE SOP</button>
+            </div>
+            <div class="erroverlay" [ngStyle]="{'display': isOpen ? 'block': 'none'}" style="top:66px; margin-left:-50px">
+                <div class="box arrow-right" fxLayout="column" fxLayoutAlign="center center">
+                    <div style="padding: 10px 13px; border-radius: 100%; border: #fff 2px solid;">
+                        <mat-icon class="iconactive" style="color:var(--inprogressmedium)">warning</mat-icon>
+                    </div>
+                    <span style="font-size: 12px; font-weight: 600; color: #fff;padding-top:20px">Whoops!</span>
+                    <span style="font-size: 12px; color: #fff; letter-spacing: 0.15px; text-align: justify;">Principal & Freight forwarder is needed for SOP.</span>
+                    <span style="font-size: 10px; text-align: justify; color: #fff; letter-spacing: 0.15px;">Redirecting to Company Page in {{errtimer}} Sec</span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

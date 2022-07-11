@@ -1,0 +1,77 @@
+<div [style.height.px]="height" [style.width.px]="width - 50">
+    <div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-label color="primary" class="mgnleft10 font_14" style="font-weight: 600; color: #8294a3;">{{title}}</mat-label>
+        <mat-icon id="close" class="pointer" matTooltip="Close dialog" (click)="onClose(false)" style="color: #465e72;">close</mat-icon>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px">
+        <span class="pointer tab_title" [ngClass]="{'current_active_tab_title': currentDialogTab == 'Columns'}" (click)="changeTab('Columns')">Columns</span>
+        <span class="pointer tab_title" [ngClass]="{'current_active_tab_title': currentDialogTab == 'Saved Views'}" (click)="changeTab('Saved Views')">Saved Views</span>
+    </div>
+    <div id="CustomViewList" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px" style="margin-top: 15px; overflow-y:auto;" [style.height.px]="height - 140">
+        <div [hidden]="currentDialogTab == 'Saved Views'">
+            <div [hidden]="currentDialogTab == 'Saved Views' || openSaveAsNewView" *ngFor="let column of displayColumns" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
+                <div fxLayout="row" fxLayoutAlign="space-between center" [style.width.px]="width - 60">
+                    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px">
+                        <mat-icon *ngIf="column.is_selected" class="clrblue pointer mgnleft10 md-16" (click)="addRemoveColumns(column, !column.is_selected);">check_box</mat-icon>
+                        <mat-icon *ngIf="!column.is_selected" class="clrblue pointer mgnleft10 md-16" (click)="addRemoveColumns(column, !column.is_selected);">check_box_outline_blank</mat-icon>
+                        <span class="txt capitalize pointer" style="font-size: 14px;" (click)="addRemoveColumns(column, !column.is_selected);">{{column.column_name.replaceAll('_',' ')}}</span>
+                    </div>
+                    <mat-icon *ngIf="column.is_sticky" color="primary" class="md-16 pointer" (click)="addRemoveSticky(column, !column.is_sticky)" matTooltip="Add to sticky">push_pin</mat-icon>
+                    <!-- <mat-icon *ngIf="!column.is_sticky" color="primary" class="md-16">push_pin</mat-icon> -->
+                    <img *ngIf="!column.is_sticky && column.is_selected" class="pointer" (click)="addRemoveSticky(column, !column.is_sticky)" src='../../assets/image/svg/icon-small-pin-inactive.svg' style="width: auto; height: 16px"  matTooltip="Remove from sticky"/>
+                    <img *ngIf="!column.is_sticky && !column.is_selected" class="cursor_not_allowed" src='../../assets/image/svg/icon-small-pin-disabled.svg' style="width: auto; height: 16px"/>
+                </div>
+                <div style="border-bottom: solid 2px rgba(155, 168, 179, 0.22);" [style.width.px]="width - 60"></div>
+            </div>
+            <div [hidden]="currentDialogTab == 'Saved Views' || !openSaveAsNewView" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="50px" [style.width.px]="width - 50" class="mgntop15">
+                <div class="txt">{{saveViewTitle}}</div>
+                <!-- View Name -->
+                <div fxLayout="column" fxLayoutAlign="center start">
+                    <label class="txtclr font_14">View Name *</label>
+                    <div class="inputbox" [ngClass]="{'errtxtbdr': false , 'validtext' : true }">
+                        <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                            <div fxLayout="column" fxLayoutAlign="center start" style="width:100%"><input style="outline:none; background-color:var(--white)" class="text" placeholder="View Name" [formControl]="ViewName" name="ViewName" id="ViewName" required>
+                            </div>
+                        </div>
+                        <div fxLayout="column">
+                            <mat-error style="margin-left:-30px; padding-top:5px; margin-top:2px;" class="txterror"></mat-error>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div [hidden]="currentDialogTab == 'Columns'" fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
+            <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" *ngFor="let view of savedViews; let idx = index;" (change)="onViewChange($event)">
+                <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="5px">
+                    <div fxLayout="row" fxLayoutAlign="space-between start" [style.width.px]="width - 60">
+                        <mat-radio-button [value]="view" [checked]="view.is_selected">
+                            <span class="txt capitalize pointer" style="font-size: 14px;">{{view.view_name}}</span>
+                            <span *ngIf="view.is_default" class="font_12 mgnleft5">(Default)</span>
+                        </mat-radio-button>
+                        <div fxLayout="row" fxLayoutAlign="end end" fxLayoutGap="10px">
+                            <mat-icon color="primary" class="pointer md-16" (click)="editCustomView(idx)">edit</mat-icon>
+                            <mat-icon color="primary" class="pointer md-16" (click)="deleteCustomView(view)">delete</mat-icon>
+                        </div>
+                    </div>
+                    <div style="border-bottom: solid 2px rgba(155, 168, 179, 0.22);" [style.width.px]="width - 60"></div>
+                </div>
+            </mat-radio-group>
+        </div>
+    </div>
+    <div [hidden]="currentDialogTab == 'Saved Views' || openSaveAsNewView || isEditMode" fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="10px" class="mgntop15">
+        <mat-icon *ngIf="isSaveAsNewView" class="clrblue pointer mgnleft10 md-16" (click)="isSaveAsNewView = !isSaveAsNewView">check_box</mat-icon>
+        <mat-icon *ngIf="!isSaveAsNewView" class="clrblue pointer mgnleft10 md-16" (click)="isSaveAsNewView = !isSaveAsNewView">check_box_outline_blank</mat-icon>
+        <span class="txt capitalize pointer" style="font-size: 14px;">Save as New view</span>
+    </div>
+    <div [hidden]="currentDialogTab == 'Saved Views' || !openSaveAsNewView" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="mgntop15">
+        <mat-icon *ngIf="isDefault && !isDefaultDisabled" class="clrblue pointer mgnleft10 md-16" (click)="isDefault = !isDefault">check_box</mat-icon>
+        <mat-icon *ngIf="!isDefault && !isDefaultDisabled" class="clrblue pointer mgnleft10 md-16" (click)="isDefault = !isDefault">check_box_outline_blank</mat-icon>
+        <mat-icon *ngIf="!isDefault && isDefaultDisabled" class="iconinactive pointer mgnleft10 md-16">check_box_outline_blank</mat-icon>
+        <span class="txt capitalize pointer" style="font-size: 14px;">Set as Default View</span>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between center" [style.width.px]="width - 50" class="mgntop15">
+        <button class="btnsecondary" style="padding: 10px 16px;" (click)="exitCustomView()">CANCEL</button>
+        <button *ngIf="currentDialogTab == 'Columns'" class="btnpri" style="padding: 10px 16px;" (click)="saveCustomView()" [disabled]="openSaveAsNewView ? ViewName.invalid : selDisplayColumns.length == 0">{{applyButtonName}}</button>
+        <button *ngIf="currentDialogTab == 'Saved Views'" class="btnpri" style="padding: 10px 16px;" (click)="applyView()">APPLY</button>
+    </div>
+</div>

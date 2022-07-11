@@ -1,0 +1,70 @@
+<div style="margin:16px">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <div fxLayoutAlign="start center">
+            <mat-icon class="pointer" style="transform: rotate(180deg); color:brown" (click)="goBack()">forward</mat-icon>
+            <mat-label class="mgnleft20 font_14 fntwt600">Registered User List</mat-label>
+        </div>
+        <button mat-raised-button style="background-color:#1c75bc; color:white;" (click)="addUsr()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW</span></button>
+    </div>
+    <div>
+        <mat-form-field style="width:100%">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyUserFilter($event)" placeholder="Ex. full name, mobile, email" #input>
+        </mat-form-field>
+        <table mat-table #table [dataSource]="usrColl" matSort style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%" >
+            <ng-container matColumnDef="email">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>EMAIL</th>
+                <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.email}}</td>
+            </ng-container>
+            <ng-container matColumnDef="mobile">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>MOBILE</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                    <span *ngIf="element.mobile!=undefined">+{{element?.mobile_country?.country_code}}-{{element.mobile}}</span>
+                    <span *ngIf="element.mobile==undefined"></span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="full_name">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>NAME</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.full_name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="created_on">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>CREATED ON</th>
+                <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.created_on | date:'dd-MMM-yyyy'}}</td>
+            </ng-container>
+            <ng-container matColumnDef="role">
+                <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>
+                <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                    <mat-icon id="edit{{i}}" style="color:rgb(201, 77, 184)" class="pointer" matTooltip="Map User Role" (click)="openUserRoleDialog(element)">manage_accounts</mat-icon>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="company">
+                <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>
+                <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                    <mat-icon id="edit{{i}}" style="color:rgb(168, 78, 209)" class="pointer" matTooltip="Map Company" (click)="mapCompany(element)">badge</mat-icon>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="edit">
+                <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>
+                <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                    <mat-icon id="edit{{i}}" color="primary" class="pointer" matTooltip="Edit User" (click)="openUserDialog(element)">edit</mat-icon>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="active">
+                <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>
+                <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                    <mat-icon *ngIf="element.is_active" id="act{{i}}" style="color:lime" class="pointer" matTooltip="Click to Deactivate User" (click)="element.is_active = false; activateUser(element)">done_all</mat-icon>
+                    <mat-icon *ngIf="!element.is_active" id="act{{i}}" style="color:red" class="pointer" matTooltip="Click to Activate User" (click)="element.is_active = true; activateUser(element)">person_off</mat-icon>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="delete">
+                <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                    <mat-icon *ngIf="!element.is_deleted" id="delete{{i}}" color="warn" class="pointer" matTooltip="Delete User" (click)="element.is_deleted=true;delUser(element)">delete</mat-icon>
+                    <mat-icon *ngIf="element.is_deleted" id="delete{{i}}" color="warn" class="pointer" matTooltip="Undelete User" (click)="element.is_deleted=false;delUser(element)">unarchive</mat-icon>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="dispUsr; sticky: true;" class="tblrowht"></tr>
+            <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispUsr;"></tr>
+        </table>
+    </div>
+</div>

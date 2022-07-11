@@ -1,0 +1,251 @@
+name,id,iso3,iso2,phone_code,capital,currency,tld,region,subregion,latitude,longitude,emojiU
+Afghanistan,1,AFG,AF,93,Kabul,AFN,.af,Asia,Southern Asia,33,65,U+1F1E6 U+1F1EB
+Aland Islands,2,ALA,AX,358,Mariehamn,EUR,.ax,Europe,Northern Europe,60.116667,19.9,U+1F1E6 U+1F1FD
+Albania,3,ALB,AL,355,Tirana,ALL,.al,Europe,Southern Europe,41,20,U+1F1E6 U+1F1F1
+Algeria,4,DZA,DZ,213,Algiers,DZD,.dz,Africa,Northern Africa,28,3,U+1F1E9 U+1F1FF
+American Samoa,5,ASM,AS,1-684,Pago Pago,USD,.as,Oceania,Polynesia,-14.33333333,-170,U+1F1E6 U+1F1F8
+Andorra,6,AND,AD,376,Andorra la Vella,EUR,.ad,Europe,Southern Europe,42.5,1.5,U+1F1E6 U+1F1E9
+Angola,7,AGO,AO,244,Luanda,AOA,.ao,Africa,Middle Africa,-12.5,18.5,U+1F1E6 U+1F1F4
+Anguilla,8,AIA,AI,1-264,The Valley,XCD,.ai,Americas,Caribbean,18.25,-63.16666666,U+1F1E6 U+1F1EE
+Antarctica,9,ATA,AQ,672,,,.aq,Polar,,-74.65,4.48,U+1F1E6 U+1F1F6
+Antigua And Barbuda,10,ATG,AG,1-268,St. John's,XCD,.ag,Americas,Caribbean,17.05,-61.8,U+1F1E6 U+1F1EC
+Argentina,11,ARG,AR,54,Buenos Aires,ARS,.ar,Americas,South America,-34,-64,U+1F1E6 U+1F1F7
+Armenia,12,ARM,AM,374,Yerevan,AMD,.am,Asia,Western Asia,40,45,U+1F1E6 U+1F1F2
+Aruba,13,ABW,AW,297,Oranjestad,AWG,.aw,Americas,Caribbean,12.5,-69.96666666,U+1F1E6 U+1F1FC
+Australia,14,AUS,AU,61,Canberra,AUD,.au,Oceania,Australia and New Zealand,-27,133,U+1F1E6 U+1F1FA
+Austria,15,AUT,AT,43,Vienna,EUR,.at,Europe,Western Europe,47.33333333,13.33333333,U+1F1E6 U+1F1F9
+Azerbaijan,16,AZE,AZ,994,Baku,AZN,.az,Asia,Western Asia,40.5,47.5,U+1F1E6 U+1F1FF
+Bahamas The,17,BHS,BS,1-242,Nassau,BSD,.bs,Americas,Caribbean,24.25,-76,U+1F1E7 U+1F1F8
+Bahrain,18,BHR,BH,973,Manama,BHD,.bh,Asia,Western Asia,26,50.55,U+1F1E7 U+1F1ED
+Bangladesh,19,BGD,BD,880,Dhaka,BDT,.bd,Asia,Southern Asia,24,90,U+1F1E7 U+1F1E9
+Barbados,20,BRB,BB,1-246,Bridgetown,BBD,.bb,Americas,Caribbean,13.16666666,-59.53333333,U+1F1E7 U+1F1E7
+Belarus,21,BLR,BY,375,Minsk,BYN,.by,Europe,Eastern Europe,53,28,U+1F1E7 U+1F1FE
+Belgium,22,BEL,BE,32,Brussels,EUR,.be,Europe,Western Europe,50.83333333,4,U+1F1E7 U+1F1EA
+Belize,23,BLZ,BZ,501,Belmopan,BZD,.bz,Americas,Central America,17.25,-88.75,U+1F1E7 U+1F1FF
+Benin,24,BEN,BJ,229,Porto-Novo,XOF,.bj,Africa,Western Africa,9.5,2.25,U+1F1E7 U+1F1EF
+Bermuda,25,BMU,BM,1-441,Hamilton,BMD,.bm,Americas,Northern America,32.33333333,-64.75,U+1F1E7 U+1F1F2
+Bhutan,26,BTN,BT,975,Thimphu,BTN,.bt,Asia,Southern Asia,27.5,90.5,U+1F1E7 U+1F1F9
+Bolivia,27,BOL,BO,591,Sucre,BOB,.bo,Americas,South America,-17,-65,U+1F1E7 U+1F1F4
+"Bonaire, Sint Eustatius and Saba",155,BES,BQ,599,Kralendijk,USD,.an,Americas,Caribbean,12.15,-68.266667,U+1F1E7 U+1F1F6
+Bosnia and Herzegovina,28,BIH,BA,387,Sarajevo,BAM,.ba,Europe,Southern Europe,44,18,U+1F1E7 U+1F1E6
+Botswana,29,BWA,BW,267,Gaborone,BWP,.bw,Africa,Southern Africa,-22,24,U+1F1E7 U+1F1FC
+Bouvet Island,30,BVT,BV,47,,NOK,.bv,Polar,,-54.43333333,3.4,U+1F1E7 U+1F1FB
+Brazil,31,BRA,BR,55,Brasilia,BRL,.br,Americas,South America,-10,-55,U+1F1E7 U+1F1F7
+British Indian Ocean Territory,32,IOT,IO,246,Diego Garcia,USD,.io,Africa,Eastern Africa,-6,71.5,U+1F1EE U+1F1F4
+Brunei,33,BRN,BN,673,Bandar Seri Begawan,BND,.bn,Asia,South-Eastern Asia,4.5,114.6666667,U+1F1E7 U+1F1F3
+Bulgaria,34,BGR,BG,359,Sofia,BGN,.bg,Europe,Eastern Europe,43,25,U+1F1E7 U+1F1EC
+Burkina Faso,35,BFA,BF,226,Ouagadougou,XOF,.bf,Africa,Western Africa,13,-2,U+1F1E7 U+1F1EB
+Burundi,36,BDI,BI,257,Bujumbura,BIF,.bi,Africa,Eastern Africa,-3.5,30,U+1F1E7 U+1F1EE
+Cambodia,37,KHM,KH,855,Phnom Penh,KHR,.kh,Asia,South-Eastern Asia,13,105,U+1F1F0 U+1F1ED
+Cameroon,38,CMR,CM,237,Yaounde,XAF,.cm,Africa,Middle Africa,6,12,U+1F1E8 U+1F1F2
+Canada,39,CAN,CA,1,Ottawa,CAD,.ca,Americas,Northern America,60,-95,U+1F1E8 U+1F1E6
+Cape Verde,40,CPV,CV,238,Praia,CVE,.cv,Africa,Western Africa,16,-24,U+1F1E8 U+1F1FB
+Cayman Islands,41,CYM,KY,1-345,George Town,KYD,.ky,Americas,Caribbean,19.5,-80.5,U+1F1F0 U+1F1FE
+Central African Republic,42,CAF,CF,236,Bangui,XAF,.cf,Africa,Middle Africa,7,21,U+1F1E8 U+1F1EB
+Chad,43,TCD,TD,235,N'Djamena,XAF,.td,Africa,Middle Africa,15,19,U+1F1F9 U+1F1E9
+Chile,44,CHL,CL,56,Santiago,CLP,.cl,Americas,South America,-30,-71,U+1F1E8 U+1F1F1
+China,45,CHN,CN,86,Beijing,CNY,.cn,Asia,Eastern Asia,35,105,U+1F1E8 U+1F1F3
+Christmas Island,46,CXR,CX,61,Flying Fish Cove,AUD,.cx,Oceania,Australia and New Zealand,-10.5,105.6666667,U+1F1E8 U+1F1FD
+Cocos (Keeling) Islands,47,CCK,CC,61,West Island,AUD,.cc,Oceania,Australia and New Zealand,-12.5,96.83333333,U+1F1E8 U+1F1E8
+Colombia,48,COL,CO,57,Bogota,COP,.co,Americas,South America,4,-72,U+1F1E8 U+1F1F4
+Comoros,49,COM,KM,269,Moroni,KMF,.km,Africa,Eastern Africa,-12.16666666,44.25,U+1F1F0 U+1F1F2
+Congo,50,COG,CG,242,Brazzaville,XAF,.cg,Africa,Middle Africa,-1,15,U+1F1E8 U+1F1EC
+Congo The Democratic Republic Of The,51,COD,CD,243,Kinshasa,CDF,.cd,Africa,Middle Africa,0,25,U+1F1E8 U+1F1E9
+Cook Islands,52,COK,CK,682,Avarua,NZD,.ck,Oceania,Polynesia,-21.23333333,-159.7666667,U+1F1E8 U+1F1F0
+Costa Rica,53,CRI,CR,506,San Jose,CRC,.cr,Americas,Central America,10,-84,U+1F1E8 U+1F1F7
+Cote D'Ivoire (Ivory Coast),54,CIV,CI,225,Yamoussoukro,XOF,.ci,Africa,Western Africa,8,-5,U+1F1E8 U+1F1EE
+Croatia (Hrvatska),55,HRV,HR,385,Zagreb,HRK,.hr,Europe,Southern Europe,45.16666666,15.5,U+1F1ED U+1F1F7
+Cuba,56,CUB,CU,53,Havana,CUP,.cu,Americas,Caribbean,21.5,-80,U+1F1E8 U+1F1FA
+Curaao,249,CUW,CW,599,Willemstad,ANG,.cw,Americas,Caribbean,12.116667,-68.933333,U+1F1E8 U+1F1FC
+Cyprus,57,CYP,CY,357,Nicosia,EUR,.cy,Europe,Southern Europe,35,33,U+1F1E8 U+1F1FE
+Czech Republic,58,CZE,CZ,420,Prague,CZK,.cz,Europe,Eastern Europe,49.75,15.5,U+1F1E8 U+1F1FF
+Denmark,59,DNK,DK,45,Copenhagen,DKK,.dk,Europe,Northern Europe,56,10,U+1F1E9 U+1F1F0
+Djibouti,60,DJI,DJ,253,Djibouti,DJF,.dj,Africa,Eastern Africa,11.5,43,U+1F1E9 U+1F1EF
+Dominica,61,DMA,DM,1-767,Roseau,XCD,.dm,Americas,Caribbean,15.41666666,-61.33333333,U+1F1E9 U+1F1F2
+Dominican Republic,62,DOM,DO,1-809,Santo Domingo,DOP,.do,Americas,Caribbean,19,-70.66666666,U+1F1E9 U+1F1F4
+East Timor,63,TLS,TL,670,Dili,USD,.tl,Asia,South-Eastern Asia,-8.83333333,125.9166667,U+1F1F9 U+1F1F1
+Ecuador,64,ECU,EC,593,Quito,USD,.ec,Americas,South America,-2,-77.5,U+1F1EA U+1F1E8
+Egypt,65,EGY,EG,20,Cairo,EGP,.eg,Africa,Northern Africa,27,30,U+1F1EA U+1F1EC
+El Salvador,66,SLV,SV,503,San Salvador,USD,.sv,Americas,Central America,13.83333333,-88.91666666,U+1F1F8 U+1F1FB
+Equatorial Guinea,67,GNQ,GQ,240,Malabo,XAF,.gq,Africa,Middle Africa,2,10,U+1F1EC U+1F1F6
+Eritrea,68,ERI,ER,291,Asmara,ERN,.er,Africa,Eastern Africa,15,39,U+1F1EA U+1F1F7
+Estonia,69,EST,EE,372,Tallinn,EUR,.ee,Europe,Northern Europe,59,26,U+1F1EA U+1F1EA
+Ethiopia,70,ETH,ET,251,Addis Ababa,ETB,.et,Africa,Eastern Africa,8,38,U+1F1EA U+1F1F9
+Falkland Islands,71,FLK,FK,500,Stanley,FKP,.fk,Americas,South America,-51.75,-59,U+1F1EB U+1F1F0
+Faroe Islands,72,FRO,FO,298,Torshavn,DKK,.fo,Europe,Northern Europe,62,-7,U+1F1EB U+1F1F4
+Fiji Islands,73,FJI,FJ,679,Suva,FJD,.fj,Oceania,Melanesia,-18,175,U+1F1EB U+1F1EF
+Finland,74,FIN,FI,358,Helsinki,EUR,.fi,Europe,Northern Europe,64,26,U+1F1EB U+1F1EE
+France,75,FRA,FR,33,Paris,EUR,.fr,Europe,Western Europe,46,2,U+1F1EB U+1F1F7
+French Guiana,76,GUF,GF,594,Cayenne,EUR,.gf,Americas,South America,4,-53,U+1F1EC U+1F1EB
+French Polynesia,77,PYF,PF,689,Papeete,XPF,.pf,Oceania,Polynesia,-15,-140,U+1F1F5 U+1F1EB
+French Southern Territories,78,ATF,TF,262,Port-aux-Francais,EUR,.tf,Africa,Southern Africa,-49.25,69.167,U+1F1F9 U+1F1EB
+Gabon,79,GAB,GA,241,Libreville,XAF,.ga,Africa,Middle Africa,-1,11.75,U+1F1EC U+1F1E6
+Gambia The,80,GMB,GM,220,Banjul,GMD,.gm,Africa,Western Africa,13.46666666,-16.56666666,U+1F1EC U+1F1F2
+Georgia,81,GEO,GE,995,Tbilisi,GEL,.ge,Asia,Western Asia,42,43.5,U+1F1EC U+1F1EA
+Germany,82,DEU,DE,49,Berlin,EUR,.de,Europe,Western Europe,51,9,U+1F1E9 U+1F1EA
+Ghana,83,GHA,GH,233,Accra,GHS,.gh,Africa,Western Africa,8,-2,U+1F1EC U+1F1ED
+Gibraltar,84,GIB,GI,350,Gibraltar,GIP,.gi,Europe,Southern Europe,36.13333333,-5.35,U+1F1EC U+1F1EE
+Greece,85,GRC,GR,30,Athens,EUR,.gr,Europe,Southern Europe,39,22,U+1F1EC U+1F1F7
+Greenland,86,GRL,GL,299,Nuuk,DKK,.gl,Americas,Northern America,72,-40,U+1F1EC U+1F1F1
+Grenada,87,GRD,GD,1-473,St. George's,XCD,.gd,Americas,Caribbean,12.11666666,-61.66666666,U+1F1EC U+1F1E9
+Guadeloupe,88,GLP,GP,590,Basse-Terre,EUR,.gp,Americas,Caribbean,16.25,-61.583333,U+1F1EC U+1F1F5
+Guam,89,GUM,GU,1-671,Hagatna,USD,.gu,Oceania,Micronesia,13.46666666,144.7833333,U+1F1EC U+1F1FA
+Guatemala,90,GTM,GT,502,Guatemala City,GTQ,.gt,Americas,Central America,15.5,-90.25,U+1F1EC U+1F1F9
+Guernsey and Alderney,91,GGY,GG,44,St Peter Port,GBP,.gg,Europe,Northern Europe,49.46666666,-2.58333333,U+1F1EC U+1F1EC
+Guinea,92,GIN,GN,224,Conakry,GNF,.gn,Africa,Western Africa,11,-10,U+1F1EC U+1F1F3
+Guinea-Bissau,93,GNB,GW,245,Bissau,XOF,.gw,Africa,Western Africa,12,-15,U+1F1EC U+1F1FC
+Guyana,94,GUY,GY,592,Georgetown,GYD,.gy,Americas,South America,5,-59,U+1F1EC U+1F1FE
+Haiti,95,HTI,HT,509,Port-au-Prince,HTG,.ht,Americas,Caribbean,19,-72.41666666,U+1F1ED U+1F1F9
+Heard Island and McDonald Islands,96,HMD,HM,672,,AUD,.hm,Polar,,-53.1,72.51666666,U+1F1ED U+1F1F2
+Honduras,97,HND,HN,504,Tegucigalpa,HNL,.hn,Americas,Central America,15,-86.5,U+1F1ED U+1F1F3
+Hong Kong S.A.R.,98,HKG,HK,852,Hong Kong,HKD,.hk,Asia,Eastern Asia,22.25,114.1666667,U+1F1ED U+1F1F0
+Hungary,99,HUN,HU,36,Budapest,HUF,.hu,Europe,Eastern Europe,47,20,U+1F1ED U+1F1FA
+Iceland,100,ISL,IS,354,Reykjavik,ISK,.is,Europe,Northern Europe,65,-18,U+1F1EE U+1F1F8
+India,101,IND,IN,91,New Delhi,INR,.in,Asia,Southern Asia,20,77,U+1F1EE U+1F1F3
+Indonesia,102,IDN,ID,62,Jakarta,IDR,.id,Asia,South-Eastern Asia,-5,120,U+1F1EE U+1F1E9
+Iran,103,IRN,IR,98,Tehran,IRR,.ir,Asia,Southern Asia,32,53,U+1F1EE U+1F1F7
+Iraq,104,IRQ,IQ,964,Baghdad,IQD,.iq,Asia,Western Asia,33,44,U+1F1EE U+1F1F6
+Ireland,105,IRL,IE,353,Dublin,EUR,.ie,Europe,Northern Europe,53,-8,U+1F1EE U+1F1EA
+Israel,106,ISR,IL,972,Jerusalem,ILS,.il,Asia,Western Asia,31.5,34.75,U+1F1EE U+1F1F1
+Italy,107,ITA,IT,39,Rome,EUR,.it,Europe,Southern Europe,42.83333333,12.83333333,U+1F1EE U+1F1F9
+Jamaica,108,JAM,JM,1-876,Kingston,JMD,.jm,Americas,Caribbean,18.25,-77.5,U+1F1EF U+1F1F2
+Japan,109,JPN,JP,81,Tokyo,JPY,.jp,Asia,Eastern Asia,36,138,U+1F1EF U+1F1F5
+Jersey,110,JEY,JE,44-1534,Saint Helier,GBP,.je,Europe,Northern Europe,49.25,-2.16666666,U+1F1EF U+1F1EA
+Jordan,111,JOR,JO,962,Amman,JOD,.jo,Asia,Western Asia,31,36,U+1F1EF U+1F1F4
+Kazakhstan,112,KAZ,KZ,7,Astana,KZT,.kz,Asia,Central Asia,48,68,U+1F1F0 U+1F1FF
+Kenya,113,KEN,KE,254,Nairobi,KES,.ke,Africa,Eastern Africa,1,38,U+1F1F0 U+1F1EA
+Kiribati,114,KIR,KI,686,Tarawa,AUD,.ki,Oceania,Micronesia,1.41666666,173,U+1F1F0 U+1F1EE
+Korea North,115,PRK,KP,850,Pyongyang,KPW,.kp,Asia,Eastern Asia,40,127,U+1F1F0 U+1F1F5
+Korea South,116,KOR,KR,82,Seoul,KRW,.kr,Asia,Eastern Asia,37,127.5,U+1F1F0 U+1F1F7
+Kosovo,248,XKX,XK,383,Pristina,EUR,.xk,Europe,Eastern Europe,42.5612909,20.3403035,U+1F1FD U+1F1F0
+Kuwait,117,KWT,KW,965,Kuwait City,KWD,.kw,Asia,Western Asia,29.5,45.75,U+1F1F0 U+1F1FC
+Kyrgyzstan,118,KGZ,KG,996,Bishkek,KGS,.kg,Asia,Central Asia,41,75,U+1F1F0 U+1F1EC
+Laos,119,LAO,LA,856,Vientiane,LAK,.la,Asia,South-Eastern Asia,18,105,U+1F1F1 U+1F1E6
+Latvia,120,LVA,LV,371,Riga,EUR,.lv,Europe,Northern Europe,57,25,U+1F1F1 U+1F1FB
+Lebanon,121,LBN,LB,961,Beirut,LBP,.lb,Asia,Western Asia,33.83333333,35.83333333,U+1F1F1 U+1F1E7
+Lesotho,122,LSO,LS,266,Maseru,LSL,.ls,Africa,Southern Africa,-29.5,28.5,U+1F1F1 U+1F1F8
+Liberia,123,LBR,LR,231,Monrovia,LRD,.lr,Africa,Western Africa,6.5,-9.5,U+1F1F1 U+1F1F7
+Libya,124,LBY,LY,218,Tripolis,LYD,.ly,Africa,Northern Africa,25,17,U+1F1F1 U+1F1FE
+Liechtenstein,125,LIE,LI,423,Vaduz,CHF,.li,Europe,Western Europe,47.26666666,9.53333333,U+1F1F1 U+1F1EE
+Lithuania,126,LTU,LT,370,Vilnius,EUR,.lt,Europe,Northern Europe,56,24,U+1F1F1 U+1F1F9
+Luxembourg,127,LUX,LU,352,Luxembourg,EUR,.lu,Europe,Western Europe,49.75,6.16666666,U+1F1F1 U+1F1FA
+Macau S.A.R.,128,MAC,MO,#N/A,Macao,MOP,.mo,Asia,Eastern Asia,22.16666666,113.55,U+1F1F2 U+1F1F4
+Macedonia,129,MKD,MK,389,Skopje,MKD,.mk,Europe,Southern Europe,41.83333333,22,U+1F1F2 U+1F1F0
+Madagascar,130,MDG,MG,261,Antananarivo,MGA,.mg,Africa,Eastern Africa,-20,47,U+1F1F2 U+1F1EC
+Malawi,131,MWI,MW,265,Lilongwe,MWK,.mw,Africa,Eastern Africa,-13.5,34,U+1F1F2 U+1F1FC
+Malaysia,132,MYS,MY,60,Kuala Lumpur,MYR,.my,Asia,South-Eastern Asia,2.5,112.5,U+1F1F2 U+1F1FE
+Maldives,133,MDV,MV,960,Male,MVR,.mv,Asia,Southern Asia,3.25,73,U+1F1F2 U+1F1FB
+Mali,134,MLI,ML,223,Bamako,XOF,.ml,Africa,Western Africa,17,-4,U+1F1F2 U+1F1F1
+Malta,135,MLT,MT,356,Valletta,EUR,.mt,Europe,Southern Europe,35.83333333,14.58333333,U+1F1F2 U+1F1F9
+Man (Isle of),136,IMN,IM,44,"Douglas, Isle of Man",GBP,.im,Europe,Northern Europe,54.25,-4.5,U+1F1EE U+1F1F2
+Marshall Islands,137,MHL,MH,692,Majuro,USD,.mh,Oceania,Micronesia,9,168,U+1F1F2 U+1F1ED
+Martinique,138,MTQ,MQ,596,Fort-de-France,EUR,.mq,Americas,Caribbean,14.666667,-61,U+1F1F2 U+1F1F6
+Mauritania,139,MRT,MR,222,Nouakchott,MRO,.mr,Africa,Western Africa,20,-12,U+1F1F2 U+1F1F7
+Mauritius,140,MUS,MU,230,Port Louis,MUR,.mu,Africa,Eastern Africa,-20.28333333,57.55,U+1F1F2 U+1F1FA
+Mayotte,141,MYT,YT,262,Mamoudzou,EUR,.yt,Africa,Eastern Africa,-12.83333333,45.16666666,U+1F1FE U+1F1F9
+Mexico,142,MEX,MX,52,Mexico City,MXN,.mx,Americas,Central America,23,-102,U+1F1F2 U+1F1FD
+Micronesia,143,FSM,FM,691,Palikir,USD,.fm,Oceania,Micronesia,6.91666666,158.25,U+1F1EB U+1F1F2
+Moldova,144,MDA,MD,373,Chisinau,MDL,.md,Europe,Eastern Europe,47,29,U+1F1F2 U+1F1E9
+Monaco,145,MCO,MC,377,Monaco,EUR,.mc,Europe,Western Europe,43.73333333,7.4,U+1F1F2 U+1F1E8
+Mongolia,146,MNG,MN,976,Ulan Bator,MNT,.mn,Asia,Eastern Asia,46,105,U+1F1F2 U+1F1F3
+Montenegro,147,MNE,ME,382,Podgorica,EUR,.me,Europe,Southern Europe,42.5,19.3,U+1F1F2 U+1F1EA
+Montserrat,148,MSR,MS,1-664,Plymouth,XCD,.ms,Americas,Caribbean,16.75,-62.2,U+1F1F2 U+1F1F8
+Morocco,149,MAR,MA,212,Rabat,MAD,.ma,Africa,Northern Africa,32,-5,U+1F1F2 U+1F1E6
+Mozambique,150,MOZ,MZ,258,Maputo,MZN,.mz,Africa,Eastern Africa,-18.25,35,U+1F1F2 U+1F1FF
+Myanmar,151,MMR,MM,95,Nay Pyi Taw,MMK,.mm,Asia,South-Eastern Asia,22,98,U+1F1F2 U+1F1F2
+Namibia,152,NAM,NA,264,Windhoek,NAD,.na,Africa,Southern Africa,-22,17,U+1F1F3 U+1F1E6
+Nauru,153,NRU,NR,674,Yaren,AUD,.nr,Oceania,Micronesia,-0.53333333,166.9166667,U+1F1F3 U+1F1F7
+Nepal,154,NPL,NP,977,Kathmandu,NPR,.np,Asia,Southern Asia,28,84,U+1F1F3 U+1F1F5
+Netherlands The,156,NLD,NL,31,Amsterdam,EUR,.nl,Europe,Western Europe,52.5,5.75,U+1F1F3 U+1F1F1
+New Caledonia,157,NCL,NC,687,Noumea,XPF,.nc,Oceania,Melanesia,-21.5,165.5,U+1F1F3 U+1F1E8
+New Zealand,158,NZL,NZ,64,Wellington,NZD,.nz,Oceania,Australia and New Zealand,-41,174,U+1F1F3 U+1F1FF
+Nicaragua,159,NIC,NI,505,Managua,NIO,.ni,Americas,Central America,13,-85,U+1F1F3 U+1F1EE
+Niger,160,NER,NE,227,Niamey,XOF,.ne,Africa,Western Africa,16,8,U+1F1F3 U+1F1EA
+Nigeria,161,NGA,NG,234,Abuja,NGN,.ng,Africa,Western Africa,10,8,U+1F1F3 U+1F1EC
+Niue,162,NIU,NU,683,Alofi,NZD,.nu,Oceania,Polynesia,-19.03333333,-169.8666667,U+1F1F3 U+1F1FA
+Norfolk Island,163,NFK,NF,672,Kingston,AUD,.nf,Oceania,Australia and New Zealand,-29.03333333,167.95,U+1F1F3 U+1F1EB
+Northern Mariana Islands,164,MNP,MP,1-670,Saipan,USD,.mp,Oceania,Micronesia,15.2,145.75,U+1F1F2 U+1F1F5
+Norway,165,NOR,NO,47,Oslo,NOK,.no,Europe,Northern Europe,62,10,U+1F1F3 U+1F1F4
+Oman,166,OMN,OM,968,Muscat,OMR,.om,Asia,Western Asia,21,57,U+1F1F4 U+1F1F2
+Pakistan,167,PAK,PK,92,Islamabad,PKR,.pk,Asia,Southern Asia,30,70,U+1F1F5 U+1F1F0
+Palau,168,PLW,PW,680,Melekeok,USD,.pw,Oceania,Micronesia,7.5,134.5,U+1F1F5 U+1F1FC
+Palestinian Territory Occupied,169,PSE,PS,970,East Jerusalem,ILS,.ps,Asia,Western Asia,31.9,35.2,U+1F1F5 U+1F1F8
+Panama,170,PAN,PA,507,Panama City,PAB,.pa,Americas,Central America,9,-80,U+1F1F5 U+1F1E6
+Papua new Guinea,171,PNG,PG,675,Port Moresby,PGK,.pg,Oceania,Melanesia,-6,147,U+1F1F5 U+1F1EC
+Paraguay,172,PRY,PY,595,Asuncion,PYG,.py,Americas,South America,-23,-58,U+1F1F5 U+1F1FE
+Peru,173,PER,PE,51,Lima,PEN,.pe,Americas,South America,-10,-76,U+1F1F5 U+1F1EA
+Philippines,174,PHL,PH,63,Manila,PHP,.ph,Asia,South-Eastern Asia,13,122,U+1F1F5 U+1F1ED
+Pitcairn Island,175,PCN,PN,64,Adamstown,NZD,.pn,Oceania,Polynesia,-25.06666666,-130.1,U+1F1F5 U+1F1F3
+Poland,176,POL,PL,48,Warsaw,PLN,.pl,Europe,Eastern Europe,52,20,U+1F1F5 U+1F1F1
+Portugal,177,PRT,PT,351,Lisbon,EUR,.pt,Europe,Southern Europe,39.5,-8,U+1F1F5 U+1F1F9
+Puerto Rico,178,PRI,PR,1-787,San Juan,USD,.pr,Americas,Caribbean,18.25,-66.5,U+1F1F5 U+1F1F7
+Qatar,179,QAT,QA,974,Doha,QAR,.qa,Asia,Western Asia,25.5,51.25,U+1F1F6 U+1F1E6
+Reunion,180,REU,RE,262,Saint-Denis,EUR,.re,Africa,Eastern Africa,-21.15,55.5,U+1F1F7 U+1F1EA
+Romania,181,ROU,RO,40,Bucharest,RON,.ro,Europe,Eastern Europe,46,25,U+1F1F7 U+1F1F4
+Russia,182,RUS,RU,7,Moscow,RUB,.ru,Europe,Eastern Europe,60,100,U+1F1F7 U+1F1FA
+Rwanda,183,RWA,RW,250,Kigali,RWF,.rw,Africa,Eastern Africa,-2,30,U+1F1F7 U+1F1FC
+Saint Helena,184,SHN,SH,290,Jamestown,SHP,.sh,Africa,Western Africa,-15.95,-5.7,U+1F1F8 U+1F1ED
+Saint Kitts And Nevis,185,KNA,KN,1-869,Basseterre,XCD,.kn,Americas,Caribbean,17.33333333,-62.75,U+1F1F0 U+1F1F3
+Saint Lucia,186,LCA,LC,1-758,Castries,XCD,.lc,Americas,Caribbean,13.88333333,-60.96666666,U+1F1F1 U+1F1E8
+Saint Pierre and Miquelon,187,SPM,PM,508,Saint-Pierre,EUR,.pm,Americas,Northern America,46.83333333,-56.33333333,U+1F1F5 U+1F1F2
+Saint Vincent And The Grenadines,188,VCT,VC,1-784,Kingstown,XCD,.vc,Americas,Caribbean,13.25,-61.2,U+1F1FB U+1F1E8
+Saint-Barthelemy,189,BLM,BL,590,Gustavia,EUR,.bl,Americas,Caribbean,18.5,-63.41666666,U+1F1E7 U+1F1F1
+Saint-Martin (French part),190,MAF,MF,590,Marigot,EUR,.mf,Americas,Caribbean,18.08333333,-63.95,U+1F1F2 U+1F1EB
+Samoa,191,WSM,WS,685,Apia,WST,.ws,Oceania,Polynesia,-13.58333333,-172.3333333,U+1F1FC U+1F1F8
+San Marino,192,SMR,SM,378,San Marino,EUR,.sm,Europe,Southern Europe,43.76666666,12.41666666,U+1F1F8 U+1F1F2
+Sao Tome and Principe,193,STP,ST,239,Sao Tome,STD,.st,Africa,Middle Africa,1,7,U+1F1F8 U+1F1F9
+Saudi Arabia,194,SAU,SA,966,Riyadh,SAR,.sa,Asia,Western Asia,25,45,U+1F1F8 U+1F1E6
+Senegal,195,SEN,SN,221,Dakar,XOF,.sn,Africa,Western Africa,14,-14,U+1F1F8 U+1F1F3
+Serbia,196,SRB,RS,381,Belgrade,RSD,.rs,Europe,Southern Europe,44,21,U+1F1F7 U+1F1F8
+Seychelles,197,SYC,SC,248,Victoria,SCR,.sc,Africa,Eastern Africa,-4.58333333,55.66666666,U+1F1F8 U+1F1E8
+Sierra Leone,198,SLE,SL,232,Freetown,SLL,.sl,Africa,Western Africa,8.5,-11.5,U+1F1F8 U+1F1F1
+Singapore,199,SGP,SG,65,Singapur,SGD,.sg,Asia,South-Eastern Asia,1.36666666,103.8,U+1F1F8 U+1F1EC
+Sint Maarten (Dutch part),250,SXM,SX,599,Philipsburg,ANG,.sx,Americas,Caribbean,18.033333,-63.05,U+1F1F8 U+1F1FD
+Slovakia,200,SVK,SK,421,Bratislava,EUR,.sk,Europe,Eastern Europe,48.66666666,19.5,U+1F1F8 U+1F1F0
+Slovenia,201,SVN,SI,386,Ljubljana,EUR,.si,Europe,Southern Europe,46.11666666,14.81666666,U+1F1F8 U+1F1EE
+Solomon Islands,202,SLB,SB,677,Honiara,SBD,.sb,Oceania,Melanesia,-8,159,U+1F1F8 U+1F1E7
+Somalia,203,SOM,SO,252,Mogadishu,SOS,.so,Africa,Eastern Africa,10,49,U+1F1F8 U+1F1F4
+South Africa,204,ZAF,ZA,27,Pretoria,ZAR,.za,Africa,Southern Africa,-29,24,U+1F1FF U+1F1E6
+South Georgia,205,SGS,GS,500,Grytviken,GBP,.gs,Americas,South America,-54.5,-37,U+1F1EC U+1F1F8
+South Sudan,206,SSD,SS,211,Juba,SSP,.ss,Africa,Middle Africa,7,30,U+1F1F8 U+1F1F8
+Spain,207,ESP,ES,34,Madrid,EUR,.es,Europe,Southern Europe,40,-4,U+1F1EA U+1F1F8
+Sri Lanka,208,LKA,LK,94,Colombo,LKR,.lk,Asia,Southern Asia,7,81,U+1F1F1 U+1F1F0
+Sudan,209,SDN,SD,249,Khartoum,SDG,.sd,Africa,Northern Africa,15,30,U+1F1F8 U+1F1E9
+Suriname,210,SUR,SR,597,Paramaribo,SRD,.sr,Americas,South America,4,-56,U+1F1F8 U+1F1F7
+Svalbard And Jan Mayen Islands,211,SJM,SJ,47,Longyearbyen,NOK,.sj,Europe,Northern Europe,78,20,U+1F1F8 U+1F1EF
+Swaziland,212,SWZ,SZ,268,Mbabane,SZL,.sz,Africa,Southern Africa,-26.5,31.5,U+1F1F8 U+1F1FF
+Sweden,213,SWE,SE,46,Stockholm,SEK,.se,Europe,Northern Europe,62,15,U+1F1F8 U+1F1EA
+Switzerland,214,CHE,CH,41,Berne,CHF,.ch,Europe,Western Europe,47,8,U+1F1E8 U+1F1ED
+Syria,215,SYR,SY,963,Damascus,SYP,.sy,Asia,Western Asia,35,38,U+1F1F8 U+1F1FE
+Taiwan,216,TWN,TW,886,Taipei,TWD,.tw,Asia,Eastern Asia,23.5,121,U+1F1F9 U+1F1FC
+Tajikistan,217,TJK,TJ,992,Dushanbe,TJS,.tj,Asia,Central Asia,39,71,U+1F1F9 U+1F1EF
+Tanzania,218,TZA,TZ,255,Dodoma,TZS,.tz,Africa,Eastern Africa,-6,35,U+1F1F9 U+1F1FF
+Thailand,219,THA,TH,66,Bangkok,THB,.th,Asia,South-Eastern Asia,15,100,U+1F1F9 U+1F1ED
+Togo,220,TGO,TG,228,Lome,XOF,.tg,Africa,Western Africa,8,1.16666666,U+1F1F9 U+1F1EC
+Tokelau,221,TKL,TK,690,,NZD,.tk,Oceania,Polynesia,-9,-172,U+1F1F9 U+1F1F0
+Tonga,222,TON,TO,676,Nuku'alofa,TOP,.to,Oceania,Polynesia,-20,-175,U+1F1F9 U+1F1F4
+Trinidad And Tobago,223,TTO,TT,1-868,Port of Spain,TTD,.tt,Americas,Caribbean,11,-61,U+1F1F9 U+1F1F9
+Tunisia,224,TUN,TN,216,Tunis,TND,.tn,Africa,Northern Africa,34,9,U+1F1F9 U+1F1F3
+Turkey,225,TUR,TR,90,Ankara,TRY,.tr,Asia,Western Asia,39,35,U+1F1F9 U+1F1F7
+Turkmenistan,226,TKM,TM,993,Ashgabat,TMT,.tm,Asia,Central Asia,40,60,U+1F1F9 U+1F1F2
+Turks And Caicos Islands,227,TCA,TC,1-649,Cockburn Town,USD,.tc,Americas,Caribbean,21.75,-71.58333333,U+1F1F9 U+1F1E8
+Tuvalu,228,TUV,TV,688,Funafuti,AUD,.tv,Oceania,Polynesia,-8,178,U+1F1F9 U+1F1FB
+Uganda,229,UGA,UG,256,Kampala,UGX,.ug,Africa,Eastern Africa,1,32,U+1F1FA U+1F1EC
+Ukraine,230,UKR,UA,380,Kiev,UAH,.ua,Europe,Eastern Europe,49,32,U+1F1FA U+1F1E6
+United Arab Emirates,231,ARE,AE,971,Abu Dhabi,AED,.ae,Asia,Western Asia,24,54,U+1F1E6 U+1F1EA
+United Kingdom,232,GBR,GB,44,London,GBP,.uk,Europe,Northern Europe,54,-2,U+1F1EC U+1F1E7
+United States,233,USA,US,1,Washington,USD,.us,Americas,Northern America,38,-97,U+1F1FA U+1F1F8
+United States Minor Outlying Islands,234,UMI,UM,246,,USD,.us,Americas,Northern America,0,0,U+1F1FA U+1F1F2
+Uruguay,235,URY,UY,598,Montevideo,UYU,.uy,Americas,South America,-33,-56,U+1F1FA U+1F1FE
+Uzbekistan,236,UZB,UZ,998,Tashkent,UZS,.uz,Asia,Central Asia,41,64,U+1F1FA U+1F1FF
+Vanuatu,237,VUT,VU,678,Port Vila,VUV,.vu,Oceania,Melanesia,-16,167,U+1F1FB U+1F1FA
+Vatican City State (Holy See),238,VAT,VA,379,Vatican City,EUR,.va,Europe,Southern Europe,41.9,12.45,U+1F1FB U+1F1E6
+Venezuela,239,VEN,VE,58,Caracas,VEF,.ve,Americas,South America,8,-66,U+1F1FB U+1F1EA
+Vietnam,240,VNM,VN,84,Hanoi,VND,.vn,Asia,South-Eastern Asia,16.16666666,107.8333333,U+1F1FB U+1F1F3
+Virgin Islands (British),241,VGB,VG,1,Road Town,USD,.vg,Americas,Caribbean,18.431383,-64.62305,U+1F1FB U+1F1EC
+Virgin Islands (US),242,VIR,VI,1,Charlotte Amalie,USD,.vi,Americas,Caribbean,18.34,-64.93,U+1F1FB U+1F1EE
+Wallis And Futuna Islands,243,WLF,WF,681,Mata Utu,XPF,.wf,Oceania,Polynesia,-13.3,-176.2,U+1F1FC U+1F1EB
+Western Sahara,244,ESH,EH,212,El-Aaiun,MAD,.eh,Africa,Northern Africa,24.5,-13,U+1F1EA U+1F1ED
+Yemen,245,YEM,YE,967,Sanaa,YER,.ye,Asia,Western Asia,15,48,U+1F1FE U+1F1EA
+Zambia,246,ZMB,ZM,260,Lusaka,ZMW,.zm,Africa,Eastern Africa,-15,30,U+1F1FF U+1F1F2
+Zimbabwe,247,ZWE,ZW,263,Harare,ZWL,.zw,Africa,Eastern Africa,,,

@@ -1,0 +1,94 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 16px 16px;" [style.height.px]="screenParam.height - 100" [style.width.px]="screenParam.width - 100">
+    <div style="padding-top:65px">
+        <div fxLayout="row" fxLayoutAlign="start center" class="tabSideAction" fxLayoutGap="15px" style="margin-right: 10px;">
+            <div class="inputboxsingle inboxminwidth">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                    <mat-icon class="icon">search</mat-icon>
+                    <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                        <input class="text" type="text" (keyup)="applyRoleFilterNew($event)" placeholder="Search by Role Name, Company Name, etc" name="Name" id="Name" required>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button mat-button style="width: 180px !important; height: 40px !important;" class="btnpri btnauto" (click)="addRole()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">Add Role</span></button> 
+            </div>
+        </div>
+    </div>
+    <div *ngIf="roleNewColl.data.length > 0" [style.height.px]="ht-120" style="overflow:auto;">
+        <div  fxLayout="column" fxLayoutAlign="space-between center" class="mgntop20">
+            <div *ngFor="let role of roleNewColl.data">
+                <div *ngIf="(role.is_view && !userDetails.is_admin) || userDetails.is_admin || role.is_admin_role || role.is_own_company">
+                    <mat-card class="role-card" [style.width.px]="screenParam.width-200">
+                        <mat-card-content fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="100px">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex="30">
+                                <mat-icon style="transform:scale(1.25); color:var(--active)">supervisor_account</mat-icon>
+                                <div fxLayout="column">
+                                    <div class="txtclr capitalize">{{role.role_name}}</div>
+                                    <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Role Name</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex="30">
+                                <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:28px; height:25px;"/>
+                                <div fxLayout="column">
+                                    <div class="txtclr capitalize">{{role.company_name}}</div>
+                                    <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Company Name</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" fxFlex="30" (mouseover)="role.mod_show = true" (mouseout)="role.mod_show = false" class="pointer">
+                                <mat-icon style="transform:scale(1.20); color:var(--active)">view_agenda</mat-icon>
+                                <div fxLayout="column">
+                                    <div class="txtclr capitalize">{{role.modules.length}}</div>
+                                    <div *ngIf="role.mod_show"  style="border-radius:4px; padding:12px; box-shadow: 0 2px 4px 0 rgba(69, 148, 211, 0.16); position: absolute; display:block; right: 500px; z-index:1; background-color: var(--white);">
+                                        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px" *ngFor="let module of role.modules">
+                                            <span>{{module.module_name}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Accessible Modules</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" fxFlex="30" (mouseover)="role.show = true" (mouseout)="role.show =false" class="pointer">
+                                <mat-icon style="transform:scale(1.20); color:var(--active)">auto_awesome_mosaic</mat-icon>
+                                <div fxLayout="column">
+                                    <div class="txtclr">{{role.sub_modules.length}}</div>
+                                    <div *ngIf="role.show"  style="border-radius:4px; padding:12px; box-shadow: 0 2px 4px 0 rgba(69, 148, 211, 0.16); position: absolute; display:block; right: 150px; z-index:1; background-color: var(--white);">
+                                        <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="10px" *ngFor="let submodule of role.sub_modules">
+                                            <span>{{submodule.sub_module_name}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Accessible Submodules</div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="end start" fxLayoutGap="20px">
+                                <div *ngIf="!role.is_own_admin_role" [ngSwitch]="iconNo(role)">
+                                    <mat-icon *ngSwitchCase="1" class="del-icon-disabled" style="color:var(--active)" matTooltip="Edit Disabled" >edit</mat-icon>
+                                    <mat-icon *ngSwitchCase="2" class="table-del-icon pointer" style="color:var(--active)" matTooltip="Edit" (click) = "editRole(role)">edit</mat-icon>
+                                </div>
+                                <div *ngIf="role.is_own_admin_role">
+                                    <mat-icon  class="table-del-icon pointer" style="color:var(--active)" matTooltip="Edit" (click) = "editRole(role)">edit</mat-icon>
+                                </div>
+                                <div>
+                                    <mat-icon class="table-del-icon pointer" style="color:var(--active)" (click) = "getEventsForRoleDetails(role)" matTooltip="Module Access Details">wysiwyg</mat-icon>
+                                </div>
+                                <div [ngSwitch]="delIconNo(role)">
+                                    <mat-icon *ngSwitchCase="1" id="delete{{i}}" class="del-icon-disabled" style="color:var(--active)" matTooltip="Delete Not Allowed">delete</mat-icon> 
+                                    <mat-icon  *ngSwitchCase="2" id="delete{{i}}" class="table-del-icon pointer" (click) = "role.is_delete || role.is_own_company ? deleteRoleUser(role) : ''" [matTooltip]="role.is_delete || role.is_own_company ? 'Delete Role' : 'Delete denied by company'">delete</mat-icon>
+                                    <mat-icon  *ngSwitchCase="3" id="delete{{i}}" class="table-del-icon pointer" (click) = "deleteRoleUser(role)" matTooltip="Delete Role">delete</mat-icon>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="roleNewColl.data.length == 0 && !isLoading">
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" class="fntclr465e72 fntwt600" [style.height.px]="screenParam.height-100">
+            <span>use </span>
+            <button mat-button style="width: 180px !important; height: 40px !important;" class="btnpri btnauto default"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">Add Role</span></button>
+            <span>create Roles</span>
+        </div>
+    </div>
+</div>

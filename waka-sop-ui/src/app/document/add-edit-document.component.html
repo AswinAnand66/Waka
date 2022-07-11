@@ -1,0 +1,171 @@
+<app-login-header></app-login-header>
+<div fxLayout="column" fxLayoutGap="10px">
+    <mat-card fxFlex="70" fxFlex.md="80" fxFlex.sm="98"  fxFlex.xs="98">
+        <mat-card-header>
+            <mat-card-title>
+                <div fxLayoutAlign="start center">
+                    <button mat-button color="warn" (click)="goBack()"><mat-icon class="pointer" style="transform: rotate(180deg); color:brown">forward</mat-icon></button>
+                    <mat-label style="font-weight: 600;">ADD EDIT Document</mat-label>
+                </div>
+            </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+            <form [formGroup]="form">
+                <div flex fxLayout="row warp" fxLayoutAlign="start center" fxLayoutGap="10px">
+                    <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+                        <mat-select placeholder="Group" formControlName="Grp0" name="Grp0" class="capitalize font_12" required>
+                            <mat-option class="capitalize" *ngFor="let ele of docGrpColl" [value]="ele">{{ele.display_name}}</mat-option>
+                            <mat-option (click)="openLookup('Grp0')">Add New</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+                        <mat-select placeholder="Sub Group" formControlName="Grp1" name="Grp1" class="capitalize font_12">
+                            <mat-option class="capitalize" *ngFor="let ele of docGrpColl" [value]="ele">{{ele.display_name}}</mat-option>
+                            <mat-option (click)="openLookup('Grp1')">Add New</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field  class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+                        <mat-select placeholder="Sub Group Level 2" formControlName="Grp2" name="Grp2" class="capitalize font_12">
+                            <mat-option class="capitalize" *ngFor="let ele of docGrpColl" [value]="ele">{{ele.display_name}}</mat-option>
+                            <mat-option (click)="openLookup('Grp2')">Add New</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+                        <mat-select placeholder="Sub Group Level 3" formControlName="Grp3" name="Grp3" class="capitalize font_12">
+                            <mat-option class="capitalize" *ngFor="let ele of docGrpColl" [value]="ele">{{ele.display_name}}</mat-option>
+                            <mat-option (click)="openLookup('Grp3')">Add New</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div formArrayName="Fields">
+                        <div *ngFor="let ele of getFieldsArrControls(); let i = index">
+                            <div [formGroupName]="i" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="5px">
+                                <mat-icon *ngIf="i!=0" id="remove{{i}}" color="warn" (click)="removeFields(i)" class="pointer"matTooltip="Remove Email">remove_circle</mat-icon>
+                                <mat-icon *ngIf="i==0" id="remove{{i}}" style="opacity:0.5; color:lightgray" >remove_circle</mat-icon>
+                                <mat-form-field style="font-weight: 600;">
+                                    <mat-select placeholder="Field Type" formControlName="Type" name="Type" class="capitalize font_12" (selectionChange)="setValidators(ele)">
+                                        <mat-option *ngFor="let type of fieldType" [value]="type">{{type}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field >
+                                    <input matInput placeholder="Field Name" formControlName="Name" name="Name{{i}}" id="Name{{i}}" required>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="ele.get('Type').value=='radio'" >
+                                    <textarea matInput cdkTextareaAutosize placeholder="Options as comma separated value" formControlName="Options" name="Options{{i}}" id="Options{{i}}"></textarea>
+                                    <mat-hint *ngIf="getFieldsArrControls()?.length-1 == i">Others in options will allow users to give their input</mat-hint>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="ele.get('Type').value=='multi'" >
+                                    <textarea matInput cdkTextareaAutosize placeholder="Options as comma separated value" formControlName="Options" name="Options{{i}}" id="Options{{i}}"></textarea>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="ele.get('Type').value!='checkbox'&&ele.get('Type').value!='radio'&&ele.get('Type').value!='multi'" >
+                                    <input matInput placeholder="Default Value" formControlName="Value" name="Value{{i}}" id="Value{{i}}">
+                                </mat-form-field>
+                                <mat-form-field *ngIf="ele.get('Type').value=='checkbox'">
+                                    <mat-select placeholder="Default Value" formControlName="Value" name="Value" class="capitalize font_12">
+                                        <mat-option [value]="true" selected>Checked</mat-option>
+                                        <mat-option [value]="false">Not Checked</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="ele.get('Type').value=='radio'">
+                                    <mat-select placeholder="Default Value" formControlName="Value" name="Value" class="capitalize font_12">
+                                        <mat-option *ngFor="let option of ele.get('Options')?.value?.split(',')" [value]="option">{{option}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="ele.get('Type').value=='multi'">
+                                    <mat-select placeholder="Default Value" formControlName="Value" name="Value" class="capitalize font_12" multiple>
+                                        <mat-option *ngFor="let option of ele.get('Options')?.value?.split(',')" [value]="option">{{option}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="ele.get('Options')?.value?.toLowerCase()?.includes('others')&&ele.get('Type').value!='multi'">
+                                    <input matInput placeholder="Format to display Text" formControlName="Others" name="Others{{i}}" id="Others{{i}}">
+                                    <mat-hint *ngIf="getFieldsArrControls()?.length-1 == i">$$val$$ Days OR Min tolerance $$val$$ %</mat-hint>
+                                </mat-form-field>
+                                <mat-form-field *ngIf="ele.get('Type').value=='number'">
+                                    <input matInput placeholder="Additional Text as prefix or suffix" formControlName="AddText" name="AddText{{i}}" id="AddText{{i}}">
+                                </mat-form-field>
+                                <mat-checkbox *ngIf="ele.get('Type').value=='number'" formControlName="IsPrefix" color="primary" name="IsPrefix{{i}}">Prefix</mat-checkbox>
+                                <mat-checkbox formControlName="HasChild"  color="primary" name="HasChild{{i}}">Has Child</mat-checkbox>
+                                <mat-icon *ngIf="getFieldsArrControls()?.length-1 == i && ele.valid" id="add{{i}}" color="primary" (click)="addFields()" class="pointer mgnleft20" matTooltip="Add Fields">add_circle</mat-icon>
+                                <mat-icon *ngIf="getFieldsArrControls()?.length-1 == i && !ele.valid" id="add{{i}}" color="primary" class="pointer mgnleft20" style="opacity:0.5" matTooltip="Not Valid Entries" >add_circle</mat-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </mat-card-content>
+        <mat-card-actions>
+            <button id="btnsave" [disabled]="form.invalid || isLoading" mat-raised-button class="btnclrprimary" (click)="saveReq()">Save</button>
+            <button id="btnCancel"  mat-raised-button class="btnclraccent" (click)="goBack()">Cancel</button>
+        </mat-card-actions>
+    </mat-card>
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title class="padtop10">Template view</mat-card-title>
+        </mat-card-header>
+        <mat-card-content style="width: fit-content;">
+            <div fxLayout="column">
+                <mat-checkbox *ngIf="form.get('Grp0').value?.lookup_name" color="primary" [checked]="true" class="fntwt600">{{form.get('Grp0').value?.lookup_name}}</mat-checkbox>
+                <mat-checkbox *ngIf="form.get('Grp1').value?.lookup_name" color="primary" [checked]="true" class="mgnleft20 padtop10 fntwt600">{{form.get('Grp1').value?.lookup_name}}</mat-checkbox>
+                <mat-checkbox *ngIf="form.get('Grp2').value?.lookup_name" color="primary" [checked]="true" class="mgnleft40 padtop10 fntwt600">{{form.get('Grp2').value?.lookup_name}}</mat-checkbox>
+                <mat-checkbox *ngIf="form.get('Grp3').value?.lookup_name" color="primary" [checked]="true" class="mgnleft60 padtop10">{{form.get('Grp3').value?.lookup_name}}</mat-checkbox>
+                <div *ngFor="let ele of getFieldsArrControls(); let i = index" [ngClass]="{'mgnleft20':form.get('Grp0').value?.lookup_name,'mgnleft40':form.get('Grp0').value?.lookup_name && form.get('Grp1').value?.lookup_name,'mgnleft60':form.get('Grp0').value?.lookup_name && form.get('Grp1').value?.lookup_name && form.get('Grp2').value?.lookup_name,'mgnleft80':form.get('Grp0').value?.lookup_name && form.get('Grp1').value?.lookup_name && form.get('Grp2').value?.lookup_name && form.get('Grp3').value?.lookup_name}">
+                    <div [ngSwitch]="ele.get('Type').value">
+                        <div *ngSwitchCase="'radio'" style="margin-top: 10px;">
+                            <div fxLayout="Column">
+                                <label mat-label id="radio-group-label" class="fntwt600">{{ele.get('Name')?.value}}</label>
+                                <div fxLayout="row wrap">
+                                    <mat-radio-group aria-labelledby="radio-group-label" [ngModel]="ele.get('Value')?.value" (change)="onChange($event, ele)">
+                                        <mat-radio-button class="mgnrgt10" color="primary" *ngFor="let option of ele.get('Options')?.value?.split(',')" [value]="option">
+                                            <span>{{option}}</span>
+                                        </mat-radio-button>
+                                      </mat-radio-group>
+                                      <div *ngIf="ele.get('Value')?.value?.toLowerCase()?.trim()=='others'">
+                                          <input mat-input type="number" style="border:none; border-bottom:1px solid lightgray; width:50px" name="days" required>{{ele.get('Others')?.value?.replace('$$val$$','')}}
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'multi'" style="margin-top: 10px;">
+                            <label mat-label id="radio-group-label" class="fntwt600">{{ele.get('Name')?.value}}</label>
+                            <mat-select placeholder="Select Value" name="name{{i}}" class="capitalize font_12" multiple>
+                                <mat-option *ngFor="let option of ele.get('Options')?.value?.split(',')" [value]="option">{{option?.trim()}}</mat-option>
+                            </mat-select>
+                        </div>
+                        <div *ngSwitchCase="'checkbox'" style="margin-top: 10px;">
+                            <div fxLayout="row wrap" fxLayoutGap="10px">
+                                <mat-checkbox class="fntwt600" color="primary" name="name{{i}}" [(checked)]="ele.get('Value').value" (change)="ele.get('Value').setValue($event.checked)">{{ele.get('Name')?.value}}</mat-checkbox>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'text'">
+                            <div fxLayout="column">
+                                <mat-form-field  class="inputboxdoc content-wrapper no-padding-btm" style="margin-top: 10px;">
+                                    <input matInput placeholder="{{ele.get('Name')?.value}}"name="name{{i}}" id="id{{i}}" required>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'textarea'">
+                            <div fxLayout="column" >
+                                <mat-form-field style="margin-top: 10px;">
+                                    <textarea cdkTextareaAutosize placeholder="{{ele.get('Name')?.value}}" name="name{{i}}" matInput id="id{{i}}" required></textarea>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'number'">
+                            <div *ngIf="ele.get('IsPrefix').value" fxLayout="row" fxLayoutAlign="start center">
+                                <div class="mgnrgt10">{{ele.get('AddText').value}}</div>
+                                <mat-form-field  class="mgntop10" style="width:50px">
+                                    <input  matInput placeholder="{{ele.get('Name')?.value}}" name="name{{i}}" id="id{{i}}" type="number" required>
+                                </mat-form-field>
+                            </div>
+                            <div *ngIf="!ele.get('IsPrefix').value" fxLayout="row" fxLayoutAlign="start center">
+                                <mat-form-field  class="mgntop10" style="width:50px">
+                                    <input  matInput placeholder="{{ele.get('Name')?.value}}" name="name{{i}}" id="id{{i}}" type="number" required>
+                                </mat-form-field>
+                                <div  class="mgnleft10">{{ele.get('AddText').value}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>    
+</div>

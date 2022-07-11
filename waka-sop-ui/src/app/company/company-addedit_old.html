@@ -1,0 +1,331 @@
+<!-- Loader section -->
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<!-- Add Edit Customer -->
+<div style="margin:60px 16px 0px 16px;">
+    <mat-horizontal-stepper  labelPosition="bottom" #stepper fxFlex="98.5">
+      <mat-step [stepControl]="basicFormGroup">
+        <ng-template matStepLabel>Basic</ng-template>
+          <mat-icon class="pointer" (click)="onClose()"  style="font-size:26px; color: #465e72; position:fixed; top: 80px; right: 70px;">close</mat-icon>
+        <mat-card fxFlex="100" [style.height.px]="screenParam?.height-190" style="box-shadow: 0 4px 14px 0 rgba(69, 148, 211, 0.16); overflow: auto;">
+        <form [formGroup]="basicFormGroup" fxLayout="row wrap">
+          <span class="usernameHeader" fxFlex="100">Basic Details</span>
+          <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-around center">
+            <div class="inputbox companyinputminwidth">
+              <div class="label">Office Category</div>
+                <mat-select formControlName="OfficeType" name="OfficeType" class="capitalize font_12" (selectionChange)="checkParent()" required>
+                  <mat-option class="capitalize" *ngFor="let ele of officeTypesList" [value]="ele.lookup_name_id">{{ele.display_name}}</mat-option>
+                </mat-select>
+                <div fxLayout="column">
+                <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="basicFormGroup.get('OfficeType').invalid&&basicFormGroup.get('OfficeType').dirty" class="txterror" >{{getErrorMessage(basicFormGroup.get('OfficeType'),'OfficeType')}}</mat-error>
+              </div>
+            </div>
+            <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':basicFormGroup.get('CompanyName').invalid&&basicFormGroup.get('CompanyName').dirty}">
+              <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                <mat-icon class="icon">business</mat-icon>
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                <div *ngIf="basicFormGroup.get('CompanyName').value!=undefined && basicFormGroup.get('CompanyName').value!=''" class="label" [ngClass]="{'labelerr':basicFormGroup.get('CompanyName').invalid&&basicFormGroup.get('CompanyName').dirty}">Company Name</div>
+                  <input class="text" placeholder="Company Name" formControlName="CompanyName" name="CompanyName" id="CompanyName" (blur)="checkCompanyName()" (keyup)="basicFormGroup.get('CompanyLocalName').setValue(basicFormGroup.get('CompanyName').value)" required>
+                </div>
+              </div>
+              <div fxLayout="column">
+                <mat-error style="margin-left:-30px; padding-top:2px; margin-top:2px;" *ngIf="basicFormGroup.get('CompanyName').invalid&&basicFormGroup.get('CompanyName').dirty" class="txterror" >{{getErrorMessage(basicFormGroup.get('CompanyName'),'CompanyName')}}</mat-error>
+              </div>
+            </div>
+            <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':basicFormGroup.get('CompanyLocalName').invalid&&basicFormGroup.get('CompanyLocalName').dirty}">
+              <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                <mat-icon class="icon">business</mat-icon>
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                <div *ngIf="basicFormGroup.get('CompanyLocalName').value!=undefined && basicFormGroup.get('CompanyLocalName').value!=''" class="label" [ngClass]="{'labelerr':basicFormGroup.get('CompanyLocalName').invalid&&basicFormGroup.get('CompanyLocalName').dirty}">Company Local Name</div>
+                  <input class="text" placeholder="Company Local Name" formControlName="CompanyLocalName" name="CompanyLocalName" id="CompanyLocalName" required>
+                </div>
+              </div>
+              <div fxLayout="column">
+                <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="basicFormGroup.get('CompanyLocalName').invalid&&basicFormGroup.get('CompanyLocalName').dirty" class="txterror" >{{getErrorMessage(basicFormGroup.get('CompanyLocalName'),'CompanyLocalName')}}</mat-error>
+              </div>
+            </div>
+            <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':basicFormGroup.get('Website').invalid&&basicFormGroup.get('Website').dirty}">
+              <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                <mat-icon class="icon">language</mat-icon>
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                  <div *ngIf="basicFormGroup.get('Website').value!=undefined && basicFormGroup.get('Website').value!=''" class="label">Company Website</div>
+                  <input class="text" placeholder="Company Website" formControlName="Website" name="website" id="website">
+                </div>
+              </div>
+            </div>
+            <div class="inputbox companyinputminwidth">
+              <div class="label">Parent Company</div>
+              <mat-select formControlName="ParentCompany" name="ParentCompany" class="capitalize font_12">
+                <mat-option class="capitalize" *ngFor="let ele of parentCompanyList" [value]="ele.company_id">{{ele.company_name}}</mat-option>
+              </mat-select>
+              <div fxLayout="column">
+                <mat-hint style="font-size: 10px; margin-left:-14px; padding-top:2px; margin-top:5px; color: #465e72;" *ngIf="!basicFormGroup.get('ParentCompany').invalid || !basicFormGroup.get('ParentCompany').dirty">{{'*Required for Office category other than Headquarters'}}</mat-hint>
+                <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="basicFormGroup.get('ParentCompany').invalid && basicFormGroup.get('ParentCompany').dirty" class="txterror" >{{getErrorMessage(basicFormGroup.get('ParentCompany'),'ParentCompany')}}</mat-error>
+              </div>
+            </div>
+            <div class="inputbox companyinputminwidth">
+              <div class="label">Company Type</div>
+              <mat-select formControlName="CompanyType" name="CompanyType" class="capitalize font_12">
+                <mat-option class="capitalize" *ngFor="let ele of companyTypeList" [value]="ele.lookup_id">{{ele.name}}</mat-option>
+              </mat-select>
+              <div fxLayout="column">
+                <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="basicFormGroup.get('CompanyType').invalid && basicFormGroup.get('CompanyType').dirty || basicFormGroup.get('CompanyType').touched" class="txterror" >{{getErrorMessage(basicFormGroup.get('CompanyType'),'CompanyType')}}</mat-error>
+              </div>
+            </div>
+          </div> 
+          <div xLayout="row" fxFlex="100" fxLayoutAlign="start center" style="margin-top: 15px;">
+            <span class="usernameHeader">Company Registration Details</span>
+            <button mat-icon-button [disabled]="basicFormGroup.controls.TaxDetails.invalid" class="mgnleft10" type="button" style="margin-left:5px; cursor: pointer; vertical-align: middle;" (click)="addNewTaxDetailsRow()">
+              <mat-icon *ngIf="basicFormGroup.controls.TaxDetails.invalid" style="color:darkgray; cursor: default;">add_circle_outline</mat-icon>
+              <mat-icon *ngIf="!basicFormGroup.controls.TaxDetails.invalid" style="color:blue ;">add_circle_outline</mat-icon>
+            </button>
+          </div>
+          <div fxLayout="row wrap" fxFlex="100" fxLayoutAlign="start center" formArrayName="TaxDetails" style="margin-left:10px">
+            <div fxFlex="80" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="15px" *ngFor="let itemrow of basicFormGroup.controls.TaxDetails['controls']; let i=index" [formGroupName]="i">
+              <mat-icon class="mgnleft10 icon-display" style="margin-left:3px; color:red ; vertical-align: super; cursor: pointer;"  (click)="deleteTaxDetailsRow(i)">remove_circle_outline</mat-icon> 
+                <div class="inputbox companyinputminwidth">
+                 <div>
+                  <div class="label">Tax Name</div>
+                  <mat-select formControlName="reg_name" id="reg_name{i}" name="reg_name" class="capitalize font_12" (selectionChange)="checkDuplicateRegName()">
+                    <mat-option class="capitalize" *ngFor="let ele of taxRegistrationList" (selectionChange)="checkDuplicateRegName()" [value]="ele.lookup_name_id">{{ele.display_name}}</mat-option>
+                  </mat-select>
+                 </div>
+                  <div fxLayout="column"> 
+                    <mat-error style="margin-left: -30px; padding-top:2px; margin-top:5px;" *ngIf="isDuplicateTaxName" class="txterror">{{firstTaxName}} already exists</mat-error>
+                </div>
+                </div>
+                <div class="inputbox companyinputminwidth">
+                  <div fxLayout="row" fxLayoutAlign="start center" style="height:100%"> 
+                    <mat-icon class="icon">description</mat-icon>
+                    <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                      <div *ngIf=" itemrow['controls'].reg_number.value!=undefined &&  itemrow['controls'].reg_number.value!=''" class="label" [ngClass]="{'labelerr':itemrow['controls'].reg_number.invalid && itemrow['controls'].reg_number.dirty}">Tax Number</div>
+                      <input class="text" id="reg_number{{i}}" type="text" placeholder="Tax Number" formControlName="reg_number" (change)="checkDuplicateRegNumber()" required>
+                    </div>
+                  </div>
+                  <div fxLayout="column"> 
+                    <mat-error style="margin-left: -30px; padding-top:2px; margin-top:2px;" *ngIf="isDuplicateTaxNumber || itemrow['controls'].reg_number.errors && itemrow['controls'].reg_number.dirty" class="txterror" >CIN & GSTIN Tax Number should be different</mat-error>
+                </div>
+                </div>
+            </div>
+          </div>
+          <span class="usernameHeader" fxFlex="100" style="margin-top: 15px;">Visual Identity Details</span>
+          <div fxLayout="column" fxLayoutAlign="space-between end">
+            <div *ngIf="previewUrl !== uploadPlaceholder && previewUrl && !isEditMode"  class="circle pointer" style="transform: translate(50%, 100%); background-color:var(--white);">
+              <mat-icon  class="fntclr465e72" mat-icon-button (click)="removeLogo()">close</mat-icon>
+            </div>
+            <label for="ImgUploading">
+              <img style="height:70px; width:auto; margin-top:16px;" *ngIf="!isEditMode" [src]="previewUrl ? previewUrl : uploadPlaceholder" />
+            </label>
+          </div>
+          <input (change)="uploadLogo($event)" type="file" name="ImgUploading" id="ImgUploading" style="display: none;">       
+          <div fxLayout="column" fxLayoutAlign="space-between end">
+            <div *ngIf="previewUrl !== uploadPlaceholder && previewUrl && isEditMode"  class="circle pointer" style="transform: translate(50%, 100%); background-color:var(--white);">
+              <mat-icon  class="fntclr465e72" mat-icon-button (click)="fileRemove()">close</mat-icon>
+            </div>
+            <label for="ImgUploading">
+              <img style="height:70px; width:auto; margin-top:16px;" *ngIf="isEditMode" [src]="previewUrl ? previewUrl : uploadPlaceholder" />
+            </label>
+            <input *ngIf="!isLogoAvailable && isEditMode" (change)="uploadLogo($event)" type="file" name="ImgUploading" id="ImgUploading" style="display: none;">
+        </div>
+          <button mat-button matStepperNext style="display: none" id="nextStage"></button>
+        </form>
+      </mat-card>
+      </mat-step>
+      <mat-step [stepControl]="addressFormGroup">
+        <ng-template matStepLabel>Address</ng-template>
+        <mat-card fxFlex="100" [style.height.px]="screenParam?.height-185" style="box-shadow: 0 4px 14px 0 rgba(69, 148, 211, 0.16); overflow: auto;">
+          <form [formGroup]="addressFormGroup" fxLayout="row wrap">
+            <span class="usernameHeader">Company Registered Address</span>
+            <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-around center">
+              <div class="inputbox inboxminwidth" style="width: 94% !important;" [ngClass]="{'errtxtbdr':addressFormGroup.get('RegAddress').invalid&&addressFormGroup.get('RegAddress').dirty}">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                  <div *ngIf="addressFormGroup.get('RegAddress').value!=undefined && addressFormGroup.get('RegAddress').value!=''" class="label" [ngClass]="{'labelerr':addressFormGroup.get('RegAddress').invalid&&addressFormGroup.get('RegAddress').dirty}">Address</div>
+                    <input class="text" placeholder="Address" formControlName="RegAddress" name="RegAddress" id="RegAddress" required>
+                  </div>
+                </div>
+                <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; padding-top:2px; margin-top:2px;" *ngIf="addressFormGroup.get('RegAddress').invalid&&addressFormGroup.get('RegAddress').dirty" class="txterror" >{{getErrorMessage(addressFormGroup.get('RegAddress'),'RegAddress')}}</mat-error></div>
+              </div>
+              <div class="inputbox companyinputminwidthPer">
+                <div class="label">Country</div>
+                <mat-select formControlName="RegCountry" name="RegCountry" class="capitalize font_12" (selectionChange)="getRegState($event.value)">
+                  <mat-option class="capitalize" *ngFor="let ele of countryList" [value]="ele.country_id">{{ele.name}}</mat-option>
+                </mat-select>
+                <div fxLayout="column">
+                <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="addressFormGroup.get('RegCountry').invalid&&addressFormGroup.get('RegCountry').dirty || addressFormGroup.get('RegCountry').touched" class="txterror" >{{getErrorMessage(addressFormGroup.get('RegCountry'),'RegCountry')}}</mat-error>
+              </div>
+              </div>
+              <div class="inputbox companyinputminwidthPer">
+                <div class="label">State</div>
+                <mat-select formControlName="RegState" name="RegState" class="capitalize font_12" (selectionChange)="getRegCity($event.value)">
+                  <mat-option class="capitalize" *ngFor="let ele of regStateList" [value]="ele.state_id">{{ele.name}}</mat-option>
+                </mat-select>
+                <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="addressFormGroup.get('RegState').invalid&&addressFormGroup.get('RegState').dirty || addressFormGroup.get('RegState').touched" class="txterror" >{{getErrorMessage(addressFormGroup.get('RegState'),'RegState')}}</mat-error>
+              </div>
+              </div>
+              <div class="inputbox companyinputminwidthPer">
+                <div class="label">City</div>
+                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                <input type="text" class="text" formControlName="RegCity" autocomplete="new-city" [matAutocomplete]="RegCity" required>
+              </div>
+                <mat-autocomplete autoActiveFirstOption #RegCity="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option class="capitalize" *ngFor="let option of regCityList" [value]="option" required>{{option.name}}</mat-option>
+                </mat-autocomplete>
+                <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; padding-top:2px; margin-top:4px;" *ngIf="addressFormGroup.get('RegCity').invalid&&addressFormGroup.get('RegCity').dirty || addressFormGroup.get('RegCity').touched" class="txterror" >{{getErrorMessage(addressFormGroup.get('RegCity'),'RegCity')}}</mat-error>
+              </div>
+              </div> 
+              <div class="inputbox companyinputminwidthPer">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                      <div *ngIf="addressFormGroup.get('RegZipCode').value!=undefined && addressFormGroup.get('RegZipCode').value!=''" class="label">Zip Code</div>
+                      <input class="text" type="text" placeholder="ZipCode" formControlName="RegZipCode" name="RegZipCode" id="RegZipCode">
+                  </div>
+                </div>
+              </div>
+              <div class="inputbox companyinputminwidthPer">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                  <mat-icon class="icon">people</mat-icon>
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                    <div *ngIf="addressFormGroup.get('RegName').value!=undefined && addressFormGroup.get('RegName').value!=''" class="label" [ngClass]="{'labelerr':addressFormGroup.get('RegName').invalid&&addressFormGroup.get('RegName').dirty}">Contact Name</div>
+                    <input class="text" type="text" placeholder="Contact Name" formControlName="RegName" name="RegName" id="RegName">
+                  </div>
+                </div>
+                <div fxLayout="column"> 
+                  <mat-error style="margin-left:-30px; padding-top:2px; margin-top:2px;" *ngIf="addressFormGroup.get('RegName').invalid && addressFormGroup.get('RegName').dirty" class="txterror" >{{getErrorMessage(addressFormGroup.get('RegName'),'RegName')}}</mat-error>
+              </div>
+              </div>
+              <div class="inputbox companyinputminwidthPer">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                  <mat-icon class="icon">email</mat-icon>
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                      <div *ngIf="addressFormGroup.get('RegEmail').value!=undefined && addressFormGroup.get('RegEmail').value!=''" class="label" [ngClass]="{'labelerr':addressFormGroup.get('RegEmail').invalid&&addressFormGroup.get('RegEmail').dirty}">Email</div>
+                      <input class="text" type="email" placeholder="Email" formControlName="RegEmail" name="RegEmail" id="RegEmail">
+                  </div>
+                </div>
+                <div fxLayout="column">
+                  <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="addressFormGroup.get('RegEmail').invalid && addressFormGroup.get('RegEmail').dirty" class="txterror" >{{getErrorMessage(addressFormGroup.get('RegEmail'),'RegEmail')}}</mat-error>
+              </div>
+              </div>
+              <div fxFlex="96" fxLayoutAlign="start center">
+                <div class="inputbox" style="width: 28% !important;">
+                  <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                    <mat-icon class="icon">phone</mat-icon>
+                    <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                      <div *ngIf="addressFormGroup.get('RegMobile').value!=undefined && addressFormGroup.get('RegMobile').value!=''" class="label" [ngClass]="{'labelerr':addressFormGroup.get('RegMobile').invalid&&addressFormGroup.get('RegMobile').dirty}">Mobile</div>
+                      <input class="text" type="tel" placeholder="Mobile" formControlName="RegMobile" name="RegMobile" id="RegMobile">
+                    </div>
+                  </div>
+                  <div fxLayout="column">
+                    <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="addressFormGroup.get('RegMobile').invalid && addressFormGroup.get('RegMobile').dirty" class="txterror" >{{getErrorMessage(addressFormGroup.get('RegMobile'),'RegMobile')}}</mat-error>
+                  </div>
+                </div>
+              </div>
+              <section fxFlex="96.5" fxLayoutAlign="start center" *ngIf="!isEditMode">
+                <mat-checkbox formControlName="isTermsAccepted"  style=" width: 24px; height: 24px; margin-top: 15px; object-fit: contain;">
+                  <span class="I-accept-all-Terms-">I accept all Terms & Conditions and Privacy Policies</span>
+                </mat-checkbox>
+              </section>
+              <div fxFlex="100" fxLayout="row wrap"  formArrayName="AddressColl" style="margin-top:10px">
+                <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="space-around center" *ngFor="let itemrow of addressFormGroup.controls.AddressColl['controls']; let i=index" [formGroupName]="i" style="margin-top:10px">
+                  <div fxFlex="100" fxLayout="row" fxLayoutAlign="start center">
+                    <span class="usernameHeader">{{ dispAddressType(addressFormGroup.get('AddressColl').value[i].address_type_id) | titlecase }} Address</span>
+                    <mat-icon class="mgnleft10 icon-display" style="margin-left:3px; color:red ; vertical-align: super; cursor: pointer;" (click)="deleteAddressCollRow(i)">remove_circle_outline</mat-icon> 
+                  </div>
+                  <div class="inputbox inboxminwidth" style="width: 94% !important;">
+                    <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                      <div fxLayout="column" fxLayoutAlign="center start" style="width:90%">
+                        <input class="text" placeholder="Address" formControlName="address" name="address" id="address" type="text" required>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="inputbox companyinputminwidthPer">
+                    <div class="label">Country</div>
+                      <mat-select formControlName="country_id" name="Country" class="capitalize font_12" (selectionChange)="getState($event.value, i)" required>
+                        <mat-option class="capitalize" *ngFor="let ele of countryList" [value]="ele.country_id">{{ele.name}}</mat-option>
+                      </mat-select>
+                    </div>
+                    <div class="inputbox companyinputminwidthPer">
+                      <div class="label">State</div>
+                      <mat-select formControlName="state_id" name="State" class="capitalize font_12" (selectionChange)="getCity($event.value, i)" required>
+                        <mat-option class="capitalize" *ngFor="let ele of stateList[i]" [value]="ele.state_id">{{ele.name}}</mat-option>
+                      </mat-select>
+                    </div>
+                    <div class="inputbox companyinputminwidthPer">
+                      <div class="label">City</div>
+                      <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                        <input type="text" class="text" formControlName="city_idd" autocomplete="new-city" [matAutocomplete]="City" required>
+                      </div> 
+                      <mat-autocomplete autoActiveFirstOption #City="matAutocomplete" [displayWith]="displayFn">
+                        <mat-option class="capitalize" *ngFor="let option of cityList[i]" [value]="option" required>{{option.name}}</mat-option>
+                      </mat-autocomplete>
+                    </div>
+                    <div class="inputbox companyinputminwidthPer">
+                      <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                          <input class="text" type="text" placeholder="Zip Code" formControlName="zip_code" name="ZipCode" id="ZipCode">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="inputbox companyinputminwidthPer">
+                      <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                        <mat-icon class="icon">people</mat-icon>
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                          <input class="text" type="text" placeholder="Name" formControlName="name" name="Name" id="Name" required>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="inputbox companyinputminwidthPer">
+                      <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                        <mat-icon class="icon">email</mat-icon>
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                          <input class="text" type="email" placeholder="Email" formControlName="email" name="Email" id="Email" required>
+                        </div>
+                      </div>
+                      <div fxLayout="column"> 
+                        <mat-error style="margin-left: -30px; padding-top:2px; margin-top:2px;" *ngIf="itemrow['controls'].email.invalid
+                      &&itemrow['controls'].email.dirty" class="txterror" >{{getErrorMessageOptionalFields(itemrow['controls'].email,'email')}}</mat-error>
+                    </div>
+                    </div>
+                    <div fxFlex="96" fxLayoutAlign="start start">
+                      <div class="inputbox" style="width: 28% !important;">
+                        <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                          <mat-icon class="icon">phone</mat-icon>
+                          <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                            <input class="text" type="tel" placeholder="Mobile" formControlName="mobile" name="Mobile" id="Mobile" required>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+              <div fxFlex="96.5" fxLayout="row" fxLayoutAlign="start center" style="margin-top: 10px;" fxLayoutGap="25px">
+                <div class="inputbox" style="width: 28% !important;">
+                  <div class="label">Address Type</div>
+                  <mat-select formControlName="AddressCollType" name="AddressCollType" class="capitalize font_12">
+                    <mat-option class="capitalize" *ngFor="let ele of addressTypesList" [value]="ele.lookup_name_id">{{ele.display_name}}</mat-option>
+                  </mat-select>
+                </div>
+                <button class="btnpri btnauto" [disabled]="addressFormGroup.get('AddressCollType').value == ''" id="btnNext" style="width: 366px !important; height: 50px !important;" (click)="addAddressArray()"><mat-icon style="vertical-align: middle;">add_circle</mat-icon><span class="mgnleft10 font_14 clrwhite">ADD ADDRESS</span></button>
+              </div>
+            </div>
+            <button mat-button matStepperPrevious style="display: none" id="prevStage"></button>
+          </form>
+        </mat-card>
+      </mat-step>
+    </mat-horizontal-stepper>
+</div>
+<footer layout="row">
+  <mat-toolbar style="background-color: var(--activebg); height: 72px;" fxLayoutAlign="space-between center" >
+    <div fxLayoutAlign="start center" style="margin-left:24px;">
+      <button class="btnsecondary btnprifull" *ngIf="isAddress" id="btnNext" style="width: 100px !important; height: 40px !important;" (click)="prevStage()"><span style="line-height:8px; vertical-align:text-top; color: var(--primary)">BACK</span></button>
+    </div>
+    <div fxLayoutAlign="end center" style="margin-right:40px;">
+      <button class="btnpri btnprifull" *ngIf="isBasic" [disabled]="basicFormGroup.invalid" id="btnNext" style="width: 100px !important; height: 40px !important; padding:0px;" (click)="nextStage()"><span class="clrwhite">NEXT</span></button>
+      <button class="btnpri btnprifull" *ngIf="isAddress" [disabled]="addressFormGroup.invalid || !addressFormGroup.get('isTermsAccepted').value"  id="btnNext" style="width: 169px !important; height: 40px !important; padding:0px;" (click)="addUpdateCustomer()"><span class="clrwhite">{{ btnTitle }}</span></button>
+    </div>
+  </mat-toolbar>
+</footer>

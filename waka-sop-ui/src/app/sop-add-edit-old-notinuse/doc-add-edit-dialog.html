@@ -1,0 +1,118 @@
+<!-- <div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal"
+	style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div> -->
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10">{{title}}</mat-label>
+    <mat-icon id="close" color="warn" class="pointer" matTooltip="Close dialog" (click)="onClose()">cancel</mat-icon>
+</div>
+<div *ngIf="objectKeys(docGrp).length>0" mat-dialog-content>
+    <form  [formGroup]="form">
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;margin-right:5px">
+            <mat-select placeholder="Origin Country" formControlName="OriginCountry" name="OriginCountry" class="capitalize font_12" (selectionChange)="onChangeOriginCountry($event.value)">
+                <mat-select-trigger>{{form.get('OriginCountry')?.value?.country_name}}</mat-select-trigger>
+                <mat-option class="capitalize" *ngFor="let ele of countryCodeColl" [value]="ele">{{ele.country_name}}(+{{ele.country_code}})</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;margin-right:5px">
+            <mat-select placeholder="Destination Country" formControlName="DestCountry" name="DestCountry" class="capitalize font_12">
+                <mat-select-trigger>{{form.get('DestCountry')?.value?.country_name}}</mat-select-trigger>
+                <mat-option class="capitalize" *ngFor="let ele of destCountryCodecoll" [value]="ele">{{ele.country_name}}(+{{ele.country_code}})</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div *ngFor="let dockey of objectKeys(docGrp)" fxLayout="column" style="margin-top:20px">
+            <mat-label class="font_18 bdrbtm2pxa0aeb9 padbtm9"><span class="fntclr465e72">{{dockey}}</span></mat-label>
+            <div *ngFor="let subkey of objectKeys(docGrp[dockey])">
+                <mat-label *ngIf="subkey!='nosubgrp'" class="font_12" style="margin-top:16px" ><span class="fntclr1c75bc">{{subkey}}</span></mat-label>
+                <div fxLayout="row wrap" fxLayoutGap="20px">
+                    <div *ngFor="let doc of docGrp[dockey][subkey]" >
+                        <div fxLayout="column" style="margin-bottom:16px">
+                            <mat-checkbox class="fntwt600" color="primary" formControlName="{{doc.controlName}}" name="{{doc.controlName}}" [(checked)]="doc.isSelected" (change)="onChange(doc,$event.checked)">{{doc.docName}}</mat-checkbox>
+                            <div *ngIf="doc.hasChild && doc.isSelected">
+                                <div fxLayout="row wrap" style="margin-top:10px">
+                                    <div *ngFor="let field of doc.fields">
+                                        <div [ngSwitch]="field.type">
+                                            <div *ngSwitchCase="'textarea'">
+                                                <div fxLayout="column" style="margin-bottom:16px">
+                                                    <mat-form-field class="inputboxdoc content-wrapper no-padding-btm">
+                                                        <textarea placeholder="{{field.fieldname}}" formControlName="{{field.controlname}}" name="{{field.controlname}}" matInput id="{{field.controlname}}"></textarea>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchCase="'text'">
+                                                <div fxLayout="column" style="margin-bottom:16px">
+                                                    <mat-form-field  class="inputboxdoc content-wrapper no-padding-btm">
+                                                        <input matInput placeholder="{{field.fieldname}}" formControlName="{{field.controlname}}" name="{{field.controlname}}" id="{{field.controlname}}">
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchCase="'numsmall'">
+                                                <div fxLayout="column" style="margin-bottom:16px">
+                                                    <mat-form-field  class="inputboxdocsmall content-wrapper no-padding-btm">
+                                                        <input matInput placeholder="{{field.fieldname}}" formControlName="{{field.controlname}}" name="{{field.controlname}}" id="{{field.controlname}}" type="number" required>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchCase="'multi'">
+                                                <div fxLayout="column" style="margin-bottom:16px">
+                                                    <div *ngIf="field.contact_type=='principal'">
+                                                        <mat-form-field class="inputboxdoc content-wrapper no-padding-btm" style="font-weight: 600;">
+                                                            <mat-select placeholder="Principal Contacts" class="capitalize font_12" formControlName="{{field.controlname}}" name="{{field.controlname}}" multiple>
+                                                                <mat-option class="capitalize" *ngFor="let ele of data.principal" [value]="ele">{{ele.contact_name}}({{ele.designation}},{{ele.department}})</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="field.contact_type=='shipper'">
+                                                        <mat-form-field class="inputboxdoc content-wrapper no-padding-btm" style="font-weight: 600;">
+                                                            <mat-select placeholder="Shipper Contacts" formControlName="{{field.controlname}}" name="{{field.controlname}}" class="capitalize font_12" multiple>
+                                                                <mat-option class="capitalize" *ngFor="let ele of data.shipper" [value]="ele">{{ele.contact_name}}({{ele.designation}},{{ele.department}})</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="field.contact_type=='ff'">
+                                                        <mat-form-field class="inputboxdoc content-wrapper no-padding-btm" style="font-weight: 600;">
+                                                            <mat-select placeholder="Logistics Provider" formControlName="{{field.controlname}}" name="{{field.controlname}}" class="capitalize font_12" multiple>
+                                                                <mat-option class="capitalize" *ngFor="let ele of data.ff" [value]="ele">{{ele.contact_name}}({{ele.designation}},{{ele.department}})</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="field.contact_type=='vendor'">
+                                                        <mat-form-field class="inputboxdoc content-wrapper no-padding-btm" style="font-weight: 600;">
+                                                            <mat-select placeholder="Vendor Contacts" formControlName="{{field.controlname}}" name="{{field.controlname}}" class="capitalize font_12" multiple>
+                                                                <mat-option class="capitalize" *ngFor="let ele of data.vendor" [value]="ele">{{ele.contact_name}}({{ele.designation}},{{ele.department}})</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="field.contact_type=='carrier'">
+                                                        <mat-form-field class="inputboxdoc content-wrapper no-padding-btm" style="font-weight: 600;">
+                                                            <mat-select placeholder="Carrier Contacts" formControlName="{{field.controlname}}" name="{{field.controlname}}" class="capitalize font_12" multiple>
+                                                                <mat-option class="capitalize" *ngFor="let ele of data.carrier" [value]="ele">{{ele.contact_name}}({{ele.designation}},{{ele.department}})</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div *ngIf="field.contact_type=='all'">
+                                                        <mat-form-field class="inputboxdoc content-wrapper no-padding-btm" style="font-weight: 600;">
+                                                            <mat-select placeholder="{{field.fieldname}}" formControlName="{{field.controlname}}" name="{{field.controlname}}" class="capitalize font_12" multiple>
+                                                                <mat-option class="capitalize" *ngFor="let ele of contactAll" [value]="ele">{{ele.contact_name}}({{ele.designation}},{{ele.department}})</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+</div>
+<mat-dialog-actions *ngIf="objectKeys(docGrp).length>0" fxLayout="row wrap" fxLayoutAlign="end center" fxLayoutGap="20px">
+    <button *ngIf="form.valid" mat-raised-button style="background-color:#1c75bc; color:white;" (click)="saveDoc()"><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE</span></button>
+    <button *ngIf="form.invalid" mat-raised-button style="background-color:#1c75bc; color:white; opacity:0.5" disabled='true'><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE</span></button>
+</mat-dialog-actions>

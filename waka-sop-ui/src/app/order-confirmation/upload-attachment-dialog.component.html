@@ -1,0 +1,28 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+    <span fxLayout="row" fxLayoutAlign="center center" class="txt">{{isViewImage ? 'View Attachment' : 'Add Attachments'}}</span>
+    <mat-icon class="pointer" (click)="dialogRef.close({ success : false })">close</mat-icon>
+</div>
+<div fxLayout="column" fxLayoutAlign="center center" style="height: 85%;">
+    <div *ngIf="isOptionSelection && !isBrowsedFile && !isViewImage">
+        <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+            <button mat-button class="btnpri btnauto" style="width: 120px !important; height: 40px !important;" (click)="fileInput.click()">Browse Files</button>
+            <input hidden type="file" #fileInput (change)="attachFile($event)" accept="image/*,.pdf"/>
+            <button *ngIf="isMobile" mat-button class="btnpri btnauto" style="width: 120px !important; height: 40px !important;" (click)="fileInputCapture.click()">Open Camera</button>
+            <input hidden type="file" #fileInputCapture (change)="attachFile($event)" accept="image/*" capture="environment" />
+        </div>
+    </div>
+    <div *ngIf="isBrowsedFile && !isViewImage" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <img *ngIf="attachType!='PDF'" src={{previewUrl}} [alt]="attachType" style="width: auto; height: 100px;">
+        <div *ngIf="attachType=='PDF'" style="width: auto; height: 100px; text-align: center;">
+            <mat-icon>picture_as_pdf</mat-icon>
+            <div>{{fileName}}</div>
+        </div>
+        <button mat-button class="btnpri btnauto" style="width: fit-content !important; height: 35px !important;" (click)="isOptionSelection = true; isBrowsedFile = false">Re-upload</button>
+        <button  mat-button class="btnpri btnauto" style="width: fit-content !important; height: 35px !important;" (click)="onSubmit()">Submit</button>
+    </div>
+    <div *ngIf="isViewImage && !isBrowsedFile && !isOptionSelection" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px">
+        <img src={{previewUrl}} [alt]="attachType" style="width: auto; height: 100px;">
+        <button mat-button class="btnpri btnauto" style="width: fit-content !important; height: 35px !important;" (click)="isOptionSelection = true; isBrowsedFile = false; isViewImage = false;">Re-upload</button>
+    </div>
+</div>
+<!-- capture="environment" -->

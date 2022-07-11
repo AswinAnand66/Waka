@@ -1,0 +1,27 @@
+<div style="margin:60px 16px 16px 16px;">
+    <div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-label color="primary" class="mgnleft10" style="font-weight: 600; color: darkgrey;">Manage License Module</mat-label>
+    </div>
+    <div mat-dialog-content>
+        <div flex fxLayout="row wrap" fxLayoutAlign="space-between start" fxFlex="100">
+            <div fxLayout="column" fxFlex="48" fxFlex.xs="100">
+                <mat-label fxFlex="100" class="font_16 bdrbtm2pxa0aeb9 padbtm9"><span class="fntclr465e72">Available Modules</span></mat-label>
+                <div *ngFor = "let ele of modulesList">
+                    <div *ngIf="!ele.is_selected">
+                        <mat-checkbox [(ngModel)]="ele.is_selected" class="capitalize" color="primary" [checked]="ele.is_selected" (change)="onChange(ele)">{{ele.module_name}}</mat-checkbox>
+                    </div>
+                </div>
+            </div>
+            <div fxLayout="column" fxFlex="48" fxFlex.xs="100">
+                <mat-label fxFlex="100" class="font_16 bdrbtm2pxa0aeb9 padbtm9"><span class="fntclr465e72">Requested Modules</span></mat-label>
+                <div *ngFor = "let ele of selectedModules">
+                    <mat-checkbox [(ngModel)]="ele.is_selected" class="capitalize" color="warn" [checked]="ele.is_selected" (change)="onChange(ele)">{{ele.module_name}}</mat-checkbox>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center">
+        <button id="btnsave" [disabled]="form.invalid " mat-raised-button class="btnclrprimary" (click)="updateLicense()">{{btnTitle}}</button>
+        <button id="btnCancel"  mat-raised-button class="btnclraccent" (click)="onClose(false)">Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="font_16" style="font-weight: bold; color:#8294A3">{{title}}</mat-label>
+    <mat-icon id="close" class="pointer" matTooltip="Close dialog" (click)="onClose(false)" style=" color: #465e72; 
+     cursor: pointer">close</mat-icon>
+</div>
+<div mat-dialog-content style="max-height: 70vh">
+    <form [formGroup]="form" style="width: 100%" class="dftfnt">
+      <div fxLayout="row wrap" fxLayoutAlign="space-between start">
+        <div fxLayout="column" fxLayoutAlign="center start">
+          <mat-label class="txt mgntop10 alignleft">Principal Name *</mat-label>
+          <div class="inputbox " style="width:280px; margin-top:6px">
+            <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+              <mat-select disableOptionCentering panelClass="mat_select_dropdown" style="text-align: left; margin-top:8px" placeholder="Select the Principal Company" formControlName="PrincipalName" name="PrincipalName" class="capitalize" (selectionChange)="getStakeHolderNameList($event.value)" required>
+                  <mat-option class="capitalize" *ngFor="let ele of principalNameList" [value]="ele.company_id">{{ele.company_name}}</mat-option>
+              </mat-select>
+              </div>
+          </div>
+          <mat-error *ngIf="form.get('PrincipalName').invalid&&form.get('PrincipalName').dirty" class="txterror" style="margin-top:6px">{{getErrorMessage(form.get('PrincipalName'),'PrincipalName')}}</mat-error>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start start">
+          <mat-label class="txt mgntop10 alignleft">Stakeholder Name *</mat-label>
+          <div class="inputbox " style="width:280px; margin-top:6px">
+            <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+              <mat-select disableOptionCentering panelClass="mat_select_dropdown" style="text-align: left; margin-top:8px" placeholder="Select the Stakeholder Company" formControlName="StakeholderName" name="StakeholderName" class="capitalize" (selectionChange)="getStakeHolder($event.value)" required>
+                  <mat-option class="capitalize" *ngFor="let ele of stakeHolderNameList" [value]="ele.company_id">{{ele.company_name}}</mat-option>
+              </mat-select>
+            </div>
+          </div>
+          <mat-error *ngIf="form.get('StakeholderName').invalid&&form.get('StakeholderName').dirty" class="txterror" style="margin-top:6px">{{getErrorMessage(form.get('StakeholderName'),'StakeholderName')}}</mat-error>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start start">
+          <mat-label class="txt mgntop10">Contract Period *</mat-label>
+          <div class="inputbox"  style="width:280px; height:48px; margin-top:6px;" fxLayout="row" fxLayoutAlign="center center">
+            <mat-date-range-input [rangePicker]="picker" aria-required="must have date">
+                <input style="font-weight: 600;" matStartDate formControlName="ValidFrom" placeholder="Valid From" required readonly>
+                <input style="font-weight: 600;" matEndDate formControlName="ValidTo" placeholder="Valid To" required readonly>
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </div>
+          <mat-error *ngIf="form.controls.ValidFrom.hasError('matStartDateInvalid')">Invalid Start Date</mat-error>
+          <mat-error *ngIf="form.controls.ValidTo.hasError('matEndDateInvalid')">Invalid End Date</mat-error>
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start start">
+          <mat-label class="txt mgntop10 alignleft">Contract No *</mat-label>
+          <div class="inputbox " style="width:280px; margin-top:6px;">
+            <input placeholder="Contract No" class="text" style="background-color:var(--white); height:100%; vertical-align: middle;" formControlName="ContractNo" name="ContractNo" id="ContractNo" onkeyup="this.value=this.value.replace(/[^\+\w\.]+/,'')" (keyup)="validateContract()">
+          </div>
+          <mat-error *ngIf="form.get('ContractNo').invalid&&form.get('ContractNo').dirty" class="txterror" style="padding:0px; margin-left:4px; margin-top:6px">{{getErrorMessage(form.get('ContractNo'),'ContractNo')}}</mat-error>
+        </div>
+      </div>
+      <div fxLayout="column" style="margin-top: 24px;">
+        <div class="font_12 txt" style="padding-bottom:9px; border-bottom: 1px solid #a1b4c4; width:100%">Upload Documents</div>
+        <div class="mgntop10" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="5px" style="height:100%">
+              <!-- <mat-icon style = "color:var(--primary)">publish</mat-icon> -->
+              <!-- <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                  <span style = "color:var(--primary); font-weight: 600;">{{previewUrl ? fileName : 'Upload File'}}</span>
+                  <input formControlName="File" multiple hidden type="file" #fileInput (change)="fileProgress($event)" />
+              </div> -->
+                <div class="btnsecondary" style="border-radius:4px; padding: 12px 30px 12px 30px;" (click)="fileInput.click()">
+                  <span style = "color:var(--primary); font-weight: bold;" class="font_14">{{previewUrl ? fileName : 'UPLOAD'}}</span>
+                  <input accept=".pdf" formControlName="File" multiple hidden type="file" #fileInput (change)="fileProgress($event)" />
+                </div>
+        </div>
+        <div class="mgntop10" fxFlex="79" fxLayout="row" fxLayoutAlign="start start" > 
+            <span style="color: var(--inlineeditclr);" class="font_12 hint">Note : File size should be less than 20MB (PDF Format)</span> 
+        </div>
+        <span *ngIf="fileDetails.length > 0" class="mgntop20 txt">Attached Documents</span>
+        <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" style="margin-top:24px" >
+          <div *ngFor="let file of fileDetails"  class="font_12 mgnbtm10 chipset-active" style="width: fit-content;">
+            <div fxLayout="row wrap" fxLayoutAlign="start center">
+              <span class="font_12">{{file.name}}</span>
+              <mat-icon class="mgnleft5 md-20 pointer" (click)="removeFile(file)">clear</mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>    
+     
+  </div>
+  <div mat-dialog-actions style="padding: 15px 0px 15px 0px;" fxLayout="row" fxLayoutAlign="end center">
+    <button *ngIf = "!isView" style="padding: 12px 30px 12px 30px; border-radius:4px;" id="btnsave" class="btnpri btnauto" [disabled]="form.invalid"  (click)="addExtendContract()">SAVE</button>
+  </div>

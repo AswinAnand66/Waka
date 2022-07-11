@@ -1,0 +1,52 @@
+<!-- <div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal"
+	style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div> -->
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10">Carrier Allocation</mat-label>
+    <mat-icon id="close" color="warn" class="pointer" matTooltip="Close dialog" (click)="onClose(false)">cancel</mat-icon>
+</div>
+<div mat-dialog-content>
+    <form  [formGroup]="form">
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <mat-select placeholder="Origin Port" formControlName="OriginPort" name="OriginPort" class="capitalize font_12" (selectionChange)="onSelOP()" >
+                <input type="text" style="border:none; border-bottom:1px solid lightgray; margin-left:20px; margin-top:10px" placeholder="filter" formControlName="FilterOP">
+                <mat-option class="capitalize" *ngFor="let ele of filterPortOP | async" [value]="ele">{{ele.portwithregion}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <mat-select placeholder="Destination Port" formControlName="DestPort" name="DestPort" class="capitalize font_12" (selectionChange)="onSelDP()" >
+                <input type="text" style="border:none; border-bottom:1px solid lightgray; margin-left:20px; margin-top:10px" placeholder="filter" formControlName="FilterDP">
+                <mat-option class="capitalize" *ngFor="let ele of filterPortDP | async" [value]="ele">{{ele.portwithregion}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <hr/>
+        <div formArrayName="CarrierAlloc" fxLayout="column">
+            <div *ngFor="let ele of form.get('CarrierAlloc')['controls']; let i = index">
+                 <div [formGroupName]="i" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="5px">
+                    <mat-icon *ngIf="i!=0" id="remove{{i}}" color="warn" (click)="removeCarrierAlloc(i)" class="pointer"matTooltip="Remove Email">remove_circle</mat-icon>
+                    <mat-icon *ngIf="i==0" id="remove{{i}}" style="opacity:0.5; color:lightgray" >remove_circle</mat-icon>
+                    <mat-form-field class="inputboxmedium content-wrapper no-padding-btm" style="font-weight: 600;">
+                        <mat-select placeholder="Carrier" formControlName="Carrier" name="Carrier" class="capitalize font_12">
+                            <mat-option class="capitalize" *ngFor="let carrier of carrierColl" [value]="carrier">{{carrier.company_name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="inputboxmedium content-wrapper no-padding-btm">
+                        <input matInput placeholder="Contract Number" formControlName="ContractNumber" name="ContractNumber{{i}}" id="ContractNumber{{i}}" required>
+                    </mat-form-field>
+                    <mat-form-field class="inputboxsmall content-wrapper no-padding-btm">
+                        <input matInput type="number" placeholder="% Allocation" formControlName="AllocationPercent" name="AllocationPercent{{i}}" id="AllocationPercent{{i}}" required>
+                    </mat-form-field>
+                    <mat-icon *ngIf="form.get('CarrierAlloc')['controls']?.length-1 == i" id="add{{i}}" color="primary" (click)="addContract()" class="pointer mgnleft20" matTooltip="Add Contract">add_circle</mat-icon>
+                </div>
+            </div>
+            <div *ngIf="errMsg.length>0" class="clrred font_12 mgnleft20">{{errMsg}}</div>
+            <div class="clrgreen font_12 mgnleft20">Total Allocation Percentage must be 100</div>
+        </div>
+    </form>
+</div>
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end center" fxLayoutGap="20px">
+    <button *ngIf="form.valid && totalPercent100" mat-raised-button style="background-color:#1c75bc; color:white;" (click)="saveSOPCarrierAllocation()"><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE</span></button>
+    <button *ngIf="form.invalid || !totalPercent100" mat-raised-button style="background-color:#1c75bc; color:white; opacity:0.5" disabled='true'><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE</span></button>
+</mat-dialog-actions>

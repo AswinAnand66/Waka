@@ -1,0 +1,23 @@
+<svg width="35" height="44" viewBox="0 0 35 44" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <filter x="-44.4%" y="-33.3%" width="188.9%" height="166.7%" filterUnits="objectBoundingBox" id="8cwm8l6kea">
+            <feOffset dy="2" in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+            <feColorMatrix values="0 0 0 0 0.272927711 0 0 0 0 0.367583659 0 0 0 0 0.447293931 0 0 0 0.160757212 0" in="shadowBlurOuter1" result="shadowMatrixOuter1"/>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <g filter="url(#8cwm8l6kea)" transform="translate(4 2)" fill="none" fill-rule="evenodd">
+        <rect fill="#1C75BC" fill-rule="nonzero" y="1.8" width="27" height="34.2" rx="2"/>
+        <rect fill="#FAFDFF" x=".9" y="2.7" width="25.2" height="32.4" rx="1"/>
+        <rect fill="#1C75BC" fill-rule="nonzero" x="3.6" width="19.8" height="4.5" rx="1"/>
+        <path d="M3.6 3.6h19.8V1a1 1 0 0 0-1-1H4.6a1 1 0 0 0-1 1v2.6z" fill="#F6F6F6" opacity=".5"/>
+        <rect fill="#A1B4C4" fill-rule="nonzero" x="4.5" y="10.8" width="18" height="1" rx=".5"/>
+        <rect fill="#A1B4C4" fill-rule="nonzero" x="4.5" y="16.2" width="18" height="1" rx=".5"/>
+        <rect fill="#A1B4C4" fill-rule="nonzero" x="4.5" y="21.6" width="18" height="1" rx=".5"/>
+        <rect fill="#A1B4C4" fill-rule="nonzero" x="4.5" y="27" width="18" height="1" rx=".5"/>
+    </g>
+</svg>

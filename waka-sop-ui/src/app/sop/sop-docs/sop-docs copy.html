@@ -1,0 +1,48 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal"
+	style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div>
+<div fxLayout="column" style="margin:30px 16px 0 4px">
+    <div fxLayout="row" fxLayoutAlign="space-between center">
+        <mat-label class="font_14 fntwt600">Document List</mat-label>
+        <button mat-raised-button style="background-color:#1c75bc; color:white;" (click)="addDoc()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW</span></button>
+    </div>
+    <div *ngIf="sopDocCard.length>0" style="margin-bottom:16px" >
+        <mat-card *ngFor="let doc of sopDocCard" style="margin-top:16px">
+            <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-icon style="color:var(--red)" class="pointer" (click)="delSOPDoc(doc)">delete</mat-icon>
+                <div fxLayout="column" *ngFor="let dockey of objectKeys(doc)">
+                    <div *ngIf="dockey!='dest_country' && dockey!='origin_country' && dockey!='sop_id'" class="font_14" style="color:#465e72" class="fntwt600">{{dockey}}</div>
+                    <div *ngIf="dockey!='dest_country' && dockey!='origin_country' && dockey!='sop_id'"  class="font_10" style="color:#465e72">{{doc[dockey]}} Documents</div>
+                    <div fxLayout="row" fxLayoutAlign="center center">
+                        <div fxLayout="column">
+                            <div *ngIf="dockey=='origin_country'" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                                <mat-icon style="color:#1c75bc;">place</mat-icon>
+                                <div style="color:#465e72" class="fntwt600">{{doc[dockey].country_name}}</div>
+                            </div>
+                            <div *ngIf="dockey=='origin_country'" style="margin-left:36px" class="font_10">Origin</div>
+                        </div>
+                        <mat-icon *ngIf="dockey=='origin_country'" style="color:#1c75bc; margin-left:9px" class="md-14">circle</mat-icon>
+                        <div *ngIf="dockey=='origin_country'" style="width:50px; border-bottom:dotted 2px #1c75bc; margin-top:-1px; margin-left:0px"></div>
+                        <div *ngIf="dockey=='origin_country'" class="caret5 right" style="margin-left:0px"></div>
+                        <div fxLayout="column" style="margin-left:-60px;">
+                            <div *ngIf="dockey=='dest_country'" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                                <mat-icon style="color:#1c75bc;">place</mat-icon>
+                                <div style="color:#465e72" class="fntwt600">{{doc[dockey].country_name}}</div>
+                            </div>
+                            <div *ngIf="dockey=='dest_country'" style="margin-left:36px" class="font_10">Destination</div>
+                        </div>
+
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div *ngIf="sopDocCard.length==0" [style.height.px]="screen.height-40-38-30" fxLayoutAlign="center center" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px">
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <mat-icon class="md-96" style="opacity:0.2">note_add</mat-icon>
+            <div class="font_12">Click on ADD NEW to create Document Set</div>
+        </div>
+    </div>
+</div>

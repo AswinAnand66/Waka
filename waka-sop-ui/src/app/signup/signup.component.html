@@ -1,0 +1,94 @@
+<app-splash-header></app-splash-header>
+<div flex fxLayout="column" fxLayoutGap="10px">
+	<div style="padding:0px 32px !important" >
+		<form [formGroup]="form" fxLayout="row" fxLayoutAlign="end center" [style.height.px]="height" autocomplete="off">
+			<mat-card *ngIf="firstStep && !regSuccess" style="box-shadow: 0 6px 18px 5px rgba(28, 117, 188, 0.1); border-radius: 10px; width: 280px; height: auto;"> 
+				<mat-card-header>
+					<span class="moduleHeader" style="font-size: 16px; margin-left: -19px;">Sign&nbsp;Up</span>
+				</mat-card-header>
+				<mat-card-content style="width:100%">
+					<div fxLayout="column" fxLayoutAlign="center center">
+						<div class="inputbox inboxminwidth" [ngClass]="{'errtxtbdr':form.get('Name').invalid && form.get('Name').dirty , 'validtext' : form.get('Name').valid}">
+							<div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+								<mat-icon [ngClass]="form.get('Name').valid ? 'iconprimary' : 'iconinactive'">person</mat-icon>
+								<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+									<input class="text" placeholder="Enter Full Name" formControlName="Name" name="name" id="name" required>
+								</div>
+							</div>
+						</div>
+						<div class="inputbox inboxminwidth" [ngClass]="{'errtxtbdr':form.get('Email').invalid && form.get('Email').dirty , 'validtext' : form.get('Email').valid}">
+							<div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+								<mat-icon [ngClass]="form.get('Email').valid ? 'iconprimary' : 'iconinactive'">mail</mat-icon>
+								<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+									<input class="text" placeholder="Enter Email ID" formControlName="Email" name="email" id="email" autocomplete="new-email" (blur)="validateEmailSignUp()" required>
+								</div>
+							</div>
+						</div>
+						<div class="inputbox inboxminwidth" [ngClass]="{'errtxtbdr':form.get('Password').invalid && form.get('Password').dirty , 'validtext' : form.get('Password').valid}">
+							<div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+								<mat-icon [ngClass]="form.get('Password').valid ? 'iconprimary' : 'iconinactive'">lock</mat-icon>
+								<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+									<input class="text" type="password" placeholder="Enter Password" formControlName="Password" name="Password" id="Password" autocomplete="new-password" (focus)="passwordTouched = true; passwordStrength();" (focusout)="passwordTouched = false"  (keyup)="passwordStrength()" required>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="padding:12px 3px">
+						<button class="btnpri btnprifull" type="button" id="btnlogin"  id="btnRegister" [disabled]="form.invalid || passwordStrengthLabel == 'Weak'" (click)="firstStep = !firstStep"><span style="color:white">SIGN UP</span></button>
+					</div>
+					<mat-divider style="color: #dfe3e7;"></mat-divider>
+					<div style="padding:16px 12px; padding-bottom: 0px;" fxLayoutAlign="center center" >
+						<div><span style="color: #a1b4c4; font-size: 14px; font-weight: 600;">Existing User? </span><span class="pointer clrprimary" style="font-size: 14px; font-weight: bold;" [routerLink]="['/login']">Login</span></div>
+					</div>
+					<div class="erroverlay" [ngStyle]="{'display': passwordTouched && checkEmail ? 'block': 'none'}" style="bottom:90px;margin-left:-222px">
+						<div class="box arrow-right" style="width: 199px !important; height: 116px !important; padding: 10px !important;" fxLayout="column">
+							<span style="font-size: 12px; color: #fff; letter-spacing: 0.15px; font-weight: 600; margin-bottom: 8px;"> {{ passwordStrengthLabel }} Password</span>
+							<div class="password-meter__bar" style="background-color: chartreuse;">
+								<div class="password-meter__bar__inner js--password-bar"></div>
+						    </div>
+							<span *ngIf="passwordStrengthLabel != 'Strong'" style="font-size: 12px; color: #fff; letter-spacing: 0.15px;">Make it at least 8 characters long, with numbers and special characters($,%,&,…)</span>
+							<span *ngIf="passwordStrengthLabel == 'Strong'" style="font-size: 12px; color: #fff; letter-spacing: 0.15px;">Great! This will do! Just don't forget it.</span>
+						</div>
+					</div>
+					<div class="erroverlay" [ngStyle]="{'display': !checkEmail ? 'block': 'none'}" style="bottom:80px;margin-left:-192px">
+						<div class="box arrow-right" fxLayout="column" fxLayoutAlign="center center">
+							<div style="padding: 10px 13px; border-radius: 100%; border: #fff 2px solid;">
+								<mat-icon class="iconactive">warning</mat-icon>
+							</div>
+							<span style="font-size: 12px; font-weight: 600; color: #fff;padding-top:20px">Whoops!</span>
+							<span *ngIf="!loginActiveError" style="font-size: 12px; text-align: center; color: #fff; letter-spacing: 0.15px;">It looks like the email you entered already exist!</span>
+							<span *ngIf="loginActiveError" style="font-size: 12px; text-align: center; color: #fff; letter-spacing: 0.15px;">{{loginActiveError}}</span>
+						</div>
+					</div>
+				</mat-card-content>
+			</mat-card>
+			<mat-card *ngIf="!firstStep && !regSuccess" style="box-shadow: 0 6px 20px 18px rgba(28, 117, 188, 0.06); border-radius: 10px; width: 280px; height: auto;">
+			    <mat-card-content>
+					<div fxLayout="column" fxLayoutAlign="start start">
+						<img src="../../assets/image/smallLogo.png" style="width: 40x; height: 40px; margin-bottom: 22px;"/>
+						<span style="color: var(--textcolor); font-weight: bold; font-size: 16px; margin-bottom: 40px;">
+							You’re <br/> almost there!
+						</span>
+						<span style="font-size: 13px; color: var(--textcolor); font-weight: 600;">
+							By creating an account, you agree to our <span class="linkterms"> Terms of Service </span> and <span class="linkterms"> Privacy & Cookie Statement </span> .
+						</span>
+						<button class="btnpri btnprifull" type="submit" style="margin-top: 52px; margin-bottom: 5px;" [disabled]="form.invalid || !checkEmail" id="btnRegister" (click)="register()"><span style="color:white">I Agree</span></button>
+					</div>
+			    </mat-card-content>
+			</mat-card>
+			<mat-card *ngIf="regSuccess" style="box-shadow: 0 6px 20px 18px rgba(28, 117, 188, 0.06); border-radius: 10px; width: 280px; height: auto;">
+			    <mat-card-content>
+					<div fxLayout="column" fxLayoutAlign="center center">
+						<div style="border-radius: 100%; border: var(--primary) 2px solid; padding: 20px; padding: 13px 15px 17px; height: 32px; width: 32px; margin-bottom: 24px;">
+							<mat-icon [inline]="false" style="font-size: 33px; color: var(--primary);">lock</mat-icon>
+						</div>
+						<span style="font-size: 16px; color: var(--textcolor); font-weight: bold;">Verify your email!</span>
+						<span style="font-size: 12px; color: var(--textcolor); margin-top: 24px; text-align: center; padding-left: 28px; padding-right: 28px ;">Just one quick check to make sure you’re really you.</span>
+						<span style="font-size: 12px; color: var(--textcolor); margin-top: 24px; text-align: center; padding-left: 23px; padding-right: 23px; font-weight: 500;">A verification email has been sent to <span style="font-weight: bold;">{{ form.get('Email').value }}</span>, click verify to sign up successfully (if you can’t find the, check your spam).</span>
+						<span class="linkterms" style="font-weight: bold; font-size: 12px; margin-top: 24px; margin-bottom: 5px;" > Didn’t receive an email? </span>
+					</div>
+			    </mat-card-content>
+			</mat-card>
+		</form>
+	</div>
+</div>

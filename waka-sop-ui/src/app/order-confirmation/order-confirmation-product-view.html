@@ -1,0 +1,409 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div *ngIf="!isLoading && !isMobileView" fxLayout="column" fxLayoutAlign="start start" [style.height.px]="height - 100" [style.width.px]="width" style="overflow: auto;padding-top: 60px;padding-left: 30px;">
+    <!-- <d-iv (click)="backToProd()" fxLayout="row" fxLayoutAlign="center center" class="pointer mgntop10">
+        <mat-icon class="md-18">arrow_back</mat-icon>
+        <span style="font-size: 16px; margin-left: 8px;">Back to products</span>
+    </d-iv> -->
+        <mat-card style="border: solid 1px rgba(155, 168, 179, 0.22); box-shadow:none; margin-top: 16px; width: 97%; margin-bottom: 12px; background-color: #eef4fb !important;">
+            <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                    <mat-icon style="transform: scale(1.3); color: var(--primary);">category</mat-icon>
+                    <div fxLayout="column">
+                        <div class="txtclr">{{ product }}</div>
+                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Product Number</div>
+                    </div>
+                </div>
+                <div fxFlex="10" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                    <div fxLayout="column">
+                        <div class="txtclr">{{ purchaseOrderCompanyWise?.data.length}}</div>
+                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">No. of PO</div>
+                    </div>
+                </div>
+                <div fxFlex="15" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                    <div fxLayout="column">
+                        <div class="txtclr" >CBM</div>
+                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Unit</div>
+                    </div>
+                </div>
+                <div fxFlex="15" style="width:100%; margin-right:10px">
+                    <div fxLayout="column">
+                        <div class="txtclr">{{ totalOrderedQty }}</div>
+                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Total Ordered Qty.</div>
+                    </div>
+                </div>
+                <div fxFlex="15" style="width:100%; margin-right:10px">
+                    <div fxLayout="column">
+                        <div class="txtclr"> {{ getTotalPendingQty() > 0 ? getTotalPendingQty() : 0 }}</div>
+                        <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Total Pending Qty.</div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card> 
+        <form [formGroup]="form" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="28px" style="margin-bottom: 18px; width: 99%;">
+            <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('Date').invalid && form.get('Date').dirty , 'validtext' : form.get('Date').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                        <input style="outline:none; background-color:var(--white);text-align: left;" class="text" formControlName="Date" name="Date" type="date" id="Date" autocomplete="new-Date" required>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('ShiftBatch').invalid && form.get('ShiftBatch').dirty , 'validtext' : form.get('ShiftBatch').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">                  
+                        <input style="outline:none; background-color:var(--white);text-align: left;" class="text" placeholder="Shift / Batch" formControlName="ShiftBatch" name="ShiftBatch" onkeyup="this.value=this.value.replace(/[^\+\w]+\s/,'')" id="ShiftBatch" autocomplete="new-ShiftBatch" required>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="center end">
+                        <mat-error style="margin-left:-30px; margin-top:8px;" *ngIf="form.get('ShiftBatch').invalid && form.get('ShiftBatch').dirty" class="txterror" >{{getErrorMessage(form.get('ShiftBatch'),'ShiftBatch')}}</mat-error>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('Quantity').invalid && form.get('Quantity').dirty , 'validtext' : form.get('Quantity').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">                  
+                        <input style="outline:none; background-color:var(--white);text-align: left;" class="text" type="number" placeholder="Quantity" formControlName="Quantity" name="Quantity" onkeyup="this.value=this.value.replace(/[^\+\w]+\s/,'')" id="Quantity" autocomplete="new-Quantity" required>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="center end">
+                        <mat-error style="margin-left:-30px; margin-top:8px;" *ngIf="form.get('Quantity').invalid && form.get('Quantity').dirty" class="txterror" >Enter valid value</mat-error>
+                    </div>
+                </div>
+            </div>
+            <!-- <div *ngIf="isEditTransaction" fxLayoutAlign="center center" style="padding-top: 18px">
+                <mat-icon style="color: var(--primary); transform: scale(1.4); cursor: pointer;" matTooltip="Upload Image / PDF" (click)="uploadAttachmentDialog(false)">attach_file</mat-icon>
+            </div> -->
+            <div *ngIf="!fileName || isEditTransaction" fxLayoutAlign="center center" style="padding-top: 18px">
+                <mat-icon style="color: var(--primary); transform: scale(1.4); cursor: pointer;" matTooltip="Upload Image / PDF" (click)="openUploadAttachmentDialog(false)" >attach_file</mat-icon>
+                <input hidden type="file" #fileInput (change)="attachFile($event)" accept="file_extension|pdf|image" />
+            </div>
+            <div *ngIf="attachType == 'PDF' && fileName && isEditTransaction == false" fxLayoutAlign="center center" style="padding-top: 18px">
+                <mat-icon class="attach-remove" matTooltip="Remove Attached PDF" (click)="previewUrl = undefined; fileName = undefined" >picture_as_pdf</mat-icon>
+            </div>
+            <div *ngIf="attachType == 'IMAGE' && fileName && isEditTransaction == false" fxLayoutAlign="center center" style="padding-top: 18px">
+                <mat-icon class="attach-remove" matTooltip="View attached Image" (click)="openUploadAttachmentDialog(true)" >collections</mat-icon>
+            </div>
+            <div fxLayoutAlign="center center" style="padding-top: 14px">
+                <button mat-button style="width: 200px !important; height: 40px !important;" [disabled]="form.invalid" class="btnpri btnauto" (click)="addTransaction()">
+                    <mat-icon>add_circle_outline</mat-icon><span class="mgnleft10 font_14">ADD TRANSACTION</span>
+                </button>
+            </div>
+        </form>
+        <span class="text" style="font-size: 16px; margin-bottom: 12px;">Transaction Details</span>
+        <table [hidden]="transactionsColl.data.length == 0" mat-table #tableTrans [dataSource]="transactionsColl" matSort style="border:1px lightgray solid; border-radius: 10px; width:100%; margin-bottom: 18px; width: 99%;" >
+            <ng-container [matColumnDef]="col.key" *ngFor="let col of transactionsColumnsSchema">
+                <th mat-header-cell *matHeaderCellDef class="tbl-head">
+                    {{col.label}}
+                </th>
+                <td mat-cell *matCellDef="let element" style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize">
+                    <div [ngSwitch]="col.type" *ngIf="!element.isEdit">
+                        <div *ngSwitchCase="'isEdit'">
+                            <mat-icon style="color: var(--textcolor); cursor: pointer;" matTooltip="Edit" (click)="onTransactionEdit(element)">edit</mat-icon>
+                        </div>
+                        <span *ngSwitchCase="'date'">
+                          {{ element[col.key] | date: 'dd-MM-YYYY' }}
+                        </span>
+                        <div *ngSwitchCase="'viewAttachment'">
+                            <mat-icon *ngIf="element.attachment_file_path" style="color: var(--textcolor); cursor: pointer;" matTooltip="View Attached File" (click)="viewAttachedFile(element.attachment_file_path);">attach_file</mat-icon>
+                            <mat-icon *ngIf="!element.attachment_file_path" style="color: var(--textcolor); cursor: default; opacity: 0.5;">attach_file</mat-icon>
+                        </div>
+                        <div *ngSwitchCase="'isDelete'">
+                            <mat-icon style="color: var(--redalt); cursor: pointer;" matTooltip="Delete the Transaction" (click)="delTransaction(element)">delete</mat-icon>
+                        </div>
+                        <span *ngSwitchDefault>
+                          {{ element[col.key] }}
+                        </span>
+                    </div>
+                    <div [ngSwitch]="col.type" *ngIf="element.isEdit">
+                        <div *ngSwitchCase="'isEdit'">
+                            <button style="border: none; background: none;" [disabled]="isBtnDisabled(element)" (click)="saveTransactionEdit(element);">
+                                <mat-icon [ngStyle]="{'opacity': (isBtnDisabled(element)) ? '0.3' : ''}" style="color: var(--green); cursor: pointer; margin-left: 8px; margin-right: 8px;" matTooltip="Save">done</mat-icon>
+                            </button>
+                            <button style="border: none; background: none;" (click)="closeTransactionEdit(element);">
+                                <mat-icon style="color: var(--red); cursor: pointer; margin-left: 8px;" matTooltip="Cancel">close</mat-icon>
+                            </button>
+                        </div>
+                        <div *ngSwitchCase="'viewAttachment'">
+                            <mat-icon *ngIf="element.attachment_file_path" style="color: var(--textcolor); cursor: pointer;" matTooltip="Remove Attached File" (click)="element.attachment_file_path=null;">delete_forever</mat-icon>
+                            <mat-icon *ngIf="!element.attachment_file_path" style="color: var(--textcolor); cursor: pointer;" matTooltip="Upload Image / PDF" (click)="openUploadAttachmentDialogForTransEdit(false, element)" >attach_file</mat-icon>
+                            <input hidden type="file" #fileInput (change)="editAttachedFile($event, element.attachment_file_path)" accept="file_extension|pdf|image" />
+                        </div>
+                        <mat-form-field class="form-input" *ngSwitchCase="'date'" appearance="standard">
+                            <mat-label>Choose a date</mat-label>
+                            <input matInput [matDatepicker]="picker" [(ngModel)]="element[col.key]"/>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field class="form-input" *ngSwitchCase="'text'" appearance="standard">
+                            <input type="text" matInput (ngModelChange)="element[col.key] = $event" [ngModel]="element[col.key]"/>
+                        </mat-form-field>
+                        <mat-form-field class="form-input" *ngSwitchCase="'number'" appearance="standard">
+                            <input type="number" matInput (ngModelChange)="element[col.key] = $event" [ngModel]="element[col.key]"/>
+                        </mat-form-field>
+                    </div>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="dispTransaction; sticky: true;" class="tblrowht"></tr>
+            <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispTransaction;"></tr>
+        </table>
+        <div *ngIf="transactionsColl.data.length == 0" fxLayout="row" fxLayoutAlign="center center" style="height: 80px; width: 100%;">
+            No transaction data available
+        </div>
+        <span class="text" style="font-size: 16px; margin-bottom: 12px;">Order Details</span>
+        <table mat-table #table [dataSource]="purchaseOrderCompanyWise" matSort style="border:1px lightgray solid; border-radius: 10px; width:99%" >
+            <ng-container  matColumnDef="po_no" sticky>
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>PO NO</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <div style="color:#465e72">{{element.order_number}}</div>
+                        <mat-icon *ngIf="element.status == 'Confirmed'" style="color:rgb(22, 189, 22)">check_circle</mat-icon>
+                        <mat-icon *ngIf="element.status == 'Processing'" style="color:orange">watch_later</mat-icon>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="company_name">
+                <th mat-header-cell  class="tbl-head" *matHeaderCellDef>COMPANY</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.company_name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell  class="tbl-head" *matHeaderCellDef>STATUS</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.status}}</td>
+            </ng-container>
+            <ng-container matColumnDef="shipment_date">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>SHIPMENT DATE</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.shipment_date}}</td>
+            </ng-container>
+            <ng-container matColumnDef="cargo_ready_date">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>CARGO READY DATE</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.ship_date | date: 'longDate' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="logistics_provider">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>LOGISTICS PROVIDER</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.logistics_provider}}</td>
+            </ng-container>
+            <ng-container matColumnDef="loading_port">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>LOADING PORT</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <img src='http://purecatamphetamine.github.io/country-flag-icons/3x2/{{element.lp_code}}.svg' class="img-responsive" width="30px" height="30px"/>
+                        <div>{{element.loading_port}}</div>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="discharging_port">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>DISCHARGING PORT</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" ="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <img src="http://purecatamphetamine.github.io/country-flag-icons/3x2/{{element.dp_code}}.svg" class="img-responsive" width="25px" height="25px"/>
+                        <div>{{element.discharging_port}}</div>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="type">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>TYPE</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.type}}</td>
+            </ng-container>
+            <ng-container matColumnDef="mode">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>MODE</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                <mat-icon *ngIf="element.mode == 'flight'" style=" transform:(1.1); color:rgba(16, 39, 248, 0.808) ; margin-left:8px">flight_takeoff</mat-icon>
+                <span *ngIf="element.mode == 'ship'"> <img src='../../assets/image/svg/icon-small-carrier.svg' style="width:24px; height:24px; margin-left:8px"/> </span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="sc">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>SC NO</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.sc}}</td>
+            </ng-container>
+            <ng-container matColumnDef="supplier_name">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>SUPPLIER NAME</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.supplier_name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="supplier_number">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>SUPPLIER NUMBER</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.supplier_number}}</td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>DESCRIPTION</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.product_description}}</td>
+            </ng-container>
+            <ng-container matColumnDef="total_quantity">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>TOTAL ORDERED QTY.</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.item_qty}}</td>
+            </ng-container>
+            <ng-container matColumnDef="actual_quantity">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>ACTUAL QTY.</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.actual_quantity}}</td>
+            </ng-container>
+            <ng-container matColumnDef="pending_quantity">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef>PENDING QTY.</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{(element.item_qty - element.actual_quantity) > 0 ? element.item_qty - element.actual_quantity : 0}}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="dispPO; sticky: true;" class="tblrowht"></tr>
+            <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispPO;"></tr>
+        </table>
+</div>
+
+<!-- Mobile View -->
+<div *ngIf="isMobileView" [style.height.px]="height-60" style="width: 100%; padding-top: 120px;">
+    <div *ngIf="!isMobileDetailedView" [style.height.px]="height-110">
+        <div *ngIf="isPOAssigned" style="padding-bottom: 70px;">
+            <mat-card class="left-cards last-ch" fxLayout="column" fxLayoutGap="10px" *ngFor="let orders of purchaseOrderMonthWise.data;" (click)="viewDetailedOrders(orders)">
+                <div fxLayout="column" fxLayoutAlign="start">
+                    <span class="card-heading">Product Number: {{ orders.product }}</span>
+                    <span class="text" style="text-align: start;"> {{ orders.product_description }}</span>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between end">
+                    <div fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon style="vertical-align: middle !important; color: var(--primary); transform: scale(0.7);">event</mat-icon>
+                        <span class="text">{{ orders.date | date : 'dd-MM-YYYY' }}</span>
+                        <!-- <span class="card-sub-heading" >Cargo Ready Date</span> -->
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="end">
+                        <span class="text"> {{ orders.item_qty }}</span>
+                        <span class="card-sub-heading">Total Quantity</span>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+        <div *ngIf="!isPOAssigned && !isLoading" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" [style.height.px]="height-110">
+            <mat-icon style="transform: scale(1.3); color: var(--primary);">category</mat-icon> 
+            <span>Currently no Order Pending</span>
+        </div>
+    </div>
+    <div *ngIf="isMobileDetailedView" [style.height.px]="height-110">
+        <!-- <div (click)="isMobileDetailedView =  false; " fxLayout="row" fxLayoutAlign="center center">
+            <mat-icon class="md-18">arrow_back</mat-icon>
+            <span style="font-size: 16px;">BACK</span>
+        </div> -->
+        <mat-card style="border: solid 1px rgba(155, 168, 179, 0.22); box-shadow:none; margin-top: 16px; width:fit-content !important; margin-bottom: 12px; background-color: #eef4fb !important; margin: 12px 12px;">
+            <mat-card-content fxLayout="row wrap" fxLayoutAlign="space-between center">
+                <div fxFlex="49" fxLayout="column">
+                    <div class="txtclr">{{ product }}</div>
+                    <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Product Number</div>
+                </div>
+                <div fxFlex="49" fxLayout="column">
+                    <div class="txtclr">CBM</div>
+                    <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Unit</div>
+                </div>
+                <div fxFlex="49" fxLayout="column" style="margin-top: 8px;">
+                    <div class="txtclr">{{ totalOrderedQty }}</div>
+                    <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Total Ordered Qty.</div>
+                </div>
+                <div fxFlex="49" fxLayout="column" style="margin-top: 8px;">
+                    <div class="txtclr">{{getTotalPendingQty() > 0 ? getTotalPendingQty() : 0 }}</div>
+                    <div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Total Pending Qty.</div>
+                </div>
+            </mat-card-content>
+        </mat-card> 
+        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" style="margin-left: 12px; margin-bottom: 12px;">
+            <span [ngClass]="{'heading': !mobileTransactions, 'heading-selected' : mobileTransactions }" (click)="mobileTransactions = true">Transactions</span>
+            <span [ngClass]="{'heading': mobileTransactions, 'heading-selected' : !mobileTransactions }"  (click)="mobileTransactions = false" >Orders</span>
+        </div>
+        <div *ngIf="mobileTransactions">
+            <mat-accordion>
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <span style="font-weight: bold;">Add Transaction</span>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <form [formGroup]="form" fxLayout="row wrap" fxLayoutAlign="center center" fxLayoutGap="28px" style="margin-bottom: 18px; width: 100%;">
+                        <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                            <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('Date').invalid && form.get('Date').dirty , 'validtext' : form.get('Date').valid}">
+                                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                                    <input style="outline:none; background-color:var(--white)" class="text" formControlName="Date" name="Date" type="date" id="Date" autocomplete="new-Date" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                            <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('ShiftBatch').invalid && form.get('ShiftBatch').dirty , 'validtext' : form.get('ShiftBatch').valid}">
+                                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">                  
+                                    <input style="outline:none; background-color:var(--white)" class="text" placeholder="Shift / Batch" formControlName="ShiftBatch" name="ShiftBatch" onkeyup="this.value=this.value.replace(/[^\+\w]+\s/,'')" id="ShiftBatch" autocomplete="new-ShiftBatch" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="margin-bottom:20px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                            <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('Quantity').invalid && form.get('Quantity').dirty , 'validtext' : form.get('Quantity').valid}">
+                                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">                  
+                                    <input style="outline:none; background-color:var(--white)" class="text" placeholder="Quantity" formControlName="Quantity" name="Quantity" onkeyup="this.value=this.value.replace(/[^\+\w]+\s/,'')" id="Quantity" autocomplete="new-Quantity" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxLayoutAlign="center center" style="padding-top: 18px">
+                            <mat-icon *ngIf="!fileName" style="color: var(--primary); transform: scale(1.4); cursor: pointer;" matTooltip="Upload Image / PDF" (click)="openUploadAttachmentDialog(false)">attach_file</mat-icon>
+                            <mat-icon *ngIf="attachType == 'IMAGE' && fileName" class="attach-remove" matTooltip="VIew Attached Image" (click)="openUploadAttachmentDialog(true)" >collections</mat-icon>
+                            <mat-icon *ngIf="attachType == 'PDF' && fileName" class="attach-remove" matTooltip="Remove Attached PDF" (click)="previewUrl = undefined; fileName = undefined" >picture_as_pdf</mat-icon>
+                            <input hidden type="file" #fileInput (change)="attachFile($event)" accept="file_extension|pdf|image" />
+                        </div>
+                        <div fxLayoutAlign="center center" style="padding-top: 14px">
+                            <button mat-button [disabled]="form.invalid" style="width: 192px !important; height: 40px !important;" class="btnpri btnauto" (click)="addTransaction()">
+                                <mat-icon>add_circle_outline</mat-icon><span class="mgnleft10 font_14">ADD TRANSACTION</span>
+                            </button>
+                        </div>
+                    </form>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <div style="padding-bottom: 70px;">
+                <mat-card  class="left-cards" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="space-between" *ngFor="let orders of transactionsColl.data">
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <div fxLayout="column" fxLayoutAlign="start">
+                            <span class="text"><mat-icon style="vertical-align: middle !important; color: var(--primary); transform: scale(0.7); margin-left: -5px;">event</mat-icon>{{ orders.date | date:'longDate' }}</span>
+                            <!-- <span class="card-heading">UNIT: {{ orders.unit }}</span> -->
+                        </div>
+                        <div fxLayoutAlign="end">
+                            <mat-icon *ngIf="orders.attachement_path" style="color: var(--textcolor); cursor: pointer;" (click)="viewAttachedFile(orders.attachement_path);">attach_file</mat-icon>
+                            <mat-icon *ngIf="!orders.attachement_path" style="color: var(--textcolor); cursor: default; opacity: 0.5;">attach_file</mat-icon>
+                            <mat-icon style="color: var(--redalt); cursor: pointer;" matTooltip="Delete the Transaction" (click)="delTransaction(orders)">delete</mat-icon>
+                        </div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="space-between">
+                        <div fxLayout="column" fxLayoutAlign="start">
+                            <span class="text" style="text-align: start;">{{ orders.shift_batch }}</span>
+                            <span class="card-sub-heading" >SHIFT / BATCH</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="end">
+                            <span class="text">{{ orders.mfg_qty }}</span>
+                            <span class="card-sub-heading">MFG. Quantity</span>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+        <div *ngIf="!mobileTransactions">
+            <mat-card  class="left-cards" fxLayout="column" fxLayoutGap="8px" fxLayoutAlign="space-between" *ngFor="let orders of purchaseOrderCompanyWise.data">
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <div fxLayout="row" fxLayoutAlign="space-between center">
+                        <span class="card-heading">{{ orders.order_number }}</span>
+                        <!-- <img src='../../assets/image/svg/icon-small-carrier.svg' style="width:51px; height:22px;"/>
+                        <span class="card-heading">FCL</span> -->
+                    </div>
+                    <div fxLayoutAlign="end">
+                        <img src='../../assets/image/headerlogo.png' style="width:51px; height:22px;"/>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                    <div fxLayout="column" fxLayoutAlign="start">
+                        <span class="text"><mat-icon style="vertical-align: middle !important; color: var(--primary); transform: scale(0.7); margin-left: -5px;">event</mat-icon>{{ orders.ship_date }}</span>
+                        <span class="card-sub-heading" >Cargo Ready Date</span>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center">
+                        <span class="card-heading" style="color: #24bc1c;">PO Confirmed <mat-icon style="vertical-align: middle !important; color: #24bc1c; transform: scale(0.75);">check_circle</mat-icon></span>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="space-between">
+                    <div fxLayout="column" fxLayoutAlign="end">
+                        <span class="text">{{ orders.item_qty }}</span>
+                        <span class="card-sub-heading">Total Quantity</span>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="start">
+                        <span class="text">{{ orders.actual_quantity }}</span>
+                        <span class="card-sub-heading">Actual Quantity</span>
+                    </div>
+                    <div fxLayout="column" fxLayoutAlign="end">
+                        <span class="text">{{orders.item_qty - orders.actual_quantity}}</span>
+                        <span class="card-sub-heading">Pending Quantity</span>
+                    </div>
+                </div>
+            </mat-card>
+        </div>
+    </div> 
+</div>

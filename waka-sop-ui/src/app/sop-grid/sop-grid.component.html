@@ -1,0 +1,153 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block;">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div>
+<div class="mgntop60">
+	<!-- <mat-tab-group animationDuration="700ms" (selectedTabChange)="tabChanged($event)" style="padding:24px" [(selectedIndex)]="selectedTabIndex">
+		<mat-tab label="Contracts">
+			<div *ngIf="contractColl.data.length > 0" [style.height.px]="ht-90" style="padding-right: 4px;">
+				<mat-card *ngFor="let contract of contractColl.data; let i= index;" style="border: solid 1px rgba(155, 168, 179, 0.22); box-shadow:none; margin-top: 16px;">
+					<mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+						<div fxFlex="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+							<img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:28px; height:28px;"/>
+							<div fxLayout="column">
+								<div class="txtclr">{{contract.p_name}}</div>
+								<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Principal Name</div>
+							</div>
+						</div>
+						<div fxFlex="15" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="pointer" (click)="showPorts=true">
+							<div fxLayout="column">
+								<div class="txtclr" >{{contract?.sh_name}}</div>
+								<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">{{contract?.sh_type}}</div>
+							</div>
+						</div>
+						<div fxFlex="15" style="width:100%; margin-right:10px">
+							<div fxLayout="column">
+								<div class="txtclr">{{contract?.valid_from | date:'dd-MMM-yyyy'}}</div>
+								<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Valid From</div>
+							</div>
+						</div>
+						<div fxFlex="15" style="width:100%; margin-right:10px">
+							<div fxLayout="column">
+								<div class="txtclr">{{contract?.valid_to | date:'dd-MMM-yyyy'}}</div>
+								<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Valid To</div>
+							</div>
+						</div>
+						<div fxFlex="10" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+							<div fxLayout="column">
+								<div class="txtclr">{{contract?.contract_no}}</div>
+								<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Contract No</div>
+							</div>
+						</div>
+						<div fxFlex="10" style="text-decoration: underline; font-weight:bold;" class="font_14 clrblue pointer" (click)="extendContract(contract)">EXTEND VALIDITY</div>
+					</mat-card-content>
+					<mat-accordion class="contract">
+						<mat-expansion-panel style="background-color: var(--bggroup); box-shadow:none;">
+							<mat-expansion-panel-header style="background-color: var(--bggroup1)">
+							  <mat-panel-title class="txt">
+								View Documents
+							  </mat-panel-title>
+							</mat-expansion-panel-header>
+							<div fxLayout="row" fxLayoutAlign="space-between center" class="mgntop10">
+								<div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px">
+									<div *ngFor="let file of contract.uploaded_files" class="font_12 mgnbtm10 chipset-active" style="width: fit-content;" >
+										<div fxLayout="row wrap" fxLayoutAlign="start center">
+											<span class="font_12">{{file}}</span>
+										</div>
+									</div>
+								</div>
+								<div (click)="downloadFiles(contract)">
+									<mat-icon id="download{{i}}" style="color:var(--primary)" class="pointer" matTooltip="Download Contract" >download</mat-icon>
+								</div>
+							</div>
+						  </mat-expansion-panel>
+					</mat-accordion>
+				</mat-card> 
+			</div>
+			<div style="margin-top: 120px;" *ngIf="contractColl.data.length == 0">
+				<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+					<span class="font_12 wordwrap" style="text-align:center; width:330px; color: var(--inlineeditclr);">Add/Extend contracts with your third party associated stakeholder companies</span>
+					<button mat-button *ngIf="isContractTab" class= "btnpri" (click)="addContract()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD CONTRACT</span></button>
+				</div>
+			</div>
+		</mat-tab>
+		<mat-tab label="SOP List"> -->
+			<div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px" style="padding: 15px 25px;">
+				<div class="inputboxsingle inboxminwidth">
+					<div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+						<mat-icon class="icon">search</mat-icon>
+						<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+							<input class="text" type="text" (keyup)="applySopFilter($event)" placeholder="Search by Freight Forwarder, etc" name="Name" id="Name" required>
+						</div>
+					</div>
+				</div>
+				<!-- <div *ngIf="isContractTab" class="inputboxsingle inboxminwidth">
+					<div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+						<mat-icon class="icon">search</mat-icon>
+						<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+							<input class="text" type="text" (keyup)="applyContractFilter($event)" placeholder="Search by Contract No, Stakeholder Name, etc..." name="Name" id="Name" required>
+						</div>
+					</div>
+				</div> -->
+				<div>
+					<button mat-button class="btnpri" (click)="openDialog()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">Create SOP</span></button>
+					<!-- <button mat-button *ngIf="isContractTab" class= "btnpri" (click)="addContract()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD CONTRACT</span></button> -->
+				</div>
+			</div>
+			<div *ngIf="sopColl.data.length > 0" [style.height.px]="ht-70" style="padding: 5px 25px; overflow:auto;">
+				<div *ngFor="let sop of sopColl.data">
+					<mat-card *ngIf="sop.is_view" style="box-shadow:none; border: solid 1px rgba(155, 168, 179, 0.22);margin-top: 16px;">
+						<mat-card-content fxLayout="row" fxLayoutAlign="start center">
+							<div fxFlex="25" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+								<img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:28px; height:28px;"/>
+								<div fxLayout="column">
+									<div class="txtclr">{{sop?.p_company}}</div>
+									<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Principal Company</div>
+								</div>
+							</div>
+							<div fxFlex="15" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" (click)="showPorts=true">
+								<img src='../../assets/image/svg/icon-small-crane.svg' style="width:40px; height:40px;" />
+								<div fxLayout="column">
+									<div class="txtclr" >{{sop?.port_count}}</div>
+									<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Trade</div>
+								</div>
+							</div>
+							<div fxFlex="25" style="width:100%; margin-right:10px">
+								<div  fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" >
+									<img src='../../assets/image/svg/icon-small-multi-globe.svg' style="width:36px; height:36px;"/>
+									<div fxLayout="column">
+										<div class="txtclr capitalize">{{sop?.ff_company}}</div>
+										<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Logistics Provider</div>
+									</div>
+								</div>
+							</div>
+							<div fxFlex="20" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+								<mat-icon class="iconinactive" style="transform:scale(1.25);">pending_actions</mat-icon>
+								<div fxLayout="column">
+									<div class="txtclr">{{sop?.status}}</div>
+									<div *ngIf="sop?.pending_days>0" class="font_12" style="color:rgba(155, 168, 179, 0.88)">Since {{sop.pending_days}} Days</div>
+								</div>
+							</div>
+							<div fxFlex="15" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="40px">
+								<!-- <mat-icon class="iconinactive pointer" style="transform:scale(1.25);" (click)="editSop(sop)">edit</mat-icon> -->
+								<!-- <mat-icon *ngIf="sop.status=='Draft'" class="clrred pointer" style="transform:scale(1.25);" (click)="delSop(sop)">delete</mat-icon>
+								<mat-icon *ngIf="sop.status!='Draft'" class="clrred" style="transform:scale(1.25); opacity:0.5" >delete</mat-icon> -->
+								<!-- <mat-icon class="iconinactive pointer" style="transform:scale(1.25);" (click)="printSop(sop)">print</mat-icon> -->
+								<mat-icon [ngClass]="{'edit-allow':sop.is_edit,'edit-deny':!sop.is_edit}" (click)="sop.is_edit ? editSop(sop) : '' " [matTooltip]="sop.is_edit ? 'Edit SOP' : 'Edit denied by company'">edit</mat-icon>
+								<mat-icon [ngClass]="{'delete-allow':sop.is_delete && sop.status=='Draft','delete-deny':!sop.is_delete && sop.status=='Draft'}" (click)="sop.is_delete ? delSop(sop) : '' " [matTooltip]="sop.is_delete ? 'Delete SOP' : 'Delete denied by company'" >delete</mat-icon>
+								<mat-icon *ngIf="sop.status!='Draft'" class="clrred" style="transform:scale(1.25); opacity:0.5" >delete</mat-icon>
+								<mat-icon [ngClass]="{'edit-allow':sop.is_print,'edit-deny':!sop.is_print}" (click)="sop.is_print ? printSop(sop) : '' " [matTooltip]="sop.is_print ? 'Print SOP' : 'Print denied by company'" >print</mat-icon>
+							</div>
+						</mat-card-content>
+					</mat-card>
+				</div>
+			</div>
+			<div style="margin-top: 120px;" *ngIf="sopColl.data.length == 0 && !isLoading">
+				<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+					<span class="font_12 wordwrap" style="text-align:center; width:330px; color: var(--inlineeditclr);">Click on Create SOP to define rules for your freight process</span>
+					<button mat-button class="btnpri" (click)="openDialog()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">Create SOP</span></button>
+				</div>
+			</div>
+		<!-- </mat-tab>
+	</mat-tab-group> -->
+</div>

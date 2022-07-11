@@ -1,0 +1,166 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 16px 16px;" >
+    <div style="padding-top: 10px;">
+        <div fxLayout="row" fxLayoutAlign="end center" class="tabSideAction" fxLayoutGap="15px" [style.margin-left.px]="width-810">
+            <mat-button-toggle-group [(ngModel)]="summaryToggle" style="width: 136px; height: 40px;" class="mgntop10">
+                <mat-button-toggle value="table" style="width: 68px; height: 40px;" (click)="toggleNavigate('list')">
+                    <mat-icon style="height: 35px;">format_list_bulleted</mat-icon>
+                </mat-button-toggle>
+                <mat-button-toggle value="cards" style="width: 68px; height: 40px;">
+                    <mat-icon style="height: 35px;">grid_view</mat-icon>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
+        </div>
+        <mat-tab-group animationDuration="700ms" (selectedTabChange)="tabChanged($event)" style="margin: 0px 10px" [(selectedIndex)]="selectedTabIndex">
+            <mat-tab label="Active">
+                <mat-drawer-container hasBackdrop="false" [style.height.px]="ht+70">
+                    <mat-drawer #drawer mode="side" opened [style.width.px]="SidePanelWidth">
+                        <div class="inputbox inboxminwidth" style="height: 40px !important; padding: 0px 10px !important; margin-right: 16px;">
+                            <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                                <mat-icon class="icon">search</mat-icon>
+                                <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                                    <input class="text" type="text" (keyup)="applyPOFilter($event)" placeholder="Search by PO.No, Contact, etc">
+                                </div>
+                            </div>
+                        </div>
+                        <mat-card class="left-cards" fxLayout="column" fxLayoutAlign="space-between" *ngFor="let ele of sample1">
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <span class="card-heading">PO1234</span>
+                                <span class="card-heading" style="color: #24bc1c;">PO Confirmed <mat-icon style="vertical-align: middle !important; color: #24bc1c; transform: scale(0.75);">check_circle</mat-icon></span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="column">
+                                    <span class="card-sub-heading"><mat-icon style="vertical-align: middle !important; color: var(--primary); transform: scale(0.7);">event</mat-icon>Cargo Ready Date</span>
+                                    <span class="text" fxLayoutAlign="start">20 Mar 2021</span>
+                                </div>
+                                <div fxLayout="column" fxLayoutAlign="start">
+                                    <span class="card-sub-heading">Logistic provider</span>
+                                    <div fxLayoutAlign="end">
+                                        <img src='../../assets/image/headerlogo.png' style="width:51px; height:22px;"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="space-between">
+                                <div fxLayout="column">
+                                    <span class="card-sub-heading"><mat-icon style="vertical-align: middle !important; color: var(--primary); transform: scale(0.7);">location_on</mat-icon>Loading Port</span>
+                                    <span class="text">Victoria harbour</span>
+                                </div>
+                                <div fxLayout="column" fxLayoutAlign="center center">
+                                    <img src='../../assets/image/svg/icon-small-carrier.svg' style="width:51px; height:22px;"/>
+                                    <div fxLayout="row" fxLayoutAlign="start center">
+                                        <div style="width:50px; border-bottom:dotted 2px #1c75bc; margin-top:-1px; margin-right:0px"></div>
+                                        <div class="caret5 right" style="margin-left:0px;"></div>
+                                        <div style="width:50px; border-bottom:dotted 2px #1c75bc; margin-top:-1px; margin-right:0px"></div>
+                                    </div>
+                                    <span style="color: var(--primary); font-size: 9px;">CFS/CFS</span>
+                                </div>
+                                <div fxLayout="column">
+                                    <span class="card-sub-heading">Discharing Port<mat-icon style="vertical-align: middle !important; color: var(--primary); transform: scale(0.7);">location_on</mat-icon></span>
+                                    <span class="text">Port of Brisbane</span>
+                                </div>
+                            </div>
+                      </mat-card>
+                    </mat-drawer>
+                    <mat-drawer-content>
+                        <mat-card class="right-card" [style.height.px]="ht+50">
+                            <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center" style="background-color: #eef4fb; height: 56px;">
+                                <mat-icon color="warn" style="margin-right: 5px; transform: scale(0.7);">error</mat-icon>
+                                <span class="text">PO1234-FCL<img src='../../assets/image/svg/icon-small-carrier.svg' style="width:51px; height:22px; vertical-align: middle; padding-bottom: 2px;"/>SC1234</span>
+                                <span style="margin-left: 90px;" class="text">Cargo Ready Date - 20/03/21</span>
+                                <span style="flex: 1 1 auto;"></span>
+                                <mat-icon style="background-color: white; cursor: pointer; color: var(--primary);" (click)="drawer.toggle()">crop_free</mat-icon>
+                            </mat-toolbar>
+                            <mat-tab-group animationDuration="700ms" style="margin: 0px 10px;">
+                                <mat-tab label="Basic">
+                                    <div style="padding-top: 12px;">
+                                        <span class="card-heading">PO Details</span>
+                                    <mat-card style="background-color: #eef4fb;">
+                                        <div fxLayout="row" fxLayoutAlign="space-between">
+                                            <div fxLayout="column">
+                                                <span>PO Query</span>
+                                                <p>Ocen Shipment - FCL</p>
+                                            </div>
+                                            <div fxLayout="column">
+                                                <span>Logistic provider</span>
+                                                <mat-icon style="vertical-align: top !important;">public</mat-icon>
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                    <mat-accordion>
+                                        <mat-expansion-panel>
+                                          <mat-expansion-panel-header>
+                                            <mat-panel-title>Shipment Details</mat-panel-title>
+                                          </mat-expansion-panel-header>
+                                          <p>This is the primary content of the panel.</p>
+                                        </mat-expansion-panel>
+                                      </mat-accordion>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Product Details">
+                                    <div fxFlex="100" fxLayout="row wrap" style="padding-top: 12px;">
+                                        <div fxFlex="100">
+                                            <span class="tab-headings">Product Details</span>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Chat">
+                                        <div fxFlex="100" fxLayout="row wrap" style="padding-top: 12px;">
+                                            <div fxFlex="100">
+                                                <span class="tab-headings">Direct Message</span>
+                                            </div>
+                                            <div fxFlex="40" fxLayout="column">
+                                                <div class="inputbox inboxminwidth" style="height: 40px !important; padding: 0px 10px !important; margin-right: 16px;">
+                                                    <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                                                        <mat-icon class="icon">search</mat-icon>
+                                                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                                                            <input class="text" type="text" (keyup)="applyPOFilter($event)" placeholder="Search by PO.No, Contact, etc">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="background-color: var(--activebg); border-radius: 5px; margin-right: 15px;" [style.height.px]="ht-160">
+                                                    <mat-list>
+                                                        <mat-list-item> <!-- *ngFor="let folder of folders" -->
+                                                          <mat-icon mat-list-icon>people</mat-icon>
+                                                          <div mat-line class="tab-headings">John Doe</div>
+                                                          <div mat-line class="card-sub-heading"> Buyer role</div>
+                                                          <mat-divider></mat-divider>
+                                                        </mat-list-item>
+                                                      </mat-list>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="60">
+                                                <div fxFlex="100" style="border-radius: 4px; box-shadow: 0 4px 14px 0 rgba(69, 148, 211, 0.16); border: solid 1px rgba(155, 168, 179, 0.22); height: 100%;">
+                                                    <mat-toolbar fxLayout="row" fxLayoutAlign="space-between center" style="background-color: #eef4fb; height: 56px;">
+                                                        <mat-icon style="margin-right: 5px; transform: scale(1); color: var(--textcolor)">people</mat-icon>
+                                                        <span class="text">Group Chat</span>
+                                                        <span style="flex: 1 1 auto;"></span>
+                                                        <mat-icon style="color: var(--primary);">more_vert</mat-icon>
+                                                    </mat-toolbar>
+                                                    <div fxLayout="column" [style.height.px]="ht-200">
+
+                                                    </div>
+                                                    <div fxLayout="row">
+                                                        <div class="chat-text">
+                                                            <textarea placeholder="Type your message here"></textarea>
+                                                        </div>
+                                                        <button class="btnpri btnpriqtr" id="sent"><span style="color:white">SEND</span></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </mat-tab>
+                                <mat-tab label="Activity Log">
+                                </mat-tab>
+                            </mat-tab-group>
+                        </mat-card>
+                    </mat-drawer-content>
+                  </mat-drawer-container>
+            </mat-tab>
+            <mat-tab label="Cancelled">
+                
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

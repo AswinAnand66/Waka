@@ -1,0 +1,97 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div *ngIf="!isMobileView" [style.height.px]="height" style="padding-top: 60px;">
+    <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="10px" style="margin: 24px;">
+        <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px">
+            <button mat-button style="width: 200px !important; height: 40px !important;" class="btnpri btnauto" (click)="addTransaction()">
+                <mat-icon>add_circle_outline</mat-icon><span class="mgnleft10 font_14">ADD TRANSACTION</span>
+            </button>
+        </div>
+    </div>
+    <div *ngIf="isMobileDetailedView" fxLayout="column" fxLayoutAlign="start center" [style.height.px]="height-200" style="overflow: auto; margin: 0 24px;">
+        <table mat-table #table [dataSource]="purchaseOrderCompanyWise" matSort style="border:1px lightgray solid; border-radius: 10px; width:100%" >
+            <ng-container  matColumnDef="po_no" sticky>
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>PRODUCT NO</th>
+                 <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize" *matCellDef="let element">
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                            <div style="color:#465e72">{{element.product}}</div>
+                            <mat-icon *ngIf="element.status == 'Confirmed'" style="color:rgb(22, 189, 22)">check_circle</mat-icon>
+                            <mat-icon *ngIf="element.status == 'Processing'" style="color:orange">watch_later</mat-icon>
+                        </div>
+                    </td>
+            </ng-container>
+            <ng-container matColumnDef="company_name">
+                <th mat-header-cell  class="tbl-head" *matHeaderCellDef mat-sort-header>COMPANY</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.company_name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell  class="tbl-head" *matHeaderCellDef mat-sort-header>STATUS</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.status}}</td>
+            </ng-container>
+            <ng-container matColumnDef="shipment_date">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>SHIPMENT DATE</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.shipment_date}}</td>
+            </ng-container>
+            <ng-container matColumnDef="cargo_ready_date">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>CARGO READY DATE</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.date}}</td>
+            </ng-container>
+            <ng-container matColumnDef="logistics_provider">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>LOGISTICS PROVIDER</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.logistics_provider}}</td>
+            </ng-container>
+            <ng-container matColumnDef="loading_port">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>LOADING PORT</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <img src='http://purecatamphetamine.github.io/country-flag-icons/3x2/{{element.lp_code}}.svg' class="img-responsive" width="30px" height="30px"/>
+                        <div>{{element.loading_port}}</div>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="discharging_port">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>DISCHARGING PORT</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" ="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <img src="http://purecatamphetamine.github.io/country-flag-icons/3x2/{{element.dp_code}}.svg" class="img-responsive" width="25px" height="25px"/>
+                        <div>{{element.discharging_port}}</div>
+                    </div>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="type">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>TYPE</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.type}}</td>
+            </ng-container>
+            <ng-container matColumnDef="mode">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>MODE</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">
+                <mat-icon *ngIf="element.mode == 'flight'" style=" transform:(1.1); color:rgba(16, 39, 248, 0.808) ; margin-left:8px">flight_takeoff</mat-icon>
+                <span *ngIf="element.mode == 'ship'"> <img src='../../assets/image/svg/icon-small-carrier.svg' style="width:24px; height:24px; margin-left:8px"/> </span>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="sc">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>SC NO</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.sc}}</td>
+            </ng-container>
+            <ng-container matColumnDef="supplier_name">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>SUPPLIER NAME</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.supplier_name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="supplier_number">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>SUPPLIER NUMBER</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.supplier_number}}</td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>DESCRIPTION</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.description}}</td>
+            </ng-container>
+            <ng-container matColumnDef="total_quantity">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>TOTAL QTY.</th>
+                <td mat-cell style="padding-left:5px;padding-right: 5px;" class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.total_quantity}}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="dispPO; sticky: true;" class="tblrowht"></tr>
+            <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispPO;"></tr>
+        </table>
+    </div>
+</div>

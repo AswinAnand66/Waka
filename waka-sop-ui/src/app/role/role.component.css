@@ -1,0 +1,21 @@
+.table-del-icon {
+    pointer-events: all; 
+    color: var(--primary); 
+    cursor:pointer;
+    visibility: hidden;
+  }
+  
+  .role-card:hover .table-del-icon { 
+    visibility: visible;
+  }
+
+  
+.del-icon-disabled{
+  color: rgb(102, 102, 102);
+  opacity: 0.5;
+  visibility: hidden;
+}
+
+.role-card:hover .del-icon-disabled { 
+  visibility: visible;
+}

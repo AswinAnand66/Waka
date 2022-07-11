@@ -1,0 +1,526 @@
+<!-- <div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div> -->
+<div style="margin-left: 8px;" class="mgntop20 txt">{{title}}</div>
+<div>
+    <mat-drawer-container style="margin-left: 0px; background-color:var(--sectionbg)" hasBackdrop="false" [style.height.px]="ht" [style.width.px]="width">
+        <mat-drawer #drawer mode="side" opened="true" disableClose="true" style="width:20%; padding:16px 0px; background-color:var(--sectionbg); overflow:auto;" fxLayout="column" fxLayoutAlign="center center">
+            <div>
+                <div style="width:73%; margin-left: 5px; position:absolute; z-index:1;" class="inputboxsingle">
+                    <div fxLayout="row" fxLayoutAlign="start center" style="height:100;">
+                        <mat-icon class="icon">search</mat-icon>
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                            <input class="text inlineeditclr" type="text" placeholder="Search by Port..." (keyup)="applyschFilter($event)" name="CountrySearch" id="CountrySearch" required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top:60px;" *ngIf="portPairNotAvailable">
+                <span class="txt" style="margin: 50px;">Port Pair unavailable</span>
+            </div>
+            <div style="margin-top:32px; margin-bottom:12px;">
+                <div *ngFor="let item of sopSSCColl.data; let i = index;" fxLayout="column" fxLayoutAlign="space-evenly center">
+                    <mat-card [ngClass]="{'matcard_box_shadow_bordered':item.is_selected}" (click)="onClickPortPair(item,i)" style="margin-right:16px; width:90%;" class="matcard_box_shadow" fxLayout="column">
+                        <div fxLayout="row">
+                            <div>
+                                <img src="../../assets/image/port-pair.png" style="width:auto; height:auto;"/>
+                            </div>
+                            <div fxLayout="column" fxLayoutAlign="space-between start" class="mgnleft10 nowordwrap" style="height:67px;">
+                                <div class="nowordwrap font_14">{{item.origin_port}}</div>
+                                <div class="nowordwrap font_14">{{item.dest_port}}</div>
+                            </div>
+                        </div> 
+                        <!-- <div fxLayout="row" fxLayoutAlign="start center">
+                            <mat-icon style="color:#1c75bc;">place</mat-icon>
+                            <span class="nowordwrap font_14">{{item.origin_country}}</span>
+                        </div>
+                        <mat-icon>arrow_drop_down</mat-icon>
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <mat-icon style="color:#1c75bc;">place</mat-icon><span class="font_14">{{item.dest_country}}</span>
+                        </div> -->
+                    </mat-card>
+                </div>
+            </div>
+            
+        </mat-drawer>
+        <mat-drawer-content style="width:80%; overflow: auto; padding:12px;">
+            <mat-card style="padding:8px 12px;" [style.height.px]="ht-50">
+                <mat-tab-group [@.disabled]="true" [selectedIndex]="selTabIndex" (selectedIndexChange)="changeTab($event)">
+                    <div *ngFor="let grp of serviceChGrp; let i=index">
+                    <mat-tab label={{grp.display_name}}>
+                        <div [style.height.px]="ht-130" style="padding:10px; width:65%; float:left; overflow:auto">
+                            <!-- <div [hidden]="chargeItemColl.data.length == 0" class="font_12">
+                                <span >{{UpdatedCount}}</span>
+                                updated out of
+                                <span >{{chargeItemColl.data.length}}</span>
+                            </div> -->
+                            <table [hidden]="chargeItemColl.data.length == 0" mat-table #tablee (matSortChange)="onSortChargeItems($event);" [dataSource]="chargeItemColl" matSort style="border:1px lightgray solid; border-radius: 6px; margin-top:18px; width:100%; overflow:auto;" >
+                                <ng-container matColumnDef="charge_item_name">
+                                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Charge Item</th>
+                                    <td mat-cell style="color: var(--inlineeditclr); font-weight: 600; min-width:200px" class="font_12 mat-row capitalize"*matCellDef="let element">
+                                        <div fxLayout="column">
+                                            <span>{{element.charge_item_name}}</span>
+                                            <mat-hint *ngIf="element?.update" class="update_text">
+                                                <div fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon class="font_12 mgnltop5 md-14 clrgreen">check_circle</mat-icon>
+                                                    <span>{{element?.update}}</span>
+                                                </div>
+                                            </mat-hint>
+                                            <mat-hint *ngIf="element?.update_f" style="color: var(--red);" class="update_text">
+                                                <div fxLayout="row" fxLayoutAlign="start center">
+                                                    <mat-icon style="color: var(--red);" class="font_12 mgnltop5 md-14">priority_high</mat-icon>
+                                                    <span>{{element?.update_f}}</span>
+                                                </div>
+                                            </mat-hint>
+                                        </div>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="search">
+                                    <th mat-header-cell class="tbl-head pointer" *matHeaderCellDef>
+                                        <div mat-button (click)="showSearchClick();">
+                                            <mat-icon *ngIf="!showSearch">search</mat-icon>
+                                            <mat-icon *ngIf="showSearch">close</mat-icon>
+                                        </div>
+                                        <div *ngIf="showSearch" style="width:200px; max-width: none !important; z-index:-1; top:-20px; left:-180px" class="popup-pane" yPosition="above">
+                                                <div style="width:200px;  z-index:-1; " class="inputboxsingle">
+                                                    <div (click)="$event.stopPropagation();$event.preventDefault();" fxLayout="row" fxLayoutAlign="start center" style="height:100;">
+                                                        <mat-icon class="icon">search</mat-icon>
+                                                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                                                            <input autofocus="true" class="text" type="text" placeholder="Search by charge Items..." (keyup)="applychargeItemFilter($event);" #chargesearch name="ChargeSearch" id="ChargeSearch" required>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                        
+                                    </th>
+                                    <td mat-cell class="font_12 mat-row capitalize" *matCellDef="let element">
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="uom">
+                                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Charge UOM</th>
+                                    <td mat-cell class="font_12 mat-row capitalize" *matCellDef="let element">
+                                        <mat-form-field style="width:100px;" appearance="legacy" required>
+                                            <mat-select class="fntclr465e72" style="font-weight: normal; padding:6px;" [(value)]="element.uom" (keypress)="$event.key=='Enter' ? updateChargeItem(element):''"  (selectionChange)="updateChargeItem(element)">
+                                                <mat-option style="color: var(--inlineeditclr); font-weight: 600;"  class="font_12" *ngFor="let chargeuom of ChargeUomColl" [value]="chargeuom.lookup_name_id">
+                                                  {{chargeuom.lookup_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> 
+                                        <mat-error *ngIf="element?.uom_err" class="txterror_small">{{element?.uom_err}}</mat-error>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="currency_name">
+                                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Currency</th>
+                                    <td mat-cell class="font_12 mat-row capitalize" *matCellDef="let element">
+                                        <mat-form-field style="width:80px;" appearance="legacy" required>
+                                            <mat-select class="fntclr465e72" style="font-weight: normal; padding:6px;" [(value)]="element.currency_name" (keypress)="$event.key=='Enter' ? updateChargeItem(element):''"  (selectionChange)="updateChargeItem(element)">
+                                                <mat-option  *ngFor="let currency of currencyColl" [value]="currency">
+                                                  {{currency.lookup_name}}
+                                                </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        <mat-error *ngIf="element?.cur_err" class="txterror_small">{{element?.cur_err}}</mat-error>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="unit_rate">
+                                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Unit Rate</th>
+                                    <td mat-cell class="font_12 mat-row capitalize" *matCellDef="let element">
+                                        <mat-form-field [color]="element.ur_err_color" style="width:80px;" appearance="legacy" required>
+                                            <div fxLayout="row">
+                                                <!-- <span style="padding:6px;" matPrefix>{{currency_symbol}}</span> -->
+                                                <input min="1" class="fntclr465e72" type="number" style="padding:6px;" [(ngModel)]="element.unit_rate" name="{{element.unit_rate}}" matInput (keypress)="$event.key=='Enter' ? updateChargeItem(element):''" onkeyup="this.value=this.value.replace(/[^\+\w]+\d/,'')" (blur)="updateChargeItem(element)">
+                                            </div>
+                                            <!-- <input type="number" class="text" [(ngModel)]="element.unit_rate" name="{{element.unit_rate}}"> -->
+                                        </mat-form-field>
+                                        <mat-error *ngIf="element?.ur_err" class="txterror_small">{{element?.ur_err}}</mat-error>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="dispChargeItem; sticky: true;" style="background-color:var(--white)" class="tblrowht"></tr>
+                                <tr mat-row style="height:50px;" class="tr-rowalt-light" *matRowDef="let row; columns: dispChargeItem;"></tr>
+                            </table>
+                            <div *ngIf="chargeItemColl.data.length == 0 && isLoading && !showSearchClicked" [style.height.px]="ht-147" fxLayout="column" fxLayoutAlign="center center" ><mat-icon class="fa-spin">data_saver_off</mat-icon></div>
+                        </div>
+                        <div style="width:30%; padding:12px; float:right;">
+                            <mat-card style="padding: 0px;" [style.height.px]="ht-130">
+                                <mat-card style=" border-radius:0px; box-shadow:none; background-color: var(--tabbg);"><span class="font_14">Remarks</span></mat-card>
+                                <div style="overflow: auto;">
+                                    <textarea  [style.height.px]="ht-240" class="font_12" style="width:90%; display:block; border:none; outline:none; margin:12px auto;"></textarea>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="end">
+                                    <button style="height:20px; border-radius:2px; padding:3px 6px; margin-right:10px;" class="btnsecondary"><span class="text">save</span></button>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </mat-tab>
+                </div>
+                <mat-tab label="Invoicing">
+                    <div [style.height.px]="ht-100" fxLayout="row" class="font_12">
+                        <div class="mainsection"  [style.width.px]="screen.width">
+                            <div *ngIf="incTemplate=='template2' && !isLoading" style="width:100%">
+                                <div>
+                                    <div  fxLayout="column" fxLayoutAlign="start start" class="mgnleft10 mgnrgt10">
+                                        <div *ngFor="let grid of incSOPColl" class="mgntop16" style="width:100%" >
+                                            <div fxLayout="row" fxLayoutAlign="space-between center" class="grphead pointer" style="height:60px;" (click)="grid.expand = !grid.expand">
+                                                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" >
+                                                    <img src='../../assets/image/svg/icon-small-po.svg' style="width:24px; height:24px;"/>
+                                                    <div>{{grid.invoice_name}}</div>
+                                                </div>
+                                            </div>
+                                            <mat-card-content *ngIf="grid.has_child && grid.expand" fxLayout="column" style="padding:0px; overflow-y: auto; background-color: var(--bggroup);" class="fntwt600" >
+                                                <div *ngFor="let field of grid['fields']; let idx = index" class="mgntop10notfirst" style="padding:0px 16px;">
+                                                    <div *ngIf="field.group && grid.invoice_name!=field?.group" class="txt grpsubhead" >{{field.group}}</div>
+                                                    <div *ngIf="field?.label" class="subgrplabel">{{field?.label}}</div>
+                                                    <div *ngIf="grid.view_text!=undefined" class="txt">{{grid.disp_text}}</div>
+                                                    <div *ngFor="let grpField of field.fields" class="mgntop10notfirst">
+                                                        <div [ngSwitch]="field[grpField]?.type" style="width:100%">
+                                                            <div *ngSwitchCase="'select'">
+                                                                <div *ngFor="let chField of field[grpField]?.field">
+                                                                    <mat-select placeholder="{{chField.fieldname}}" [(ngModel)]="chField.value" name="chField.controlname" style="width:180px" class="capitalize select" required (selectionChange)="updCHFieldValue(idx,chField,grid)">
+                                                                        <mat-option *ngFor="let sel of chField.options" [value]="sel">{{sel}}</mat-option>
+                                                                    </mat-select>
+                                                                </div>
+                                                                <span *ngIf="chField?.status?.includes('Successful')" class="font_10 clrgreen mgnleft5">{{chField.status}}</span>
+                                                                <span *ngIf="chField?.status?.includes('Failed')" class="font_10 clrred mgnleft5">{{chField.status}}</span>
+                                                            </div>
+                                                            <div *ngSwitchCase="'chipset-mandatory'">
+                                                                <div *ngFor="let chField of field[grpField]?.field">
+                                                                    <div class="subgrplabel">{{chField?.selLabel}}</div>
+                                                                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                                                        <div *ngFor="let option of chField['value']; let i = index;" class="font_12 mgnbtm10 " style="width: fit-content;" >
+                                                                            <div fxLayout="row" fxLayoutAlign="start center" class="chipset-active mgnrgt10" >
+                                                                                <span class="font_12">{{option}}</span>
+                                                                                <!-- <mat-icon class="mgnleft5 md-18 pointer">clear</mat-icon> -->
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span *ngIf="chField?.status?.includes('Successful')" class="font_10 clrgreen mgnleft5">{{chField.status}}</span>
+                                                                    <span *ngIf="chField?.status?.includes('Failed')" class="font_10 clrred mgnleft5">{{chField.status}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngSwitchCase="'chipset'">
+                                                                <div *ngFor="let chField of field[grpField]?.field">
+                                                                    <div class="subgrplabel">{{chField?.selLabel}}</div>
+                                                                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                                                        <div *ngFor="let option of chField['value']; let i = index;" class="font_12 mgnbtm10 " style="width: fit-content;" >
+                                                                            <div fxLayout="row" fxLayoutAlign="start center" class="chipset-active mgnrgt10" (click) ="chField['value']?.splice(i,1);updCHFieldValue(idx, chField, grid)" >
+                                                                                <span class="font_12">{{option}}</span>
+                                                                                <mat-icon class="mgnleft5 md-18 pointer">clear</mat-icon>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="subgrplabel">{{chField?.unselLabel}}</div>
+                                                                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                                                        <div *ngFor="let option of chField['options']; let i = index;" class="font_12 mgnbtm10 ">
+                                                                            <div *ngIf="chField['value']?.indexOf(option) == -1" fxLayout="row" fxLayoutAlign="start center" class="chipset-inactive mgnrgt10" (click) ="chField['value'].push(option);updCHFieldValue(idx, chField, grid)">
+                                                                                <span class="font_12">{{option}}</span>
+                                                                                <mat-icon class="mgnleft5 md-18 pointer">add</mat-icon>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <span *ngIf="chField?.status?.includes('Successful')" class="font_10 clrgreen mgnleft5">{{chField.status}}</span>
+                                                                    <span *ngIf="chField?.status?.includes('Failed')" class="font_10 clrred mgnleft5">{{chField.status}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngSwitchCase="'inlineedit'">
+                                                                <div *ngIf="field[grpField]?.subgroup" class="subgrplabel">{{field[grpField]?.subgroup}}</div>
+                                                                <div fxLayout="row wrap" fxLayoutAlign="start start" style="position:relative">
+                                                                    <div *ngFor="let chField of field[grpField]?.field" > 
+                                                                        <div [style.width.px]="width-380" style="padding:12px 0px;" fxLayout="row" fxLayoutAlign="start center" class="inlineeditdiv">
+                                                                            <div class="text">{{chField?.pretext}}</div>
+                                                                            <input *ngIf="chField.controlname !='IncSelNoShow'" class="ip" style="width:50px" type="number" min="{{chField.range[0]}}" max="{{chField.range[1]}}" [(ngModel)]="chField.value" onkeydown="return false" (keypress)="$event.key=='Enter' ? updCHFieldValue(idx,chField,grid):''" (blur)="updCHFieldValue(idx,chField,grid)">
+                                                                            <div class="text" *ngIf="chField?.posttext">{{chField?.posttext}}</div>
+                                                                            <div *ngIf="chField?.child?.length > 0 && chField.child[0].type=='select'">
+                                                                                <div>
+                                                                                    <mat-select placeholder="{{chField.child[0].field[0].fieldname}}" [(ngModel)]="chField.child[0].field[0].value" name="chField.child[0].field[0].controlname" class="capitalize select" required (selectionChange)="updCHFieldValue(idx,chField,grid)">
+                                                                                        <mat-option *ngFor="let sel of chField.child[0].field[0].options" [value]="sel">{{sel}}</mat-option>
+                                                                                    </mat-select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div *ngIf="chField?.posttext && chField?.child?.length>0 && chField.child[0].type=='select'" class="mgnleft5 text">{{chField?.posttext}}</div>
+                                                                        </div>
+                                                                        <span *ngIf="chField?.status?.includes('Successful')" class="font_10 clrgreen mgnleft5">{{chField.status}}</span>
+                                                                        <span *ngIf="chField?.status?.includes('Failed')" class="font_10 clrred mgnleft5">{{chField.status}}</span>
+                                                                        <div [style.width.px]="width-380" style="padding:12px 0px;" *ngIf="chField?.child?.length>0 && chField.child[0].type=='select' && chField.child[0].field[0].value =='Credit Term'">
+                                                                            <div *ngFor="let chchField of chField['child']">
+                                                                                <div *ngFor="let chchchField of chchField.field[0].child">
+                                                                                    <div [ngSwitch]="chchchField?.type">
+                                                                                        <div *ngIf="chchchField?.type == 'inlineedit'">
+                                                                                            <div fxLayout="row wrap" fxLayoutAlign="start start" style="position:relative">
+                                                                                                    <div [style.width.px]="width-380" fxLayout="row" fxLayoutAlign="start center" class="inlineeditdiv">
+                                                                                                        <div class="text">{{chchchField.field[0]?.pretext}}</div>
+                                                                                                        <input *ngIf="chchchField.field[0].controlname!='IncSelNoShow'" class="ip" style="width:50px" type="number" min="{{chchchField.field[0].range[0]}}" max="{{chchchField.field[0].range[1]}}" [(ngModel)]="chchchField.field[0].value" onkeydown="return false" (keypress)="$event.key=='Enter' ? updCHFieldValue(idx,chchchField.field[0],grid):''" (blur)="updCHFieldValue(idx,chchchField.field[0],grid)">
+                                                                                                        <div class="text">{{chchchField.field[0]?.posttext}}</div>
+                                                                                                        <div *ngIf="chchchField.field[0]?.child?.length>0 && chchchField.field[0].child[0].type=='select'">
+                                                                                                            <mat-select placeholder="{{chchchField.field[0].child[0].field[0].fieldname}}" [(ngModel)]="chchchField.field[0].child[0].field[0].value" name="chchchField.field[0].child[0].field[0].controlname" class="capitalize select" required (selectionChange)="updCHFieldValue(idx,chchchField.field[0],grid)">
+                                                                                                                <mat-option *ngFor="let sel of chchchField.field[0].child[0].field[0].options" [value]="sel">{{sel}}</mat-option>
+                                                                                                            </mat-select>
+                                                                                                        </div>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <span *ngIf="chchchField?.field[0].status?.includes('Successful')" class="font_10 clrgreen mgnleft5" style="position:absolute; left:0">{{chchchField.field[0].status}}</span>
+                                                                                    <span *ngIf="chchchField?.field[0].status?.includes('Failed')" class="font_10 clrred mgnleft5" style="position:absolute; left:0">{{chchchField.field[0].status}}</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div style="padding:12px 0px;" *ngIf="chField.child[0]?.field[0]?.child?.length > 0 && chField.child[0].type=='select' && chField.child[0].field[0].value == 'Origin Office'">
+                                                                            <div  style="padding:12px 0px;" *ngFor="let chchField of chField.child[0].field[0].child[0]">
+                                                                                <div *ngIf="chchField?.type == 'inlineedit'">
+                                                                                    <div fxLayout="row wrap" fxLayoutAlign="start start" style="position:relative">
+                                                                                        <div fxLayout="row" fxLayoutAlign="start center" class="inlineeditdiv">
+                                                                                            <div class="text">{{chchField.field[0]?.pretext}}</div>
+                                                                                            <input *ngIf="chchField.field[0].controlname!='IncSelNoShow'" class="ip" style="width:50px" type="number" min="{{chchField.field[0].range[0]}}" max="{{chchField.field[0].range[1]}}" [(ngModel)]="chchField.field[0].value" onkeydown="return false" (keypress)="$event.key=='Enter' ? updCHFieldValue(idx,chchField.field[0],grid):''" (blur)="updCHFieldValue(idx,chchField.field[0],grid)">
+                                                                                            <div class="text">{{chchField.field[0]?.posttext}}</div>
+                                                                                            <div *ngIf="chchField.field[0]?.child?.length>0 && chchField.field[0].child[0].type=='select'">
+                                                                                                <mat-select placeholder="{{chchField.field[0].child[0].field[0].fieldname}}" [(ngModel)]="chchField.field[0].child[0].field[0].value" name="chchField.field[0].child[0].field[0].controlname" class="capitalize select" required (selectionChange)="updCHFieldValue(idx,chchField.field[0],grid)">
+                                                                                                    <mat-option *ngFor="let sel of chchField.field[0].child[0].field[0].options" [value]="sel">{{sel}}</mat-option>
+                                                                                                </mat-select>   
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <span *ngIf="chchField?.field[0].status?.includes('Successful')" class="font_10 clrgreen mgnleft5">{{chchField.field[0].status}}</span>
+                                                                                    <span *ngIf="chchField?.field[0].status?.includes('Failed')" class="font_10 clrred mgnleft5">{{chchField.field[0].status}}</span> 
+                                                                                </div>
+                                                                                <div style="padding-top:12px;" *ngIf="chchField.field[0].child?.length > 0 && chchField.field[0].child[0].field[0].value == 'Credit Term'">
+                                                                                    <div *ngFor="let chchchField of chchField.field[0]['child']">
+                                                                                        <div *ngFor="let chchchchField of chchchField.field[0].child">
+                                                                                            <div [ngSwitch]="chchchchField?.type">
+                                                                                                <div *ngIf="chchchchField?.type == 'inlineedit'">
+                                                                                                    <div fxLayout="row wrap" fxLayoutAlign="start start" style="position:relative">
+                                                                                                            <div fxLayout="row" fxLayoutAlign="start center" class="inlineeditdiv">
+                                                                                                                <div class="text">{{chchchchField.field[0]?.pretext}}</div>
+                                                                                                                <input *ngIf="chchchchField.field[0].controlname!='IncSelNoShow'" class="ip" style="width:50px" type="number" min="{{chchchchField.field[0].range[0]}}" max="{{chchchchField.field[0].range[1]}}" [(ngModel)]="chchchchField.field[0].value" onkeydown="return false" (keypress)="$event.key=='Enter' ? updCHFieldValue(idx,chchchchField.field[0],grid):''" (blur)="updCHFieldValue(idx,chchchchField.field[0],grid)">
+                                                                                                                <div class="text">{{chchchchField.field[0]?.posttext}}</div>
+                                                                                                                <div *ngIf="chchchchField.field[0]?.child?.length>0 && chchchchField.field[0].child[0].type=='select'">
+                                                                                                                    <mat-select placeholder="{{chchchchField.field[0].child[0].field[0].fieldname}}" [(ngModel)]="chchchchField.field[0].child[0].field[0].value" name="chchchchField.field[0].child[0].field[0].controlname" class="capitalize select" required (selectionChange)="updCHFieldValue(idx,chchchchField.field[0],grid)">
+                                                                                                                        <mat-option *ngFor="let sel of chchchchField.field[0].child[0].field[0].options" [value]="sel">{{sel}}</mat-option>
+                                                                                                                    </mat-select>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <span *ngIf="chchchchField?.field[0].status?.includes('Successful')" class="font_10 clrgreen mgnleft5" style="position:absolute; left:0">{{chchchchField.field[0].status}}</span>
+                                                                                            <span *ngIf="chchchchField?.field[0].status?.includes('Failed')" class="font_10 clrred mgnleft5" style="position:absolute; left:0">{{chchchchField.field[0].status}}</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div style="padding:12px 0px;" *ngIf="chField.child[0]?.field[0]?.child?.length > 0 && chField.child[0].type=='select' && chField.child[0].field[0].value == 'Destination Office'">
+                                                                            <div  style="padding:12px 0px;" *ngFor="let chchField of chField.child[0].field[0].child[1]">
+                                                                                <div *ngIf="chchField?.type == 'inlineedit'">
+                                                                                    <div fxLayout="row wrap" fxLayoutAlign="start start" style="position:relative">
+                                                                                        <div fxLayout="row" fxLayoutAlign="start center" class="inlineeditdiv">
+                                                                                            <div class="text">{{chchField.field[0]?.pretext}}</div>
+                                                                                            <input *ngIf="chchField.field[0].controlname!='IncSelNoShow'" class="ip" style="width:50px" type="number" min="{{chchField.field[0].range[0]}}" max="{{chchField.field[0].range[1]}}" [(ngModel)]="chchField.field[0].value" onkeydown="return false" (keypress)="$event.key=='Enter' ? updCHFieldValue(idx,chchField.field[0],grid):''" (blur)="updCHFieldValue(idx,chchField.field[0],grid)">
+                                                                                            <div class="text">{{chchField.field[0]?.posttext}}</div>
+                                                                                            <div *ngIf="chchField.field[0]?.child?.length>0 && chchField.field[0].child[0].type=='select'">
+                                                                                                <mat-select placeholder="{{chchField.field[0].child[0].field[0].fieldname}}" [(ngModel)]="chchField.field[0].child[0].field[0].value" name="chchField.field[0].child[0].field[0].controlname" class="capitalize select" required (selectionChange)="updCHFieldValue(idx,chchField.field[0],grid)">
+                                                                                                    <mat-option *ngFor="let sel of chchField.field[0].child[0].field[0].options" [value]="sel">{{sel}}</mat-option>
+                                                                                                </mat-select>   
+                                                                                            </div>
+                                                                                        </div>    
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div style="padding-top:12px;" *ngIf="chchField.field[0].child?.length > 0 && chchField.field[0].child[0].field[0].value == 'Credit Term'">
+                                                                                    <div *ngFor="let chchchField of chchField.field[0]['child']">
+                                                                                        <div *ngFor="let chchchchField of chchchField.field[0].child">
+                                                                                            <div [ngSwitch]="chchchchField?.type">
+                                                                                                <div *ngIf="chchchchField?.type == 'inlineedit'">
+                                                                                                    <div fxLayout="row wrap" fxLayoutAlign="start start" style="position:relative">
+                                                                                                            <div fxLayout="row" fxLayoutAlign="start center" class="inlineeditdiv">
+                                                                                                                <div class="text">{{chchchchField.field[0]?.pretext}}</div>
+                                                                                                                <input *ngIf="chchchchField.field[0].controlname!='IncSelNoShow'" class="ip" style="width:50px" type="number" min="{{chchchchField.field[0].range[0]}}" max="{{chchchchField.field[0].range[1]}}" [(ngModel)]="chchchchField.field[0].value" onkeydown="return false" (keypress)="$event.key=='Enter' ? updCHFieldValue(idx,chchchchField.field[0],grid):''" (blur)="updCHFieldValue(idx,chchchchField.field[0],grid)">
+                                                                                                                <div class="text">{{chchchchField.field[0]?.posttext}}</div>
+                                                                                                                <div *ngIf="chchchchField.field[0]?.child?.length>0 && chchchchField.field[0].child[0].type=='select'">
+                                                                                                                    <mat-select placeholder="{{chchchchField.field[0].child[0].field[0].fieldname}}" [(ngModel)]="chchchchField.field[0].child[0].field[0].value" name="chchchchField.field[0].child[0].field[0].controlname" class="capitalize select" required (selectionChange)="updCHFieldValue(idx,chchchchField.field[0],grid)">
+                                                                                                                        <mat-option *ngFor="let sel of chchchchField.field[0].child[0].field[0].options" [value]="sel">{{sel}}</mat-option>
+                                                                                                                    </mat-select>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <span *ngIf="chchchchField?.field[0].status?.includes('Successful')" class="font_10 clrgreen mgnleft5" style="position:absolute; left:0">{{chchchchField.field[0].status}}</span>
+                                                                                            <span *ngIf="chchchchField?.field[0].status?.includes('Failed')" class="font_10 clrred mgnleft5" style="position:absolute; left:0">{{chchchchField.field[0].status}}</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngSwitchCase="'multi'" style="width:100%" fxLayout="row wrap" fxLayoutGap="16px" >
+                                                                <div *ngFor="let chField of field[grpField]?.field" style="border-bottom: 1px solid var(--bggroup1);">
+                                                                    <mat-checkbox class="fntwt600" style="margin-bottom:16px" color="primary" [(ngModel)]="chField.value" name="{{chField.controlname}}" [(checked)]="chField.value" (change)="chField.value=$event.checked;updCHFieldValue(idx,chField,grid)">{{chField.fieldname}}</mat-checkbox>
+                                                                    <div *ngIf="chField.child.length>0 && chField.value">
+                                                                        <div *ngFor="let chchChild of chField['child']">
+                                                                            <div [ngSwitch]="chchChild?.type">
+                                                                                <div *ngSwitchCase="'inlineedit'">
+                                                                                    <div fxLayout="row wrap" fxLayoutAlign="start start" style="position:relative">
+                                                                                        <div *ngFor="let childField of chchChild?.field" > 
+                                                                                            <div fxLayout="row" fxLayoutAlign="start center" class="inlineeditdiv">
+                                                                                                <div class="text">{{childField?.pretext}}</div>
+                                                                                                <input *ngIf="childField.controlname!='IncSelNoShow'" class="ip" style="width:50px" type="number" min="{{childField.range[0]}}" max="{{childField.range[1]}}" [(ngModel)]="childField.value" (keypress)="$event.key=='Enter' ? updCHFieldValue(idx,childField,grid):''" (blur)="updCHFieldValue(idx,childField,grid)">
+                                                                                                <div class="text">{{childField?.posttext}}</div>
+                                                                                                <div *ngIf="childField?.child?.length>0 && childField.child[0].type=='select'">
+                                                                                                    <mat-select placeholder="{{childField.child[0].field[0].fieldname}}" [(ngModel)]="childField.child[0].field[0].value" name="childField.child[0].field[0].controlname" class="capitalize select" required (selectionChange)="updCHFieldValue(idx,childField,grid)">
+                                                                                                        <mat-option *ngFor="let sel of childField.child[0].field[0].options" [value]="sel">{{sel}}</mat-option>
+                                                                                                    </mat-select>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <span *ngIf="childField?.status?.includes('Successful')" class="font_10 clrgreen mgnleft5" style="position:absolute; left:0">{{childField.status}}</span>
+                                                                                            <span *ngIf="childField?.status?.includes('Failed')" class="font_10 clrred mgnleft5" style="position:absolute; left:0">{{childField.status}}</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div *ngSwitchCase="'select'">
+                                                                                    <div *ngFor="let childField of chchChild?.field">
+                                                                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="mgntop10 inlineeditdiv">
+                                                                                            <div class="text">{{childField.fieldname}}</div>
+                                                                                            <mat-select class="text" placeholder="{{childField.placeholder}}" [(ngModel)]="childField.value" name="childField.controlname" style="width:180px" class="capitalize select" required (selectionChange)="updCHFieldValue(idx,childField,grid)">
+                                                                                                <mat-option *ngFor="let sel of childField.options" [value]="sel">{{sel}}</mat-option>
+                                                                                            </mat-select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div *ngSwitchCase="'chipset'">
+                                                                                    <div *ngFor="let chField of chchChild?.field">
+                                                                                        <div class="subgrplabel">{{chField?.selLabel}}</div>
+                                                                                        <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                                                                            <div *ngFor="let option of chField['value']; let i = index;" class="font_12 mgnbtm10 " style="width: fit-content;" >
+                                                                                                <div fxLayout="row" fxLayoutAlign="start center" class="chipset-active mgnrgt10" (click) ="chField['value']?.splice(i,1);updCHFieldValue(idx, chField, grid)" >
+                                                                                                    <span class="font_12">{{option}}</span>
+                                                                                                    <mat-icon class="mgnleft5 md-18 pointer">clear</mat-icon>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="subgrplabel">{{chField?.unselLabel}}</div>
+                                                                                        <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                                                                            <div *ngFor="let option of chField['options']; let i = index;" class="font_12 mgnbtm10 ">
+                                                                                                <div *ngIf="chField['value']?.indexOf(option) == -1" fxLayout="row" fxLayoutAlign="start center" class="chipset-inactive mgnrgt10" (click) ="chField['value'].push(option);updCHFieldValue(idx, chField, grid)">
+                                                                                                    <span class="font_12">{{option}}</span>
+                                                                                                    <mat-icon class="mgnleft5 md-18 pointer">add</mat-icon>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <span *ngIf="chField?.status?.includes('Successful')" class="font_10 clrgreen mgnleft5">{{chField.status}}</span>
+                                                                                        <span *ngIf="chField?.status?.includes('Failed')" class="font_10 clrred mgnleft5">{{chField.status}}</span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngSwitchCase="'numsmall'" class="mgnleft10" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="16px">
+                                                                <div *ngFor="let chField of field[grpField]?.field" class="mgnleft10">
+                                                                    <div *ngIf="!chField?.edit" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                                        <div *ngIf="grid.view_text==undefined && chField.dispname==undefined" class="font_12">{{chField.fieldname}}: {{chField.value}}{{chField.fieldname.includes('%') ? '%':''}}
+                                                                        </div>
+                                                                        <div *ngIf="grid.view_text==undefined && chField.dispname!=undefined">
+                                                                            <span class="font_12">{{chField?.dispname?.replace('$$'+chField.controlname+'$$',chField.value)}}</span>
+                                                                        </div>
+                                                                        <mat-icon  class="md-16 pointer" (click)="editIPField(chField)">edit</mat-icon>
+                                                                    </div>
+                                                                    <div *ngIf="chField?.edit" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                                        <div>{{chField.fieldname}}</div>
+                                                                        <input style="width:50px" placeholder="{{chField.fieldname}}" type="number" [formControl]="chField.FormCntrl">
+                                                                        <mat-icon *ngIf="chField?.FormCntrl.valid" class="md-16 clrgreen pointer" (click)="savechField(chField,grid,field[grpField]?.type)">save</mat-icon>
+                                                                        <mat-icon *ngIf="chField?.FormCntrl.invalid" class="md-16 clrgreen" style="opacity:0.5">save</mat-icon>
+                                                                        <mat-icon class="md-16 clrred pointer" (click)="chField.edit=false; chField.FormCntrl=undefined;">cancel</mat-icon>
+                                                                    </div>
+                                                                    <div style="width:100%">
+                                                                        <mat-error *ngIf="chField?.FormCntrl?.invalid&&chField?.FormCntrl?.dirty" class="txterror" style="padding-left:25px">{{getErrorMessage(chField?.FormCntrl,'FormCntrl')}}</mat-error>
+                                                                    </div>
+                                                                    <span *ngIf="chField.status?.includes('Successful')" class="font_10 clrgreen mgnleft5">{{chField.status}}</span>
+                                                                    <span *ngIf="chField.status?.includes('Failed')" class="font_10 clrred mgnleft5">{{chField.status}}</span>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngSwitchCase="'textarea'" class="mgnleft10">
+                                                                <div fxLayout="column" fxLayoutGap="5px">
+                                                                    <div *ngFor="let chField of field[grpField]?.field">
+                                                                        <div *ngIf="!chField?.edit" fxLayout="row" fxLayout="start center" fxLayoutGap="10px">
+                                                                            <div  fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                                                <div class="font_12">{{chField.fieldname}}</div>
+                                                                                <div class="font_12">{{chField.value}}</div>    
+                                                                            </div>
+                                                                            <mat-icon  class="md-16 pointer" (click)="editIPField(chField)">edit</mat-icon>
+                                                                        </div>
+                                                                        <div *ngIf="chField?.edit" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                                            <div fxLayout="column">
+                                                                                <div>{{chField.fieldname}}</div>
+                                                                                <textarea style="width:200px" placeholder="{{chField.fieldname}}" type="number" [formControl]="chField.FormCntrl"></textarea>
+                                                                            </div>
+                                                                            <mat-icon *ngIf="chField?.FormCntrl.valid" class="md-16 clrgreen pointer" (click)="savechField(chField,grid,field[grpField]?.type)">save</mat-icon>
+                                                                            <mat-icon *ngIf="chField?.FormCntrl.invalid" class="md-16 clrgreen" style="opacity:0.5">save</mat-icon>
+                                                                            <mat-icon class="md-16 clrred pointer" (click)="chField.edit=false; chField.FormCntrl=undefined;">cancel</mat-icon>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngSwitchCase="'text'" class="mgnleft10">
+                                                                <div fxLayout="column" fxLayoutGap="5px">
+                                                                    <div *ngFor="let chField of field[grpField]?.field">
+                                                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="inlineeditdiv">
+                                                                            <div><mat-checkbox [(checked)]="chField.value" style="margin-left:-10px !important"></mat-checkbox></div>
+                                                                            <input style="width:95%" class="ip" placeholder="{{chField?.placeholder}}" type="text" [(ngModel)]="chField.value" (keypress)="$event.key=='Enter' ? updCHFieldValue(idx,chField,grid):''" (blur)="updCHFieldValue(idx,chField,grid)">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div *ngSwitchCase="'radio'" class="mgnleft10">
+                                                                <div *ngIf="grid.view_text==undefined">
+                                                                    <div *ngFor="let chField of field[grpField]?.field">
+                                                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                                            <span *ngIf="chField?.dispname && !chField?.edit" class="txt">{{chField?.dispname?.replace('$$'+chField.controlname+'$$',chField.value)}}</span>
+                                                                            <span *ngIf="chField?.dispname==undefined && !chField?.edit"class="txt">{{chField.value}}</span>
+                                                                            <mat-icon *ngIf="!chField?.edit" class="md-16 pointer" (click)="editField(chField)">edit</mat-icon>
+                                                                            <div *ngIf="chField.edit" >
+                                                                                <label *ngIf="field.group!=chField.fieldname" mat-label id="radio-group-label">{{chField.fieldname}}</label>
+                                                                                <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" class="mgntop20">
+                                                                                    <mat-radio-group aria-labelledby="radio-group-label" [formControl]="chField['FormCntrl']">
+                                                                                        <mat-radio-button class="mgnrgt10 font_12" color="primary" *ngFor="let option of chField.options" [value]="option">
+                                                                                            <span>{{option}}</span>
+                                                                                        </mat-radio-button>
+                                                                                      </mat-radio-group>
+                                                                                      <div *ngIf="chField.FormCntrl.value == 'Others'">
+                                                                                        <div class="inputbox inboxminwidth" fxLayout="column" fxLayout="start center">
+                                                                                            <div *ngIf="chField.FormCntrlOthers.dirty" class="label" [ngClass]="{'labelerr':chField.FormCntrlOthers.invalid && chField.FormCntrlOthers.dirty}">{{chField.fieldname}}</div>
+                                                                                            <input class="text" type="number" placeholder="{{chField.fieldname}}" [formControl]="chField['FormCntrlOthers']" name="days">
+                                                                                        </div>
+                                                                                        <div style="width:100%">
+                                                                                            <mat-error *ngIf="chField.FormCntrlOthers.invalid&&chField.FormCntrlOthers.dirty" class="txterror" style="padding-left:25px">{{getErrorMessage(chField.FormCntrlOthers,'FormCntrlOthers')}}</mat-error>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <mat-icon *ngIf="chField?.edit" class="md-16 clrgreen pointer" (click)="savechField(chField,grid,field[grpField]?.type)">save</mat-icon>
+                                                                                    <mat-icon *ngIf="chField?.edit" class="md-16 clrred pointer" (click)="chField.edit=false;chField.FormCntrlOthers=undefined;chField.FormCntrl=undefined ;">cancel</mat-icon>
+                                                                                </div>
+                                                                            </div>
+                                                                            <span *ngIf="chField.status?.includes('Successful')" class="font_10 clrgreen mgnleft5">{{chField.status}}</span>
+                                                                            <span *ngIf="chField.status?.includes('Failed')" class="font_10 clrred mgnleft5">{{field.status}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngIf="incSOPColl.length == 0 && isLoading" [style.height.px]="ht-147" fxLayout="column" fxLayoutAlign="center center" ><mat-icon class="fa-spin">data_saver_off</mat-icon></div>
+                                                </div>
+                                            </mat-card-content>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </mat-tab>
+                
+                </mat-tab-group>
+            </mat-card>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

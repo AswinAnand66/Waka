@@ -1,0 +1,36 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10" style="font-weight: 600; color: darkgrey;">Manage License</mat-label>
+</div>
+<div mat-dialog-content>
+    <div fxLayout="row" fxLayoutAlign="center start" fxLayoutGap="10px">
+        <div fxLayout="column" fxFlex="48" fxFlex.xs="100" *ngIf="!isLicenceActive">
+            <mat-label fxFlex="100" class="font_16 bdrbtm2pxa0aeb9 padbtm9"><span class="clrblue">Available Modules</span></mat-label>
+            <div *ngFor = "let ele of modulesList">
+                <div *ngIf="!ele.is_selected">
+                    <mat-checkbox [(ngModel)]="ele.is_selected" class="capitalize" color="primary"  [checked]="ele.is_selected" (change)="onChange(ele)">{{ele.module_name}}</mat-checkbox>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column" fxFlex="48" fxFlex.xs="100" *ngIf="!isLicenceActive">
+            <mat-label fxFlex="100" class="font_16 bdrbtm2pxa0aeb9 padbtm9"><span class="clrblue">Requested Modules</span></mat-label>
+            <div *ngFor = "let ele of selectedModules">
+                <mat-checkbox [(ngModel)]="ele.is_selected" class="capitalize" color="primary" [checked]="ele.is_selected" (change)="onChange(ele)">{{ele.module_name}}</mat-checkbox>
+            </div>
+        </div>
+        <mat-card fxFlex="48" style="width:250px; margin-top:10px; margin-right:10px" *ngIf="isLicenceActive">
+            <mat-card-header>
+                <mat-card-title>Licensed Modules</mat-card-title>
+            </mat-card-header>
+            <mat-card-content style="height:200px; background-color: #fafbfc;">
+                <div style="line-height: 22px;" class="usernameHeader" *ngFor="let ele of moduleValNames">{{ele}}</div>
+            </mat-card-content>
+            <!--mat-card-actions fxLayout="row" fxLayoutAlign="center center">
+                <button mat-raised-button color="primary">Request Change</button>
+            </mat-card-actions-->
+        </mat-card>
+    </div>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" *ngIf="!isLicenceActive">
+    <button id="btnsave" [disabled]="selectedModules.length == 0" mat-raised-button class="btnclrprimary" color= "primary" (click)="saveLicense()">{{btnTitle}}</button>
+    <button id="btnCancel"  mat-raised-button class="btnclraccent" color = "accent" (click)="onClose(false)">Cancel</button>
+</div>

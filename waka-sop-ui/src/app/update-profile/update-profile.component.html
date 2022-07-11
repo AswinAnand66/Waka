@@ -1,0 +1,52 @@
+<div>
+    <form [formGroup]="form" [style.height.px]="height-64" fxLayout="row" [fxLayoutAlign]="formLayoutAlign">
+        <mat-card fxFlex="30" fxFlex.md="40" fxFlex.sm="60" fxFlex.xs="90">
+            <mat-card-header>
+                <mat-card-title style="padding-left:16px">Update Profile</mat-card-title>
+            </mat-card-header>
+            <mat-card-content style="margin-top:10px;width:100%">
+                <div fxLayout="column" fxLayoutAlign="start center">
+                    <div class="inputbox inboxminwidth">
+                        <div class="label">Email ID</div>
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                            <input class="text" [disabled] type="email" formControlName="Email" name="Email" id="Email" readonly>
+                        </div>
+                    </div>
+                    <div class="inputbox inboxminwidth" [ngClass]="{'errtxtbdr':form.get('Name').invalid&&form.get('Name').dirty}">
+                        <div class="label" [ngClass]="{'labelerr':form.get('Name').invalid&&form.get('Name').dirty}">Full Name</div>
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                            <input class="text" formControlName="Name" name="Name" id="Name" required>
+                        </div>
+                    </div>
+                    <div style="width:100%">
+                        <mat-error *ngIf="form.get('Name').invalid&&form.get('Name').dirty" class="txterror" style="padding-left:25px">{{getErrorMessage(form.get('Name'),'Name')}}</mat-error>
+                    </div>
+                    <div class="inputbox inboxminwidth" [ngClass]="{'errtxtbdr':form.get('Mobile').invalid&&form.get('Mobile').dirty}">
+                        <div class="label" [ngClass]="{'labelerr':form.get('Mobile').invalid&&form.get('Mobile').dirty}">Mobile Number</div>
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                            <input type="tel" class="text" formControlName="Mobile" name="Mobile" id="Mobile">
+                        </div>
+                    </div>
+                    <div style="width:100%">
+                        <mat-error *ngIf="form.get('Mobile').invalid&&form.get('Mobile').dirty" class="txterror" style="padding-left:25px">Numeric Only Allowed</mat-error>
+                    </div>
+                    <div class="inputbox inboxminwidth" [ngClass]="{'errtxtbdr':form.get('WeChat').invalid&&form.get('WeChat').dirty}">
+                        <div class="label" [ngClass]="{'labelerr':form.get('WeChat').invalid&&form.get('WeChat').dirty}">WeChat ID</div>
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                            <input class="text" formControlName="WeChat" name="WeChat" id="WeChat">
+                        </div>
+                    </div>
+                    <div style="width:100%">
+                        <mat-error *ngIf="form.get('WeChat').invalid&&form.get('WeChat').dirty" class="txterror" style="margin-left:30px; padding-left:50px">{{getErrorMessage(form.get('WeChat'),'WeChat')}}</mat-error>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <button id="close" class="btnsecondary btnauto" (click)="onClose()">Cancel</button>
+                    <button id="btnReqPass"  [disabled]="form.invalid" class="btnpri btnauto" (click)="UpdateProfile()">Update Profile</button>
+                </div>
+            </mat-card-actions>
+        </mat-card>
+    </form>
+</div>

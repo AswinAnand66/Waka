@@ -1,0 +1,409 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 0px 16px; padding:16px 0; overflow-y: auto;" [style.height.px]="screen?.height-62">
+    <mat-horizontal-stepper disableRipple="true" #stepper fxFlex="100">
+        <mat-step>
+          <ng-template matStepLabel>Upload Template</ng-template>
+          <mat-card [style.height.px]="screen?.height-220" class="main-cards">
+            <mat-card-content>
+                  <div>
+                    <div class="dropzone" fileDragDrop (filesChangeEmiter)="onFileDrag($event)">
+                        <div class="text-wrapper">
+                            <div class="centered">
+                                <div fxLayout="column" fxLayoutAlign="center center">
+                                    <input #file type="file" name="file" id="file" (change)="onFileChange($event)" multiple>
+                                    <mat-icon style="transform: scale(5); color: var(--textcolor); margin: 60px;">upload_file</mat-icon>
+                                    <label for="file" style="cursor: pointer !important;"><span class="textLink">{{ fileName ? fileName : 'Select your sample dataset' }}</span></label>
+                                    <span style="margin-top: 18px;">or Drop it here!</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+          </mat-card>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Mapping</ng-template>
+          <mat-card [style.height.px]="screen?.height-190" fxLayout="column" class="main-cards">
+            <div fxLayout="row" fxLayoutAlign="space-between start">
+              <div fxLayout="column" fxFlex="69" fxLayoutAlign="center center" fxLayoutGap="12px">
+                <span style="font-weight: 600;">Source Key</span>
+                <div id="all" class="mapping-list" style="overflow-y: auto; width: 100%;" [style.height.px]="screen?.height-260">
+                  <div *ngFor="let sources of sourceKeys" [ngClass]="{'keys-box-selected':sources.isSelected == true,'keys-box':sources.isSelected == false, 'keys-box-new':sources.isSelected == false && sources.isNewColumn == true || sources.isRejectedColumn == true }">
+                    <div *ngIf="!sources.isNewColumn && !sources.isRejectedColumn" (click)="sourceMapping(sources); sources.isSelected ? sources.isSelected = false : sources.isSelected = true" fxLayout="row" fxLayoutAlign="space-between center">
+                      <div fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row wrap" fxFlex="94">
+                        <ng-container *ngFor="let keys of sources.display; let i = index">
+                          <span>{{ keys | titlecase }}</span>
+                          <mat-icon *ngIf="i != sources.display.length-1" [ngStyle]="{'color': sources.isSelected ? '#fff' : 'var(--textcolor)'}">double_arrow</mat-icon>
+                        </ng-container>  
+                      </div>
+                      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="6px">
+                        <mat-icon *ngIf="!sources.isSelected" style="color: #1c75bd; transform: scale(1.1);" matTooltip="Mark as New Column" matTooltipPosition="left" (click)="sources.isNewColumn = true; markNewKey(sources);">new_label</mat-icon>
+                        <mat-icon *ngIf="!sources.isSelected" style="color: var(--red); transform: scale(1.1);" matTooltip="Reject the Column" matTooltipPosition="left" (click)="sources.isRejectedColumn = true; markRejectedKey(sources);">backspace</mat-icon>
+                        <mat-icon *ngIf="sources.isSelected" style="color: var(--iconinactive); transform: scale(1.1);">new_label</mat-icon>
+                        <mat-icon *ngIf="sources.isSelected" style="color: var(--red); transform: scale(1.1);">backspace</mat-icon>
+                      </div>
+                    </div>
+                    <div *ngIf="sources.isNewColumn" (click)="sourceMapping(sources); sources.isSelected = false" fxLayout="row" fxLayoutAlign="space-between center">
+                      <div fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row wrap" fxFlex="94">
+                        <ng-container *ngFor="let keys of sources.display; let i = index">
+                          <span>{{ keys | titlecase }}</span>
+                          <mat-icon *ngIf="i != sources.display.length-1" style="color: var(--textcolor)">double_arrow</mat-icon>
+                        </ng-container>  
+                      </div>
+                      <div>
+                        <mat-icon style="color: var(--green); transform: scale(1.1); pointer-events: all !important; cursor: pointer;" matTooltip="Marked as New Column" matTooltipPosition="left" (click)="sources.isNewColumn = false; unMarkNewKey(sources);">beenhere</mat-icon>
+                      </div>
+                    </div> 
+                    <div *ngIf="sources.isRejectedColumn" (click)="sourceMapping(sources); sources.isSelected = false" fxLayout="row" fxLayoutAlign="space-between center">
+                      <div fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row wrap" fxFlex="94">
+                        <ng-container *ngFor="let keys of sources.display; let i = index">
+                          <span>{{ keys | titlecase }}</span>
+                          <mat-icon *ngIf="i != sources.display.length-1" style="color: var(--textcolor)">double_arrow</mat-icon>
+                        </ng-container>  
+                      </div>
+                      <div>
+                        <mat-icon style="color: var(--red); transform: scale(1.1); pointer-events: all !important; cursor: pointer;" matTooltip="Marked as Rejected Column" matTooltipPosition="left" (click)="sources.isRejectedColumn = false; unMarkRejectedKey(sources);">backspace</mat-icon>
+                      </div>
+                    </div>   
+                  </div>
+                </div>
+              </div>
+              <div fxLayout="column" fxFlex="29" fxLayoutAlign="center center" fxLayoutGap="12px">
+                <span style="font-weight: 600;">Target Key</span>
+                <div id="even" class="mapping-list" style="overflow-y: auto; width: 100%;" [style.height.px]="screen?.height-260">
+                  <div *ngFor="let targets of targetKeys" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px" [ngClass]="{'keys-box-selected':targets.isSelected == true,'keys-box':targets.isSelected == false}" (click)="targetMapping(targets); targets.isSelected = true">
+                    <span>{{ targets.display | titlecase }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-card>
+        </mat-step>
+        <mat-step>
+            <ng-template matStepLabel>Schedule</ng-template>
+            <mat-card [style.height.px]="screen?.height-190" class="main-cards" style="padding: 0;">
+              <form [formGroup]="sheduleForm">
+                <div fxLayout="row wrap" fxLayoutAlign="space-between center" style="width: 100%; padding: 24px;">
+                  <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px" style="width: 20%;" fxFlex="18">
+                    <label class="txtclr font_14">Request Type *</label>
+                    <div class="inputbox inputminwidth" [ngClass]="{'errtxtbdr':sheduleForm.get('RequestType').invalid && sheduleForm.get('RequestType').dirty , 'validtext' : sheduleForm.get('RequestType').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                        <mat-select required name="RequestType" formControlName="RequestType" class="capitalize font_12" (selectionChange)="onReqTypeChange($event.value)">
+                            <mat-option class="capitalize" *ngFor="let ele of requestType" [value]="ele.lookup_name_id">{{ele.display_name}}</mat-option>
+                        </mat-select>                     
+                      </div>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px" style="width: 20%;" fxFlex="14">
+                    <label class="txtclr font_14">Content Type *</label>
+                    <div class="inputbox inputminwidth" [ngClass]="{'errtxtbdr':sheduleForm.get('ContentType').invalid && sheduleForm.get('ContentType').dirty , 'validtext' : sheduleForm.get('ContentType').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                        <mat-select required name="ContentType" formControlName="ContentType" class="capitalize font_12" (selectionChange)="onContentTypeChange($event.value)">
+                            <mat-option class="capitalize" *ngFor="let ele of contentType" [value]="ele.lookup_name_id">{{ele.display_name}}</mat-option>
+                        </mat-select>                     
+                      </div>
+                    </div>
+                  </div>
+                  <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px" fxFlex="66">
+                    <label class="txtclr font_14">URL *</label>
+                      <div class="inputbox inputminwidth" [ngClass]="{'errtxtbdr':sheduleForm.get('Url').invalid && sheduleForm.get('Url').dirty , 'validtext' : sheduleForm.get('Url').valid}">
+                        <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                          <mat-icon style="width:24px; height:24px; color: var(--primary);">language</mat-icon>
+                          <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                            <input style="outline:none; background-color:var(--white)" class="text" placeholder="Url" formControlName="Url" name="Url" id="Url" required>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <mat-tab-group mat-align-tabs="left" [selectedIndex]="selTabIndex" (selectedIndexChange)="changeTab($event)" style="border-top-left-radius: 8px; border-top-right-radius: 8px;">
+                  <mat-tab>
+                      <ng-template mat-tab-label>
+                              <span *ngIf="selTabIndex==0" class="clrblue">Authorization</span>
+                              <span *ngIf="selTabIndex!=0" class="txtclr">Authorization</span>
+                      </ng-template>
+                      <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="100" [style.height.px]="screen?.height-365" style="padding: 24px;">
+                        <div fxLayout="column" fxLayoutAlign="start start" fxFlex="30" style="border-right: 1px solid darkgrey; height: 100%;">
+                          <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px" style="width: 92%; margin-bottom: 24px;">
+                            <label class="txtclr font_14">Authorization Type *</label>
+                            <div class="inputbox" [ngClass]="{'errtxtbdr':sheduleForm.get('AuthType').invalid && sheduleForm.get('AuthType').dirty , 'validtext' : sheduleForm.get('AuthType').valid}">
+                              <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                                  <mat-select required name="AuthType" formControlName="AuthType" class="capitalize font_12" (selectionChange)="onAuthTypeChange($event.value)">
+                                      <mat-option class="capitalize" *ngFor="let ele of authType" [value]="ele.lookup_name_id">{{ele.display_name}}</mat-option>
+                                  </mat-select>                     
+                              </div>
+                            </div>
+                          </div>
+                          <span style="font-size: 12px;">The authorization header will be automatically generated when you send the request.</span>
+                        </div>
+                        <div fxLayout="column" fxLayoutAlign="start start" fxFlex="68" fxLayoutGap="20px" style="height: 100%;">
+                            <div *ngIf="selectedAuthType == 'Basic Auth'" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px" style="width: 64%;">
+                              <label class="txtclr font_14">User Name *</label>
+                                <div class="inputbox inputminwidth" [ngClass]="{'errtxtbdr':sheduleForm.get('UserName').invalid && sheduleForm.get('UserName').dirty , 'validtext' : sheduleForm.get('UserName').valid}">
+                                  <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                                    <mat-icon style="width:24px; height:24px; color: var(--primary);">person</mat-icon>
+                                    <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                                      <input style="outline:none; background-color:var(--white)" class="text" placeholder="User Name" formControlName="UserName" name="UserName" id="UserName" autocomplete="off" (focusout)="updateReq()" required>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                            <div *ngIf="selectedAuthType == 'Basic Auth'" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px" style="width: 64%;">
+                              <label class="txtclr font_14">Password *</label>
+                                <div class="inputbox inputminwidth" [ngClass]="{'errtxtbdr':sheduleForm.get('Password').invalid && sheduleForm.get('Password').dirty , 'validtext' : sheduleForm.get('Password').valid}">
+                                  <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                                    <mat-icon style="width:24px; height:24px; color: var(--primary);">lock</mat-icon>
+                                    <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                                      <input style="outline:none; background-color:var(--white)" class="text" type="password" placeholder="Password" formControlName="Password" name="Password" id="Password" autocomplete="new-password" (focusout)="updateReq()" required>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                            <!-- <button *ngIf="selectedAuthType == 'Basic Auth'" class="btnpri btnprifull" id="AuthType" style="width: 168px !important; height: 50px !important; padding:0px;" [disabled]="sheduleForm.get('UserName').invalid || sheduleForm.get('Password').invalid" (click)="updateReq();"><span class="clrwhite">UPDATE CREDENTAILS</span></button> -->
+                            <div *ngIf="selectedAuthType == 'Bearer Token'" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px" style="width: 96%;">
+                              <label class="txtclr font_14">Token *</label>
+                                <div class="inputbox inputminwidth" [ngClass]="{'errtxtbdr':sheduleForm.get('Token').invalid && sheduleForm.get('Token').dirty , 'validtext' : sheduleForm.get('Token').valid}">
+                                  <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                                    <mat-icon style="width:24px; height:24px; color: var(--primary);">person</mat-icon>
+                                    <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                                      <input style="outline:none; background-color:var(--white)" class="text" placeholder="Token" formControlName="Token" name="Token" id="Token" (focusout)="updateReq()" required>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                 </mat-tab>
+                <mat-tab>
+                      <ng-template mat-tab-label>
+                              <span *ngIf="selTabIndex==1" class="clrblue">Headers ({{reqHeaders.length}})</span>
+                              <span *ngIf="selTabIndex!=1" class="txtclr">Headers ({{reqHeaders.length}})</span>
+                      </ng-template>
+                      <div [style.height.px]="screen?.height-380" style="padding: 8px 24px 4px 24px; overflow: auto;">
+                        <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                          <mat-icon color="primary" class="pointer" (click)="addArrReqHeader()" matTooltip="Add Header">add_box</mat-icon>
+                        </div> -->
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
+                          <div formArrayName="ReqHeaders" fxFlex="100">
+                            <div *ngFor="let ele of getReqHeadersControls(); let i = index">
+                              <div [formGroupName]="i" fxLayout="row" fxLayoutAlign="space-between center">
+                                <mat-icon *ngIf="ele.get('Name').value=='Content-Type'" style="opacity:0.5; color: var(--textcolor);" matTooltip="Managed by Application">remove_circle</mat-icon>
+                                <mat-icon *ngIf="ele.get('Name').value=='Authorization'" style="opacity:0.5; color: var(--textcolor);" matTooltip="Managed by Application">remove_circle</mat-icon>
+                                <mat-icon *ngIf="ele.get('Name').value=='Accept'" style="opacity:0.5; color: var(--textcolor);" matTooltip="Managed by Application">remove_circle</mat-icon>
+                                <mat-icon *ngIf="ele.get('Name').value!='Authorization' && ele.get('Name').value!='Content-Type' && ele.get('Name').value!='Accept'" color="warn" (click)="removeReqHeaderElement(i)" class="pointer"matTooltip="Remove Header">remove_circle</mat-icon>
+                                <mat-form-field fxFlex="20" floatLabel="never">
+                                  <input matInput placeholder="Name" formControlName="Name" name="Name{{i}}" id="Name{{i}}" style="margin-top: 6px;" required>
+                                </mat-form-field>
+                                <mat-form-field fxFlex="70" floatLabel="never">
+                                  <input matInput placeholder="Value" formControlName="Value" name="Value{{i}}" id="Value{{i}}" style="margin-top: 6px;" required>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                          <mat-icon color="primary" class="pointer" (click)="addArrReqHeader()" matTooltip="Add Header">add_box</mat-icon>
+                        </div>
+                      </div>
+                  </mat-tab>
+                  <mat-tab [disabled]="selectedReqType != 'HTTP Request (POST)'">
+                    <ng-template mat-tab-label>
+                      <span *ngIf="selTabIndex==2" class="clrblue">Body *</span>
+                      <span *ngIf="selTabIndex!=2 && selectedReqType == 'HTTP Request (POST)'" class="txtclr">Body *</span>
+                      <span *ngIf="selTabIndex!=2 && selectedReqType != 'HTTP Request (POST)'" class="txtclr" style="opacity: 0.5;">Body</span>
+                    </ng-template>
+                    <div [style.height.px]="screen?.height-370" style="padding: 10px 24px 10px 24px; overflow: auto;" fxLayout="column">
+                      <div fxLayout="row" fxLayoutGap="10px" fxLayoutAlign="start center" class="mgnbtm10">
+                        <mat-radio-group name="BodyType" formControlName="BodyType" aria-label="Select an option" fxLayoutAlign="start center" fxLayoutGap="20px" (change)="onChangeBodyType($event.value)">
+                          <mat-radio-button color="primary" [value]="'form-data'" id="formData" selected>form-data</mat-radio-button>
+                          <mat-radio-button color="primary" [value]="'raw'" id="raw">raw</mat-radio-button>
+                        </mat-radio-group>
+                      </div>
+                      <div *ngIf="sheduleForm.get('BodyType').value=='form-data'" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <mat-label>Request Parameter</mat-label>
+                        <mat-icon color="primary" class="pointer" (click)="addArrReqParam()" matTooltip="Add Parameter">add_box</mat-icon>
+                      </div>
+                      <div *ngIf="sheduleForm.get('BodyType').value=='raw'" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                        <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px" fxFlex="100">
+                          <label class="txtclr font_14">Request Body Content</label>
+                          <div class="textareabox" [ngClass]="{'errtxtbdr':sheduleForm.get('ReqBody').invalid && sheduleForm.get('ReqBody').dirty , 'validtext' : sheduleForm.get('ReqBody').valid}">
+                              <textarea type="text" rows="9" style="outline:none; background-color:var(--white)" class="text" placeholder="Request Body Content" formControlName="ReqBody" name="ReqBody" id="ReqBody"></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="sheduleForm.get('BodyType').value=='form-data'">
+                        <div formArrayName="ReqParams" fxFlex="100">
+                            <div *ngFor="let ele of getReqParamsControls(); let i = index">
+                                <div [formGroupName]="i" fxLayout="row" fxLayoutAlign="space-between center">
+                                    <mat-icon color="warn" (click)="removeReqParamElement(i)" class="pointer"matTooltip="Remove Header">remove_circle</mat-icon>
+                                    <mat-form-field fxFlex="25" floatLabel="never">
+                                        <input matInput placeholder="Parameter Name" formControlName="ParamName" name="ParamName{{i}}" id="ParamName{{i}}" style="margin-top: 6px;" required>
+                                    </mat-form-field>
+                                    <mat-form-field fxFlex="65" floatLabel="never">
+                                        <input matInput placeholder="Parameter Value" formControlName="ParamValue" name="ParamValue{{i}}" id="ParamValue{{i}}" style="margin-top: 6px;" required>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                  </mat-tab>
+                  <mat-tab>
+                    <ng-template mat-tab-label>
+                            <span *ngIf="selTabIndex==3" class="clrblue">Schedule *</span>
+                            <span *ngIf="selTabIndex!=3" class="txtclr">Schedule *</span>
+                    </ng-template>
+                    <div fxLayout="row wrap" fxLayoutAlign="space-around start" fxFlex="100" fxLayoutGap="28px" [style.height.px]="screen?.height-365" style="padding: 12px 24px 12px 24px;">
+                      <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px" fxFlex="10">
+                        <label class="txtclr font_14">Run Frequency *</label>
+                        <div class="inputbox" [ngClass]="{'errtxtbdr':sheduleForm.get('RunFrequency').invalid && sheduleForm.get('RunFrequency').dirty , 'validtext' : sheduleForm.get('RunFrequency').valid}">
+                          <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                            <mat-select required  name="RegCountry" formControlName="RunFrequency" class="capitalize font_12">
+                              <mat-option class="capitalize" *ngFor="let ele of runFrequency" [value]="ele.runFrq_id">{{ele.name}}</mat-option>
+                            </mat-select>                     
+                          </div>
+                        </div>
+                      </div>
+                      <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px" fxFlex="26">
+                        <label class="txtclr font_14">Select Days *</label>
+                        <div class="inputbox" [ngClass]="{'errtxtbdr':sheduleForm.get('SelectedDays').invalid && sheduleForm.get('SelectedDays').dirty , 'validtext' : sheduleForm.get('SelectedDays').valid}">
+                          <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                            <mat-select placeholder="Select Days" formControlName="SelectedDays" multiple name="SelectedDays" class="capitalize font_12" (selectionChange)="onSelectDaysChange($event.value)">
+                              <mat-select-trigger *ngIf="selectedDaysList" class="capitalize">{{ selectedDaysList.length>0 ? 'Every ' : ''}}{{selectedDaysList.length === 7 ? 'day' : selectedDaysList }}</mat-select-trigger>
+                              <mat-option class="capitalize" *ngFor = "let ele of daysList" [value]="ele.value">{{ele.disp}}</mat-option>
+                            </mat-select>                  
+                          </div>
+                        </div>
+                      </div>
+                      <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px" fxFlex="26">
+                        <label class="txtclr font_14">Start Time *</label>
+                        <div class="inputbox" [ngClass]="{'errtxtbdr':sheduleForm.get('StartTime').invalid && sheduleForm.get('StartTime').dirty , 'validtext' : sheduleForm.get('StartTime').valid}">
+                          <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                            <mat-icon style="width:24px; height:24px; color: var(--primary);">schedule</mat-icon>
+                            <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                              <input type="time" style="outline:none; background-color:var(--white)" class="text" placeholder="Start Time" formControlName="StartTime" name="StartTime" id="StartTime" (blur)="changeTime()" required>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px" fxFlex="26">
+                        <label class="txtclr font_14">End Time *</label>
+                        <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':sheduleForm.get('EndTime').invalid && sheduleForm.get('EndTime').dirty , 'validtext' : sheduleForm.get('EndTime').valid}">
+                          <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                            <mat-icon style="width:24px; height:24px; color: var(--primary);">schedule</mat-icon>
+                            <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                              <input type="time" style="outline:none; background-color:var(--white)" class="text" formControlName="EndTime" placeholder="End Time" name="EndTime" id="EndTime" (blur)="changeTime()" required>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </mat-tab>
+                  <mat-tab>
+                      <ng-template mat-tab-label>
+                        <span *ngIf="selTabIndex==4" class="clrblue">Response</span>
+                        <span *ngIf="selTabIndex!=4" class="txtclr">Response</span>
+                      </ng-template>
+                      <div style="padding: 12px 24px 12px 24px;">
+                        <div *ngIf="respContent!=undefined && !respContent?.error" >
+                          <div fxLayout="row" fxLayoutAlign="space-between center">
+                            <div fxLayout="row" fxLayoutAlign="start center">
+                              <span>Response Body</span>
+                            </div>
+                            <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="18px">
+                              <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
+                                <span>Status:</span>
+                                <span [ngClass]="{'clrred':!respContent.success, 'clrgreen':respContent.success}">{{respContent.statusCode}} {{respContent.statusText}}</span>
+                              </div>
+                              <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
+                                <span>Time:</span>
+                                <span [ngClass]="{'clrred':respTime>=10000, 'clrgreen':respTime<10000}">{{respTime}} ms</span>
+                              </div>
+                              <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="4px">
+                                <span>Size:</span>
+                                <span style="color: var(--green);">{{ respSize }}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div [style.height.px]="screen?.height-430" style="overflow-y: auto; margin-top: 4px;">
+                            <p>{{ respContent.resBody }}</p>
+                          </div>
+                        </div>
+                      </div>
+                  </mat-tab>
+                  <mat-tab>
+                    <ng-template mat-tab-label>
+                      <span *ngIf="selTabIndex==5" class="clrblue">Mandatory Fields *</span>
+                      <span *ngIf="selTabIndex!=5" class="txtclr">Mandatory Fields *</span>
+                    </ng-template>
+                    <div style="padding: 12px 24px 12px 24px;" fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="28px">
+                      <div *ngIf="!isCargoReadyDateMapped" fxLayout="row" fxLayoutAlign="start center" class="inlineeditdiv">
+                        <div class="txtclr font_14"> Cargo Ready Date must be</div>
+                        <input class="ip" style="width:50px" type="number" min="1" max="31" [(ngModel)]="CargoReadyDateForm" [ngModelOptions]="{standalone: true}" (blur)="cargoReadyDateMapper()">
+                        <div class="txtclr font_14">Days prior to</div>
+                        <mat-select [value]="cargoMappedKey" name="cargo-keys" class="select" (selectionChange)="cargoReadyDateMapper($event.value)" required>
+                          <mat-option value="Shipdate">Shipment Date</mat-option>
+                          <mat-option value="deliverydate">Delivery Date</mat-option>
+                        </mat-select>
+                      </div>
+                      <div *ngIf="!isShipdateMapped" fxLayout="row" fxLayoutAlign="start center" class="inlineeditdiv">
+                        <div class="txtclr font_14"> Shipment Date must be</div>
+                        <input class="ip" style="width:50px" type="number" min="1" max="31" [(ngModel)]="ShipmentDateForm" [ngModelOptions]="{standalone: true}" (blur)="shipmentDateMapper()"/>
+                        <div *ngIf="shipmentDateArr.mapped_key == 'deliverydate' || shipmentDateArr.mapped_key == undefined" class="txtclr font_14">Days prior to</div>
+                        <div *ngIf="shipmentDateArr.mapped_key == 'cargoreadydate'" class="txtclr font_14">Days after</div>
+                        <mat-select [value]="shipMappedKey" name="keys" class="select" (selectionChange)="shipmentDateMapper($event.value)" required>
+                          <mat-option value="cargoreadydate">Cargo Ready Date</mat-option>
+                          <mat-option value="deliverydate">Delivery Date</mat-option>
+                        </mat-select>
+                      </div>
+                      <div *ngIf="!isDeliveryDateMapped" fxLayout="row" fxLayoutAlign="start center" class="inlineeditdiv">
+                        <div class="txtclr font_14"> Delivery Date must be</div>
+                        <input class="ip" style="width:50px" type="number" min="0" max="31" [(ngModel)]="DeliveryDateForm" [ngModelOptions]="{standalone: true}" (blur)="deliveryDateMapper()">
+                        <div class="txtclr font_14">Days after</div>
+                        <mat-select [value]="deliveryMappedKey" name="keys" class="select" (selectionChange)="deliveryDateMapper($event.value)" required>
+                          <mat-option value="cargoreadydate">Cargo Ready Date</mat-option>
+                          <mat-option value="Shipdate">Shipment Date</mat-option>
+                        </mat-select>
+                      </div>
+                      <div *ngIf="isCargoReadyDateMapped" fxLayout="row" fxLayoutAlign="start center">
+                        <span class="txtclr font_14" style="color: var(--green);"> Cargo Ready Date is Mapped</span>
+                      </div>
+                      <div *ngIf="isShipdateMapped" fxLayout="row" fxLayoutAlign="start center">
+                        <span class="txtclr font_14" style="color: var(--green);"> Shipment Date is Mapped</span>
+                      </div>
+                      <div *ngIf="isDeliveryDateMapped" fxLayout="row" fxLayoutAlign="start center">
+                        <span class="txtclr font_14" style="color: var(--green);"> Delivery Date is Mapped</span>
+                      </div>
+                    </div>
+                </mat-tab>
+                </mat-tab-group>
+              </form>
+            </mat-card>
+        </mat-step>
+      </mat-horizontal-stepper>
+</div>
+<footer fxLayout="row">
+    <mat-toolbar style="background-color: var(--activebg); height: 72px;" fxLayoutAlign="end center" >
+        <div *ngIf="this.stepOne" fxLayoutAlign="end center" style="margin-right:40px;">
+            <button class="btnpri btnprifull" [disabled]="!fileName" id="btnNext" style="width: 98px !important; height: 40px !important; padding:0px;" (click)="uploadDataSet();"><span class="clrwhite">UPLOAD</span></button>
+        </div>
+        <div *ngIf="this.stepTwo" fxLayoutAlign="space-between center" style="margin-right:40px; width: 100%;">
+            <button class="btnsecondary" id="btnBack" style="width: auto !important; height: 40px !important; padding:0px 8px;" (click)="deleUploadedFile();"><span>RE-UPLOAD SAMPLE DATASET</span></button>
+            <div>
+              <button  class="btnpri" type="button" [disabled]="(!sourceSelect || !targetSelect)" style="width: 140px !important; height: 40px !important; padding:0px; margin-right: 14px;" (click)="mapSelectedKey()"><span>Map selected keys</span></button>
+              <button class="btnpri btnprifull" id="btnNext" style="width: 98px !important; height: 40px !important; padding:0px;" (click)="validationConfirm();"><span class="clrwhite">VALIDATE</span></button>
+            </div>
+        </div>
+        <div *ngIf="this.stepThree" fxLayoutAlign="space-between center" style="margin-right:40px; width: 100%;">
+            <button class="btnsecondary" id="btnBack" style="width: auto !important; height: 40px !important; padding:0px 8px;" (click)="redoMapping();"><span>REDO MAPPING</span></button>
+            <div fxLayoutAlign="start center" fxLayoutGap="24px">
+                <button class="btnpri btnprifull" id="btnBack" style="width: auto !important; height: 40px !important; padding:0px 8px;" [disabled]="skipMapping" (click)="viewMapping();"><span>VIEW MAPPED KEYS</span></button> 
+                <button class="btnpri btnprifull" id="btnBack" style="width: auto !important; height: 40px !important; padding:0px 8px;" [disabled]="sheduleForm.invalid" (click)="sendRequest();"><span>TEST REQUEST</span></button> 
+                <button class="btnpri btnprifull" id="btnNext" style="width: auto !important; height: 40px !important; padding:0px 12px;" [disabled]="!isTestReqvalid || !isMandatoryCleared" (click)="schedule();" ><span class="clrwhite">{{ poisId == undefined ? 'SCHEDULE' : 'UPDATE SCHEDULE'}}</span></button>
+            </div>
+        </div>
+    </mat-toolbar>
+</footer>

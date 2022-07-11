@@ -1,0 +1,242 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 16px 0px;">
+    <!-- <div fxLayout="row" fxLayoutAlign="start start">
+        <div fxFlex="20">
+            <div style="width:100%; text-align: center; padding:16px 0px; background-color: var(--sectionbg);" class="font_16 fntwt600">Lookup Type</div>
+            <mat-list class="menulist" style="padding-top:0px">
+                <mat-list-item *ngFor ="let ele of lookupTypeColl;" class="pointer capitalize" [ngClass]="{'menuitemselected':selTypeId==ele.lookup_type_id,'menuitem':selTypeId!=ele.lookup_type_id}" (click)="onLookupTypeChange(ele.lookup_type_id)">{{ele.display_name}}
+                </mat-list-item>
+            </mat-list>
+        </div>
+        <div fxFlex="75" style="margin-left:10px">
+            <button *ngIf="selTypeId!=undefined" style="background-color: var(--active); position:fixed; top:70px;right:20px; z-index: 100;" mat-mini-fab (click)="addlookup()"><mat-icon class="clrwhite">add_circle</mat-icon></button>
+            <div *ngIf="lookupTypeColl.length>0 && !isMobile" fxLayout="column" fxLayoutAlign="space-between center" [style.max-height.px]="screenParam?.height-140" style="overflow: auto">
+                <table *ngIf="lookupColl.data.length>0"mat-table #table [dataSource]="lookupColl" matSort style="width:100%">
+                    <ng-container matColumnDef="display_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>DISPLAY NAME</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.display_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="company_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>COMPANY</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.company_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="edit">
+                        <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>
+                        <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                            <mat-icon id="edit{{i}}" color="primary" class="pointer" matTooltip="Edit" (click)="editlookup(element)">edit</mat-icon>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="delete">
+                        <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                        <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                            <mat-icon id="delete{{i}}" color="warn" class="pointer" matTooltip="Delete" (click)="deleteLookup(element)">delete</mat-icon>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="dispLookup; sticky: true;" class="tblrowht"></tr>
+                    <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispLookup;"></tr>
+                </table>
+            </div>
+
+        </div>
+    </div> -->
+    <div fxLayout="column" fxLayoutAlign="center center" >
+        <form [formGroup]="lookupForm" fxLayout="column" fxLayoutAlign="space-between center" style="padding: 15px 0px;">
+            <!--Lookup Type-->
+            <div style="margin-bottom:20px; width: 280px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+                <label class="txtclr font_14">Lookup Type *</label>
+                <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':lookupForm.get('LookupType').invalid && lookupForm.get('LookupType').dirty , 'validtext' : lookupForm.get('LookupType').valid}" style="width: 240px;">
+                <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                  <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/>
+                  <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                  <mat-select placeholder=" Select Lookup type" formControlName="LookupType" name="LookupType" class="capitalize font_12" (selectionChange)="getLookupNames($event.value)"  required>
+                    <mat-option class="capitalize" *ngFor="let ele of lookupTypeColl" [value]="ele">{{ele.display_name}}</mat-option>
+                  </mat-select>                      
+                </div>
+                </div>
+                <div fxLayout="column">
+                    <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px; text-transform: none;" *ngIf="lookupForm.get('LookupType').invalid&&lookupForm.get('LookupType').dirty" class="txterror" >{{getErrorMessage(lookupForm.get('LookupType'),'LookupType')}}</mat-error>
+                  </div>
+                </div>
+            </div>
+        </form>
+        <div id="AddLookup">
+            <button [matTooltip]="'Add ' + this.lookupForm.get('LookupType').value?.display_name" class="btnpri btnprifull" id="btnNext" style="width: fit-content !important; height: 40px !important; padding: 6px 12px;" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px" (click)="openAddLookup()">
+                <mat-icon>add_task</mat-icon>
+                <span class="clrwhite">Add {{this.lookupForm.get('LookupType').value?.display_name}}</span>
+            </button>
+        </div>
+        <div *ngIf="!isAddLookup" fxLayout="column" fxLayoutAlign="center center" [style.height.px]="ht - 150">
+            <div *ngIf="lookupColl.filteredData.length == 0 && !isDataLoading">
+                Select Lookup type to display its child Lookup names
+            </div>
+            <div id="LookupNameList" *ngIf="lookupColl.filteredData.length > 0 && !isDataLoading" [style.height.px]="isMobile ? ht - 200 : ht - 150" [style.width.px]="isMobile ? width - 50 : width - 300" style="overflow-y: auto;">
+                <div *ngFor="let lookup_name of lookupColl.filteredData; let idx = index">
+                    <div id="lookupCard" class="matcard_box_shadow capitalize" [ngClass]="{'matcard_box_shadow_bordered':lookup_name.is_selected}" fxLayout="column" [style.height]="lookup_name.is_edit ? lookup_name.card_height : 'auto'">
+                        <div fxFlex="48" fxLayout="row" fxLayoutAlign="space-between start">
+                            <span fxFlex="24">{{ lookup_name.display_name }}</span>
+                            <span fxFlex="24">{{ lookup_name.company_name }}</span>
+                            <div *ngIf="!userDetails.is_admin" fxLayout="row" fxLayoutAlign="space-between center" fxFlex="8">
+                                <mat-icon  *ngIf="!lookup_name.is_admin_lookup && !lookup_name.is_edit" class="del-lookup" (click)="openLookupName(lookup_name, idx);">edit</mat-icon>
+                                <mat-icon *ngIf="!lookup_name.is_admin_lookup && !lookup_name.is_edit" class="del-lookup" (click)="delLookupName(lookup_name);">delete</mat-icon>
+                                <mat-icon *ngIf="!lookup_name.is_admin_lookup && lookup_name.is_edit && !lookupForm.invalid" class="save-lookup" style="z-index: 20;" (click)="saveLookupName(lookup_name)">done</mat-icon>
+                                <mat-icon *ngIf="!lookup_name.is_admin_lookup && lookup_name.is_edit && !lookupForm.invalid" class="save-lookup" style="z-index: 20;" (click)="closeLookupName(lookup_name, idx)">close</mat-icon>
+                            </div>
+                        </div>
+                        <div *ngIf="lookup_name.is_edit">
+                            <form [formGroup]="lookupForm" fxLayout="isMobile ? 'column' : 'row wrap" fxLayoutAlign="center center" fxLayoutGap="30px" style="padding: 20px 0px;">
+                                <!-- Company Name -->
+                                <div>
+                                    <label class="txtclr font_14">Company Name*</label>
+                                    <div class="inputbox" [ngClass]="{'errtxtbdr':lookupForm.get('Company').invalid && lookupForm.get('Company').dirty , 'validtext' : lookupForm.get('Company').valid}">
+                                        <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                                        <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/>
+                                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                                        <mat-select placeholder=" Select Company" formControlName="Company" name="Company" class="capitalize font_12" style="min-width: 180px;" required>
+                                            <mat-option class="capitalize" *ngFor="let ele of companyList" [value]="ele.company_id">
+                                                <span>{{ele.company_name}}</span>
+                                                <span *ngIf="ele.office_category != null" class="capitalize"> - ({{ele.office_category}})</span>
+                                            </mat-option>
+                                        </mat-select>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column">
+                                        <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px; text-transform: none;" *ngIf="lookupForm.get('Company').invalid&&lookupForm.get('Company').dirty" class="txterror" >{{getErrorMessage(lookupForm.get('Company'),'Company')}}</mat-error>
+                                    </div>
+                                    </div>
+                                </div>
+                                <!-- Lookup type Name -->
+                                <!-- <div>
+                                    <label class="txtclr font_14">Lookup type*</label>
+                                    <div class="inputbox" [ngClass]="{'errtxtbdr':lookupForm.get('AddLookupType').invalid && lookupForm.get('AddLookupType').dirty , 'validtext' : lookupForm.get('AddLookupType').valid}">
+                                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                                        <mat-select placeholder=" Select lookup type" formControlName="AddLookupType" name="AddLookupType" class="capitalize font_12" style="min-width: 180px;" required>
+                                            <mat-option class="capitalize" *ngFor="let ele of lookupTypeColl" [value]="ele.lookup_type_id">{{ele.display_name}}</mat-option>
+                                        </mat-select>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column">
+                                        <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px; text-transform: none;" *ngIf="lookupForm.get('AddLookupType').invalid && lookupForm.get('AddLookupType').dirty" class="txterror">{{getErrorMessage(lookupForm.get('AddLookupType'),'AddLookupType')}}</mat-error>
+                                    </div>
+                                    </div>
+                                </div> -->
+                                <!-- Lookup Name -->
+                                <div>
+                                    <label class="txtclr font_14">Lookup Name *</label>
+                                    <div class="inputbox" [ngClass]="{'errtxtbdr':lookupForm.get('LookupName').invalid && lookupForm.get('LookupName').dirty , 'validtext' : lookupForm.get('LookupName').valid}">
+                                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                                        <!-- <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/> -->
+                                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                                        <input style="outline:none; background-color:var(--white)" class="text" placeholder="Company Name" formControlName="LookupName" name="LookupName" id="LookupName" required>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column">
+                                        <mat-error style="margin-left:-30px; padding-top:5px; margin-top:2px; text-transform: none;" *ngIf="lookupForm.get('LookupName').invalid && lookupForm.get('LookupName').dirty" class="txterror" >{{getErrorMessage(lookupForm.get('LookupName'),'LookupName')}}</mat-error>
+                                    </div>
+                                    </div>
+                                </div>
+                                 <!-- Display Name -->
+                                 <div>
+                                    <label class="txtclr font_14">Display Name *</label>
+                                    <div class="inputbox" [ngClass]="{'errtxtbdr':lookupForm.get('DisplayName').invalid && lookupForm.get('DisplayName').dirty , 'validtext' : lookupForm.get('DisplayName').valid}">
+                                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                                        <!-- <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/> -->
+                                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                                        <input style="outline:none; background-color:var(--white)" class="text" placeholder="Company Name" formControlName="DisplayName" name="DisplayName" id="DisplayName" required>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column">
+                                        <mat-error style="margin-left:-30px; padding-top:5px; margin-top:2px; text-transform: none;" *ngIf="lookupForm.get('DisplayName').invalid && lookupForm.get('DisplayName').dirty" class="txterror" >{{getErrorMessage(lookupForm.get('DisplayName'),'DisplayName')}}</mat-error>
+                                    </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="isAddLookup" fxLayout="column" fxLayoutAlign="start center" [style.height.px]="ht - 150">
+            <form [formGroup]="lookupForm" fxLayout="isMobile ? 'column' : 'row wrap" fxLayoutAlign="center center" fxLayoutGap="30px" style="padding: 20px 0px;">
+                <!-- Company Name -->
+                <div>
+                    <label class="txtclr font_14">Company Name*</label>
+                    <div class="inputbox" [ngClass]="{'errtxtbdr':lookupForm.get('Company').invalid && lookupForm.get('Company').dirty , 'validtext' : lookupForm.get('Company').valid}">
+                        <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                        <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/>
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                        <mat-select placeholder=" Select Company" formControlName="Company" name="Company" class="capitalize font_12" style="min-width: 180px;" required>
+                            <mat-option class="capitalize" *ngFor="let ele of companyList" [disabled]="validComp(ele)" [value]="ele.company_id">
+                                <span>{{ele.company_name}}</span>
+                                <span *ngIf="ele.office_category != null" class="capitalize"> - ({{ele.office_category}})</span>
+                            </mat-option>
+                        </mat-select>
+                        </div>
+                    </div>
+                    <div fxLayout="column">
+                        <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px; text-transform: none;" *ngIf="lookupForm.get('Company').invalid&&lookupForm.get('Company').dirty" class="txterror" >{{getErrorMessage(lookupForm.get('Company'),'Company')}}</mat-error>
+                    </div>
+                    </div>
+                </div>
+                <!-- Lookup type Name -->
+                <!-- <div>
+                    <label class="txtclr font_14">Lookup type*</label>
+                    <div class="inputbox" [ngClass]="{'errtxtbdr':lookupForm.get('AddLookupType').invalid && lookupForm.get('AddLookupType').dirty , 'validtext' : lookupForm.get('AddLookupType').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                        <mat-select placeholder=" Select lookup type" formControlName="AddLookupType" name="AddLookupType" class="capitalize font_12" style="min-width: 180px;" required>
+                            <mat-option class="capitalize" *ngFor="let ele of lookupTypeColl" [value]="ele.lookup_type_id">{{ele.display_name}}</mat-option>
+                        </mat-select>
+                        </div>
+                    </div>
+                    <div fxLayout="column">
+                        <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px; text-transform: none;" *ngIf="lookupForm.get('AddLookupType').invalid && lookupForm.get('AddLookupType').dirty" class="txterror">{{getErrorMessage(lookupForm.get('AddLookupType'),'AddLookupType')}}</mat-error>
+                    </div>
+                    </div>
+                </div> -->
+                <!-- Lookup Name -->
+                <div>
+                    <label class="txtclr font_14">Lookup Name *</label>
+                    <div class="inputbox" [ngClass]="{'errtxtbdr':lookupForm.get('LookupName').invalid && lookupForm.get('LookupName').dirty , 'validtext' : lookupForm.get('LookupName').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                        <!-- <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/> -->
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                        <input style="outline:none; background-color:var(--white)" class="text" placeholder="Lookup Name" formControlName="LookupName" name="LookupName" id="LookupName" required>
+                        </div>
+                    </div>
+                    <div fxLayout="column">
+                        <mat-error style="margin-left:-30px; padding-top:5px; margin-top:2px; text-transform: none;" *ngIf="lookupForm.get('LookupName').invalid && lookupForm.get('LookupName').dirty" class="txterror" >{{getErrorMessage(lookupForm.get('LookupName'),'LookupName')}}</mat-error>
+                    </div>
+                    </div>
+                </div>
+                 <!-- Display Name -->
+                 <div>
+                    <label class="txtclr font_14">Display Name *</label>
+                    <div class="inputbox" [ngClass]="{'errtxtbdr':lookupForm.get('DisplayName').invalid && lookupForm.get('DisplayName').dirty , 'validtext' : lookupForm.get('DisplayName').valid}">
+                    <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+                        <!-- <img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:24px; height:24px;"/> -->
+                        <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                        <input style="outline:none; background-color:var(--white)" class="text" placeholder="Display Name" formControlName="DisplayName" name="DisplayName" id="DisplayName" required>
+                        </div>
+                    </div>
+                    <div fxLayout="column">
+                        <mat-error style="margin-left:-30px; padding-top:5px; margin-top:2px; text-transform: none;" *ngIf="lookupForm.get('DisplayName').invalid && lookupForm.get('DisplayName').dirty" class="txterror" >{{getErrorMessage(lookupForm.get('DisplayName'),'DisplayName')}}</mat-error>
+                    </div>
+                    </div>
+                </div>
+            </form>
+            <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px" style="margin-top: 30px;">
+                <button matTooltip="Cancel" class="btnpri btnprifull" id="btnNext" style="width: fit-content !important; height: 40px !important; padding: 6px 12px;" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px" (click)="closeAddLookup()">
+                    <mat-icon>block</mat-icon>
+                    <span class="clrwhite">Cancel</span>
+                </button>
+                <button [disabled]="lookupForm.invalid" [matTooltip]="'Add ' + this.lookupForm.get('LookupType').value.display_name" class="btnpri btnprifull" id="btnNext" style="width: fit-content !important; height: 40px !important; padding: 6px 12px;" fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="8px" (click)="addLookupName()">
+                    <mat-icon>add_task</mat-icon>
+                    <span class="clrwhite">Add {{this.lookupForm.get('LookupType').value.display_name}}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

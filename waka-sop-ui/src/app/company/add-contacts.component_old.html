@@ -1,0 +1,95 @@
+<!-- <app-login-header></app-login-header> -->
+<!-- Loader section -->
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 16px 16px;">
+    <div>
+        <div fxLayout="row" fxLayoutAlign="start center" class="tabSideAction" fxLayoutGap="15px" style="margin-right:10px">
+            <div class="inputboxsingle inboxminwidth">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                    <mat-icon class="icon">search</mat-icon>
+                    <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                        <input class="text" type="text" (keyup)="applyCompanyFilter($event)" placeholder="Search by Contact Name, Role etc" name="Name" id="Name" required>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button mat-button class="btnpri btnauto" (click)="addCompanyContact()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">INVITE CONTACT</span></button>
+            </div>
+        </div>
+
+        <div [hidden]="contactColl?.data?.length ==0" fxLayout="column" fxLayoutAlign="space-between center" style="padding-top:56px; overflow: auto">
+            <table mat-table #TableSort="matSort" [dataSource]="contactColl" matSort style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:98%" [hidden]="contactColl?.data?.length==0">
+                <ng-container matColumnDef="contact_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>CONTACT NAME</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.contact_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>CONTACT EMAIL</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.email}}</td>
+                </ng-container>
+                <ng-container matColumnDef="designation">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>DESIGNATION</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.designation}}</td>
+                </ng-container>
+                <ng-container matColumnDef="department">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>DEPARTMENT</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.department | titlecase }}</td>
+                </ng-container>
+                <ng-container matColumnDef="mobile">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>MOBILE</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.mobile}}</td>
+                </ng-container>
+                <ng-container matColumnDef="role_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>ASSIGNED ROLE</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.role_name | titlecase}}</td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>STATUS</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.status | titlecase}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="status_date">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>STATUS DATE</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                        <div *ngIf="element.is_accepted && !element.is_denied && !element.is_revoked">{{element.accepted_on | date:'dd-MMM-yyyy'}}</div>
+                        <div *ngIf="element.is_denied">{{element.denied_on | date:'dd-MMM-yyyy'}}</div>
+                        <div *ngIf="element.is_revoked">{{element.revoked_on | date:'dd-MMM-yyyy'}}</div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                    <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                        <mat-icon *ngIf="!element.is_accepted && !element.is_denied && !element.is_revoked" id="action{{i}}" style="color: rgb(223, 201, 10)"  class="pointer" matTooltip="Revoke Contact" (click)="inviteContactApproveRevoke(element)">thumbs_up_down</mat-icon>
+                        <mat-icon *ngIf="element.is_revoked" id="action{{i}}" color="warn" class="pointer" matTooltip="Approve Contact" (click)="inviteContactApproveRevoke(element)">thumb_down</mat-icon>
+                        <mat-icon *ngIf="element.is_accepted" id="action{{i}}" style="color: rgb(61, 160, 66);" class="pointer" matTooltip="Revoke Contact" (click)="inviteContactApproveRevoke(element)">thumb_up</mat-icon>
+                        <mat-icon *ngIf="element.is_denied" id="action{{i}}" style="color: rgb(102, 102, 102);" matTooltip="Contact Denied">thumbs_up_down</mat-icon>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="edit">
+                    <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>
+                    <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                        <mat-icon *ngIf="!element.is_deleted" id="edit{{i}}" color="primary" class="pointer" matTooltip="Edit Contact" (click)="editCompanyContact(element)">edit</mat-icon>
+                        <mat-icon *ngIf="element.is_deleted" id="edit{{i}}" color="primary" style="opacity: 0.6;" matTooltip="Edit Not Alowed">edit</mat-icon>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="delete">
+                    <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                    <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                        <mat-icon *ngIf="!element.is_deleted" id="delete{{i}}" color="warn" class="pointer" matTooltip="Delete Contact" (click)="delCompanyContact(element)">delete</mat-icon>
+                        <mat-icon *ngIf="element.is_deleted" id="delete{{i}}" style="color: rgb(61, 160, 66);" class="pointer" matTooltip="Retrieve Contact" (click)="delCompanyContact(element)">unarchive</mat-icon>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="dispcompany; sticky: true;" class="tblrowht"></tr>
+                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispcompany;"></tr>
+            </table>
+        </div>
+        <div *ngIf="contactColl?.data?.length==0" [style.height.px]="screenParam?.height-90" fxLayoutAlign="center center" style="border:1px var(--lightgray) solid; border-radius: 10px; margin-top: 16px;">
+            <div fxLayout="column" fxLayoutAlign="center center">
+                <mat-icon class="md-96" style="opacity:0.2">contact_page</mat-icon>
+                <div class="font_12">Click on INVITE CONTACT to invite a new contact to the Company</div>
+            </div>
+        </div>
+    </div>
+</div>

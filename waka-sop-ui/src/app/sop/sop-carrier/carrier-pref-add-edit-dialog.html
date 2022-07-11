@@ -1,0 +1,91 @@
+<!-- <div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal"
+	style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div> -->
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10">Carrier Preference</mat-label>
+    <mat-icon id="close" color="warn" class="pointer" matTooltip="Close dialog" (click)="onClose(false)">cancel</mat-icon>
+</div>
+<div mat-dialog-content>
+    <form  [formGroup]="form">
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <mat-select placeholder="Origin Port" formControlName="OriginPort" name="OriginPort" class="capitalize font_12" (selectionChange)="onSelOP()" >
+                <input type="text" style="border:none; border-bottom:1px solid lightgray; margin-left:20px; margin-top:10px" placeholder="filter" formControlName="FilterOP">
+                <mat-option class="capitalize" *ngFor="let ele of filterPortOP | async" [value]="ele">{{ele.portwithregion}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+            <mat-select placeholder="Destination Port" formControlName="DestPort" name="DestPort" class="capitalize font_12" (selectionChange)="onSelDP()" >
+                <input type="text" style="border:none; border-bottom:1px solid lightgray; margin-left:20px; margin-top:10px" placeholder="filter" formControlName="FilterDP">
+                <mat-option class="capitalize" *ngFor="let ele of filterPortDP | async" [value]="ele">{{ele.portwithregion}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <hr/>
+    </form>
+    <div fxLayout="row" fxLayoutAlign="space-between start">
+        <mat-card-content fxFlex="29">
+            <mat-card-title class="font_14 fntwt600">Available Carriers</mat-card-title>
+            <mat-form-field style="width:100%" class="no-border">
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyCarrierFilter($event)" placeholder="Ex. carrier name" #input>
+            </mat-form-field>
+            <div style="overflow-y: auto; max-height: 220px;">
+                <table mat-table cdkDropList #table1 #list1="cdkDropList" [dataSource]="carrierColl" style="border:1px lightgray solid; border-radius: 10px; margin-top:5px; width:100%" 
+                [cdkDropListData]="carrierColl.data" (cdkDropListDropped)="dragDrop($event)" [cdkDropListConnectedTo]="[list2]">
+                    <ng-container matColumnDef="carrier_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Carrier Name</th>
+                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.carrier_name}}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="tblDispCarrier; sticky: true;" class="tblrowht"></tr>
+                    <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: tblDispCarrier;" cdkDrag [cdkDragData]="row">
+                    </tr>
+                </table>
+            </div>
+        </mat-card-content>
+        <mat-card-content fxFlex="69">
+            <mat-card-title class="font_14 fntwt600">Preferred Carrier List</mat-card-title>
+            <div style="overflow-y: auto;max-height: 220px;" >
+                <table mat-table cdkDropList #table2 #list2="cdkDropList" [dataSource]="sopCarrierPrefColl" style="border:1px lightgray solid; border-radius: 10px; margin-top:36px; width:100%" 
+                [cdkDropListData]="sopCarrierPrefColl.data" (cdkDropListDropped)="dragDrop($event)" [cdkDropListConnectedTo]="[list1]">
+                    <ng-container matColumnDef="carrier_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Carrier Name</th>
+                        <td mat-cell class="font_12 tbl-row-pad" style="width:250px" *matCellDef="let element">{{element.carrier_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="contract_number">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Contract Number</th>
+                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">
+                            <span *ngIf="!element.edit_mode" style="width:100px">{{element.contract_number}}</span>
+                            <input *ngIf="element.edit_mode" type="text" style="border-bottom: 1px solid lightgray; width:100px;" matInput [(ngModel)]="element.contract_number" name="contract_number">
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="preference">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>Preference</th>
+                        <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element; let i=index">
+                            <span>{{i+1}}</span>
+                        </td>
+                    </ng-container>
+                    <ng-container matColumnDef="edit">
+                        <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                        <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                            <mat-icon *ngIf="!element.edit_mode" id="edit{{i}}" color="primary" class="pointer" matTooltip="Edit Carrier Contract" (click)="element.edit_mode=true">edit</mat-icon>
+                            <mat-icon *ngIf="element.edit_mode" id="edit{{i}}" class="pointer clrgreen" matTooltip="Save Carrier Contract" (click)="element.edit_mode=false;">save</mat-icon>
+                        </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="tblDispSOPCarrierPref; sticky: true;" class="tblrowht"></tr>
+                    <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: tblDispSOPCarrierPref;" cdkDrag [cdkDragData]="row"></tr>
+                </table>
+            </div>
+            <div *ngIf="sopCarrierPrefColl?.data?.length == 0" fxLayoutAlign="center center">
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <mat-icon class="md-96" style="opacity:0.2">swap_horiz</mat-icon>
+                    <div class="font_12">Drag and Drop from available list and modify your preference</div>
+                </div>
+            </div>
+        </mat-card-content>
+    </div>
+</div>
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end center" fxLayoutGap="20px">
+    <button *ngIf="form.valid" mat-raised-button style="background-color:#1c75bc; color:white;" (click)="saveSOPCarrierPreference()"><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE</span></button>
+    <button *ngIf="form.invalid" mat-raised-button style="background-color:#1c75bc; color:white; opacity:0.5" disabled='true'><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE</span></button>
+</mat-dialog-actions>

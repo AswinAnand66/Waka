@@ -1,0 +1,7 @@
+.keys-header-new {
+    background: var(--tabbg);
+  }
+
+::ng-deep .mat-expansion-panel-body {
+  background-color: var(--white) !important;
+}

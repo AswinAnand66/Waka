@@ -1,0 +1,95 @@
+<!-- <app-login-header></app-login-header> -->
+<!-- Loader section -->
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 16px 16px;">
+    <div style="padding-top:65px">
+        <div fxLayout="row" fxLayoutAlign="start center" class="tabSideAction" fxLayoutGap="15px" style="margin-right: 10px;">
+            <div class="inputboxsingle inboxminwidth">
+                <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+                    <mat-icon class="icon">search</mat-icon>
+                    <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+                        <input class="text" type="text" (keyup)="applyRoleFilter($event)" placeholder="Search by Role Name, Company Name, etc..." name="Name" id="Name" required>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button mat-button style="width: 180px !important; height: 40px !important;" class="btnpri btnauto" (click)="addRole()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14">ADD ROLE</span></button> 
+            </div>
+        </div>
+        <div [hidden]="roleColl?.data?.length == 0" fxLayout="column" fxLayoutAlign="space-between center" style="overflow: auto" [style.height.px]="screenParam?.height-90-120">
+            <table mat-table #table [dataSource]="roleColl" matSort style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:98%" [hidden]="roleColl?.data?.length == 0">
+                <ng-container matColumnDef="company_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>COMPANY</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.company_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="role_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>ROLE NAME</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.role_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="module_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>MODULE</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.module_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="sub_module_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>SUB MODULE</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.sub_module_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="view_role">
+                    <th  class="tbl-head" mat-header-cell *matHeaderCellDef>View</th>
+                    <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                        <mat-icon *ngIf="element.view_role" id="view_role{{i}}" style="color:green" >check_circle</mat-icon>
+                        <mat-icon *ngIf="!element.view_role" id="view_role{{i}}" style="color:red" >cancel</mat-icon>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="create_role">
+                    <th  class="tbl-head" mat-header-cell *matHeaderCellDef>Create</th>
+                    <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                        <mat-icon *ngIf="element.create_role" id="create_role{{i}}" style="color:green" >check_circle</mat-icon>
+                        <mat-icon *ngIf="!element.create_role" id="create_role{{i}}" style="color:red" >cancel</mat-icon>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="update_role">
+                    <th  class="tbl-head" mat-header-cell *matHeaderCellDef>Update</th>
+                    <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                        <mat-icon *ngIf="element.update_role" id="update_role{{i}}" style="color:green" >check_circle</mat-icon>
+                        <mat-icon *ngIf="!element.update_role" id="update_role{{i}}" style="color:red" >cancel</mat-icon>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="delete_role">
+                    <th  class="tbl-head" mat-header-cell *matHeaderCellDef>Delete</th>
+                    <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                        <mat-icon *ngIf="element.delete_role" id="delete_role{{i}}" style="color:green" >check_circle</mat-icon>
+                        <mat-icon *ngIf="!element.delete_role" id="delete_role{{i}}" style="color:red" >cancel</mat-icon>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="edit">
+                    <th  mat-header-cell *matHeaderCellDef></th>   
+                    <td style="padding-left:5px; padding-right: 5px;" mat-cell *matCellDef="let element; let i=index">
+                        <mat-icon *ngIf="element.is_admin_role" id="edit{{i}}" style="color: rgb(102, 102, 102);" class="pointer" matTooltip="Edit Not Allowed">edit</mat-icon> 
+                        <mat-icon *ngIf="!element.is_admin_role" id="edit{{i}}" color="primary" class="pointer" matTooltip="Edit Role" (click)="editRole(element)">edit</mat-icon>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="delete">
+                    <th  mat-header-cell *matHeaderCellDef></th>   
+                    <td style="padding-left:5px; padding-right: 5px;" mat-cell *matCellDef="let element; let i=index">
+                        <mat-icon *ngIf="element.is_admin_role" id="delete{{i}}" style="color: rgb(102, 102, 102);" class="pointer" matTooltip="Delete Not Allowed">delete</mat-icon> 
+                        <mat-icon *ngIf="!element.is_admin_role" id="del{{i}}" color="warn" class="pointer" matTooltip="Delete Role" (click)="delRole(element)">delete</mat-icon>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="dispRole; sticky: true;" class="tblrowht"></tr>
+                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispRole;"></tr>
+            </table>
+        </div>
+        <!-- <div *ngIf="roleColl?.data?.length == 0 && !isLoading" [style.height.px]="screenParam?.height-90" fxLayoutAlign="center center" style="border:1px lightgray solid; border-radius: 10px; margin-top: 16px;">
+            <div fxLayout="column" fxLayoutAlign="center center">
+                <img src="../../assets/image/svg/signing-a-contract-rafiki.svg" class="Signing-a-contract-rafiki">
+                <span class="txt" style="margin-top: 24px; margin-left:70px; max-width: 325px;">Click here to Assign a ROLE for your Company</span> 
+                <button mat-button style="width: 290px !important; height: 50px !important; margin: 87.5px 49px 25px 128px; object-fit: contain; box-shadow: 0 4px 14px 0 rgba(69, 148, 211, 0.4); background-color: #1c75bc;" class="btnpri mgntop10" (click)="addRole()">
+                    <span class="mgnleft10 font_14">ADD ROLE</span>
+                </button>
+            </div>
+        </div> -->
+    </div> 
+</div>

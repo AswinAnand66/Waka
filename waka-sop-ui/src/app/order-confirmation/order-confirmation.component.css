@@ -1,0 +1,145 @@
+::ng-deep .mat-button-toggle-appearance-standard {
+  line-height: 36px;
+}
+
+::ng-deep .mat-button-toggle-label-content{
+  line-height: 36px;
+}
+
+::ng-deep .mat-button-toggle-appearance-standard .mat-button-toggle-label-content{
+  line-height: 36px;
+}
+
+.mat-button-toggle-appearance-standard {
+  color: var(--primary);
+  background: #fafdff;
+}
+
+.mat-button-toggle-checked {
+  background-color: var(--primary);
+  color: #fff
+}
+
+::ng-deep .cdk-text-field-autofill-monitored:not(:-webkit-autofill){
+  padding-top:  5px;
+  padding-bottom:  5px;
+}
+
+/* th:nth-of-type( 1 ) {
+  border-top-left-radius: 6px;
+  border: 1px solid rgba( 0, 0, 0, 0.2 );
+  border-bottom:  rgba( 0, 0, 0, 0.2 );
+  border-top-right-radius: 6px;
+
+}
+
+td:nth-of-type( 1 ) {
+  border-left:  1px solid rgba( 0, 0, 0, 0.2 );
+  border-right:  1px solid rgba( 0, 0, 0, 0.2 );
+} */
+
+/* tr:first-of-type td:first-of-type {
+  border: 1px lightgray solid;
+}
+
+tr:last-of-type td:first-of-type {
+  border-bottom:  1px solid rgba( 0, 0, 0, 0.2 );
+  border-bottom-right-radius: 6px;
+  border-bottom-left-radius: 6px;
+
+} */
+
+.custom-view-close-btn {
+  color: darkgrey; 
+  transform: scale(1);
+  cursor: pointer;
+}
+.custom-view-close-btn:hover {
+  color: red;
+}
+
+.mat-checkbox-ripple .mat-ripple-element,
+.mat-checkbox-checked.mat-accent .mat-checkbox-background {
+  background-color: var(--primary) !important;
+}
+
+.left-cards {
+  width: 99%;
+  height: auto;
+  margin-top: 16px;
+  margin-left: 6px;
+  padding: 16px;
+  border-radius: 4px;
+  box-shadow: 0 4px 14px 0 rgba(69, 148, 211, 0.36);
+  background-color: #fff;
+  cursor: pointer;
+  
+}
+
+.left-cards:active {
+  border: solid 1px #1c75bc;
+}
+
+.card-heading {
+  font-size: 12px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: #1c75bc;
+}
+
+.card-sub-heading {
+    font-size: 10px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    color: var(--textcolor);
+}
+
+.text {
+  font-size: 12px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  text-align: right;
+  color: var(--textcolor);
+}
+
+.companyinputminwidth {
+  width: 236px !important;
+}
+
+.companyinputminwidthPer {
+    width: 27% !important;
+}
+
+::ng-deep .mat-expansion-panel-body {
+  background-color: #fff !important;
+}
+
+.attach-remove {
+  color: var(--primary); 
+  transform: scale(1.4); 
+  cursor: pointer;
+}
+
+/* .attach-remove:hover {
+  color: red; 
+} */
+
+.heading {
+  color: var(--textcolor);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.heading-selected {
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline var(--primary) 2.5px;
+  text-underline-offset: 5px;
+}

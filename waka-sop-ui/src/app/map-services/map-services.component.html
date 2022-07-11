@@ -1,0 +1,53 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block;">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div>
+<div class="mgntop60">
+  <div fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="15px" style="padding: 15px 25px;">
+	  <div>
+	      <button mat-button class= "btnpri" (click)="mapService()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">MAP SERVICES</span></button>
+	    </div>
+    </div>
+	<div fxLayout="column" fxLayoutAlign="center center">
+		<div *ngFor="let service of mappedServicesColl">
+			<mat-card class="role-card" [style.width.px]="width-200">
+				<mat-card-content fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="100px">
+					<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex="20">
+						<img src='../../assets/image/svg/pending-actions-24-px.svg' style="width:28px; height:25px;"/>
+						<div fxLayout="column">
+							<div class="txtclr capitalize">{{service.account_type}}</div>
+							<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Account Type</div>
+						</div>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex="20">
+						<mat-icon style="transform:scale(1.25); color:var(--active)">view_agenda</mat-icon>
+						<div fxLayout="column">
+							<div class="txtclr capitalize">{{service.service_type_id.length}}</div>
+							<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Service Type</div>
+						</div>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" fxFlex="20">
+						<mat-icon style="transform:scale(1.25); color:var(--active)">settings_input_antenna</mat-icon>
+						<div fxLayout="column">
+							<div class="txtclr capitalize">{{service.serviceCount}}</div>
+							<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Mapped Services</div>
+						</div>
+					</div>
+					<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="60px" fxFlex="40">
+						<mat-icon style="transform:scale(1.25); color:var(--active); cursor: pointer;" matTooltip="View Mapped Servies" (click)="viewServices(service)" >view_list</mat-icon>
+						<mat-icon style="transform:scale(1.25); color:var(--active); cursor: pointer;" matTooltip="Edit Mapped Servies" (click)="updmappedService(service)" >edit</mat-icon>
+						<mat-icon style="transform:scale(1.25); color:var(--red); cursor: pointer;" matTooltip="Delete Mapped Servies" (click)="delMappedService(service)">delete</mat-icon>
+
+					</div>
+				</mat-card-content>
+			</mat-card>
+		</div>
+	</div>
+	<div style="margin-top: 120px;" *ngIf="mappedServicesColl.length == 0 && !isLoading">
+		<div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="20px">
+      <mat-icon style="opacity: 0.45; color: var(--active); transform: scale(4); padding: 24px;">settings_input_antenna</mat-icon>
+			<span class="font_12 wordwrap" style="text-align:center; width:330px; color: var(--inlineeditclr);">No Services mapped to the Account Types</span>
+			<button mat-button class= "btnpri" (click)="mapService()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">MAP SERVICES</span></button>
+		</div>
+	</div>
+</div>

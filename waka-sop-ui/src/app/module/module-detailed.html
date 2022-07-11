@@ -1,0 +1,52 @@
+<app-login-header></app-login-header>
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:8px 10px;">
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom:8px">
+        <div fxLayoutAlign="start center">
+            <button mat-button color="warn" (click)="goBack()"><mat-icon class="pointer" style="transform: rotate(180deg); color:brown">forward</mat-icon></button>
+            <mat-icon style="color: #9dc705;">view_module</mat-icon><mat-label class="mgnleft10 font_14 fntwt600">Module/Sub Module Details</mat-label>
+        </div>
+    </div>
+    <div *ngIf="moduleColl.data.length>0 && !isMobile" fxLayout="column" fxLayoutAlign="space-between center" [style.max-height.px]="screenParam?.height-80" style="overflow: auto">
+        <mat-form-field style="width:97%;">
+            <mat-label>Filter</mat-label>
+            <input matInput (keyup)="applyModuleFilter($event)" placeholder="Ex. module name, sub module name" #input>
+        </mat-form-field>
+        <table mat-table #table [dataSource]="moduleColl" multiTemplateDataRows matSort style="border:1px var(--lightgray) solid; border-radius: 10px; margin-top:18px; width:100%">
+            <ng-container matColumnDef="module_name">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>MODULE NAME</th>
+                <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.module_name}}</td>
+            </ng-container>
+            <ng-container matColumnDef="sub_module_name">
+                <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>SUB MODULE NAME</th>
+                <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.sub_module_name}}</td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="dispModule; sticky: true;" class="tblrowht"></tr>
+            <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispModule;"></tr>
+            </table>
+    </div>
+    <div *ngIf="moduleColl.data.length>0 && isMobile" [style.max-height.px]="screenParam?.height-80" style="overflow: auto">
+      <mat-card>
+          <mat-card-content>
+              <mat-form-field style="width:90%">
+                  <mat-label>Filter</mat-label>
+                  <input matInput (keyup)="applyModuleFilter($event)" placeholder="Ex. module name sub module name" #input>
+              </mat-form-field>
+          </mat-card-content>
+          <mat-card-content *ngFor="let module of moduleColl.filteredData" style="border: 1px solid var(--var(--lightgray));padding:0px 10px">
+              <div fxLayout="row wrap" fxLayoutAlign="start center">
+                  <div fxLayout="column" fxLayoutAlign="center start" fxFlex="70">
+                      <div class="font_12"><span style="font-weight: 600; padding: 0px;">Module Name: </span>{{module.module_name}}</div>
+                      <div class="font_12"><span style="font-weight: 600; padding: 0px;">Sub Module Name: </span>{{module.sub_module_name}}</div>
+                  </div>
+                  <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="5" fxFlex="30">
+                      <mat-icon id="edit{{i}}" color="primary" class="pointer" matTooltip="Edit Module" (click)="editModule(element)">edit</mat-icon>
+                      <mat-icon id="delete{{i}}" color="warn" class="pointer" matTooltip="Delete Module" (click)="deleteModule(element)">delete</mat-icon>
+                  </div>
+              </div>
+          </mat-card-content>
+      </mat-card>
+  </div>
+</div>

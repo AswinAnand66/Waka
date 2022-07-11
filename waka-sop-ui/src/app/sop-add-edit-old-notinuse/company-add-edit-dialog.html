@@ -1,0 +1,124 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10">{{title}}</mat-label>
+    <mat-icon id="close" color="warn" class="pointer" matTooltip="Close dialog" (click)="onClose(false)">cancel</mat-icon>
+</div>
+<div mat-dialog-content>
+    <form  [formGroup]="form"  autocomplete="off">
+        <div fxLayout="column">
+            <div fxLayout="row">
+                <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+                    <mat-select placeholder="Company Type" formControlName="CompanyType" name="CompanyType" class="capitalize font_12" (selectionChange)="onCompType($event.value)" required>
+                        <mat-option class="capitalize" *ngFor="let ele of companyTypeColl" [value]="ele">{{ele.lookup_name}}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="form.get('CompanyType').invalid" style="margin-top:8px">{{getErrorMessage(form.get('CompanyType'),'CompanyType')}}</mat-error>
+                </mat-form-field>
+                <button *ngIf="showAddNew && data.company_id == undefined" mat-raised-button style="background-color:#1c75bc; color:white;height:45px; margin-top:25px" (click)="onChangeAdd('AE')"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD EXISTING</span></button>
+                <button *ngIf="!showAddNew && form.get('CompanyType')?.value != undefined" mat-raised-button style="background-color:#1c75bc; color:white; height:45px; margin-top:25px" (click)="onChangeAdd('AN')"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW</span></button>
+            </div>
+        </div>
+        <div *ngIf="showAddNew">
+            <div fxLayout="row">
+                <div fxLayout="column">
+                    <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+                        <input type="text" matInput placeholder="Company Name" formControlName="CompanyName" name="CompanyName" required autocomplete="askekdnoautocomplete" readonly onfocus="javascript: this.removeAttribute('readonly')" >
+                        <mat-error *ngIf="form.get('CompanyName').invalid" style="margin-top:8px">{{getErrorMessage(form.get('CompanyName'),'CompanyName')}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600">
+                        <input type="text" matInput placeholder="Country" formControlName="Country" name="Country" [matAutocomplete]="auto" required readonly onfocus="javascript: this.removeAttribute('readonly')" autocomplete="askekdnoautocomplete" (blur)="form.get('State').setValue('');form.get('City').setValue('')">
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="dispCountry">
+                            <mat-option class="capitalize" *ngFor="let ele of filterCountry | async" [value]="ele">{{ele.name}}</mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600">
+                        <input type="text" matInput placeholder="State" formControlName="State" name="State" [matAutocomplete]="auto1" required readonly onfocus="javascript: this.removeAttribute('readonly')" autocomplete="askekdnoautocomplete" (blur)="form.get('City').setValue('')">
+                        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="dispState">
+                            <mat-option class="capitalize" *ngFor="let ele of filterState | async" [value]="ele">{{ele.name}}</mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                    <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600">
+                        <input type="text" matInput placeholder="City" formControlName="City" name="City" [matAutocomplete]="auto2" readonly onfocus="javascript: this.removeAttribute('readonly')" autocomplete="askekdnoautocomplete">
+                        <mat-autocomplete #auto2="matAutocomplete" [displayWith]="dispCity">
+                            <mat-option class="capitalize" *ngFor="let ele of filterCity | async" [value]="ele">{{ele.name}}</mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="column">
+                    <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600;">
+                        <textarea  matInput placeholder="Address" formControlName="Address" style="height:126px" required></textarea>
+                        <mat-error *ngIf="form.get('Address').invalid" style="margin-top:0px">{{getErrorMessage(form.get('Address'),'Address')}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="inputbox content-wrapper no-padding-btm" style="font-weight: 600">
+                        <input type="text" matInput placeholder="Zip Code" formControlName="ZipCode" name="ZipCode">
+                        <mat-error *ngIf="form.get('ZipCode').invalid" style="margin-top:8px">{{getErrorMessage(form.get('ZipCode'),'ZipCode')}}</mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!showAddNew">
+            <div *ngIf="companyColl?.data?.length > 0">
+                <div fxLayout="row">
+                    <mat-form-field style="width:90%">
+                        <mat-label>Filter</mat-label>
+                        <input matInput (keyup)="applyCompFilter($event, companyColl)" placeholder="Ex. company name, address  etc" #input>
+                    </mat-form-field>
+                </div>
+                <table mat-table #table [dataSource]="companyColl" matSort style="border:1px lightgray solid; border-radius: 10px; margin-top:5px; width:100%">
+                    <ng-container matColumnDef="select">
+                        <th mat-header-cell *matHeaderCellDef style="margin-right:5px">
+                          <mat-checkbox (change)="checkUncheckAll($event.checked)" [checked]="isAllChecked" [indeterminate]="isIntermediate" color="primary">
+                          </mat-checkbox>
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="tbl-row-pad">
+                          <mat-checkbox (change)="element['is_selected'] = $event.checked; isAllSelected()" [checked]="element['is_selected']" color="primary">
+                          </mat-checkbox>
+                        </td>
+                      </ng-container>
+                    <ng-container matColumnDef="company_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>COMPANY</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.company_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="address">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>ADDRESS</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.address}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="city_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>CITY</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.city_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="state_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>STATE</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.state_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="country_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>COUNTRY</th>
+                        <td mat-cell class="font_12 tbl-row-pad" *matCellDef="let element">{{element.country_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="zip_code">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>ZIP</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.zip_code}}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="dispCompColl; sticky: true;" class="tblrowht"></tr>
+                    <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispCompColl;"></tr>
+                </table>
+            </div>
+            <div *ngIf="companyColl?.data?.length == 0" fxLayoutAlign="center center" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px">
+                <div fxLayout="column" fxLayoutAlign="center center">
+                    <mat-icon class="md-96" style="opacity:0.2">group_add</mat-icon>
+                    <div class="font_12">Click on ADD NEW to create new company</div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<mat-dialog-actions fxLayout="row wrap" fxLayoutAlign="end center" fxLayoutGap="20px">
+    <div *ngIf="showAddNew">
+        <button *ngIf="form.valid" mat-raised-button style="background-color:#1c75bc; color:white;" (click)="saveCompany('close')"><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE & CLOSE</span></button>
+        <button *ngIf="form.valid && data.company_id == undefined" mat-raised-button style="background-color:#1c75bc; color:white;" (click)="saveCompany('add')"><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE & ADD</span></button>
+        <button *ngIf="form.invalid && showAddNew" mat-raised-button style="background-color:#1c75bc; color:white; opacity:0.5" disabled='true'><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE & CLOSE</span></button>
+        <button *ngIf="form.invalid && showAddNew && data.company_id == undefined" mat-raised-button style="background-color:#1c75bc; color:white; opacity:0.5" disabled='true'><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE & ADD</span></button>
+    </div>
+    <div *ngIf="!showAddNew">
+        <button *ngIf="isIntermediate || isAllChecked" mat-raised-button style="background-color:#1c75bc; color:white;" (click)="saveAllCompany('close')"><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE & CLOSE</span></button>
+        <button *ngIf="!isIntermediate && !isAllChecked" mat-raised-button style="background-color:#1c75bc; color:white; opacity:0.5" disabled='true'><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">SAVE & CLOSE</span></button>
+    </div>
+</mat-dialog-actions>

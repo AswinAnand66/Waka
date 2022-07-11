@@ -1,0 +1,61 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 0px 16px; padding:16px 0; overflow-y: auto;" fxLayout="row">
+  <form [formGroup]="form" fxLayout="column" class="dftfnt" [style.height.px]="height-94" style="padding: 16px;">
+    <!--Account Type-->
+    <div style="margin-bottom:20px; width: 280px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+      <label class="txtclr font_14">Account Type *</label>
+      <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('AccountType').invalid && form.get('AccountType').dirty , 'validtext' : form.get('AccountType').valid}" style="width: 240px;">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+          <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+            <mat-select placeholder=" Select Account Type" formControlName="AccountType" name="AccountType" class="capitalize font_12" (selectionChange)="onChangeAccountType()" required>
+              <mat-option class="capitalize" *ngFor="let ele of companyTypeList" [value]="ele.lookup_id">{{ele.name}}</mat-option>
+            </mat-select>                      
+          </div>
+        </div>
+        <div fxLayout="column">
+          <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="form.get('AccountType').invalid&&form.get('AccountType').dirty" class="txterror" >{{getErrorMessage(form.get('AccountType'),'AccountType')}}</mat-error>
+        </div>
+      </div>
+    </div>
+    <!--Service Type-->
+    <div style="margin-bottom:20px; width: 280px;" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="-6px">
+      <label class="txtclr font_14">Service Type *</label>
+      <div class="inputbox companyinputminwidth" [ngClass]="{'errtxtbdr':form.get('ServiceType').invalid && form.get('ServiceType').dirty , 'validtext' : form.get('ServiceType').valid}" style="width: 240px;">
+        <div fxLayout="row" fxLayoutAlign="space-evenly center" fxLayoutGap="10px" style="height:100%">
+          <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+            <mat-select multiple placeholder=" Select Service Type" formControlName="ServiceType" name="ServiceType" class="capitalize font_12" (selectionChange)="onChangeServiceType($event.value)" required>
+              <mat-option class="capitalize" *ngFor="let ele of serviceTypeList" [value]="ele.lookup_name_id">{{ele.display_name}}</mat-option>
+            </mat-select>                      
+          </div>
+        </div>
+        <div fxLayout="column">
+          <mat-error style="margin-left:-30px; padding-top:2px;margin-top:2px;" *ngIf="form.get('ServiceType').invalid&&form.get('ServiceType').dirty" class="txterror" >{{getErrorMessage(form.get('ServiceType'),'ServiceType')}}</mat-error>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div style="padding: 16px 0; width: 98%;" *ngIf="selectedServiceTypes?.length > 0" fxLayout="row" fxLayoutAlign="center center">
+    <mat-tab-group [@.disabled]="true" [(selectedIndex)]="selSectionTabIndex" [style.height.px]="height-126" [style.width.px]="width-400">
+      <div *ngFor="let types of selectedServiceTypes">
+        <mat-tab [label]="types.display_name">
+          <div *ngFor="let eventdesc of availableServiceColl[types.lookup_name]">
+            <div fxLayout="row" fxLayoutAlign="space-between center" class="fntclr465e72 font_14 capitalize" style="padding: 6px 8px;">
+              <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="6px" fxFlex="80">
+                <span style="color: #000;" class="pointer" (click)="eventdesc.is_selected = !eventdesc.is_selected; onChangePermission(eventdesc)">{{eventdesc.service_name}}</span>
+              </div>
+              <mat-checkbox [checked]="eventdesc.is_selected" (change)="eventdesc.is_selected = !eventdesc.is_selected; onChangePermission(eventdesc);"></mat-checkbox>
+            </div>
+          </div>
+        </mat-tab>
+      </div>
+    </mat-tab-group>
+  </div> 
+</div>
+<footer fxLayout="row">
+  <mat-toolbar style="background-color: var(--activebg); height: 72px;" fxLayoutAlign="space-between center" >
+    <button style="padding: 12px 30px 12px 30px; border-radius:4px;" id="btnback" class="btnsecondary btnauto" (click)="onClose()">BACK</button>
+    <button style="padding: 12px 30px 12px 30px; border-radius:4px;" id="btnsave" class="btnpri btnauto" [disabled]="form.invalid" (click)="mapServices()">{{ btnTitle }}</button>
+  </mat-toolbar>
+</footer>

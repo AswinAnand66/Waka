@@ -1,0 +1,73 @@
+<app-splash></app-splash>
+<app-splash-header></app-splash-header>
+<div>
+	<div [style.height.px]="height" style="padding:0px 32px !important" >
+		<form [formGroup]="form" fxLayout="row" [fxLayoutAlign]="layoutAlign" (submit)="login()" style="height:100%">
+			<mat-card style="box-shadow: 0 6px 18px 5px rgba(28, 117, 188, 0.1); border-radius: 10px; width: 280px; height: 280px;"> 
+				<mat-card-header>
+					<span class="moduleHeader" style="font-size: 16px; margin-left: -29px;">Login</span>
+				</mat-card-header>
+				<mat-card-content style="width:100%; position:relative" >
+					<div fxLayout="column" fxLayoutAlign="center center" class="ipwrapper">
+						<div class="inputbox inboxminwidth" [ngClass]="{'errtxtbdr':form.get('Email').invalid && form.get('Email').dirty , 'validtext' : form.get('Email').valid}">
+							<div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+								<mat-icon [ngClass]="form.get('Email').valid ? 'iconprimary' : 'iconinactive'">mail</mat-icon>
+								<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+									<input class="text" placeholder="Enter Email ID" formControlName="Email" name="Email" id="Email" required>
+								</div>
+							</div>
+						</div>
+						<div class="inputbox inboxminwidth" [ngClass]="{'errtxtbdr':form.get('Password')?.invalid && form.get('Password').dirty , 'validtext' : form.get('Password')?.valid && form.get('Password').dirty}" >
+							<div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+								<mat-icon [ngClass]="form.get('Password')?.valid && form.get('Password').dirty ? 'iconprimary' : 'iconinactive'">lock</mat-icon>
+								<div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+									<input class="text" [type]="hide ? 'password' : 'text'" placeholder="Enter Password" formControlName="Password" name="Password" id="Password" required>
+								</div>
+								<button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+									<mat-icon style="transform: scale(0.8);">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div style="padding:12px 3px">
+						<button class="btnpri btnprifull" id="btnlogin" [disabled]="disableLoginBtn||form.invalid" (click)="login()"><span style="color:white">LOGIN</span></button>
+						<div style="margin-left:4px; margin-top: 10px;"><span class="moduleHeader" class="pointer clrprimary" style="font-size: 12px; font-weight: bold;" [routerLink]="['/forgotpassword']"> Forgot your password?</span></div> 
+					</div>
+					<mat-divider style="color: #dfe3e7;"></mat-divider>
+					<div style="padding:16px 12px" fxLayoutAlign="center center" >
+						<div><span style="color: #a1b4c4; font-size: 14px; font-weight: 600;">New User? </span><span class="pointer clrprimary" style="font-size: 14px; font-weight: bold;" [routerLink]="['/signup']"> Sign up here</span></div>
+					</div>
+					<div class="erroverlay" [ngStyle]="{'display': isOpen ? 'block': 'none'}" style="bottom:10px;margin-left:-192px">
+						<div class="box arrow-right" fxLayout="column" fxLayoutAlign="center center">
+							<div style="padding: 10px 13px; border-radius: 100%; border: #fff 2px solid;">
+								<mat-icon class="iconactive">warning</mat-icon>
+							</div>
+							<span style="font-size: 12px; font-weight: 600; color: #fff;padding-top:20px">Whoops!</span>
+							<span *ngIf="!loginActiveError" style="font-size: 12px; text-align: center; color: #fff; letter-spacing: 0.15px;">It looks like the login credentials you entered are incorrect</span>
+							<span *ngIf="loginActiveError" style="font-size: 12px; text-align: center; color: #fff; letter-spacing: 0.15px;">{{loginActiveError}}</span>
+						</div>
+					</div>
+					<div class="erroverlay" [ngStyle]="{'display': isActivated ? 'block': 'none'}" style="bottom:10px;margin-left:-192px">
+						<div class="box arrow-right" fxLayout="column" fxLayoutAlign="center center">
+							<div style="padding: 10px 13px; border-radius: 100%; border: greenyellow 3px solid;">
+								<mat-icon style="color: greenyellow; padding-top: 5px;">verified_user</mat-icon>
+							</div>
+							<span style="font-size: 12px; font-weight: 600; color: #fff;padding-top:20px">Congratulations</span>
+							<span *ngIf="!loginActiveError" style="font-size: 12px; text-align: center; color: #fff; letter-spacing: 0.15px;">Your account has been activated! You can now login to your account.</span>
+						</div>
+					</div>
+					<div class="erroverlay" [ngStyle]="{'display': isAlreadyActivated ? 'block': 'none'}" style="bottom:10px;margin-left:-192px">
+						<div class="box arrow-right" fxLayout="column" fxLayoutAlign="center center">
+							<div style="padding: 10px 13px; border-radius: 100%; border: greenyellow 3px solid;">
+								<mat-icon style="color: rgb(0, 0, 0); padding-top: 5px;">verified_user</mat-icon>
+							</div>
+							<span style="font-size: 12px; font-weight: 600; color: #fff;padding-top:20px">Congratulations</span>
+							<span *ngIf="!loginActiveError" style="font-size: 12px; text-align: center; color: #fff; letter-spacing: 0.15px;">Your account was already activated</span>
+						</div>
+					</div>
+				</mat-card-content>
+			</mat-card>
+		</form>
+	</div>
+</div>
+

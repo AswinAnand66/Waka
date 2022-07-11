@@ -1,0 +1,157 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary">{{data.pob_name}}</mat-label>
+    <mat-icon id="close" color="warn" class="pointer" matTooltip="Close dialog" (click)="onClose()">cancel</mat-icon>
+</div>
+<div *ngIf="data?.fields?.length>0 && dispForm" mat-dialog-content>
+    <form [formGroup]="form">
+        <div *ngIf="data.template=='template2'">
+            <div *ngFor="let field of data.fields">
+                <div *ngIf="data.pob_name!=field.group">{{field.group}}</div>
+                <div *ngIf="field?.msg!=undefined" class="txterror">{{field.msg}}</div>
+                <div *ngFor="let grpField of field.fields">
+                    <div [ngSwitch]="field[grpField]?.type">
+                        <div *ngSwitchCase="'radio'">
+                            <div *ngFor="let chField of field[grpField]?.field">
+                                <div fxLayout="row wrap" fxLayoutGap="10px" style="min-height:100px">
+                                    <label *ngIf="field.group!=chField.fieldname" mat-label id="radio-group-label">{{chField.fieldname}}</label>
+                                    <mat-radio-group aria-labelledby="radio-group-label" formControlName="{{chField.controlname}}">
+                                      <mat-radio-button class="mgnrgt10" color="primary" *ngFor="let option of chField.options" [value]="option">
+                                          <span>{{option}}</span>
+                                      </mat-radio-button>
+                                    </mat-radio-group>
+                                    <div *ngIf="form.get(chField.controlname).value == 'Others'">
+                                        <div class="inputbox inboxminwidth">
+                                            <div class="label" [ngClass]="{'labelerr':form.get(chField.controlname+'Others').invalid&&form.get(chField.controlname+'Others').dirty}">{{chField?.Others?.replace('$$val$$','')}}</div>
+                                            <input class="text" type="number"  formControlName="{{chField.controlname}}Others" name="days">
+                                        </div>
+                                        <div style="width:100%">
+                                            <mat-error *ngIf="form.get(chField.controlname+'Others').invalid&&form.get(chField.controlname+'Others').dirty" class="txterror" style="padding-left:25px">{{getErrorMessage(form.get(chField.controlname+'Others'),chField.controlname+'Others')}}</mat-error>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'textarea'">
+                            <div fxLayout="column" style="margin-bottom:16px">
+                                <div *ngFor="let chField of field[grpField]?.field">
+                                    <div class="inputbox inboxminwidth">
+                                        <div class="label">{{chField.fieldname}}</div>
+                                        <textarea class="text" placeholder="{{chField.fieldname}}" formControlName="{{chField.controlname}}" name="{{chField.controlname}}" matInput id="{{chField.controlname}}" required></textarea>                                   
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'text'">
+                            <div fxLayout="column" style="margin-bottom:16px">
+                                <div *ngFor="let chField of field[grpField].field">
+                                    <div class="inputbox inboxminwidth">
+                                        <div class="label" [ngClass]="{'labelerr':form.get(chField.controlname).invalid&&form.get(chField.controlname).dirty}">{{chField.fieldname}}</div>
+                                        <input class="text" placeholder="{{chField.fieldname}}" formControlName="{{chField.controlname}}" name="{{chField.controlname}}" id="{{chField.controlname}}" required>
+                                    </div>
+                                    <div style="width:100%">
+                                        <mat-error *ngIf="form.get(chField.controlname).invalid&&form.get(chField.controlname).dirty" class="txterror" style="padding-left:25px">{{getErrorMessage(form.get(chField.controlname),chField.controlname)}}</mat-error>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'numsmall'">
+                            <div fxLayout="column" style="margin-bottom:16px">
+                                <div *ngFor="let chField of field[grpField].field">
+                                    <div class="inputbox inboxminsmall">
+                                        <div class="label" [ngClass]="{'labelerr':form.get(chField.controlname).invalid&&form.get(chField.controlname).dirty}">{{chField.fieldname}}</div>
+                                        <input type="number" class="text" placeholder="{{chField.fieldname}}" formControlName="{{chField.controlname}}" name="{{chField.controlname}}" id="{{chField.controlname}}" required>
+                                    </div>
+                                    <div style="width:100%">
+                                        <mat-error *ngIf="form.get(chField.controlname).invalid&&form.get(chField.controlname).dirty" class="txterror" style="padding-left:25px">{{getErrorMessage(form.get(chField.controlname),chField.controlname)}}</mat-error>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngSwitchCase="'multi'">
+                            <div fxLayout="column" style="margin-bottom:16px">
+                                <div *ngFor="let chField of field[grpField].field">
+                                    <mat-checkbox class="fntwt600" color="primary" formControlName="{{chField.controlname}}" name="{{chField.controlname}}" [(checked)]="chField.value" (change)="chField.value=$event.checked">{{chField.fieldname}}</mat-checkbox>
+                                    <div *ngIf="chField?.child?.length>0">
+                                        <div *ngFor="let chch of chField.child">
+                                            <div [ngSwitch]="chch?.type">
+                                                <div *ngSwitchCase="'text'">
+                                                    <div fxLayout="column" style="margin-bottom:16px">
+                                                        <div *ngFor="let chchfield of chch?.field">
+                                                            <div class="inputbox inboxminsmall">
+                                                                <div class="label" [ngClass]="{'labelerr':form.get(chchfield.controlname).invalid&&form.get(chchfield.controlname).dirty}">{{chchfield.fieldname}}</div>
+                                                                <input class="text" placeholder="{{chchfield.fieldname}}" formControlName="{{chchfield.controlname}}" name="{{chchfield.controlname}}" id="{{chchfield.controlname}}" required>
+                                                            </div>
+                                                            <div style="width:100%">
+                                                                <mat-error *ngIf="form.get(chchfield.controlname).invalid&&form.get(chchfield.controlname).dirty" class="txterror" style="padding-left:25px">{{getErrorMessage(form.get(chchfield.controlname),chchfield.controlname)}}</mat-error>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngSwitchCase="'multi'">
+                                                    <div fxLayout="row wrap" style="margin-bottom:16px">
+                                                        <div *ngFor="let chchField of chch.field">
+                                                            <mat-checkbox class="fntwt600 mgnrgt10" color="primary" formControlName="{{chchField.controlname}}" name="{{chchField.controlname}}" [(checked)]="chchField.value" (change)="chchField.value=$event.checked">{{chchField.fieldname}}</mat-checkbox>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="data.template=='template1'">
+            <div *ngFor="let field of data.fields">
+                <div [ngSwitch]="field?.type">
+                    <div *ngSwitchCase="'radio'">
+                        <div fxLayout="row wrap" fxLayoutGap="10px" style="min-height:100px">
+                            <label mat-label id="radio-group-label">{{field.fieldname}}</label>
+                            <mat-radio-group aria-labelledby="radio-group-label" formControlName="{{field.controlname}}">
+                              <mat-radio-button class="mgnrgt10" color="primary" *ngFor="let option of field.options" [value]="option">
+                                  <span>{{option}}</span>
+                              </mat-radio-button>
+                            </mat-radio-group>
+                            <div *ngIf="form.get(field.controlname).value == 'Others'">
+                                <input mat-input type="number" style="border:none; border-bottom:1px solid lightgray" formControlName="{{field.controlname}}Others" name="days" required>{{field?.Others?.replace('$$val$$','')}}
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'multi'">
+                        <div fxLayout="row wrap" fxLayoutGap="10px">
+                            <mat-checkbox class="fntwt600" color="primary" formControlName="{{field.controlname}}" name="{{field.controlname}}" [(checked)]="field.value" (change)="field.value=$event.checked">{{field.fieldname}}</mat-checkbox>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'text'">
+                        <div fxLayout="column">
+                            <mat-form-field  class="inputboxdoc content-wrapper no-padding-btm" style="margin-top: 10px;">
+                                <input matInput placeholder="{{field.fieldname}}" formControlName="{{field.controlname}}" name="{{field.controlname}}" id="{{field.controlname}}" required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'textarea'">
+                        <div fxLayout="column" >
+                            <mat-form-field class="inputboxdoc content-wrapper no-padding-btm" style="margin-top: 10px;">
+                                <textarea placeholder="{{field.fieldname}}" formControlName="{{field.controlname}}" name="{{field.controlname}}" matInput id="{{field.controlname}}" required></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="'numsmall'">
+                        <div fxLayout="column" >
+                            <mat-form-field  class="inputboxsmall content-wrapper no-padding-btm mgntop10">
+                            <input matInput placeholder="{{field.fieldname}}" formControlName="{{field.controlname}}" name="{{field.controlname}}" id="{{field.controlname}}" type="number" required>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<mat-dialog-actions *ngIf="dispForm" fxLayout="row wrap" fxLayoutAlign="end center" fxLayoutGap="20px">
+    <button  mat-button class="btnpri btnauto" [disabled]="form.invalid" (click)="pobSopSave()"><mat-icon>save</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;" >SAVE</span></button>
+</mat-dialog-actions>
+

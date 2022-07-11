@@ -1,0 +1,503 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal"
+	style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div>
+<div *ngIf="accessibleSections.length == 0 && permissionDenied && !isLoading">
+    <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 200px;">
+        <mat-card class="mattabgrp">
+            <mat-card-content >
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <mat-icon class="clrblue">error_outline</mat-icon>
+                    <div class="clrblue" style="font-size: 14px; font-weight: bold;">For your Role, Cargo Handling access denied by the company admin</div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<div fxLayout="row" class="font_12">
+    <div *ngIf="!isLoading && accessibleSections.length > 0" class="sidesection" >
+        <div *ngFor="let grp of chGrpColl; let i=index">
+            <div *ngIf="isAccessibleSection[grp.grp]">
+                <div fxLayout="column" style="margin-bottom:0px">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                        <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':chGrpParam[i]?.color}">{{i+1}}</span></div>
+                        <div style="margin-left:10px;" [ngStyle]="{'color':chGrpParam[i]?.color,'font-weight':chGrpParam[i].fw}" (click)="onClickChGrp(i,grp.grp)">{{grp.grp}}</div>
+                    </div>
+                </div>
+                <div style="border-left-width:2px; border-left-style: solid; margin-top:-5px; margin-left:9px; height:50px" [ngStyle]="{'border-left-color':chGrpParam[i]?.color}"></div>
+            </div>
+        </div>
+        <div *ngIf="isEventDisable || isAccessibleSection['Container Preference']">
+            <div fxLayout="column" style="margin-bottom:0px">
+                <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                    <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorCP}">4</span></div>
+                    <div style="margin-left:10px;" [ngStyle]="{'color':colorCP,'font-weight':fwCP}" (click)="onClickCP()">Container Preference</div>
+                </div>
+                <div style="border-left-width:2px; border-left-style: solid; margin-top:-5px; margin-left:9px; height:50px" [ngStyle]="{'border-left-color':colorCP}"></div>
+            </div>
+        </div>
+        <div *ngIf="isEventDisable || isAccessibleSection['LCL Consolidation']">
+            <div fxLayout="column" style="margin-bottom:0px">
+                <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                    <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorLCLCons}">5</span></div>
+                    <div style="margin-left:10px;" [ngStyle]="{'color':colorLCLCons,'font-weight':fwLCLCons}" (click)="onClickLCLCons()">LCL Consolidation</div>
+                </div>
+            </div>
+            <div style="border-left-width:2px; border-left-style: solid; margin-top:-5px; margin-left:9px; height:50px" [ngStyle]="{'border-left-color':colorLCLCons}"></div>
+        </div>
+        <div *ngIf="isEventDisable || isAccessibleSection['FCL Program']" >
+            <div fxLayout="column" style="margin-bottom:0px">
+                <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                    <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':colorFCLCons}">6</span></div>
+                    <div style="margin-left:10px;" [ngStyle]="{'color':colorFCLCons,'font-weight':fwFCLCons}" (click)="onClickFCLCons()">FCL Program</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mainsection" [style.height.px]="screen.height"  [style.width.px]="screen.width-125">
+        <div *ngIf="chTemplate=='template2' && !isLoading" style="width:100%">
+            <div>
+                <div fxLayout="row" fxLayoutAlign="space-between start">
+                    <div class="mgnleft10 txt">{{chGrpTitle}}</div>
+                    <div (click)="expandCollapseAll()" class="fntclr1c75bc pointer font_14" style="font-weight: bold; text-decoration: underline;">{{expandButtonTitle}}</div>
+                </div>
+                <div  fxLayout="column" fxLayoutAlign="start start" class="mgnleft10 mgnrgt10">
+                    <div *ngFor="let grid of chSOPColl" class="mgntop16" style="width:100%" >
+                        <div fxLayout="row" fxLayoutAlign="space-between center" class="grphead" (click)="grid.is_enable && grid.is_selected ? grid.expand = !grid.expand : ''">
+                            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" >
+                                <img src='../../assets/image/svg/icon-small-po.svg' style="width:24px; height:24px;"/>
+                                <div>{{grid.ch_name}}</div>
+                            </div>
+                            <div class="pointer" *ngIf="grid.is_selected != null">
+                                <div fxLayout="row" fxLayoutAlign="center center" *ngIf="grid.is_selected">
+                                    <span class="mgnrgt5 clrgreen md-36 font_12">Enabled</span>
+                                    <mat-icon class="clrgreen md-36" (click)="grid.is_enable ? updSOPCHIsSelected(grid): ''" matTooltip="click to Deactivate">toggle_on</mat-icon>
+                                </div>
+                                <div fxLayout="row" fxLayoutAlign="center center" *ngIf="!grid.is_selected && grid.is_selected != null">
+                                    <span style="color: var(--iconinactive);" class="mgnrgt5 md-36 font_12">Disabled</span>
+                                    <mat-icon style="color: var(--iconinactive);" class="md-36" (click)="grid.is_enable ? updSOPCHIsSelected(grid) : ''" matTooltip="click to Activate">toggle_off</mat-icon>
+                                </div>
+                            </div>
+                        </div>
+                        <mat-card-content *ngIf="grid.has_child && grid.is_selected && grid.expand" fxLayout="column" style="padding:10px 0 10px 16px; overflow-y: auto; background-color: var(--bggroup);" class="fntwt600" >
+                            <div *ngFor="let field of grid['fields']; let idx = index" class="mgntop10notfirst" style="border-bottom: var(--activebg); padding-bottom:14px">
+                                <div *ngIf="field.is_accessible">
+                                    <div *ngIf="field.group && grid.ch_name!=field?.group" class="txt grpsubhead" >{{field.group}}</div>
+                                    <div *ngIf="field?.label" class="subgrplabel">{{field?.label}}</div>
+                                    <div *ngIf="grid.view_text!=undefined" class="txt">{{grid.disp_text}}</div>
+                                    <div *ngFor="let grpField of field.fields" class="mgntop10notfirst">
+                                        <div [ngSwitch]="field[grpField]?.type">
+                                            <div *ngSwitchCase="'select'">
+                                                <div *ngFor="let chField of field[grpField]?.field">
+                                                    <mat-select placeholder="{{chField.fieldname}}" [(ngModel)]="chField.value" name="chField.controlname" style="width:180px" class="select" required (selectionChange)="updCHFieldValue(idx,chField,grid)">
+                                                        <mat-option *ngFor="let sel of chField.options" [value]="sel">{{sel}}</mat-option>
+                                                    </mat-select>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchCase="'chipset'">
+                                                <div *ngFor="let chField of field[grpField]?.field">
+                                                    <div class="subgrplabel">{{chField?.selLabel}}</div>
+                                                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                                        <div *ngFor="let option of chField['value']; let i = index;" class="font_12 mgnbtm10 " style="width: fit-content;" >
+                                                            <div fxLayout="row" fxLayoutAlign="start center" class="chipset-active mgnrgt10" (click) ="chField['value']?.splice(i,1);updCHFieldValue(idx, chField, grid)" >
+                                                                <span class="font_12">{{option}}</span>
+                                                                <mat-icon class="mgnleft5 md-18 pointer">clear</mat-icon>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="subgrplabel">{{chField?.unselLabel}}</div>
+                                                    <div fxLayout="row wrap" fxLayoutAlign="start center">
+                                                        <div *ngFor="let option of chField['options']; let i = index;" class="font_12 mgnbtm10 ">
+                                                            <div *ngIf="chField['value']?.indexOf(option) == -1" fxLayout="row" fxLayoutAlign="start center" class="chipset-inactive mgnrgt10" (click) ="chField['value'].push(option);updCHFieldValue(idx, chField, grid)">
+                                                                <span class="font_12">{{option}}</span>
+                                                                <mat-icon class="mgnleft5 md-18 pointer">add</mat-icon>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <span *ngIf="chField?.status?.includes('Successful')" class="font_10 clrgreen mgnleft5">{{chField.status}}</span>
+                                                    <span *ngIf="chField?.status?.includes('Failed')" class="font_10 clrred mgnleft5">{{chField.status}}</span>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchCase="'inlineedit'">
+                                                <div *ngIf="field[grpField]?.subgroup" class="subgrplabel">{{field[grpField]?.subgroup}}</div>
+                                                <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="5px" style="position:relative">
+                                                    <div *ngFor="let chField of field[grpField]?.field" > 
+                                                        <div fxLayout="row" fxLayoutAlign="start center" class="inlineeditdiv">
+                                                            <div class="text">{{ chField?.pretext }}</div>
+                                                            <input *ngIf="chField.controlname!='VASNoShow'" class="ip" style="width:50px" type="number" min="{{chField.range[0]}}" max="{{chField.range[1]}}" oninput="this.value = Math.min(max,Math.max(min,this.value))" [(ngModel)]="chField.value" (keypress)="$event.key=='Enter' ? updCHFieldValue(idx,chField,grid):''" onkeyup="this.value=this.value.replace(/[^\+\w]+\d/,'')" (blur)="updCHFieldValue(idx,chField,grid)">
+                                                            <div class="text">{{ chField?.posttext }}</div>
+                                                            <div *ngIf="chField?.child?.length>0 && chField.child[0].type=='select'">
+                                                                <mat-select placeholder="{{chField.child[0].field[0].fieldname}}" [(ngModel)]="chField.child[0].field[0].value" name="chField.child[0].field[0].controlname" class="select" required (selectionChange)="updCHFieldValue(idx,chField,grid)">
+                                                                    <mat-option *ngFor="let sel of chField.child[0].field[0].options" [value]="sel">{{sel}}</mat-option>
+                                                                </mat-select>
+                                                            </div>
+                                                        </div>
+                                                        <span *ngIf="chField?.status?.includes('Successful')" class="font_10 clrgreen mgnleft5" style="position:absolute; left:0">{{chField.status}}</span>
+                                                        <span *ngIf="chField?.status?.includes('Failed')" class="font_10 clrred mgnleft5" style="position:absolute; left:0">{{chField.status}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchCase="'multi'" style="width:100%" fxLayout="row wrap" fxLayoutGap="16px" >
+                                                <div *ngFor="let chField of field[grpField]?.field" style="border-bottom: 1px solid var(--bggroup1);">
+                                                    <mat-checkbox *ngIf="chField.is_accessible" class="fntwt600" style="margin-bottom:16px" color="primary" [(ngModel)]="chField.value" name="{{chField.controlname}}" [(checked)]="chField.value" (change)="chField.value=$event.checked;updCHFieldValue(idx,chField,grid)">{{chField.fieldname}}</mat-checkbox>
+                                                    <div *ngIf="chField.child.length>0 && chField.value">
+                                                        <div *ngFor="let chchChild of chField['child']">
+                                                            <div [ngSwitch]="chchChild?.type">
+                                                                <div *ngSwitchCase="'inlineedit'">
+                                                                    <div fxLayout="row wrap" fxLayoutAlign="start start" fxLayoutGap="5px" style="position:relative">
+                                                                        <div *ngFor="let childField of chchChild?.field" > 
+                                                                            <div fxLayout="row" fxLayoutAlign="start center" class="inlineeditdiv">
+                                                                                <div class="text">{{childField?.pretext}}</div>
+                                                                                <input *ngIf="childField.controlname!='VASNoShow'" class="ip" style="width:50px" type="number" min="{{childField.range[0]}}" max="{{childField.range[1]}}" [(ngModel)]="childField.value" (keypress)="$event.key=='Enter' ? updCHFieldValue(idx,childField,grid):''" onkeyup="this.value=this.value.replace(/[^\+\w]+\d/,'')"  (blur)="updCHFieldValue(idx,childField,grid)">
+                                                                                <div class="text">{{childField?.posttext}}</div>
+                                                                                <div *ngIf="childField?.child?.length>0 && childField.child[0].type=='select'">
+                                                                                    <mat-select placeholder="{{childField.child[0].field[0].fieldname}}" [(ngModel)]="childField.child[0].field[0].value" name="childField.child[0].field[0].controlname" class="select" required (selectionChange)="updCHFieldValue(idx,childField,grid)">
+                                                                                        <mat-option *ngFor="let sel of childField.child[0].field[0].options" [value]="sel">{{sel}}</mat-option>
+                                                                                    </mat-select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <span *ngIf="childField?.status?.includes('Successful')" class="font_10 clrgreen mgnleft5" style="position:absolute; left:0">{{childField.status}}</span>
+                                                                            <span *ngIf="childField?.status?.includes('Failed')" class="font_10 clrred mgnleft5" style="position:absolute; left:0">{{childField.status}}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div *ngSwitchCase="'select'">
+                                                                    <div *ngFor="let childField of chchChild?.field">
+                                                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="mgntop10 inlineeditdiv">
+                                                                            <div class="text">{{childField.fieldname}}</div>
+                                                                            <mat-select class="text" placeholder="{{childField.placeholder}}" [(ngModel)]="childField.value" name="childField.controlname" style="width:180px" class="select" required (selectionChange)="updCHFieldValue(idx,childField,grid)">
+                                                                                <mat-option *ngFor="let sel of childField.options" [value]="sel">{{sel}}</mat-option>
+                                                                            </mat-select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchCase="'numsmall'" class="mgnleft10" fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="16px">
+                                                <div *ngFor="let chField of field[grpField]?.field" class="mgnleft10">
+                                                    <div *ngIf="!chField?.edit" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                        <div *ngIf="grid.view_text==undefined && chField.dispname==undefined" class="font_12">{{chField.fieldname}}: {{chField.value}}{{chField.fieldname.includes('%') ? '%':''}}
+                                                        </div>
+                                                        <div *ngIf="grid.view_text==undefined && chField.dispname!=undefined">
+                                                            <span class="font_12">{{chField?.dispname?.replace('$$'+chField.controlname+'$$',chField.value)}}</span>
+                                                        </div>
+                                                        <mat-icon  class="md-16 pointer" (click)="editIPField(chField)">edit</mat-icon>
+                                                    </div>
+                                                    <div *ngIf="chField?.edit" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                        <div>{{chField.fieldname}}</div>
+                                                        <input style="width:50px" placeholder="{{chField.fieldname}}" type="number" [formControl]="chField.FormCntrl">
+                                                        <mat-icon *ngIf="chField?.FormCntrl.valid" class="md-16 clrgreen pointer" (click)="savechField(chField,grid,field[grpField]?.type)">save</mat-icon>
+                                                        <mat-icon *ngIf="chField?.FormCntrl.invalid" class="md-16 clrgreen" style="opacity:0.5">save</mat-icon>
+                                                        <mat-icon class="md-16 clrred pointer" (click)="chField.edit=false; chField.FormCntrl=undefined;">cancel</mat-icon>
+                                                    </div>
+                                                    <div style="width:100%">
+                                                        <mat-error *ngIf="chField?.FormCntrl?.invalid&&chField?.FormCntrl?.dirty" class="txterror" style="padding-left:25px">{{getErrorMessage(chField?.FormCntrl,'FormCntrl')}}</mat-error>
+                                                    </div>
+                                                    <span *ngIf="chField.status?.includes('Successful')" class="font_10 clrgreen mgnleft5">{{chField.status}}</span>
+                                                    <span *ngIf="chField.status?.includes('Failed')" class="font_10 clrred mgnleft5">{{chField.status}}</span>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchCase="'textarea'" class="mgnleft10">
+                                                <div fxLayout="column" fxLayoutGap="5px">
+                                                    <div *ngFor="let chField of field[grpField]?.field">
+                                                        <div *ngIf="!chField?.edit" fxLayout="row" fxLayout="start center" fxLayoutGap="10px">
+                                                            <div  fxLayout="column" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                                <div class="font_12">{{chField.fieldname}}</div>
+                                                                <div class="font_12">{{chField.value}}</div>    
+                                                            </div>
+                                                            <mat-icon  class="md-16 pointer" (click)="editIPField(chField)">edit</mat-icon>
+                                                        </div>
+                                                        <div *ngIf="chField?.edit" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                            <div fxLayout="column">
+                                                                <div>{{chField.fieldname}}</div>
+                                                                <textarea style="width:200px" placeholder="{{chField.fieldname}}" type="number" [formControl]="chField.FormCntrl"></textarea>
+                                                            </div>
+                                                            <mat-icon *ngIf="chField?.FormCntrl.valid" class="md-16 clrgreen pointer" (click)="savechField(chField,grid,field[grpField]?.type)">save</mat-icon>
+                                                            <mat-icon *ngIf="chField?.FormCntrl.invalid" class="md-16 clrgreen" style="opacity:0.5">save</mat-icon>
+                                                            <mat-icon class="md-16 clrred pointer" (click)="chField.edit=false; chField.FormCntrl=undefined;">cancel</mat-icon>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchCase="'text'" class="mgnleft10">
+                                                <div fxLayout="column" fxLayoutGap="5px">
+                                                    <div *ngFor="let chField of field[grpField]?.field">
+                                                        <!-- <div *ngIf="!chField?.edit" fxLayout="row" fxLayout="start center" fxLayoutGap="10px">
+                                                            <div *ngIf="chField.dispname==undefined">
+                                                                <span class="font_12">{{chField.fieldname}}: {{chField.value}}</span>
+                                                            </div>
+                                                            <div *ngIf="chField.dispname!=undefined">
+                                                                <span class="font_12">{{chField?.dispname?.replace('$$'+chField.controlname+'$$',chField.value)}}</span>
+                                                            </div>
+                                                            <mat-icon  class="md-16 pointer" (click)="editIPField(chField)">edit</mat-icon>
+                                                        </div> -->
+                                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="inlineeditdiv">
+                                                            <div *ngIf="chGrpTitle != 'Cargo Consolidations'"><mat-checkbox (change)= "updCHFieldValue(idx,chField,grid)" [(checked)]="chField.value" style="margin-left:-10px !important"></mat-checkbox></div>
+                                                            <input style="width:95%" class="ip" placeholder="{{chField?.placeholder}}" type="text"  [(ngModel)]="chField.value" (keypress)="$event.key=='Enter' ? updCHFieldValue(idx,chField,grid):''" (blur)="updCHFieldValue(idx,chField,grid)">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchCase="'minitext'">
+                                                <div fxLayout="column" fxLayoutGap="5px">
+                                                    <div *ngFor="let chField of field[grpField]?.field">
+                                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="inlineeditdiv">
+                                                            <input style="width: 200px;" class="ip" placeholder="{{chField?.placeholder}}" type="text"  [(ngModel)]="chField.value" (keypress)="$event.key=='Enter' ? updCHFieldValue(idx,chField,grid):''" (blur)="updCHFieldValue(idx,chField,grid)">
+                                                        </div>
+                                                        <span *ngIf="chField.status?.includes('Successful')" class="font_10 clrgreen mgnleft5">{{chField.status}}</span>
+                                                            <span *ngIf="chField.status?.includes('Failed')" class="font_10 clrred mgnleft5">{{field.status}}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchCase="'radio'" class="mgnleft10">
+                                                <div *ngIf="grid.view_text==undefined">
+                                                    <div *ngFor="let chField of field[grpField]?.field">
+                                                        <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                                                            <span *ngIf="chField?.dispname && !chField?.edit" class="txt">{{chField?.dispname?.replace('$$'+chField.controlname+'$$',chField.value)}}</span>
+                                                            <span *ngIf="chField?.dispname==undefined && !chField?.edit"class="txt">{{chField.value}}</span>
+                                                            <mat-icon *ngIf="!chField?.edit" class="md-16 pointer" (click)="editField(chField)">edit</mat-icon>
+                                                            <div *ngIf="chField.edit" >
+                                                                <label *ngIf="field.group!=chField.fieldname" mat-label id="radio-group-label">{{chField.fieldname}}</label>
+                                                                <div fxLayout="row wrap" fxLayoutAlign="start center" fxLayoutGap="10px" class="mgntop20">
+                                                                    <mat-radio-group aria-labelledby="radio-group-label" [formControl]="chField['FormCntrl']">
+                                                                        <mat-radio-button class="mgnrgt10 font_12" color="primary" *ngFor="let option of chField.options" [value]="option">
+                                                                            <span>{{option}}</span>
+                                                                        </mat-radio-button>
+                                                                      </mat-radio-group>
+                                                                      <div *ngIf="chField.FormCntrl.value == 'Others'">
+                                                                        <div class="inputbox inboxminwidth" fxLayout="column" fxLayout="start center">
+                                                                            <div *ngIf="chField.FormCntrlOthers.dirty" class="label" [ngClass]="{'labelerr':chField.FormCntrlOthers.invalid && chField.FormCntrlOthers.dirty}">{{chField.fieldname}}</div>
+                                                                            <input class="text" type="number" placeholder="{{chField.fieldname}}" [formControl]="chField['FormCntrlOthers']" name="days">
+                                                                        </div>
+                                                                        <div style="width:100%">
+                                                                            <mat-error *ngIf="chField.FormCntrlOthers.invalid&&chField.FormCntrlOthers.dirty" class="txterror" style="padding-left:25px">{{getErrorMessage(chField.FormCntrlOthers,'FormCntrlOthers')}}</mat-error>
+                                                                        </div>
+                                                                    </div>
+                                                                    <mat-icon *ngIf="chField?.edit" class="md-16 clrgreen pointer" (click)="savechField(chField,grid,field[grpField]?.type)">save</mat-icon>
+                                                                    <mat-icon *ngIf="chField?.edit" class="md-16 clrred pointer" (click)="chField.edit=false;chField.FormCntrlOthers=undefined;chField.FormCntrl=undefined ;">cancel</mat-icon>
+                                                                </div>
+                                                            </div>
+                                                            <span *ngIf="chField.status?.includes('Successful')" class="font_10 clrgreen mgnleft5">{{chField.status}}</span>
+                                                            <span *ngIf="chField.status?.includes('Failed')" class="font_10 clrred mgnleft5">{{field.status}}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngSwitchCase="'table'" class="mgnleft10" [style.width.px]="screen.width - 210" style="overflow-y: auto;">
+                                                <!-- <table mat-table #dynamictable [dataSource]="portStorageColl" style="width: 100%; height: auto; border-radius: 6px; border: solid 1px rgba(155, 168, 179, 0.22);">
+                                                    <ng-container *ngFor="let columnName of columnNames" [matColumnDef]="columnName">
+                                                        <th mat-header-cell *matHeaderCellDef class="tbl-head">{{ capitalize(columnName) }}</th>
+                                                            <div *ngIf="columnName == 'port_name'">
+                                                                <td mat-cell *matCellDef="let row">{{ row[columnName] }}</td>
+                                                            </div>
+                                                            <div *ngIf="columnName == 'number_of_free_storage_days'" > 
+                                                                <td mat-cell *matCellDef="let row" style="pointer-events: all;">
+                                                                    <mat-form-field  style="width: 60px;" appearance="legacy" required>
+                                                                        <div fxLayout="row">
+                                                                            <input min="0" class="fntclr465e72" type="number" style="padding:6px;" [(ngModel)]="row[columnName]" matInput (keypress)="$event.key=='Enter' ? updateFreeStorageDays(row):''" onkeyup="this.value=this.value.replace(/[^\+\w]+\d./,'')" (blur)="updateFreeStorageDays(row)">
+                                                                        </div>
+                                                                    </mat-form-field>
+                                                                </td>
+                                                            </div>
+                                                            <div *ngIf="columnName == 'validity_for_free_storage_days'" > 
+                                                                <td mat-cell *matCellDef="let row">{{ row[columnName] }}</td>
+                                                            </div>
+                                                    </ng-container>
+                                                    <tr mat-header-row *matHeaderRowDef="columnNames"></tr>
+                                                    <tr mat-row *matRowDef="let row; columns: columnNames" style="height:40px !important; pointer-events: none;" class="tr-rowalt-light"></tr>
+                                                </table> -->
+                                                <div *ngIf="isEventApprove.FSDFLCL_UPDATE">
+                                                    <table mat-table #table [dataSource]="portStorageColl" style="width: 100%; height: auto; border-radius: 6px; border: solid 1px rgba(155, 168, 179, 0.22);">
+                                                        <ng-container matColumnDef="port_name">
+                                                            <th mat-header-cell *matHeaderCellDef class="txt font_12" style="color: var(--inlineeditclr) !important;">Origin Port</th>
+                                                            <td mat-cell style="color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" *matCellDef="let element;">{{element.port_name}}</td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="number_of_free_storage_days">
+                                                            <th mat-header-cell *matHeaderCellDef class="txt font_12" style="color: var(--inlineeditclr) !important;">Number of Free Storage Days</th>
+                                                            <td mat-cell style="color: var(--inlineeditclr);" style="pointer-events: all;" *matCellDef="let element">
+                                                                <mat-form-field  style="width: 30px;" appearance="legacy" required>
+                                                                    <div fxLayout="row">
+                                                                        <input min="0" max="31" oninput="this.value = Math.min(31,Math.max(1,this.value))" class="fntclr465e72" type="number" [(ngModel)]="element.free_storage_days" matInput (keypress)="$event.key=='Enter' ? updateFreeStorageDays(element):''" onkeyup="this.value=this.value.replace(/[^\+\w.]+\d/,'')" (blur)="updateFreeStorageDays(element)">
+                                                                    </div>
+                                                                </mat-form-field>
+                                                                <span style="margin-left: 5px; color: var(--inlineeditclr);" class="font_12 tbl-row-pad capitalize" >Days</span>
+                                                            </td>
+                                                        </ng-container>
+                                                        <ng-container matColumnDef="validity_for_free_storage_days">
+                                                            <th mat-header-cell *matHeaderCellDef class="txt font_12" style="color: var(--inlineeditclr) !important;">Validity for Free Storage Days</th>
+                                                            <td mat-cell class="font_12 mat-row capitalize" *matCellDef="let element">
+                                                                <mat-form-field style="width: auto;" appearance="legacy" required>
+                                                                    <mat-select class="fntclr465e72" style="font-weight: normal; padding:6px;" [(value)]="element.free_storage_days_validity" (keypress)="$event.key=='Enter' ? updateLCLValidity(element):''"  (selectionChange)="updateLCLValidity(element)">
+                                                                        <mat-option style="color: var(--inlineeditclr); font-weight: 600;"  class="font_12" *ngFor="let validity of LCLValidityColl" [value]="validity.lookup_name_id">
+                                                                          {{validity.lookup_name}}
+                                                                        </mat-option>
+                                                                    </mat-select>
+                                                                </mat-form-field> 
+                                                            </td>
+                                                        </ng-container>
+                                                        <tr mat-header-row *matHeaderRowDef="portColumnNames;"></tr>
+                                                        <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: portColumnNames;"></tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="dispLCLCons && accessibleSections.length > 0" class="mainsection" [style.width.px]="screen.width-160" >
+            <div><span class="txt" style="font-size: 14px; margin-left:0px" >LCL Consolidation Program Details</span></div>
+            <div style="margin-top:10px; overflow-y: auto;" id="LCLConsolidationCollList" [style.height.px]="screen.height-160" >
+                <mat-grid-list cols="1" rowHeight="50px" gutterSize="10px" [style.width.px]="screen.width-200">
+                    <mat-grid-tile *ngFor="let grid of lclConsColl; let ix=index">
+                        <div fxLayout="row" fxLayoutAlign="start center" style="width:100%; height:100%; border: solid 1px rgba(155, 168, 179, 0.22);">
+                            <div fxLayout="row" fxLayoutAlign="start center" >
+                                <mat-icon *ngIf="grid.is_selected" class="clrblue pointer mgnleft10" [matTooltip]="isEventApprove.LCLCPD_ADD ? 'Click to remove' : 'Access denied'" (click)="isEventApprove.LCLCPD_ADD ? addremoveCommunicationIns(grid) : '' ">check_box</mat-icon>
+                                <mat-icon *ngIf="!grid.is_selected" class="clrblue pointer mgnleft10" [matTooltip]="isEventApprove.LCLCPD_ADD ? 'Click to add' : 'Access denied'" (click)="isEventApprove.LCLCPD_ADD ? addremoveCommunicationIns(grid) : ''">check_box_outline_blank</mat-icon>
+                            </div>
+                            <div *ngIf="!grid.edit && grid.msg==undefined" style="padding-left:5px; max-height:40px; overflow-y: auto; width:98%">{{grid.instruction}}</div>
+                            <div *ngIf="grid.msg!=undefined" fxLayoutAlign="center center" style="height:100%; width:100%">{{grid.msg}}</div>
+                            <div *ngIf="isEventApprove.LCLCPD_DELETE_TYI && !grid.is_admin_ins">
+                                <mat-icon (click)="delCommunicationIns(grid)" class="table-del-icon pointer">delete</mat-icon>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+            </div>
+            <div style="width:100%; padding:2px; height:50px; margin-top:10px" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                <mat-icon *ngIf="LCLConsSel" [disabled]="!isEventApprove.LCLCPD_ADD_TYI || isEventDisable" class="clrblue pointer mgnleft10" (click)="isEventApprove.LCLCPD_ADD ? LCLConsSel = false : '' ">check_box</mat-icon>
+                <mat-icon *ngIf="!LCLConsSel" [disabled]="!isEventApprove.LCLCPD_ADD_TYI || isEventDisable" class="clrblue pointer mgnleft10" (click)="isEventApprove.LCLCPD_ADD ? LCLConsSel = true : '' ">check_box_outline_blank</mat-icon>
+                <textarea [disabled]="!isEventApprove.LCLCPD_ADD_TYI || isEventDisable" cdkTextareaAutosize mat-input id="newinst}" placeholder="Type your instructions and click Enter to save" style="outline: none;  height: 30px; width:98%; border:none; border-bottom:1px solid var(--active); padding: 5px;" appearance="fill" [(ngModel)]="newInstruction" (keypress)="$event.key=='Enter' ? addCommunicationIns() : ''" ></textarea>
+            </div>
+        </div>
+        <div *ngIf="dispFCLCons && accessibleSections.length > 0" class="mainsection" [style.width.px]="screen.width-160"> 
+            <div><span class="txt" style="font-size: 14px; margin-left:0px" >FCL Program Details</span></div>
+            <div style="margin-top:10px; overflow-y: auto;" id="FCLProgramCollList" [style.height.px]="screen.height-160" >
+                <mat-grid-list cols="1" rowHeight="60px" gutterSize="10px" [style.width.px]="screen.width-200" >
+                    <mat-grid-tile *ngFor="let grid of fclConsColl; let ix=index">
+                        <div fxLayout="row" fxLayoutAlign="start center" style="width:100%; height:100%; border: solid 1px rgba(155, 168, 179, 0.22);">
+                            <div fxLayout="row" fxLayoutAlign="start center" >
+                                <mat-icon *ngIf="grid.is_selected" class="clrblue pointer mgnleft10" [matTooltip]="isEventApprove.FCLPD_ADD ? 'Click to remove' : 'Access denied'" (click)="isEventApprove.FCLPD_ADD ? addremoveCommunicationIns(grid) : '' ">check_box</mat-icon>
+                                <mat-icon *ngIf="!grid.is_selected" class="clrblue pointer mgnleft10" [matTooltip]="isEventApprove.FCLPD_ADD ? 'Click to add' : 'Access denied'" (click)="isEventApprove.FCLPD_ADD ? addremoveCommunicationIns(grid) : ''">check_box_outline_blank</mat-icon>
+                            </div>
+                            <div *ngIf="!grid.edit && grid.msg==undefined" style="padding-left:5px; max-height:55px; overflow-y: auto; width:98%">{{grid.instruction}}</div>
+                            <div *ngIf="grid.msg!=undefined" fxLayoutAlign="center center" style="height:100%; width:100%">{{grid.msg}}</div>
+                            <div *ngIf="isEventApprove.FCLPD_DEL_TYI && !grid.is_admin_ins">
+                                <mat-icon (click)="delCommunicationIns(grid)" class="table-del-icon pointer">delete</mat-icon>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+                <!-- <div style="width:100%; padding:2px; height:50px; margin-top:10px" >
+                    <textarea [disabled]="isEventDisable || !isEventApprove.FCLPD_ADD_TYI" cdkTextareaAutosize mat-input id="newinst}" placeholder="Type your Instruction here and enter to save" style="outline: none; min-height: 40px; width:98%; border:none; border-bottom:1px solid var(--active);" appearance="fill" [(ngModel)]="newInstruction" (keypress)="saveCommunication(undefined, 'FCL Program', $event.key)" ></textarea>
+                </div> -->
+            </div>
+            <div style="width:100%; padding:2px; height:50px; margin-top:10px" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                <mat-icon *ngIf="FCLProSel" [disabled]="!isEventApprove.FCLPD_ADD_TYI || isEventDisable" class="clrblue pointer mgnleft10" (click)="isEventApprove.FCLPD_ADD_TYI ? FCLProSel = false : '' ">check_box</mat-icon>
+                <mat-icon *ngIf="!FCLProSel" [disabled]="!isEventApprove.LCLCPD_ADD_TYI || isEventDisable" class="clrblue pointer mgnleft10" (click)="isEventApprove.FCLPD_ADD_TYI ? FCLProSel = true : '' ">check_box_outline_blank</mat-icon>
+                <textarea [disabled]="!isEventApprove.FCLPD_ADD_TYI || isEventDisable" cdkTextareaAutosize mat-input id="newinst}" placeholder="Type your instructions and click Enter to save" style="outline: none;  height: 30px; width:98%; border:none; border-bottom:1px solid var(--active); padding: 5px;" appearance="fill" [(ngModel)]="newInstruction" (keypress)="$event.key=='Enter' ? addCommunicationIns() : ''" ></textarea>
+            </div>
+        </div>
+        <div *ngIf="dispCP" fxLayout="row" fxLayoutGap="16px">
+            <div fxFlex="23" fxFlex.lg="30" >
+                <div style="margin-bottom: 16px;">
+                    <span class="txt font_14">Container Types</span>
+                </div>
+                <div [style.height.px]="screen.height - 40" class="drag-list" style="overflow-y: scroll;" cdkDropList #list1="cdkDropList" [cdkDropListData]="containerColl.data" (cdkDropListDropped)="dragDrop($event)" [cdkDropListConnectedTo]="[list2]">
+                    <div *ngFor="let types of containerColl.data; let i=index" style="border-radius: 6px; border: solid 1px rgba(155, 168, 179, 0.22); background-color: #fff; padding: 16px 16px 14px; margin-bottom: 16px; cursor: pointer; margin-right: 16px;" cdkDrag>
+                        <div fxLayout="row" fxLayoutAlign="start">
+                            <span  fxLayoutAlign="end end"
+                                class="image-upload--headshot-image">
+                                <img src='../../assets/image/svg/icon-small-container.svg' style="width: 24px; height: 24px" />
+                            </span>
+                            <span class="card-heading capitalize font_14" style="color: var(--textcolor); font-weight: 600; margin-left: 6px;">{{ types.iso_type_code }} {{ types.description }}</span>
+                        </div>
+                        <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 12px;">
+                            <div fxLayout="column">
+                                <span class="txt">{{types.max_cbm}} CBM</span>
+                                <span style="color: #51687a; font-size: 12px;">Maximum CBM</span>
+                            </div>
+                            <div fxLayout="column">
+                                <span class="txt" style="text-align: right;">{{types.max_weight_kgs}} KG</span>
+                                <span style="color: #51687a; font-size: 12px;">Maximum Weight</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div fxFlex="77" fxFlex.lg="70">
+                <div style="margin-bottom: 16px;">
+                    <span class="txt font_14">Container Size Preference</span>
+                </div>
+                <div [style.height.px]="screen.height - 40" style="overflow-y: auto;">
+                    <table mat-table cdkDropList #table2 #list2="cdkDropList" [dataSource]="sopContainerColl" style="width: 100%; height: auto; border-radius: 6px; border: solid 1px rgba(155, 168, 179, 0.22); margin-top: 16px;" [cdkDropListData]="sopContainerColl.data" (cdkDropListDropped)="dragDrop($event)" [cdkDropListConnectedTo]="[list1]">
+                        <ng-container matColumnDef="position">
+                          <th mat-header-cell *matHeaderCellDef class="tbl-head"></th>
+                          <td mat-cell *matCellDef="let element"><mat-icon style="pointer-events: all; color: var(--iconinactive); cursor:grab;" cdkDragHandle>drag_indicator</mat-icon></td>
+                        </ng-container>
+                        <ng-container matColumnDef="container_size">
+                            <th mat-header-cell *matHeaderCellDef class="tbl-head"> Container Size </th>
+                            <td mat-cell *matCellDef="let element" style="pointer-events: all;"> {{element.iso_type_code}} {{ element.description}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="lcl_min">
+                          <th mat-header-cell *matHeaderCellDef class="tbl-head"> LCL Min </th>
+                          <td mat-cell *matCellDef="let element" style="pointer-events: all;">
+                            <mat-form-field  style="width: 60px;" appearance="legacy" required>
+                                <div fxLayout="row">
+                                    <input min="0" max={{element.max_cbm}} class="fntclr465e72" type="number" style="padding:6px;" [(ngModel)]="element.lcl_min" name="lcl_min" matInput (keypress)="$event.key=='Enter' ? updateContainerItem(element):''" (keyup)="checkAllowedValues($event, element)" (blur)="updateContainerItem(element)">
+                                </div>
+                            </mat-form-field>
+                        </td>
+                        </ng-container>
+                        <ng-container matColumnDef="optimal_cbm">
+                          <th mat-header-cell *matHeaderCellDef class="tbl-head"> Optimal CBM </th>
+                          <td mat-cell *matCellDef="let element" style="pointer-events: all;">
+                            <mat-form-field  style="width: 60px;" appearance="legacy" required>
+                                <div fxLayout="row">
+                                    <input min="0" max={{element.max_cbm}} class="fntclr465e72"  style="padding:6px;" [(ngModel)]="element.optimal_cbm" name="optimal_cbm" matInput (keypress)="$event.key=='Enter' ? updateContainerItem(element):''" (keyup)="checkAllowedValues($event, element)" (blur)="updateContainerItem(element)">
+                                </div>
+                            </mat-form-field>
+                        </td>
+                        </ng-container>
+                        <ng-container matColumnDef="max_cbm">
+                          <th mat-header-cell *matHeaderCellDef class="tbl-head"> Max CBM </th>
+                          <td mat-cell *matCellDef="let element" style="pointer-events: all;"> {{element.max_cbm}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="fcl_min">
+                            <th mat-header-cell *matHeaderCellDef class="tbl-head"> FCL Min </th>
+                            <td mat-cell *matCellDef="let element" style="pointer-events: all;">
+                                <mat-form-field  style="width: 60px;" appearance="legacy" required>
+                                    <div fxLayout="row">
+                                        <input min="0" max={{element.max_cbm}} class="fntclr465e72" type="number" style="padding:6px;" [(ngModel)]="element.fcl_min" name="fcl_min" matInput (keypress)="$event.key=='Enter' ? updateContainerItem(element):''" (keyup)="checkAllowedValues($event, element)" (blur)="updateContainerItem(element)">
+                                    </div>
+                                </mat-form-field> 
+                                </td>
+                        </ng-container>
+                        <ng-container matColumnDef="max_weight">
+                            <th mat-header-cell *matHeaderCellDef class="tbl-head"> Max Weight(Kg) </th>
+                            <td mat-cell *matCellDef="let element" style="pointer-events: all;"> {{element.max_weight_kgs}} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="preference">
+                          <th mat-header-cell *matHeaderCellDef class="tbl-head"> Preference </th>
+                          <td mat-cell *matCellDef="let index = index" style="pointer-events: all;"> {{ index + 1 }} </td>
+                        </ng-container>
+                        <ng-container matColumnDef="delete">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element"> <mat-icon class="table-del-icon" (click)="delPref(element)">delete</mat-icon> </td>
+                          </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky:true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;" style="height:40px !important; pointer-events: none;" class="tr-rowalt-light" cdkDrag [cdkDragData]="row"></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

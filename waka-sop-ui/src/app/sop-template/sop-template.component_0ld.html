@@ -1,0 +1,198 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+    <mat-progress-spinner  color='primary' mode="indeterminate" value="50">
+    </mat-progress-spinner>
+    <div style="background-color: white; opacity: 1;margin:5px 10px;">please wait...</div>
+</div>
+<div style="margin-top:60px">
+    <h1 class="alignleft clrblue" style="border-bottom: 1px solid lightgray;">1. COMPANIES</h1>
+    <div>
+        <div *ngFor = "let ct of objectKeys(section1); let i = index" class="subporeport">
+            <h2 class="alignleft mgnleft10 capitalize clrbrown">1.{{i+1}} {{ct}}</h2>
+            <div *ngFor = "let comp of section1[ct]; let j = index">
+                <div class="font_16 mgnleft10 capitalize" style="line-height: 24px; margin-bottom: 20px;">
+                    <div class="font_18">{{comp.company_name}}</div>
+                    <div>{{comp.address.address}}</div>
+                    <div>{{comp.address.city}}</div>
+                    <div>{{comp.address.state}}</div>
+                    <div>{{comp.address.country}}</div>
+                    <div>{{comp.address.zip_code}}</div>
+                </div>
+                <div class="font_18">Contacts</div>
+                <table mat-table #table [dataSource]="comp.contacts" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%">
+                    <ng-container matColumnDef="contact_name">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef >NAME</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.contact_name}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="designation">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>DESIGNATION</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.designation}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="email">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef >EMAIL</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.email}}</td>
+                    </ng-container>
+                    <ng-container matColumnDef="mobile">
+                        <th mat-header-cell class="tbl-head" *matHeaderCellDef>MOBILE</th>
+                        <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element.mobile}}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="tblContactDisp;" class="tblrowht"></tr>
+                    <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: tblContactDisp;"></tr>
+                </table>
+            </div>
+        </div>
+    </div>
+    <h1 class="alignleft clrblue" style="border-bottom: 1px solid lightgray; page-break-before: always;">2. SCOPE OF AGREEMENT </h1>
+    <div *ngFor="let soa of objectKeys(section2); let i=index">
+        <h2 class="alignleft mgnleft10 capitalize clrbrown sectionreport">2.{{i+1}} {{soa}}</h2>
+        <div *ngIf="soa=='Territories'">
+            <h2>This agreement encompasses the following Origins and Destinations</h2>
+            <div fxLayout="row" fxLayoutAlign="space-around start" fxLayoutGap="40px">
+                <div>
+                    <div class="font_18 mgnbtm10 fntwt600">Origin Countries</div>
+                    <mat-list role="list">
+                        <mat-list-item role="listitem" *ngFor="let oc of section2[soa]['Origin Countries']" fxLayout="column"  fxLayoutGap="20px">
+                            <div class="list-item-bdr">{{oc.country_name}}</div>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+                <div>
+                    <div class="font_18 mgnbtm10 fntwt600">Destination Countries</div>
+                    <mat-list role="list">
+                        <mat-list-item role="listitem" *ngFor="let dc of section2[soa]['Destination Countries']"  fxLayout="column" fxLayoutGap="20px">
+                            <div class="list-item-bdr">{{dc.country_name}}</div>
+                        </mat-list-item>
+                    </mat-list>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="soa=='Services' && section2['Services']!={}">
+            <h2>The destination and origin logistics services and freight management services comprise the following</h2>
+            <div *ngFor="let type of serviceTypes; let i = index" style="margin-left:20px; margin-top:20px;">
+                <h2>{{type}}</h2>
+                <div fxLayout="row" style="margin-top:-10px">
+                    <div fxLayout="column">
+                        <div *ngFor="let service of section2['Services'][type]; let ix = index">
+                            <mat-checkbox *ngIf="ix<15"  [checked]="service.is_selected">{{service.service_name}}</mat-checkbox>
+                        </div>
+                    </div>
+                    <div fxLayout="column" style="margin-left:20px">
+                        <div *ngFor="let service of section2['Services'][type]; let ix = index">
+                            <mat-checkbox *ngIf="ix>=15"  [checked]="service.is_selected">{{service.service_name}}</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1 class="alignleft clrblue" style="border-bottom: 1px solid lightgray; page-break-before: always;">3. COMMUNICATIONS </h1>
+    <div *ngFor="let com of section3['Communications']; let i=index">
+        <p style="text-align: justify; padding:20px">3.{{i+1}} {{com.instruction}}</p>
+    </div>
+    <h1 class="alignleft clrblue" style="border-bottom: 1px solid lightgray; page-break-before: always;">4. EXPORT PROCEDURES</h1>
+    <div *ngFor="let grp of objectKeys(section4); let i=index" class="mgnleft20 mgntop20notfirst">
+        <h2 class="alignleft  capitalize clrbrown">4.{{i+1}} {{grp}}</h2>
+            <div *ngFor="let subhead of objectKeys(section4[grp]); let k=index" class="mgnleft30">
+                <h2 class="alignleft capitalize clrblue ">4.{{i+1}}.{{k+1}} {{subhead}}</h2>
+                <div *ngIf="subhead!='LCL Consolidation Program Details' && subhead!='FCL Program Details'">
+                    <div *ngFor="let subgrp of section4[grp][subhead]; let ix=index" class="mgnleft40 mgntop20">
+                        <h3>4.{{i+1}}.{{k+1}}.{{ix+1}} {{subgrp?.pob_name}}{{subgrp?.ch_name}}</h3>
+                        <div *ngFor="let field of subgrp['fields']; let i1=index" class="mgnleft60">
+                            <h3 *ngIf="subgrp.pob_name!=field.group && subgrp.ch_name!=field.group">4.{{i+1}}.{{k+1}}.{{ix+1}}.{{i1+1}} {{field.group}}</h3>
+                            <div *ngIf="field?.msg!=undefined" class="txterror">{{field.msg}}</div>
+                            <div *ngIf="subgrp?.disp_text != undefined">{{subgrp.disp_text}}</div>
+                            <div *ngFor="let grpField of field.fields;">
+                                <div [ngSwitch]="field[grpField]?.type">
+                                    <div *ngSwitchCase="'textarea'">
+                                        <div fxLayout="column" style="margin-bottom:16px">
+                                            <div *ngFor="let chField of field[grpField]?.field">
+                                                <div>{{chField.value}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngSwitchCase="'text'">
+                                        <div fxLayout="column" style="margin-bottom:16px">
+                                            <div *ngFor="let chField of field[grpField].field">
+                                                <div *ngIf="chField?.dispname!=undefined">{{chField.dispname.replace('$$'+chField.controlname+'$$',chField.value)}}</div>
+                                                <div *ngIf="chField?.dispname==undefined">{{chField.value}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngSwitchCase="'numsmall'">
+                                        <div fxLayout="column" style="margin-bottom:16px">
+                                            <div *ngIf="subgrp?.disp_text==undefined">
+                                                <div *ngFor="let chField of field[grpField].field">
+                                                    <div *ngIf="chField?.dispname!=undefined">{{chField.dispname.replace('$$'+chField.controlname+'$$',chField.value)}}</div>
+                                                    <div *ngIf="chField?.dispname==undefined">{{chField.controlname}}{{chField.value}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngSwitchCase="'multi'">
+                                        <div fxLayout="column">
+                                            <div *ngFor="let chField of field[grpField].field;">
+                                                <div fxLayout="row" fxLayoutGap="20px">
+                                                    <span class="mgnleft10">{{chField.fieldname}}</span>
+                                                    <mat-icon *ngIf="chField?.value">check_circle</mat-icon>
+                                                    <mat-icon *ngIf="!chField?.value">cancel</mat-icon>
+                                                </div>
+                                                <div *ngIf="chField?.child?.length>0 && chField?.value" class="mgnleft80">
+                                                    <div *ngFor="let chchfield of chField.child; let i2=index">
+                                                        <div *ngIf="chchfield?.type=='text' || chchfield?.type=='textarea' || chchfield?.type=='radio' || chchfield?.type=='numsmall'">
+                                                            <div *ngFor="let childField of chchfield?.field">
+                                                                <div fxLayout="row">
+                                                                    <div *ngIf="childField?.dispname==undefined" class="mgnleft20">{{childField.fieldname}}</div>
+                                                                    <div *ngIf="childField?.dispname==undefined" class="mgnleft20">{{childField.value}}</div>
+                                                                    <div *ngIf="childField?.dispname!=undefined" class="mgnleft20">{{childField.dispname.replace('$$'+childField.controlname+'$$',childField.value)}}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="chchfield?.type=='multi'">
+                                                            <div *ngFor="let childArrField of chchfield?.field">
+                                                                <div fxLayout="row" fxLayoutGap="20px">
+                                                                    <span class="mgnleft10">{{childArrField.fieldname}}</span>
+                                                                    <mat-icon *ngIf="childArrField?.value">check_circle</mat-icon>
+                                                                    <mat-icon *ngIf="!childArrField?.value">cancel</mat-icon>
+                                                                </div>
+                                                                <div *ngIf="childArrField?.child?.lengh>0 && childArrField?.value" class="mgnleft100">
+                                                                    <div *ngFor="let childArr1Field of childArrField.child">
+                                                                        <div *ngIf="childArr1Field?.type=='text' || childArr1Field?.type=='textarea' || childArr1Field?.type=='radio' || childArr1Field?.type=='numsmall'">
+                                                                            <div fxLayout="row">
+                                                                                <div *ngIf="childArr1Field?.dispname==undefined" class="mgnleft20">{{childArr1Field.fieldname}}</div>
+                                                                                <div *ngIf="childArr1Field?.dispname==undefined" class="mgnleft20">{{childArr1Field.value}}</div>
+                                                                                <div *ngIf="chchchfield?.dispname!=undefined" class="mgnleft20">{{childArr1Field.dispname.replace('$$'+childArr1Field.controlname+'$$',childArr1Field.value)}}</div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div *ngIf="childArr1Field?.type=='multi'">
+                                                                            <div fxLayout="row" fxLayoutGap="20px">
+                                                                                <span>{{childArr1Field.fieldname}}</span>
+                                                                                <mat-icon *ngIf="childArr1Field?.value">check_circle</mat-icon>
+                                                                                <mat-icon *ngIf="!childArr1Field?.value">cancel</mat-icon>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="subhead=='LCL Consolidation Program Details'">
+                    <div *ngFor="let com of section4[grp]['LCL Consolidation Program Details']; let ix=index">
+                        <p style="text-align: justify; padding:20px">4.{{i+1}}.{{k+1}}.{{ix+1}} {{com.instruction}}</p>
+                    </div>
+                </div>
+                <div *ngIf="subhead=='FCL Program Details'">
+                    <div *ngFor="let com of section4[grp]['FCL Program Details']; let ix=index">
+                        <p style="text-align: justify; padding:20px">4.{{i+1}}.{{k+1}}.{{ix+1}} {{com.instruction}}</p>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div> 

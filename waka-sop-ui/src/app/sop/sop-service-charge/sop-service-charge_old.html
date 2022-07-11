@@ -1,0 +1,135 @@
+<div fxLayout="row" class="font_12">
+    <div class="sidesection">
+        <div *ngFor="let grp of serviceChGrp; let i=index">
+            <div fxLayout="column" style="margin-bottom:0px">
+                <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                    <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':serviceChGrpParam[i]?.color}">{{i+1}}</span></div>
+                    <div style="margin-left:10px;" [ngStyle]="{'color':serviceChGrpParam[i]?.color,'font-weight':serviceChGrpParam[i].fw}" (click)="onClickSSCGrp(i,grp)">{{grp.display_name}}</div>
+                </div>
+            </div>
+            <div *ngIf="serviceChGrp?.length-1>i" style="border-left-width:2px; border-left-style: solid; margin-top:-5px; margin-left:9px; height:50px" [ngStyle]="{'border-left-color':serviceChGrpParam[i]?.color}"></div>
+        </div>
+    </div>
+    <div *ngIf="sscGrp?.mode == 'grid'" fxLayout="column" class="mainsection" [style.height.px]="screen.height-16">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-label class="font_14 fntwt600">{{sscGrp.display_name}}</mat-label>
+        </div>
+        <div *ngIf="sopSSCColl.data.length>0" [style.max-height.px]="screen.height-90" style="overflow-y: auto;">
+            <table mat-table [dataSource]="sopSSCColl" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%">
+                <ng-container matColumnDef="origin_country">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Origin Country</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.origin_country}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="origin_port">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Origin Port</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.origin_port}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="dest_country">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Destination Country</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.dest_country}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="dest_port">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Destination Port</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.dest_port}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="charge_items">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Charge Items</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element.charge_items}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="edit">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Edit</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element" (click)="mapChargeItem(element)">
+                        <mat-icon class="clrblue pointer">edit</mat-icon>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="dispSSCColl; sticky: true;" class="tblrowht"></tr>
+                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispSSCColl;"></tr>
+            </table>
+        </div>
+        <div *ngIf="sopSSCColl.data.length==0" fxLayoutAlign="center center" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px">
+            <div fxLayout="column" fxLayoutAlign="center center" [style.height.px]="screen.height-100">
+                <mat-icon class="md-96" style="opacity:0.2">attach_money</mat-icon>
+                <div class="font_12">Click on ADD NEW to Create {{sscGrpTitle}}</div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="sscGrp?.mode != 'grid'" fxLayout="column" class="mainsection" [style.height.px]="screen.height-16">
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+                <mat-label class="font_14 fntwt600">{{sscGrp?.display_name}}</mat-label>
+                <mat-label class="font_14 fntwt600">Origin Port: {{sscharge?.origin_port}},{{sscharge?.origin_country}}</mat-label>
+                <mat-label class="font_14 fntwt600">Destination Port: {{sscharge?.dest_port}},{{sscharge?.dest_country}}</mat-label>
+            </div>
+            <button mat-raised-button style="background-color:#1c75bc; color:white;" (click)="sscGrp.mode='grid'"><span class="font_14" style="font-weight: 600;">BACK</span></button>
+        </div>
+        <div *ngIf="chargeItemColl.data.length>0" [style.max-height.px]="screen.height-90" style="overflow-y: auto;">
+            <table mat-table [dataSource]="chargeItemColl" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; width:100%">
+                <ng-container matColumnDef="charge_item_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Charge Item</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">{{element.charge_item_name}}
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="charge_description">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Charge Description</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">
+                        <span *ngIf="!element.edit">{{element.charge_description}}</span>
+                        <div *ngIf="element.edit" class="inputboxsingle inboxminsmall">
+                            <textarea class="text" cdkTextareaAutosize cdkAutosizeMaxRows="1" [(ngModel)]="element.charge_description" name="{{element.charge_description}}"></textarea>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="currency_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Currency</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">
+                        <span *ngIf="!element.edit">{{element?.currency_name?.display_name}}</span>
+                        <div *ngIf="element.edit" class="inputboxsingle inboxminsmall">
+                            <mat-select [(value)]="element.currency_name">
+                                <mat-option *ngFor="let currency of currencyColl" [value]="currency">
+                                  {{currency.display_name}}
+                                </mat-option>
+                            </mat-select>
+                        </div>
+                        <span *ngIf="element?.cur_err && element.edit" class="txterror">{{element?.cur_err}}</span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="uom">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>UOM</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">
+                        <span *ngIf="!element.edit">{{element.uom}}</span>
+                        <div *ngIf="element.edit" class="inputboxsingle inboxminsmall">
+                            <input type="text" class="text" [(ngModel)]="element.uom" name="{{element.uom}}">
+                        </div>
+                        <span *ngIf="element?.uom_err && element.edit" class="txterror">{{element?.uom_err}}</span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="unit_rate">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef>Unit Rate</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">
+                        <span *ngIf="!element.edit">{{element.unit_rate}}</span>
+                        <div *ngIf="element.edit" class="inputboxsingle inboxminsmall">
+                            <input type="number" class="text" [(ngModel)]="element.unit_rate" name="{{element.unit_rate}}">
+                        </div>
+                        <span *ngIf="element?.ur_err && element.edit" class="txterror">{{element?.ur_err}}</span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="edit">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef></th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" *matCellDef="let element">
+                        <mat-icon *ngIf="!element.edit && element.sop_service_charge_id == undefined" class="clrblue pointer" (click)="element.edit=true">add</mat-icon>
+                        <mat-icon *ngIf="!element.edit && element.sop_service_charge_id != undefined" class="clrblue pointer" (click)="element.edit=true">edit</mat-icon>
+                        <mat-icon *ngIf="!element.edit && element.sop_service_charge_id != undefined" class="clrred pointer mgnleft10" (click)="delSOPServiceCharge(element)">delete</mat-icon>
+                        <mat-icon *ngIf="element.edit" class="clrgreen pointer" (click)="saveChargeItem(element)">save</mat-icon>
+                        <mat-icon *ngIf="element.edit" class="clrred pointer mgnleft5" (click)="element.edit=false">cancel</mat-icon>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="dispChargeItem; sticky: true;" class="tblrowht"></tr>
+                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispChargeItem;"></tr>
+            </table>
+        </div>
+    </div>
+</div>

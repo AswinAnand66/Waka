@@ -1,0 +1,38 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="padding-top: 60px;">
+	<div [style.height.px]="ht - 80" style="overflow-y: auto;">
+        <div *ngFor="let card of schedulersColl; let i=index">
+            <mat-card fxLayout="row" fxLayoutAlign="space-between center" style="width: 97%; margin: 24px; border-radius: 8px;" [ngClass]="{'card-bottom-green': availabilityChecker(card.last_responded_on) , 'card-bottom-red' : !availabilityChecker(card.last_responded_on) }">
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" fxFlex="60">
+					<mat-icon style="transform: scale(1.5); color: var(--primary);">splitscreen</mat-icon>
+					<div fxLayout="column">
+						<div class="txtclr capitalize">{{card.scheduler_name}}</div>
+						<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Scheduler</div>
+					</div>
+				</div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" fxFlex="20">
+					<mat-icon style="transform: scale(1.5); color: var(--primary);">history</mat-icon>
+					<div fxLayout="column">
+						<div class="txtclr capitalize">{{card.last_responded_on | date: 'medium'}}</div>
+						<div class="font_12" style="color:rgba(155, 168, 179, 0.88)">Last Responded On</div>
+					</div>
+				</div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" fxFlex="10">
+					<div *ngIf="availabilityChecker(card.last_responded_on)" fxLayout="row" style="background-color: rgb(220, 243, 220); padding: 6px 8px; border-radius: 12px;">
+                        <mat-icon style="transform: scale(1); color: var(--green);">fiber_manual_record</mat-icon>
+						<div class="txtclr capitalize" style="color: var(--green); margin-left: 2px;">Active</div>
+					</div>
+                    <div *ngIf="!availabilityChecker(card.last_responded_on)" fxLayout="row" style="background-color: rgb(243, 220, 220); padding: 6px 8px; border-radius: 12px;">
+                        <mat-icon style="transform: scale(1); color: var(--red);">fiber_manual_record</mat-icon>
+						<div class="txtclr capitalize" style="color: var(--red); margin-left: 2px;">Stopped</div>
+					</div>
+				</div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="15px" fxFlex="5">
+					<mat-icon class="pointer" style="transform: scale(1.5); color: var(--primary);" matTooltip="View Scheduler Log" (click)="viewLog(card.scheduler_name)">description</mat-icon>
+				</div>
+            </mat-card>
+        </div>
+    </div>
+</div>

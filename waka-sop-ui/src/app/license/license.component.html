@@ -1,0 +1,61 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 16px 16px;">
+    <div *ngIf="licenseColl.data.length !=0 && !isMobile" fxLayout="column" [style.height.px]="ht-90" fxLayoutAlign="space-between center"  style="overflow: auto;">
+        <mat-form-field  class="mgntop10" style="width:97%;">
+            <mat-label>Search</mat-label>
+            <input style="height: 40px;" matInput (keyup)="applyLicenseFilter($event)" placeholder="Search by Company Name or Office Category" #input>
+        </mat-form-field>
+        <div [style.height.px]="ht" style="width:98%; overflow: aut;  padding-left:4px;">
+            <table mat-table #table [dataSource]="licenseColl"  matSort style="border:1px var(--lightgray) solid;border-radius: 12px; margin-top:10px; width:100%">
+                <ng-container matColumnDef="company_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>COMPANY NAME</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" style="padding-left:35px; padding-right:10px;" *matCellDef="let element">{{element.company_name}} - {{element.lookup_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>LICENSE STATUS</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize" style="padding-left:10px; padding-right:10px;" *matCellDef="let element">
+                        <div fxLayout="row" fxLayoutAlign="start center">
+                            <div id="lic">{{element.status}}</div>
+                            <mat-icon *ngIf="element.status == 'Requested'" style="color: #feb75d;" class="mgnleft5 md-14">access_time_filled</mat-icon>
+                            <mat-icon *ngIf="element.status == 'Registered'" class=" clrgreen mgnleft5 md-14">check_circle</mat-icon>
+                        </div>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="action">
+                    <th class="tbl-head" mat-header-cell *matHeaderCellDef></th>
+                    <td mat-cell style="padding-left:3px; padding-right:0px;" *matCellDef="let element; let i=index"> 
+                        <mat-icon *ngIf="element.status == 'Requested'" id="action{{i}}" style="color: rgb(223, 201, 10)" class="pointer" matTooltip="Approve License" (click)="approveLicense(element)">thumbs_up_down</mat-icon>
+                        <mat-icon *ngIf="element.status == 'Registered'" id="action{{i}}" style="color: rgb(61, 160, 66);" class="pointer" matTooltip="Revoke License" (click)="revokeLicense(element)" >thumb_up</mat-icon>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="dispLicense; sticky: true;" class="tblrowht"></tr>
+                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispLicense;"></tr>
+                </table>
+        </div>
+    </div>
+    <div *ngIf="licenseColl.data.length>0 && isMobile" [style.max-height.px]="screenParam?.height-80" style="overflow: auto">
+        <mat-card>
+            <mat-card-content>
+                <mat-form-field style="width:90%">
+                    <mat-label>Filter</mat-label>
+                    <input matInput (keyup)="applyLicenseFilter($event)" placeholder="Ex. module name sub module name" #input>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-content *ngFor="let license of licenseColl.filteredData" style="border: 1px solid var(--var(--lightgray));padding:0px 10px">
+                <div fxLayout="row wrap" fxLayoutAlign="start center">
+                    <div fxLayout="column" fxLayoutAlign="center start" fxFlex="75">
+                        <div class="font_12"><span style="font-weight: 600; padding: 0px;">Company Name: </span>{{license.company_name}}</div>
+                        <div class="font_12"><span style="font-weight: 600; padding: 0px;">Status: </span>{{license.status}}</div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px" fxFlex="25">
+                        <mat-icon *ngIf="license.status == 'pending'" id="action{{i}}" color="warn" class="pointer" matTooltip="Approve License" (click)="approveLicense(license)">thumb_down</mat-icon>
+                        <mat-icon *ngIf="element.status == 'pending'" id="action{{i}}" color="warn" class="pointer" matTooltip="Approve License" (click)="approveLicense(element)">thumbs_up_down</mat-icon>
+                        <mat-icon *ngIf="license.status == 'approve'" id="action{{i}}" style="color: rgb(61, 160, 66);" class="pointer" matTooltip="Revoke License" (click)="revokeLicense(license)" >thumb_up</mat-icon>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

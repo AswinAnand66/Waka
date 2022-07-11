@@ -1,0 +1,29 @@
+<!--
+  <div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <mat-label color="primary" class="mgnleft10" style="font-weight: 600; color: darkgrey;">UPLOAD LOGO</mat-label>
+  <mat-icon id="close" class="pointer" matTooltip="Close dialog" (click)="onClose(false)" style="color: #465e72;">close</mat-icon>
+</div>
+<div mat-dialog-content>
+  <div fxFlex="100" fxFlex.xs="100" fxLayout="row wrap" fxLayoutAlign="center center">
+    <form id="image-upload" style="margin: 10px;">
+      <input type="hidden" id="max_file_size" name="max_file_size">
+      <div fxFlex="100" fxLayout="row wrap" fxLayoutAlign="center center" class="form--field image-upload--headshot-image">
+        <input type="file" name="image-upload--headshot" id="image-upload--headshot" accept="image/*" (change)="fileProgress($event)">
+        <mat-icon *ngIf="isImg1" class="close" (click)="fileRemove(1)">cancel</mat-icon>
+        <mat-icon *ngIf="!isImg1 && fileName" class="close" (click)="imgRemove()">cancel</mat-icon>
+        <img fxFlex="90" [src]="previewUrl" class="upload mat-elevation-z10">
+      </div>
+    </form>
+  </div>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+  <button class="btnpri btnpriqtr" [disabled]="fileName == undefined" id="btnUpload" (click)="uploadLogo()"><span style="color:white">UPLOAD</span></button>
+</div>
+
+<h2 mat-dialog-title>Delete Uploaded Logo ?</h2>
+<mat-dialog-content>This will delete Uploaded Logo in this page and cannot be undone.</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-button [mat-dialog-close]="true">Delete</button>
+</mat-dialog-actions>
+-->

@@ -1,0 +1,89 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+    <mat-label color="primary" class="mgnleft10" style="color: var(--textcolor); font-size: 20px; font-weight: bold;">Mapping Validation</mat-label>
+    <mat-icon id="close" class="pointer" style="color: var(--textcolor);" matTooltip="Close dialog" (click)="onClose(false)">close</mat-icon>
+</div>
+<div mat-dialog-content fxLayout="row" fxLayoutAlign="space-between none">
+    <div *ngIf="!mapSkip && !mapError" fxFlex="100" fxLayout="column" fxLayoutAlign="start" style="overflow-y: auto; overflow-x: none;">
+        <div *ngIf="mappedCollData.length != 0" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="12px">
+            <span style="font-weight: 600;">Mapped Keys</span>
+            <div id="map" class="mapping-list" style="width: 99%; height: 100%;">
+                <div *ngFor="let map of mappedCollData" fxLayout="row" fxLayoutAlign="space-between center" class="keys-box">
+                    <div fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row wrap">
+                        <ng-container *ngFor="let mapKeys of map.display; let i = index">
+                          <span>{{ mapKeys }}</span>
+                          <mat-icon *ngIf="i != map.display.length-1" style="color: var(--textcolor);">east</mat-icon>
+                        </ng-container>  
+                        <mat-icon style="color: var(--green);">double_arrow</mat-icon>
+                        <span>{{ map.targetMapped | titlecase }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="newCollData.length != 0" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="12px" style="margin-top: 12px;">
+            <span style="font-weight: 600;">New Keys</span>
+            <div id="new" class="mapping-list" style="width: 99%; height: 100%;">
+                <div *ngFor="let newKeys of newCollData" fxLayout="row" fxLayoutAlign="start" class="keys-box">
+                    <div fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row wrap">
+                        <ng-container *ngFor="let Keys of newKeys.display; let i = index">
+                          <span>{{ Keys | titlecase }}</span>
+                          <mat-icon *ngIf="i != newKeys.display.length-1" style="color: var(--green);">double_arrow</mat-icon>
+                        </ng-container>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="rejectedColl.length != 0" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="12px" style="margin-top: 12px;">
+            <span style="font-weight: 600;">Rejected Keys</span>
+            <div id="new" class="mapping-list" style="width: 99%; height: 100%;">
+                <div *ngFor="let rejectKeys of rejectedColl" fxLayout="row" fxLayoutAlign="start" class="keys-box">
+                    <div fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row wrap">
+                        <ng-container *ngFor="let Keys of rejectKeys.display; let i = index">
+                          <span>{{ Keys | titlecase }}</span>
+                          <mat-icon *ngIf="i != rejectKeys.display.length-1" style="color: var(--red);">east</mat-icon>
+                        </ng-container>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="unMappedTargets.length != 0" fxLayout="column" fxLayoutAlign="start" fxLayoutGap="12px" style="margin-top: 12px;">
+            <span style="font-weight: 600;">Unmapped Target Keys</span>
+            <div id="new" class="mapping-list" style="width: 99%; height: 100%;">
+                <div *ngFor="let unTKeys of unMappedTargets" fxLayout="row" fxLayoutAlign="start" class="keys-box">
+                    <div fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row wrap">
+                          <span>{{ unTKeys | titlecase }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="mapSkip" fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
+        <div style="width: 420px; height: 267px;" fxLayout="column" fxLayoutAlign="center center">
+            <div>
+                <img src="../../assets/image/svg/icon-small-info-sucess.svg" style="width: 95px; height: 95px; object-fit: contain;"/>
+            </div>
+            <div style="margin-top: 25px; width: auto; text-align: center !important;">
+                <span style="color: var(--textcolor); font-weight: bold; font-size: 20px; text-align: center !important;">All Key matched!<br></span>
+            </div>
+            <div style="border-bottom: solid 2px var(--primary); width: 183px; margin-top: 36px; text-align: center !important;">
+                <span class="confirm-dialog-btn2" (click)="onClose(true)">CONTINUE TO SCHEDULE</span>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="mapError" fxFlex="100" fxLayout="row" fxLayoutAlign="center center">
+        <div style="width: 480px; height: 267px;" fxLayout="column" fxLayoutAlign="center center">
+            <div style="border-radius: 100%; border: var(--inprogressmedium) 5px solid; height: 90px !important; width: 90px !important;">
+                <mat-icon [inline]="false" style="color: var(--inprogressmedium); font-size: 38px !important; padding: 22px 22px; transform: scale(1.4);">report_problem</mat-icon>
+            </div>
+            <div style="margin-top: 25px; width: auto; text-align: center !important;">
+                <span style="color: var(--textcolor); font-weight: bold; font-size: 20px; text-align: center !important;">Some mandatory target keys are unmapped.<br> Please check or reupload the template</span>
+            </div>
+            <div style="border-bottom: solid 2px var(--primary); width: 83px; margin-top: 36px; text-align: center !important;">
+                <span class="confirm-dialog-btn2" (click)="dialogRef.close()">CONTINUE</span>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!mapSkip && !mapError" mat-dialog-actions fxLayout="row" fxLayoutAlign="end center" fxLayoutGap="12px">
+    <button id="btnSave" class="btnpri" color="primary" (click)="validatePoiMapping()">VALIDATE</button>
+    <button id="btnCancel" class="btnsecondary" color="accent" mat-tooltip="Go to Login page" (click)="onClose(false)">Cancel</button>
+</div>

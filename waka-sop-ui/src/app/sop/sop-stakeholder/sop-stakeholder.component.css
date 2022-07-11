@@ -1,0 +1,23 @@
+/* .shportinputwidth {
+  width: 300px !important;
+  background-color: #efefef
+}
+
+.label {
+  font-size: 14px;
+  color: var(--textcolor);
+  letter-spacing: 0.15px;
+} */
+
+
+
+.table-del-icon {
+  pointer-events: all; 
+  color: var(--primary); 
+  cursor:pointer;
+  visibility: hidden;
+}
+
+.mat-row:hover .table-del-icon { 
+  visibility: visible;
+}

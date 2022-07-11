@@ -1,0 +1,82 @@
+<div mat-dialog-title fxLayout="row" fxLayoutAlign="space-between center">
+  <mat-label color="primary" class="mgnleft10" style="font-weight: 600; color: darkgrey;">{{title}}</mat-label>
+  <mat-icon id="close" class="pointer" matTooltip="Close dialog" (click)="onClose(false)" style="color: #465e72;">close</mat-icon>
+</div>
+<div mat-dialog-content>
+  <form [formGroup]="form" fxLayout="row wrap">
+    <div fxFlex="100" fxLayoutAlign="space-between center">
+      <div class="inputbox companyinputminwidthPer" [ngClass]="{'errtxtbdr':form.get('ParentCompanyType').invalid&&form.get('ParentCompanyType').dirty}">
+        <div class="label">Parent Company Type</div>
+          <mat-select formControlName="ParentCompanyType" name="ParentCompanyType" class="capitalize font_12" (selectionChange)="onParentCompanyTypeChange($event.value)" required>
+            <mat-option class="capitalize" *ngFor="let ele of companyTypeList" [value]="ele.lookup_id">{{ele.name}}</mat-option>
+          </mat-select>
+          <mat-error style="margin-left:-30px; margin-top:2px;" *ngIf="form.get('ParentCompanyType').invalid&&form.get('ParentCompanyType').dirty" class="txterror" >{{getErrorMessage(form.get('ParentCompanyType'),'ParentCompanyType')}}</mat-error>
+      </div>
+    </div>
+    <div flex fxLayout="row wrap" fxLayoutAlign="space-between center">
+      <div  class="inputbox companyinputminwidthPer" [ngClass]="{'errtxtbdr':form.get('CompanyName').invalid&&form.get('CompanyName').dirty}">
+        <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+          <mat-icon class="icon">business</mat-icon>
+          <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+            <div *ngIf="form.get('CompanyName').value!=undefined && form.get('CompanyName').value!=''" class="label" [ngClass]="{'labelerr':form.get('CompanyName').invalid&&form.get('CompanyName').dirty}">Company Name</div>
+            <input class="text" placeholder="CompanyName" formControlName="CompanyName" name="CompanyName" id="CompanyName" autocomplete="new-company" (blur)="validateCompany()"required>
+          </div>
+        </div>
+        <mat-error style="margin-left:-30px; margin-top:2px;" *ngIf="form.get('CompanyName').invalid&&form.get('CompanyName').dirty" class="txterror" >{{getErrorMessage(form.get('CompanyName'),'CompanyName')}}</mat-error>
+      </div>
+      <div  class="inputbox companyinputminwidthPer" [ngClass]="{'errtxtbdr':form.get('Email').invalid&&form.get('Email').dirty}">
+        <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+          <mat-icon class="icon">alternate_email</mat-icon>
+          <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+            <div *ngIf="form.get('Email').value!=undefined && form.get('Email').value!=''" class="label" [ngClass]="{'labelerr':form.get('Email').invalid&&form.get('Email').dirty}">Email</div>
+            <input class="text" placeholder="Email" formControlName="Email" name="Email" id="Email" readonly="readonly" onfocus="javascript: this.removeAttribute('readonly')" (blur)="validateEmail()" required>
+          </div>
+        </div>
+        <mat-error style="margin-left:-30px; margin-top:2px;" *ngIf="form.get('Email').invalid&&form.get('Email').dirty" class="txterror" >{{getErrorMessage(form.get('Email'),'Email')}}</mat-error>
+      </div>
+      <div  class="inputbox companyinputminwidthPer" [ngClass]="{'errtxtbdr':form.get('Name').invalid&&form.get('Name').dirty}">
+        <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+          <mat-icon class="icon">person</mat-icon>
+          <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+            <div *ngIf="form.get('Name').value!=undefined && form.get('Name').value!=''" class="label" [ngClass]="{'labelerr':form.get('Name').invalid&&form.get('Name').dirty}">Name</div>
+            <input class="text" placeholder="Name" formControlName="Name" name="Name" id="Name" required>
+          </div>
+        </div>
+        <mat-error style="margin-left:-30px; margin-top:2px;" *ngIf="form.get('Name').invalid&&form.get('Name').dirty" class="txterror" >{{getErrorMessage(form.get('Name'),'Name')}}</mat-error>
+      </div>
+      <!-- <div  class="inputbox companyinputminwidthPer" [ngClass]="{'errtxtbdr':form.get('CompanyName').invalid&&form.get('CompanyName').dirty}">
+        <div fxLayout="row" fxLayoutAlign="start center" style="height:100%">
+          <mat-icon class="icon">business</mat-icon>
+          <div fxLayout="column" fxLayoutAlign="center start" style="width:100%">
+            <div *ngIf="form.get('CompanyName').value!=undefined && form.get('CompanyName').value!=''" class="label" [ngClass]="{'labelerr':form.get('CompanyName').invalid&&form.get('CompanyName').dirty}">Company Name</div>
+            <input class="text" placeholder="CompanyName" formControlName="CompanyName" name="CompanyName" id="CompanyName" autocomplete="new-company" [matAutocomplete]="CompanyName" required>
+          </div>
+        </div>
+        <mat-autocomplete autoActiveFirstOption #CompanyName="matAutocomplete" [displayWith]="displayFn">
+          <mat-option class="capitalize" *ngFor="let ele of userCompanyList" [value]="ele" required>{{ele.company_name}}</mat-option>
+        </mat-autocomplete>
+        <mat-error style="margin-left:-30px; margin-top:2px;" *ngIf="form.get('CompanyName').invalid&&form.get('CompanyName').dirty" class="txterror" >{{getErrorMessage(form.get('CompanyName'),'CompanyName')}}</mat-error>
+      </div> -->
+      <div fxFlex="100" fxLayoutAlign="start center" fxLayoutGap="18px">
+        <div class="inputbox companyinputminwidthPer" [ngClass]="{'errtxtbdr':form.get('InviteCompanyType').invalid&&form.get('InviteCompanyType').dirty}">
+          <div class="label">Invite Company Type</div>
+            <mat-select formControlName="InviteCompanyType" name="InviteCompanyType" class="capitalize font_12" (selectionChange)="onInviteCompanyTypeChange($event.value)" required>
+              <mat-option class="capitalize" *ngFor="let ele of inviteCompanyTypeList" [value]="ele.lookup_id">{{ele.name}}</mat-option>
+            </mat-select>
+            <mat-error style="margin-left:-30px; margin-top:2px;" *ngIf="form.get('InviteCompanyType').invalid&&form.get('InviteCompanyType').dirty" class="txterror" >{{getErrorMessage(form.get('InviteCompanyType'),'InviteCompanyType')}}</mat-error>
+        </div>
+        <div class="inputbox companyinputminwidthPer" [ngClass]="{'errtxtbdr':form.get('LicenseModules').invalid&&form.get('LicenseModules').dirty}">
+          <div class="label">License Modules</div>
+            <mat-select formControlName="LicenseModules" name="LicenseModules" class="capitalize font_12" (selectionChange)="onLicenseModuleChange($event.value)" required>
+              <mat-option class="capitalize" *ngFor="let ele of modulesList" [value]="ele.module_id">{{ele.module_name}}</mat-option>
+            </mat-select>
+            <mat-error style="margin-left:-30px; margin-top:2px;" *ngIf="form.get('LicenseModules').invalid&&form.get('LicenseModules').dirty" class="txterror" >{{getErrorMessage(form.get('LicenseModules'),'LicenseModules')}}</mat-error>
+        </div>
+      </div>
+    </div>
+  </form>    
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="20px">
+  <button class="btnpri btnpriqtr" id="btnsave" [disabled]="form.invalid" (click)="inviteCompnay()"><span style="color:white">{{btnTitle}}</span></button>
+  <button class="btnpri btnpriqtr" id="btnCancel" (click)="onClose(false)"><span style="color:white">Cancel</span></button>
+</div>

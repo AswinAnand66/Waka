@@ -1,0 +1,24 @@
+<!-- <div *ngIf="height>500" fxHide.gt-sm style="background-color: var(--primary); z-index: 10000;" class="mobile-nav"> -->
+<div *ngIf="height>500" fxHide.gt-sm style="background-color: var(--primary);" class="mobile-nav">
+	<div class="toolbar-circle" fxLayoutAlign="center center">
+		<mat-icon style="color: #465e72; transform: scale(1.2);">qr_code_scanner</mat-icon>
+	</div>
+	<div fxLayout="row" fxLayoutAlign="space-around center" style="height:100%;">
+		<div fxLayout="column" fxLayoutAlign="center center" (click)="navigate('home')">
+			<mat-icon [ngClass]="{'toolbar-icon-selected' : selNav == 'home','toolbar-icon' : selNav != 'home'}" matTooltip="Home">home</mat-icon>
+			<span style="font-size: 10px; font-weight: 600; color: #a2cff2;">Home</span>
+		</div>
+		<div fxLayout="column" fxLayoutAlign="center center" style="margin-right: 8px;" (click)="navigate('orders')">
+			<mat-icon [ngClass]="{'toolbar-icon-selected' : selNav == 'orders','toolbar-icon' : selNav != 'orders'}" matTooltip="Orders">task</mat-icon>
+			<span style="font-size: 10px; font-weight: 600; color: #a2cff2;">Orders</span>
+		</div>
+		<div fxLayout="column" fxLayoutAlign="center center" style="margin-left: 12px;" (click)="navigate('shipments')">
+			<mat-icon [ngClass]="{'toolbar-icon-selected' : selNav == 'shipments','toolbar-icon' : selNav != 'shipments'}" matTooltip="Shipments">directions_boat_filled</mat-icon>
+			<span style="font-size: 10px; font-weight: 600; color: #a2cff2;">Shipments</span>
+		</div>
+		<div fxLayout="column" fxLayoutAlign="center center" (click)="navigate('updates')">
+			<mat-icon [ngClass]="{'toolbar-icon-selected' : selNav == 'updates','toolbar-icon' : selNav != 'updates'}" matTooltip="Updates">notifications</mat-icon>
+			<span style="font-size: 10px; font-weight: 600; color: #a2cff2;">Updates</span>
+		</div>
+	</div>
+</div>

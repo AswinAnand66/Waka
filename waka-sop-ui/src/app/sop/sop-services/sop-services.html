@@ -1,0 +1,92 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal"
+	style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50">
+	</mat-progress-spinner>
+</div>
+<div *ngIf="accessibleSections.length == 0 && !isLoading">
+    <div fxLayout="row" fxLayoutAlign="center center" style="margin-top: 200px;">
+        <mat-card class="mattabgrp">
+            <mat-card-content >
+                <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px">
+                    <mat-icon class="clrblue">error_outline</mat-icon>
+                    <div class="clrblue" style="font-size: 14px; font-weight: bold;">For your Role, Services Instruction access denied by the company admin</div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+<div *ngIf="accessibleSections.length > 0 && othServiceColor.length > 0 && !isLoading" fxLayout="row" class="font_12" [style.height.px]="screen.height" style="overflow-y: auto;">
+    <!--  style="width:160px; overflow-y:visible; overflow-x: hidden;" --> 
+    <!-- [style.height.px]="screen.height"  -->
+    <div *ngIf="isAccessibleEvents != null" class="sidesection" fxFlex="12">
+        <div *ngFor="let os of othServices; let i=index">
+            <div *ngIf="isAccessibleSection[os.toLowerCase().replaceAll(' ','_')]">
+                <div fxLayout="column" style="margin-bottom:0px">
+                    <div fxLayout="row" fxLayoutAlign="start center" class="pointer">
+                        <div><span style="padding:2px 7px 2px 7px; border-radius:100%; color:white; font-weight: 600;" [ngStyle]="{'background-color':othServiceColor[i]?.color}">{{i+1}}</span></div>
+                        <div style="margin-left:10px;" [ngStyle]="{'color':othServiceColor[i]?.color,'font-weight':othServiceColor[i]?.fw}" (click)="onClickOthSer(i,os)">{{os}}</div>
+                    </div>
+                </div>
+                <div *ngIf="othServiceColor?.length-1>i" style="border-left-width:2px; border-left-style: solid; margin-top:-5px; margin-left:9px; height:50px" [ngStyle]="{'border-left-color':othServiceColor[i]?.color}"></div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="isAccessibleEvents != null" class="mainsection" fxFlex="88" class="mgntop20" style="padding: 0px 16px;">
+        <mat-card [hidden]="true">
+            <div><span class="txt" style="font-size: 14px; margin-left:0px" >{{selType}}</span></div>
+            <mat-card-content class="padtop5 mgntop20" style="background-color: var(--bggroup);">
+                <div class="mgnleft10 mgntop10 txt">{{serviceName}}</div>
+                <div fxLayout="row wrap" fxLayoutAlign="start center" class="mgnleft10 mgntop10">
+                    <div *ngFor="let service of serviceTypeColl[selType]; let i = index;" class="font_12 mgnbtm10 " style="width: fit-content;" >
+                        <div *ngIf="service.is_selected" fxLayout="row" fxLayoutAlign="start center" class="chipset-active mgnrgt10">
+                            <span class="font_12">{{service.service_name}}</span>
+                            <mat-icon class="mgnleft5 md-18 pointer" (click) ="service.is_selected = false;selParService()">clear</mat-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="mgnleft10 mgntop10 txt">Add Service</div>
+                <div fxLayout="row wrap" fxLayoutAlign="start center" class="mgnleft10 mgntop10">
+                    <div *ngFor="let service of serviceTypeColl[selType]" class="font_12 mgnbtm10" style="width: fit-content;">
+                        <div *ngIf="!service.is_selected" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px" class="chipset-inactive mgnrgt10">
+                            <span class="font_12">{{service.service_name}}</span>
+                            <mat-icon class="mgnleft5 md-18 pointer" (click) ="service.is_selected = true; selParService()">add</mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <div *ngIf="openCommunicationSection"  fxLayout="column" [style.height.px]="screen.height - 20">
+            <div *ngIf="serviceTypeColl[selType].length == 0" fxFlex="10">
+                <span class="txt" style="font-size: 14px; margin-left:0px">{{selType}} <span *ngIf="!selType.includes('Instructions')">Instructions</span> </span>
+            </div>
+            <div style="margin-top:10px; overflow-y: auto;" id="CommunicationCollList" fxFlex="80">
+                <mat-grid-list cols="1" rowHeight="60px" gutterSize="10px">
+                    <mat-grid-tile *ngFor="let grid of communicationColl; let ix=index">
+                        <div fxLayout="row" fxLayoutAlign="start center" style="width:100%; height:100%; border: solid 1px rgba(155, 168, 179, 0.22);">
+                            <div fxLayout="row" fxLayoutAlign="start center" >
+                                <mat-icon *ngIf="grid.is_selected" class="clrblue pointer mgnleft10" [matTooltip]="grid.add_remove_access ? 'Click to remove' : 'Access denied'" (click)="grid.add_remove_access ? addremoveCommunicationIns(grid) : '' ">check_box</mat-icon>
+                                <mat-icon *ngIf="!grid.is_selected" class="clrblue pointer mgnleft10" [matTooltip]="grid.add_remove_access ? 'Click to add' : 'Access denied'" (click)="grid.add_remove_access ? addremoveCommunicationIns(grid) : ''">check_box_outline_blank</mat-icon>
+                            </div>
+                            <div *ngIf="!grid.edit && grid.msg == undefined" style="padding-left:5px; max-height:40px; overflow-y: auto; width:93%" class="font_12 txt">{{grid.instruction}}</div>
+                            <div *ngIf="grid.msg != undefined" fxLayoutAlign="center center" style="height:100%; width:100%">{{grid.msg}}</div>
+                            <div *ngIf="grid.delete_access && !grid.is_admin_ins">
+                                <mat-icon (click)="delCommunicationIns(grid)" class="table-del-icon pointer">delete</mat-icon>
+                            </div>
+                        </div>
+                    </mat-grid-tile>
+                </mat-grid-list>
+                <div *ngIf="isDataLoading && communicationColl.length == 0" fxLayout="row" fxLayoutAlign="center center" [style.height.px]="screen.height - 250">
+                    <mat-icon class="md-20 load_in_progress">refresh</mat-icon>
+                </div>
+                <div *ngIf="!isDataLoading && communicationColl.length == 0" fxLayout="row" fxLayoutAlign="center center" [style.height.px]="screen.height - 250">
+                    <span class="txt">No Instruction available for {{this.selType.toLowerCase()}}</span>
+                </div>
+            </div>
+            <div style="width:100%; padding:2px; height:50px; margin-top:20px" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10px" fxFlex="10" [matTooltip]="isAccessibleEvents[selTypeEvent] ? 'Type Your Instruction' : 'Access denied'" >
+                <mat-icon *ngIf="commInsSel" [disabled]="!isAccessibleEvents[selTypeEvent] || isEventDisable" class="clrblue pointer mgnleft10" (click)="isAccessibleEvents[selTypeEvent] ? commInsSel = false : '' ">check_box</mat-icon>
+                <mat-icon *ngIf="!commInsSel" [disabled]="!isAccessibleEvents[selTypeEvent] || isEventDisable" class="clrblue pointer mgnleft10" (click)="isAccessibleEvents[selTypeEvent] ? commInsSel = true : '' ">check_box_outline_blank</mat-icon>
+                <textarea [disabled]="!isAccessibleEvents[selTypeEvent]" cdkTextareaAutosize mat-input id="newinst}" placeholder="Type your instructions and click Enter to save" style="outline: none;  height: 30px; width:98%; border:none; border-bottom:1px solid var(--active); padding: 5px;" appearance="fill" [(ngModel)]="newInstruction" (keypress)="addCommunicationIns($event)" ></textarea>
+            </div>
+        </div>
+    </div>
+</div>

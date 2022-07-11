@@ -1,0 +1,76 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div *ngIf="!isMobileView && !underProgress" [style.height.px]="height" style="padding-top: 60px;" fxLayout="column" fxLayoutAlign="start center">
+    <div fxLayout="row" fxLayoutAlign="space-between center" [style.width.px]="width - 50" style="padding-top: 16px;">
+        <span class="txt fntwt600" style="font-size: 18px;">System recommendations matching this shipment criterion</span>
+    </div>
+    <div fxLayout="row wrap" fxLayoutAlign="start start" [style.width.px]="width - 50" style="margin-top: 20px;">
+        <div class="chipset-active mgnrgt10 mgnbtm10 txt">
+            Principal : {{soDetails.principal}}
+        </div>
+        <div class="chipset-active mgnrgt10 mgnbtm10 txt">
+            Freight Forwarder : {{soDetails.logistics_provider}}
+        </div>
+        <div class="chipset-active mgnrgt10 mgnbtm10 txt">
+            Cargo Ready Date : {{soDetails.cargo_ready_date  | date: 'longDate'}}
+        </div>
+        <div class="chipset-active mgnrgt10 mgnbtm10 txt">
+            Contract Shipment Date : {{soDetails.ship_date | date: 'longDate'}}
+        </div>
+        <div class="chipset-active mgnrgt10 mgnbtm10 txt">
+            Ship Type : {{soDetails.type}}
+        </div>
+        <div class="chipset-active mgnrgt10 mgnbtm10 txt">
+            Ship Mode : {{soDetails.mode}}
+        </div>
+        <div class="chipset-active mgnrgt10 mgnbtm10 txt">
+            Loading Port : {{soDetails.loading_port}}
+        </div>
+        <div class="chipset-active mgnrgt10 mgnbtm10 txt">
+            Discharging Port : {{soDetails.discharging_port}}
+        </div>
+        
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start center" style="margin-top: 30px;"  [style.height.px]="height - 280">
+        <mat-card style="box-shadow: none; border-radius: 6px 6px 0px 0px; border: solid 1px rgba(155, 168, 179, 0.22);" [style.width.px]="width - 50" fxLayout="column" fxLayoutGap="10px">
+            <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="10px">
+                <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+                    <mat-icon color="primary">task</mat-icon>
+                    <span class="txt font_14">PO List</span>
+                </div>
+            </div>
+        </mat-card>
+        <div *ngIf="POList.filteredData.length > 0" fxLayout="column" fxLayoutAlign="start center" style="width: 100%;" [style.height.px]="height - 300">
+            <div fxLayout="row" fxLayoutAlign="start center" [style.width.px]="width - 50" style="background-color: var(--white); padding: 12px 8px; border: solid 1px rgba(155, 168, 179, 0.22);">
+                <mat-checkbox *ngIf="dispPO.length > 0" fxFlex="10" [indeterminate]="checkSelected()" [checked]="allSelected" (change)="setAll($event.checked)"></mat-checkbox>
+                <div *ngFor="let header of dispPO" fxFlex="18">
+                    <div class="capitalize txt">{{header.replaceAll('_',' ')}}</div>
+                </div>
+            </div>
+            <div id="POListDetails" style=" overflow-y: auto;" [style.height.px]="height - 350">
+                <div *ngFor="let selPO of POList.filteredData">
+                    <div fxLayout="row" fxLayoutAlign="start start" [style.width.px]="width - 50" style="background-color: var(--white); padding: 12px 8px; border: solid 1px rgba(155, 168, 179, 0.22);" class="font_12">
+                        <mat-checkbox [checked]="selPO.is_selected" *ngIf="POList.filteredData.length > 0" fxFlex="10" (change)="addRemovePO($event.checked, selPO)"></mat-checkbox>
+                        <span fxFlex="18">PO {{selPO.po_no}}</span>
+                        <span fxFlex="18">{{selPO.status}}</span>
+                        <span fxFlex="18">{{selPO.total_items}}</span>
+                        <span fxFlex="18">{{selPO.total_qty}}</span>
+                        <span fxFlex="18">{{selPO.total_volume}} CBM</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div fxLayout="column" fxLayoutAlign="center center" >
+        <div *ngIf="POList.filteredData.length == 0" style="height: 100px;" fxLayout="column" fxLayoutAlign="center center">
+            <span>PO data unavailable</span>
+        </div>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="center center" style="background-color: var(--tabbg); height: 70px; width: 100%; position: absolute; bottom: 0px;">
+        <div fxLayout="row" fxLayoutAlign="space-between center" [style.width.px]="width - 50">
+            <div class="btnsecondary" style="padding: 10px 16px;" (click)="exitAddPO()">CANCEL</div>
+            <div class="btnpri" style="padding: 10px 16px;" (click)="saveAddPO()">SAVE</div>
+        </div>
+    </div>
+</div>

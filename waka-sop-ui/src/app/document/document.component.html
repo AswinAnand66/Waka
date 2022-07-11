@@ -1,0 +1,88 @@
+<!-- <app-login-header></app-login-header> -->
+<!-- Loader section -->
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:8px 5px">
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-bottom:8px; width:95%">
+        <div fxLayoutAlign="start center" >
+            <button mat-button color="warn" (click)="goBack()"><mat-icon class="pointer" style="transform: rotate(180deg); color:brown">forward</mat-icon></button>
+            <mat-icon style="color: #3cb44b;">summarize</mat-icon><mat-label class="mgnleft10 font_14 fntwt600">Documents</mat-label>
+        </div>
+        <button mat-raised-button class="btnclrprimary" (click)="addDoc()"><mat-icon>add_circle</mat-icon><span class="mgnleft10 font_14" style="font-weight: 600;">ADD NEW</span></button>
+    </div>
+    <div *ngIf="docColl.data.length>0 && !isMobile" [style.max-height.px]="screenParam?.height-80" style="overflow: auto">
+        <div fxLayoutAlign="center start">
+            <mat-form-field style="width:90%">
+                <mat-label>Filter</mat-label>
+                <input matInput (keyup)="applyLookupFilter($event)" placeholder="Ex. lookup name, display name, lookup type" #input>
+            </mat-form-field>
+        </div>
+        <div fxLayoutAlign="center start">
+            <table mat-table #table [dataSource]="docColl" matSort style="border:1px var(--lightgray) solid; border-radius: 10px; margin-top:18px; width:90%">
+                <ng-container matColumnDef="g0_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Group</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element?.g0_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="g1_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Group Level 1</th>
+                    <td mat-cell class="font_12 tbl-row-pad"*matCellDef="let element">{{element?.g1_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="g2_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Group Level 2</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element?.g2_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="g3_name">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Group Level 3</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element?.g3_name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="cnt">
+                    <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>Count</th>
+                    <td mat-cell class="font_12 tbl-row-pad capitalize"*matCellDef="let element">{{element?.fields?.length}}</td>
+                </ng-container>
+                <ng-container matColumnDef="edit">
+                    <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>
+                    <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index"> 
+                        <mat-icon id="edit{{i}}" color="primary" class="pointer" matTooltip="Edit Doc" (click)="editDoc(element)">edit</mat-icon>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="delete">
+                    <th  class="tbl-head" mat-header-cell *matHeaderCellDef></th>   
+                    <td  mat-cell style="padding-left:5px;padding-right: 5px;" *matCellDef="let element; let i=index">
+                        <mat-icon id="delete{{i}}" color="warn" class="pointer" matTooltip="Delete Doc" (click)="delDoc(element)">delete</mat-icon>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="dispDoc; sticky: true;" class="tblrowht"></tr>
+                <tr mat-row class="tr-rowalt-light" *matRowDef="let row; columns: dispDoc;"></tr>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="docColl.data.length>0 && isMobile" [style.max-height.px]="screenParam?.height-80" style="overflow: auto">
+        <mat-card>
+            <mat-card-content>
+                <mat-form-field style="width:90%">
+                    <mat-label>Filter</mat-label>
+                    <input matInput (keyup)="applyLookupFilter($event)" placeholder="Ex. group name" #input>
+                </mat-form-field>
+            </mat-card-content>
+            <mat-card-content *ngFor="let doc of docColl.filteredData" style="border: 1px solid var(--var(--lightgray));padding:0px 10px">
+                <div fxLayout="row wrap" fxLayoutAlign="start center">
+                    <div fxLayout="column" fxLayoutAlign="center start" fxFlex="70">
+                        <div class="font_12"><span style="font-weight: 600; padding: 0px;">Group Name: </span>{{doc.g0_name}}</div>
+                        <div class="font_12"><span style="font-weight: 600; padding: 0px;">Doc Count: </span>{{doc.fields.length}}</div>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="15px" fxFlex="30">
+                        <mat-icon id="edit{{i}}" color="primary" class="pointer" matTooltip="Edit Doc" (click)="editDoc(doc)">edit</mat-icon>
+                        <mat-icon id="delete{{i}}" color="warn" class="pointer" matTooltip="Delete Doc" (click)="delDoc(doc)">delete</mat-icon>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div *ngIf="docColl?.data?.length==0" [style.height.px]="ht-16-37.250-20" fxLayoutAlign="center center" style="border:1px var(--lightgray) solid; border-radius: 10px; margin-top: 16px;">
+        <div fxLayout="column" fxLayoutAlign="center center">
+            <mat-icon class="md-96" style="opacity:0.2">summarize</mat-icon>
+            <div class="font_12">Click on ADD NEW to create new Lookup</div>
+        </div>
+    </div>
+</div>

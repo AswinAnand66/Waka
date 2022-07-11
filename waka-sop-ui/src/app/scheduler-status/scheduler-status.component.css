@@ -1,0 +1,15 @@
+.card-bottom-green {
+    border-bottom: 5px solid var(--green);
+}
+
+.card-bottom-red {
+    border-bottom: 5px solid var(--red);
+}
+
+::ng-deep .mat-paginator-icon {
+    background-color: white !important;
+}
+
+::ng-deep .mat-paginator {
+    background-color: var(--tabbg);
+}

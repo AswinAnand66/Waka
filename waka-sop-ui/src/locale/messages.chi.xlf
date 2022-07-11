@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en-US" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="73f0eefa1a3a88abe956e8ae206c37b4bc73820d" datatype="html">
+        <source>Shipment Information</source>
+        <target>货运信息</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/contract-add-edit/contract-add-edit.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <note priority="1" from="description">Header of shipment information</note>
+        <note priority="1" from="meaning">shipmentinformation</note>
+      </trans-unit>
+      <trans-unit id="f7123019de9842a9f504a4a4e4b495a488b8d60a" datatype="html">
+        <source>Contract Summary</source>
+        <target>合约摘要</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/contract-add-edit/contract-add-edit.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <note priority="1" from="description">Header of contract summary</note>
+        <note priority="1" from="meaning">contractsummary</note>
+      </trans-unit>
+      <trans-unit id="9a183720554ba1e7445adf668b811bbbbc41ddc5" datatype="html">
+        <source>Basic Details</source>
+        <target>基本细节</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/contract-add-edit/contract-add-edit.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <note priority="1" from="description">Section name for entering basic information about contract</note>
+        <note priority="1" from="meaning">basicdetails</note>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

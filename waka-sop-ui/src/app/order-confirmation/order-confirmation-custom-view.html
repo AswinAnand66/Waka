@@ -1,0 +1,44 @@
+<div mat-dialog-title fxLayout="row wrap" fxLayoutAlign="space-between center">
+    <mat-label color="primary" style="font-weight: bold; color: #8294a3; font-size: 16px;">CUSTOM VIEW</mat-label>
+    <mat-icon id="close" class="pointer" matTooltip="Close dialog" (click)="onClose(true)" class="custom-view-close-btn">close</mat-icon>
+</div>
+<div>
+    <mat-tab-group animationDuration="700ms" [(selectedIndex)]="selectedTabIndex">
+        <mat-tab label="Columns">
+            <div fxLayout="column" fxLayoutAlign="space-between start" fxLayoutGap="15px" style="overflow: auto;">
+                <div *ngFor = "let ele of columnList" class="border" style="width: 100%;">
+                    <div fxLayoutAlign="space-between start">
+                        <mat-checkbox style="margin: 0 0 5px 0;" [(ngModel)]="ele.is_selected" class="capitalize" [checked]="ele.is_selected" (change)="onChange(ele)"> {{ele.display_name}} </mat-checkbox>
+                        <mat-icon class="icon-position" id="edit" style="color:lightgray; float: right;" class="pointer">push_pin</mat-icon>
+                    </div>
+                        <mat-divider ></mat-divider>
+                     </div>
+                </div>
+                <div fxLayoutAlign="center center" style ="margin-top:16px">
+                    <button class="btnpri btnauto" id="btnNext" style="width: 300px !important; height: 40px !important;"  (click)="saveView()"><span class="mgnleft10 font_14" style="color:white">SAVE AS NEW FILTER</span></button>
+                 </div>   
+            </mat-tab>
+            <mat-tab label="Saved Views">
+                <mat-radio-group class="view-radio-group" formControlName="View">
+                    <mat-radio-button class="view-radio-button capitalize" style="margin-right: 5px !important; margin-bottom: 30px !important;" *ngFor="let view of viewList" [value]="view">
+                        <div fxFlex="100" fxLayout="row" fxLayoutAlign="space-between center">
+                            <span>{{view}}</span>
+                            <mat-icon class="icon-position" id="edit" style="color:lightgray; float: right;" class="pointer" (click)="editView(view)">edit</mat-icon>
+                        </div>    
+                    </mat-radio-button>
+                    <mat-divider></mat-divider>
+                </mat-radio-group>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+
+<footer layout="row" style="margin-top: 25px;">
+    <mat-toolbar style="background-color:white; height:15px;" fxLayoutAlign="space-around center" >
+      <div fxLayoutAlign="start center">
+        <button class="btnsecondary btnprifull" id="btnNext" style="width: 140px !important; height: 40px !important;"><span style="color: var(--primary)" (click)="onClose(true)">CANCEL</span></button>
+      </div>
+      <div fxLayoutAlign="end center">
+        <button class="btnpri btnprifull" id="btnNext" style="width: 140px !important; height: 40px !important;" ><span style="color:white" (click)="apply()">APPLY</span></button>
+      </div>
+    </mat-toolbar>
+  </footer>

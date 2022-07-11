@@ -1,0 +1,3 @@
+tsserver/log/wakasop/info/*-audit.json
+tsserver/log/wakasop/error/*-audit.json
+tsserver/fileuploads/*

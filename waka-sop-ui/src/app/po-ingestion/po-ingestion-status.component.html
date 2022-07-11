@@ -1,0 +1,64 @@
+<div *ngIf="isLoading" fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="10px" class="apdmodal" style="display:block; ">
+	<mat-progress-spinner color='primary' mode="indeterminate" value="50"></mat-progress-spinner>
+</div>
+<div style="margin:60px 16px 0px 16px; padding-top: 5px;" [style.min-height.px]="height-115">
+  
+  <table mat-table [dataSource]="runningStatusColl" matSort #table (matSortChange)="sortData($event)" style="border:1px lightgray solid; border-radius: 10px; margin-top:18px; overflow: auto" [style.width.px]="width - 20">
+      <ng-container matColumnDef="executed_on">
+          <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>EXECUTED ON</th>
+          <td mat-cell class="font_14 tbl-row-pad"*matCellDef="let element">{{element.received_on | date:'MM/dd/yyyy, hh:mm a' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="success">
+        <th mat-header-cell class="tbl-head" *matHeaderCellDef>SUCCESS</th>
+        <td mat-cell class="font_14 tbl-row-pad"*matCellDef="let element">{{element.success}}</td>
+      </ng-container>
+      <ng-container matColumnDef="response">
+        <th mat-header-cell class="tbl-head" *matHeaderCellDef mat-sort-header>RESPONSE</th>
+        <td mat-cell class="font_14 tbl-row-pad"*matCellDef="let element">{{element.response}}</td>
+      </ng-container>
+      <ng-container matColumnDef="schema">
+        <th mat-header-cell class="tbl-head" *matHeaderCellDef>SCHEMA VALIDATION</th>
+        <td mat-cell class="font_14 tbl-row-pad"*matCellDef="let element">
+          <div *ngIf="element.is_schema_proceed && !element.is_schema_under_process && !element.is_schema_success" fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row" style="color: var(--textcolor); font-weight: 600;">
+            <mat-icon>hourglass_top</mat-icon>
+            <span>Yet to Validate</span>
+          </div>
+          <div *ngIf="element.is_schema_proceed && element.is_schema_under_process && !element.is_schema_success" fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row" style="color: var(--inprogressmedium); font-weight: 600;">
+            <mat-icon>sync</mat-icon>
+            <span>Validation in progress</span>
+          </div>
+          <div *ngIf="!element.is_schema_proceed && !element.is_schema_under_process && element.is_schema_success" fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row" style="color: var(--green); font-weight: 600;">
+            <mat-icon>check_circle</mat-icon>
+            <span>Validated</span>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="master">
+        <th mat-header-cell class="tbl-head" *matHeaderCellDef>MASTER VALIDATION</th>
+        <td mat-cell class="font_14 tbl-row-pad"*matCellDef="let element">
+          <div *ngIf="!element.is_master_proceed && !element.is_master_under_process && !element.is_master_success" fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row" style="color: var(--textcolor); font-weight: 600;">
+            <mat-icon>warning</mat-icon>
+            <span>Awaiting Schema Validation</span>
+          </div>
+          <div *ngIf="element.is_master_proceed && !element.is_master_under_process && !element.is_master_success" fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row" style="color: var(--textcolor); font-weight: 600;">
+            <mat-icon>hourglass_top</mat-icon>
+            <span>Yet to Validate</span>
+          </div>
+          <div *ngIf="element.is_master_proceed && element.is_master_under_process && !element.is_master_success" fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row" style="color: var(--inprogress); font-weight: 600;">
+            <mat-icon>sync</mat-icon>
+            <span>Validation in progress</span>
+          </div>
+          <div *ngIf="!element.is_master_proceed && !element.is_master_under_process && element.is_master_success" fxLayoutAlign="start center" fxLayoutGap="4px" fxLayout="row" style="color: var(--green); font-weight: 600;">
+            <mat-icon>check_circle</mat-icon>
+            <span>Validated</span>
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="dispcolumn; sticky: true;" class="tblrowht"></tr>
+      <tr mat-row style="height:50px;" class="tr-rowalt-light" *matRowDef="let row; columns: dispcolumn;"></tr>
+  </table>
+</div>
+
+<div fxLayout="row" fxLayoutAlign="center center" class="mgntop5">
+  <mat-paginator [hidden]="runningStatusColl.data.length == 0" #TablePaginator="matPaginator" [style.width.px]="screen.width - 30" [length]="contentLength" [pageSize]="pageSize" (page)="changePage($event)" [pageIndex]="currentPage" aria-label="Select page"></mat-paginator>
+</div>
